@@ -1,13 +1,13 @@
-package isa.isa;
+package net.javaguides.isa;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class IsaApplication {
+public class IsaBackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(IsaApplication.class, args);
+		SpringApplication.run(IsaBackendApplication.class, args);
 	}
 
 }

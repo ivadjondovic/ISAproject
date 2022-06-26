@@ -1,10 +1,10 @@
-package isa.isa;
+package net.javaguides.isa;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class IsaApplicationTests {
+class IsaBackendApplicationTests {
 
 	@Test
 	void contextLoads() {
