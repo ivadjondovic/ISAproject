@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ICottageOwnerRepository extends JpaRepository<CottageOwner, Long> {
+    CottageOwner findOneById(Long id);
 }

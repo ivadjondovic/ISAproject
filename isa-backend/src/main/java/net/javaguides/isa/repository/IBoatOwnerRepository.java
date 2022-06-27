@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IBoatOwnerRepository extends JpaRepository<BoatOwner, Long> {
+    BoatOwner findOneById(Long id);
 }

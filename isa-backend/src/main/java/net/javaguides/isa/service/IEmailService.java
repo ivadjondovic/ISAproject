@@ -1,0 +1,14 @@
+package net.javaguides.isa.service;
+
+import net.javaguides.isa.model.BoatOwner;
+import net.javaguides.isa.model.CottageOwner;
+import net.javaguides.isa.model.FishingInstructor;
+
+public interface IEmailService {
+    void approveBoatOwnerRegistrationMail(BoatOwner boatOwner);
+    void denyBoatOwnerRegistrationMail(BoatOwner boatOwner);
+    void approveCottageOwnerRegistrationMail(CottageOwner cottageOwner);
+    void denyCottageOwnerRegistrationMail(CottageOwner cottageOwner);
+    void approveFishingInstructorRegistrationMail(FishingInstructor fishingInstructor);
+    void denyFishingInstructorRegistrationMail(FishingInstructor fishingInstructor);
+}

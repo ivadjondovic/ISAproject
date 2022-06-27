@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.javaguides.isa.utils.UserType;
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -22,19 +23,12 @@ public class User {
 
     private String password;
 
-    private String firstName;
-
-    private String lastName;
-
-    private String address;
-
-    private String city;
-
-    private String country;
-
-    private String phoneNumber;
-
     private UserType userType;
+
+    private boolean hasSignedIn;
+
+    @Column(name = "last_password_reset_date")
+    private Timestamp lastPasswordResetDate;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private CottageOwner cottageOwner;
