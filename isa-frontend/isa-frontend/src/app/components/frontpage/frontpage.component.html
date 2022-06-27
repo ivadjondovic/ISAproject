@@ -1,0 +1,12 @@
+<nz-layout class="layout">
+    <nz-header>
+      <div class="logo"></div>
+      <ul nz-menu nzTheme="dark" nzMode="horizontal">
+        <li nz-menu-item (click)="loginForm()">Login</li>
+        <li nz-menu-item (click)="registrationForm()">Register</li>
+      </ul>
+    </nz-header>
+    <nz-content>
+     <router-outlet></router-outlet>
+    </nz-content>
+</nz-layout>
