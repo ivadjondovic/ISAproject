@@ -1,7 +1,9 @@
 package net.javaguides.isa.controller;
 
+import net.javaguides.isa.dto.request.LoginRequest;
 import net.javaguides.isa.dto.request.ServiceProviderRegistrationRequest;
 import net.javaguides.isa.dto.response.TempResponse;
+import net.javaguides.isa.dto.response.UserResponse;
 import net.javaguides.isa.security.TokenUtils;
 import net.javaguides.isa.service.IAuthService;
 import net.javaguides.isa.utils.RegistrationType;
@@ -20,6 +22,11 @@ public class AuthController {
     public AuthController(TokenUtils tokenUtils, IAuthService authService) {
         _tokenUtils = tokenUtils;
         _authService = authService;
+    }
+
+    @PutMapping("/login")
+    public UserResponse login(@RequestBody LoginRequest request){
+        return _authService.login(request);
     }
 
     @PostMapping("/register-service-provider")

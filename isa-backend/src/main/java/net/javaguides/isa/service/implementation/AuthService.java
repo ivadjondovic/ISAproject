@@ -1,6 +1,8 @@
 package net.javaguides.isa.service.implementation;
 
+import net.javaguides.isa.dto.request.LoginRequest;
 import net.javaguides.isa.dto.request.ServiceProviderRegistrationRequest;
+import net.javaguides.isa.dto.response.UserResponse;
 import net.javaguides.isa.model.BoatOwner;
 import net.javaguides.isa.model.CottageOwner;
 import net.javaguides.isa.model.FishingInstructor;
@@ -13,6 +15,7 @@ import net.javaguides.isa.service.IAuthService;
 import net.javaguides.isa.utils.GeneralException;
 import net.javaguides.isa.utils.RequestStatus;
 import net.javaguides.isa.utils.UserType;
+import org.graalvm.compiler.lir.LIRInstruction;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -128,5 +131,50 @@ public class AuthService implements IAuthService {
         user.setFishingInstructor(savedFishingInstructor);
         _userRepository.save(user);
         return true;
+    }
+
+    @Override
+    public UserResponse login(LoginRequest request) {
+        User user = _userRepository.findOneByUsername(request.getUsername());
+        if(user == null || !_passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new GeneralException("Bad credentials.", HttpStatus.BAD_REQUEST);
+        }
+        if(user.getUserType().equals(UserType.BOAT_OWNER)){
+            checkRequestStatus(user.getBoatOwner().getRequestStatus());
+        }else if(user.getUserType().equals(UserType.COTTAGE_OWNER)){
+            checkRequestStatus(user.getCottageOwner().getRequestStatus());
+        }else if(user.getUserType().equals(UserType.FISHING_INSTRUCTOR)){
+            checkRequestStatus(user.getFishingInstructor().getRequestStatus());
+        }
+
+        UserResponse userResponse = mapUserToUserResponse(user);
+        return userResponse;
+    }
+
+    private void checkRequestStatus(RequestStatus status){
+        if(status.equals(RequestStatus.PENDING)){
+            throw new GeneralException("Your registration hasn't been approved yet.", HttpStatus.BAD_REQUEST);
+        }else if(status.equals(RequestStatus.DENIED)){
+            throw new GeneralException("Your registration has been denied.", HttpStatus.BAD_REQUEST);
+        }else if(status.equals(RequestStatus.APPROVED)){
+            throw new GeneralException("Your registration has been approved by admin. Please activate your account.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    private UserResponse mapUserToUserResponse(User user) {
+        UserResponse userResponse = new UserResponse();
+        if(user.getBoatOwner() != null){
+            userResponse.setId(user.getBoatOwner().getId());
+        }else if(user.getCottageOwner() != null){
+            userResponse.setId(user.getCottageOwner().getId());
+        }else if(user.getFishingInstructor() != null){
+            userResponse.setId(user.getFishingInstructor().getId());
+        }else if(user.getSystemAdmin() != null){
+            userResponse.setId(user.getSystemAdmin().getId());
+        }else if(user.getClient() != null){
+            userResponse.setId(user.getClient().getId());
+        }
+        userResponse.setUsername(user.getUsername());
+        return userResponse;
     }
 }
