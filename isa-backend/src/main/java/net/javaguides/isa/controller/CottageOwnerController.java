@@ -1,6 +1,7 @@
 package net.javaguides.isa.controller;
 
 import net.javaguides.isa.dto.request.GetIdRequest;
+import net.javaguides.isa.dto.request.RefusalReasonRequest;
 import net.javaguides.isa.service.ICottageOwnerService;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,7 @@ public class CottageOwnerController {
     }
 
     @PutMapping("/deny")
-    public void denyCottageOwnerRegistrationRequest(@RequestBody GetIdRequest request){
+    public void denyCottageOwnerRegistrationRequest(@RequestBody RefusalReasonRequest request){
         _cottageOwnerService.denyCottageOwnerRegistrationRequest(request);
     }
 

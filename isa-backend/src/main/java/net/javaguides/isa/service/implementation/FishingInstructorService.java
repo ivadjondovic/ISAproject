@@ -1,6 +1,7 @@
 package net.javaguides.isa.service.implementation;
 
 import net.javaguides.isa.dto.request.GetIdRequest;
+import net.javaguides.isa.dto.request.RefusalReasonRequest;
 import net.javaguides.isa.model.FishingInstructor;
 import net.javaguides.isa.repository.IFishingInstructorRepository;
 import net.javaguides.isa.service.IEmailService;
@@ -29,11 +30,11 @@ public class FishingInstructorService implements IFishingInstructorService {
     }
 
     @Override
-    public void denyFishingInstructorRegistrationRequest(GetIdRequest request) {
+    public void denyFishingInstructorRegistrationRequest(RefusalReasonRequest request) {
         FishingInstructor fishingInstructor = _fishingInstructorRepository.findOneById(request.getId());
         fishingInstructor.setRequestStatus(RequestStatus.DENIED);
         FishingInstructor savedFishingInstructor = _fishingInstructorRepository.save(fishingInstructor);
-        _emailService.denyFishingInstructorRegistrationMail(savedFishingInstructor);
+        _emailService.denyFishingInstructorRegistrationMail(savedFishingInstructor, request.getReason());
     }
 
     @Override

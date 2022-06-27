@@ -28,11 +28,12 @@ public class EmailService implements IEmailService {
     }
 
     @Override
-    public void denyBoatOwnerRegistrationMail(BoatOwner boatOwner) {
+    public void denyBoatOwnerRegistrationMail(BoatOwner boatOwner, String reason) {
         String to = boatOwner.getUser().getUsername();
         String subject = "Your registration has been denied.";
         Context context = new Context();
         context.setVariable("name", String.format("%s %s", boatOwner.getFirstName(), boatOwner.getLastName()));
+        context.setVariable("reason", String.format("%s", reason));
         _emailContext.send(to, subject, "deniedRegistration", context);
     }
 
@@ -47,11 +48,12 @@ public class EmailService implements IEmailService {
     }
 
     @Override
-    public void denyCottageOwnerRegistrationMail(CottageOwner cottageOwner) {
+    public void denyCottageOwnerRegistrationMail(CottageOwner cottageOwner, String reason) {
         String to = cottageOwner.getUser().getUsername();
         String subject = "Your registration has been denied.";
         Context context = new Context();
         context.setVariable("name", String.format("%s %s", cottageOwner.getFirstName(), cottageOwner.getLastName()));
+        context.setVariable("reason", String.format("%s", reason));
         _emailContext.send(to, subject, "deniedRegistration", context);
     }
 
@@ -66,11 +68,12 @@ public class EmailService implements IEmailService {
     }
 
     @Override
-    public void denyFishingInstructorRegistrationMail(FishingInstructor fishingInstructor) {
+    public void denyFishingInstructorRegistrationMail(FishingInstructor fishingInstructor, String reason) {
         String to = fishingInstructor.getUser().getUsername();
         String subject = "Your registration has been denied.";
         Context context = new Context();
         context.setVariable("name", String.format("%s %s", fishingInstructor.getFirstName(), fishingInstructor.getLastName()));
+        context.setVariable("reason", String.format("%s", reason));
         _emailContext.send(to, subject, "deniedRegistration", context);
     }
 }

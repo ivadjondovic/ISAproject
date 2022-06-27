@@ -1,6 +1,7 @@
 package net.javaguides.isa.service.implementation;
 
 import net.javaguides.isa.dto.request.GetIdRequest;
+import net.javaguides.isa.dto.request.RefusalReasonRequest;
 import net.javaguides.isa.model.CottageOwner;
 import net.javaguides.isa.repository.ICottageOwnerRepository;
 import net.javaguides.isa.service.ICottageOwnerService;
@@ -29,11 +30,11 @@ public class CottageOwnerService implements ICottageOwnerService {
     }
 
     @Override
-    public void denyCottageOwnerRegistrationRequest(GetIdRequest request) {
+    public void denyCottageOwnerRegistrationRequest(RefusalReasonRequest request) {
         CottageOwner cottageOwner = _cottageOwnerRepository.findOneById(request.getId());
         cottageOwner.setRequestStatus(RequestStatus.DENIED);
         CottageOwner savedCottageOwner = _cottageOwnerRepository.save(cottageOwner);
-        _emailService.denyCottageOwnerRegistrationMail(savedCottageOwner);
+        _emailService.denyCottageOwnerRegistrationMail(savedCottageOwner, request.getReason());
     }
 
     @Override

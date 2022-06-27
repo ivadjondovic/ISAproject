@@ -6,9 +6,9 @@ import net.javaguides.isa.model.FishingInstructor;
 
 public interface IEmailService {
     void approveBoatOwnerRegistrationMail(BoatOwner boatOwner);
-    void denyBoatOwnerRegistrationMail(BoatOwner boatOwner);
+    void denyBoatOwnerRegistrationMail(BoatOwner boatOwner, String reason);
     void approveCottageOwnerRegistrationMail(CottageOwner cottageOwner);
-    void denyCottageOwnerRegistrationMail(CottageOwner cottageOwner);
+    void denyCottageOwnerRegistrationMail(CottageOwner cottageOwner, String reason);
     void approveFishingInstructorRegistrationMail(FishingInstructor fishingInstructor);
-    void denyFishingInstructorRegistrationMail(FishingInstructor fishingInstructor);
+    void denyFishingInstructorRegistrationMail(FishingInstructor fishingInstructor, String reason);
 }

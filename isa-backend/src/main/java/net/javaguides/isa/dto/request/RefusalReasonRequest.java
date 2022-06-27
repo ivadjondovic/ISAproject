@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetIdRequest {
+public class RefusalReasonRequest {
 
     private Long id;
+    private String reason;
 }

@@ -1,6 +1,7 @@
 package net.javaguides.isa.controller;
 
 import net.javaguides.isa.dto.request.GetIdRequest;
+import net.javaguides.isa.dto.request.RefusalReasonRequest;
 import net.javaguides.isa.service.IFishingInstructorService;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,7 @@ public class FishingInstructorController {
     }
 
     @PutMapping("/deny")
-    public void denyFishingInstructorRegistrationRequest(@RequestBody GetIdRequest request){
+    public void denyFishingInstructorRegistrationRequest(@RequestBody RefusalReasonRequest request){
         _fishingInstructorService.denyFishingInstructorRegistrationRequest(request);
     }
 
