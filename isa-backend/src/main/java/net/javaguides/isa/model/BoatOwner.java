@@ -7,6 +7,7 @@ import lombok.Setter;
 import net.javaguides.isa.utils.RequestStatus;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -38,4 +39,7 @@ public class BoatOwner {
 
     @Enumerated(EnumType.STRING)
     private RequestStatus requestStatus;
+
+    @OneToMany(mappedBy = "boatOwner", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Boat> boats;
 }

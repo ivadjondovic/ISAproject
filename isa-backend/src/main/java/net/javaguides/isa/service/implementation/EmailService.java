@@ -4,6 +4,7 @@ import net.javaguides.isa.config.EmailContext;
 import net.javaguides.isa.model.BoatOwner;
 import net.javaguides.isa.model.CottageOwner;
 import net.javaguides.isa.model.FishingInstructor;
+import net.javaguides.isa.model.User;
 import net.javaguides.isa.service.IEmailService;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
@@ -75,5 +76,25 @@ public class EmailService implements IEmailService {
         context.setVariable("name", String.format("%s %s", fishingInstructor.getFirstName(), fishingInstructor.getLastName()));
         context.setVariable("reason", String.format("%s", reason));
         _emailContext.send(to, subject, "deniedRegistration", context);
+    }
+
+    @Override
+    public void approveDeletionRequest(User user, String reason) {
+        String to = user.getUsername();
+        String subject = "Your deletion request has been approved.";
+        Context context = new Context();
+        context.setVariable("name", String.format("%s", user.getUsername()));
+        context.setVariable("reason", String.format("%s", reason));
+        _emailContext.send(to, subject, "approvedDeletionRequest", context);
+    }
+
+    @Override
+    public void denyDeletionRequest(User user, String reason) {
+        String to = user.getUsername();
+        String subject = "Your deletion request has been denied.";
+        Context context = new Context();
+        context.setVariable("name", String.format("%s", user.getUsername()));
+        context.setVariable("reason", String.format("%s", reason));
+        _emailContext.send(to, subject, "deniedDeletionRequest", context);
     }
 }

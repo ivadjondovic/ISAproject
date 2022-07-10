@@ -1,7 +1,7 @@
 package net.javaguides.isa.service.implementation;
 
 import net.javaguides.isa.dto.request.GetIdRequest;
-import net.javaguides.isa.dto.request.RefusalReasonRequest;
+import net.javaguides.isa.dto.request.StringRequest;
 import net.javaguides.isa.model.BoatOwner;
 import net.javaguides.isa.repository.IBoatOwnerRepository;
 import net.javaguides.isa.service.IBoatOwnerService;
@@ -30,11 +30,11 @@ public class BoatOwnerService implements IBoatOwnerService {
     }
 
     @Override
-    public void denyBoatOwnerRegistrationRequest(RefusalReasonRequest request) {
+    public void denyBoatOwnerRegistrationRequest(StringRequest request) {
         BoatOwner boatOwner = _boatOwnerRepository.findOneById(request.getId());
         boatOwner.setRequestStatus(RequestStatus.DENIED);
         BoatOwner savedBoatOwner = _boatOwnerRepository.save(boatOwner);
-        _emailService.denyBoatOwnerRegistrationMail(savedBoatOwner, request.getReason());
+        _emailService.denyBoatOwnerRegistrationMail(savedBoatOwner, request.getText());
     }
 
     @Override

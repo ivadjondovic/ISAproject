@@ -1,7 +1,7 @@
 package net.javaguides.isa.controller;
 
 import net.javaguides.isa.dto.request.GetIdRequest;
-import net.javaguides.isa.dto.request.RefusalReasonRequest;
+import net.javaguides.isa.dto.request.StringRequest;
 import net.javaguides.isa.service.IBoatOwnerService;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +24,7 @@ public class BoatOwnerController {
     }
 
     @PutMapping("/deny")
-    public void denyRegistrationRequest(@RequestBody RefusalReasonRequest request){
+    public void denyRegistrationRequest(@RequestBody StringRequest request){
         _boatOwnerService.denyBoatOwnerRegistrationRequest(request);
     }
 

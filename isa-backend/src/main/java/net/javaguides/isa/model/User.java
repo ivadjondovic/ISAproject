@@ -27,6 +27,10 @@ public class User {
 
     private boolean hasSignedIn;
 
+    private boolean requestedForDeletion;
+
+    private String reasonForDeletion;
+
     @Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
 
