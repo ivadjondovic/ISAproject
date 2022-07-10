@@ -2,12 +2,10 @@ package net.javaguides.isa.service.implementation;
 
 import net.javaguides.isa.dto.request.StringRequest;
 import net.javaguides.isa.dto.response.UserRequestedForDeletionResponse;
-import net.javaguides.isa.model.BoatOwner;
 import net.javaguides.isa.model.User;
 import net.javaguides.isa.repository.*;
 import net.javaguides.isa.service.IEmailService;
 import net.javaguides.isa.service.IUserService;
-import net.javaguides.isa.utils.RequestStatus;
 import net.javaguides.isa.utils.UserType;
 import org.springframework.stereotype.Service;
 

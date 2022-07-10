@@ -7,12 +7,11 @@ import net.javaguides.isa.utils.ReservationType;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuickReservationRequest {
+public class ReservationRequest {
 
     private LocalTime startTimeReservation;
 
@@ -21,14 +20,6 @@ public class QuickReservationRequest {
     private LocalDate startDateReservation;
 
     private LocalDate endDateReservation;
-
-    private int maxNumberOfPeople;
-
-    private double price;
-
-    private int expiresIn;
-
-    private List<AdditionalServiceRequest> additionalServices;
 
     private ReservationType reservationType;
 

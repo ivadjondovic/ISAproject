@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/quick-reservations")
+@RequestMapping("/quick-reservation")
 public class QuickReservationController {
 
     private final IQuickReservationService _quickReservationService;

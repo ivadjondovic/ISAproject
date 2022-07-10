@@ -9,14 +9,13 @@ import net.javaguides.isa.utils.ReservationType;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "quick_reservation")
-public class QuickReservation {
+@Entity(name = "reservation")
+public class Reservation {
 
     @Id
     @Column(name = "id")
@@ -35,16 +34,6 @@ public class QuickReservation {
     @Column(name = "end_date_quick_reservation")
     private LocalDate endDateReservation;
 
-    @Column(name = "max_number_of_people")
-    private int maxNumberOfPeople;
-
-    private double price;
-
-    private int expiresIn;
-
-    @OneToMany(mappedBy = "quickReservation", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AdditionalService> additionalServices;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cottage_id")
     private Cottage cottage;
@@ -54,6 +43,6 @@ public class QuickReservation {
     private Boat boat;
 
     @Column(name = "reservation_type")
-    private ReservationType reservationType;
+    private ReservationType ReservationType;
 
 }

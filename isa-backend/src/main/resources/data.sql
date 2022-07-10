@@ -29,7 +29,7 @@ insert into cottage (id, name, address, description, rules_of_conduct, price_lis
 (200000, 'Yellow house', 'Prvomajska 39', 'Description', 'Pravila ponasanja', 'Pricelist', 'Other', 100000);
 
 
-insert into quick_reservation (id, start_time_quick_reservation, end_time_quick_reservation, start_date_quick_reservation, end_date_quick_reservation, max_number_of_people, price, expires_in, cottage_id, boat_id, quick_reservation_type) values
+insert into quick_reservation (id, start_time_quick_reservation, end_time_quick_reservation, start_date_quick_reservation, end_date_quick_reservation, max_number_of_people, price, expires_in, cottage_id, boat_id, reservation_type) values
 (100000, '08:00', '08:00', '2022-08-08', '2021-08-20', 10, 1000, 2, null, 100000, 1),
 (200000, '08:00', '08:00', '2021-09-01', '2021-09-04', 3, 200, 1, 100000, null, 2),
 

@@ -5,7 +5,7 @@ import net.javaguides.isa.dto.request.QuickReservationRequest;
 import net.javaguides.isa.model.*;
 import net.javaguides.isa.repository.*;
 import net.javaguides.isa.service.IQuickReservationService;
-import net.javaguides.isa.utils.QuickReservationType;
+import net.javaguides.isa.utils.ReservationType;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,16 +27,16 @@ public class QuickReservationService implements IQuickReservationService {
     @Override
     public boolean createQuickReservation(QuickReservationRequest request) {
         QuickReservation quickReservation = new QuickReservation();
-        quickReservation.setStartDateExamination(request.getStartDateExamination());
-        quickReservation.setEndDateExamination(request.getEndDateExamination());
-        quickReservation.setStartTimeExamination(request.getStartTimeExamination());
-        quickReservation.setEndTimeExamination(request.getEndTimeExamination());
+        quickReservation.setStartDateReservation(request.getStartDateReservation());
+        quickReservation.setEndDateReservation(request.getEndDateReservation());
+        quickReservation.setStartTimeReservation(request.getStartTimeReservation());
+        quickReservation.setEndTimeReservation(request.getEndTimeReservation());
         quickReservation.setMaxNumberOfPeople(request.getMaxNumberOfPeople());
         quickReservation.setPrice(request.getPrice());
         quickReservation.setExpiresIn(request.getExpiresIn());
-        quickReservation.setQuickReservationType(request.getQuickReservationType());
+        quickReservation.setReservationType(request.getReservationType());
 
-        if(request.getQuickReservationType().equals(QuickReservationType.BOAT)){
+        if(request.getReservationType().equals(ReservationType.BOAT)){
           Boat boat = _boatRepository.findOneById(request.getIdOfType());
           quickReservation.setBoat(boat);
           QuickReservation savedReservation = _quickReservationRepository.save(quickReservation);

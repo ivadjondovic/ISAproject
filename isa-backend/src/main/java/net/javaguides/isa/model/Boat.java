@@ -52,9 +52,6 @@ public class Boat {
     @Column(name = "price_list")
     private String priceList;
 
-    @OneToMany(mappedBy = "boat", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<QuickReservation> quickReservations;
-
     @Column(name = "fishing_equipment")
     private String fishingEquipment;
 
@@ -64,4 +61,11 @@ public class Boat {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "boat_owner_id")
     private BoatOwner boatOwner;
+
+    @OneToMany(mappedBy = "boat", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<QuickReservation> quickReservations;
+
+    @OneToMany(mappedBy = "boat", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations;
+
 }

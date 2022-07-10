@@ -1,6 +1,6 @@
 package net.javaguides.isa.utils;
 
-public enum QuickReservationType {
+public enum ReservationType {
     BOAT,
     COTTAGE
 }

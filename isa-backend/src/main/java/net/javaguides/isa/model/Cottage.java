@@ -32,6 +32,9 @@ public class Cottage {
     @OneToMany(mappedBy = "cottage", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuickReservation> quickReservations;
 
+    @OneToMany(mappedBy = "cottage", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations;
+
     private String rulesOfConduct;
 
     private String priceList;
