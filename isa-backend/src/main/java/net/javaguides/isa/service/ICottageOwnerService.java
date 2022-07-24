@@ -17,4 +17,6 @@ public interface ICottageOwnerService {
     void changePasswordCottageOwner(Long id, ChangePasswordRequest request);
 
     CottageOwnerResponse updateCottageOwner(CottageOwnerRequest request, Long id);
+
+    CottageOwnerResponse getCottageOwner(Long id);
 }

@@ -1,3 +1,10 @@
+import { UpdateBoatOwnerComponent } from './updates/update-boat-owner/update-boat-owner.component';
+import { UpdateBoatComponent } from './updates/update-boat/update-boat.component';
+import { UpdatePasswordBoatOwnerComponent } from './updates/update-password-boat-owner/update-password-boat-owner.component';
+import { OwnBoatsComponent } from './lists/own-boats/own-boats.component';
+import { BoatComponent } from './new-items/boat/boat.component';
+import { UpdateCottageOwnerComponent } from './updates/update-cottage-owner/update-cottage-owner.component';
+import { UpdatePasswordCottageOwnerComponent } from './updates/update-password-cottage-owner/update-password-cottage-owner.component';
 import { CottageComponent } from './new-items/cottage/cottage.component';
 import { UpdateCottageComponent } from './updates/update-cottage/update-cottage.component';
 import { OwnCottagesComponent } from './lists/own-cottages/own-cottages.component';
@@ -30,7 +37,14 @@ registerLocaleData(en);
     RegisterServiceProviderComponent,
     OwnCottagesComponent,
     UpdateCottageComponent,
-    CottageComponent
+    CottageComponent,
+    UpdatePasswordCottageOwnerComponent,
+    UpdateCottageOwnerComponent,
+    BoatComponent,
+    OwnBoatsComponent,
+    UpdatePasswordBoatOwnerComponent,
+    UpdateBoatComponent,
+    UpdateBoatOwnerComponent
   ],
   imports: [
     BrowserModule,

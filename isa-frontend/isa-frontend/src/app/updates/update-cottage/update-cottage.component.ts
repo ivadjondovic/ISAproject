@@ -13,6 +13,8 @@ export class UpdateCottageComponent implements OnInit {
   private id : any;
   validateForm: FormGroup
   public user: any;
+  public alertDelete = false;  
+  public alert = true;
 
   constructor(private cottageService: CottageService, private route: ActivatedRoute, private fb: FormBuilder, private router: Router) { }
 
@@ -60,7 +62,7 @@ export class UpdateCottageComponent implements OnInit {
     this.cottageService.updateCottage(this.id, this.validateForm.value).subscribe(data => {
       this.router.navigateByUrl(`home-page`);
     }, error => {
-      alert('Error');
+      this.alertDelete = true;
     })
   }
 

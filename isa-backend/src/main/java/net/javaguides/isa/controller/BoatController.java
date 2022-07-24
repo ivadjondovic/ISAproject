@@ -23,14 +23,14 @@ public class BoatController {
         return _boatService.getBoat(id);
     }
 
-    @GetMapping("/{id}/cottage-owner")
+    @GetMapping("/{id}/boat-owner")
     public ResponseEntity<?> getOwnersBoats(@PathVariable("id") Long id){
         List<BoatResponse> boats = _boatService.getOwnersBoats(id);
         if(boats != null) {
             return new ResponseEntity<>(boats, HttpStatus.OK);
         }
         else {
-            return new ResponseEntity<>("Cottages doesn't exists.", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("oats doesn't exists.", HttpStatus.NOT_FOUND);
         }
     }
 

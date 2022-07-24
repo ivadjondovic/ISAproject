@@ -1,9 +1,9 @@
-<nz-alert nzType="error"  *ngIf="!alert" nzMessage="Error" nzDescription="This medicament have reservation!" nzShowIcon> </nz-alert>
+<nz-alert nzType="error"  *ngIf="!alert" nzMessage="Error" nzDescription="This cottage has reservation and cannot be deleted!" nzShowIcon> </nz-alert>
 <nz-alert
-      nzType="success"
+      nzType="error"
       nzMessage="Deleting cottage"
-      *ngIf="alertSucc"
-      nzDescription="Successfully deleted cottage!"
+      *ngIf="alertDelete"
+      nzDescription="This cottage has reservation and cannot be deleted!"
       nzShowIcon
     >
 </nz-alert>

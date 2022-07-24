@@ -3,6 +3,13 @@
       <div class="logo"></div>
       <ul nz-menu nzTheme="dark" nzMode="horizontal">
         <li nz-menu-item *ngIf="isCottageOwner" (click)="cottages()">My cottages </li>
+        <li nz-menu-item *ngIf="isCottageOwner" (click)="cottageOwnerProfile()">Change your profile </li>
+        <li nz-menu-item *ngIf="isCottageOwner" (click)="changePasswordCottageOwner()">Change your password </li>
+
+        <li nz-menu-item *ngIf="isBoatOwner" (click)="boats()">My boats </li>
+        <li nz-menu-item *ngIf="isBoatOwner" (click)="boatOwnerProfile()">Change your profile </li>
+        <li nz-menu-item *ngIf="isBoatOwner" (click)="changePasswordBoatOwner()">Change your password </li>
+        <li nz-menu-item (click)="clearStorage()">Logout</li>
       </ul>
     </nz-header>
     <nz-content>

@@ -87,6 +87,12 @@ public class CottageOwnerService implements ICottageOwnerService {
         return mapCottageOwnerToCottageOwnerResponse(savedCottageOwner);
     }
 
+    @Override
+    public CottageOwnerResponse getCottageOwner(Long id) {
+        CottageOwner cottageOwner = _cottageOwnerRepository.findOneById(id);
+        return mapCottageOwnerToCottageOwnerResponse(cottageOwner);
+    }
+
     public CottageOwnerResponse mapCottageOwnerToCottageOwnerResponse(CottageOwner cottageOwner) {
 
         CottageOwnerResponse cottageOwnerResponse = new CottageOwnerResponse();

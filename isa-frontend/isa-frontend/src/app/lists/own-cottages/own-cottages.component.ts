@@ -17,6 +17,7 @@ export class OwnCottagesComponent implements OnInit {
   validateForm!: FormGroup;
   public alert = true;
   public alertSucc = false;
+  public alertDelete = false;
 
   constructor(private cottageService: CottageService, private router: Router, private searchService: SearchService, private fb: FormBuilder) { }
 
@@ -57,7 +58,7 @@ export class OwnCottagesComponent implements OnInit {
     this.searchService.searchOwnersCottages(body).subscribe(data => {
      this.ownCottages = data.cottages;
     }, error => {
-     
+    
     })
   }
 
@@ -67,7 +68,7 @@ export class OwnCottagesComponent implements OnInit {
   }
 
   change(id): void {
-    this.router.navigateByUrl(`home-page/updates/cottage/${id}`);
+    this.router.navigateByUrl(`home-page/updates/update-cottage/${id}`);
   }
 
   add(): void {
@@ -78,7 +79,7 @@ export class OwnCottagesComponent implements OnInit {
     this.cottageService.deleteCottage(id).subscribe(data => {
       location.reload();
      }, error => {
-      //ADD DIFFERENT ERRORS 
+      this.alertDelete = true;
      })
   }
 }

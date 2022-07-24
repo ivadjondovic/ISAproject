@@ -1,8 +1,12 @@
 package net.javaguides.isa.service.implementation;
 
+import net.javaguides.isa.dto.response.BoatResponse;
 import net.javaguides.isa.dto.response.CottageResponse;
+import net.javaguides.isa.dto.response.SearchOwnersBoatsResponse;
 import net.javaguides.isa.dto.response.SearchOwnersCottagesResponse;
+import net.javaguides.isa.model.Boat;
 import net.javaguides.isa.model.Cottage;
+import net.javaguides.isa.repository.IBoatRepository;
 import net.javaguides.isa.repository.ICottageRepository;
 import net.javaguides.isa.service.ISearchService;
 import org.springframework.stereotype.Service;
@@ -15,11 +19,16 @@ import java.util.stream.Collectors;
 public class SearchService implements ISearchService {
 
     private final ICottageRepository _cottageRepository;
-    private final CottageService _cottageService;
+    private final IBoatRepository _boatRepository;
 
-    public SearchService(ICottageRepository cottageRepository, CottageService cottageService) {
+    private final CottageService _cottageService;
+    private final BoatService _boatService;
+
+    public SearchService(IBoatRepository boatRepository, ICottageRepository cottageRepository, CottageService cottageService, BoatService boatService) {
+        _boatRepository = boatRepository;
         _cottageRepository = cottageRepository;
         _cottageService = cottageService;
+        _boatService = boatService;
     }
 
     @Override
@@ -30,6 +39,16 @@ public class SearchService implements ISearchService {
             cottageResponses.add(_cottageService.mapCottageToCottageResponse(cottage));
         }
         return mapCottagesToSearchResponse(cottageResponses);
+    }
+
+    @Override
+    public SearchOwnersBoatsResponse searchOwnersBoats(String ownerId, String name) {
+        List<Boat> boats = filteredBoats(name, ownerId);
+        List<BoatResponse> boatResponses = new ArrayList<>();
+        for(Boat boat: boats){
+            boatResponses.add(_boatService.mapBoatToBoatResponse(boat));
+        }
+        return mapBoatsToSearchResponse(boatResponses);
     }
 
     private List<Cottage> filteredCottages(String name, String ownerId) {
@@ -53,9 +72,36 @@ public class SearchService implements ISearchService {
                 .collect(Collectors.toList());
     }
 
+    private List<Boat> filteredBoats(String name, String ownerId) {
+        List<Boat> allBoats = _boatRepository.findAll();
+        return allBoats
+                .stream()
+                .filter(boat -> {
+                    if(name != "") {
+                        return boat.getName().equals(name);
+                    } else {
+                        return true;
+                    }
+                })
+                .filter(boat -> {
+                    if(ownerId != ""){
+                        return boat.getBoatOwner().getId().toString().equals(ownerId);
+                    } else {
+                        return true;
+                    }
+                })
+                .collect(Collectors.toList());
+    }
+
     private SearchOwnersCottagesResponse mapCottagesToSearchResponse(List<CottageResponse> cottageResponses) {
         SearchOwnersCottagesResponse searchResponse = new SearchOwnersCottagesResponse();
         searchResponse.setCottages(cottageResponses);
+        return searchResponse;
+    }
+
+    private SearchOwnersBoatsResponse mapBoatsToSearchResponse(List<BoatResponse> boatResponses) {
+        SearchOwnersBoatsResponse searchResponse = new SearchOwnersBoatsResponse();
+        searchResponse.setBoats(boatResponses);
         return searchResponse;
     }
 }

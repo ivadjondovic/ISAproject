@@ -85,6 +85,12 @@ public class BoatOwnerService implements IBoatOwnerService {
         return mapBoatOwnerToBoatOwnerResponse(savedBoatOwner);
     }
 
+    @Override
+    public BoatOwnerResponse getBoatOwner(Long id) {
+        BoatOwner boatOwner = _boatOwnerRepository.findOneById(id);
+        return mapBoatOwnerToBoatOwnerResponse(boatOwner);
+    }
+
     public BoatOwnerResponse mapBoatOwnerToBoatOwnerResponse(BoatOwner boatOwner) {
 
         BoatOwnerResponse boatOwnerResponse = new BoatOwnerResponse();

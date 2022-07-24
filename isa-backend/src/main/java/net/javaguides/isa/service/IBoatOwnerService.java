@@ -14,4 +14,6 @@ public interface IBoatOwnerService {
     void changePasswordBoatOwner(Long id, ChangePasswordRequest request);
 
     BoatOwnerResponse updateBoatOwner(BoatOwnerRequest request, Long id);
+
+    BoatOwnerResponse getBoatOwner(Long id);
 }

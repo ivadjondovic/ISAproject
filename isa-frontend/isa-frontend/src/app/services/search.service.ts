@@ -14,8 +14,15 @@ export class SearchService {
       params : new HttpParams().set('name', data["name"])
                                .set('ownerId', data["ownerId"])
     } 
-    console.log(queryParams);
     return this.http.get(`http://localhost:8080/search/owners-cottages`, queryParams);
+  }
+
+  public searchOwnersBoats(data) : Observable<any>{
+    let queryParams = {
+      params : new HttpParams().set('name', data["name"])
+                               .set('ownerId', data["ownerId"])
+    } 
+    return this.http.get(`http://localhost:8080/search/owners-boats`, queryParams);
   }
 
 }

@@ -2,6 +2,7 @@ package net.javaguides.isa.controller;
 
 import net.javaguides.isa.dto.request.*;
 import net.javaguides.isa.dto.response.BoatOwnerResponse;
+import net.javaguides.isa.dto.response.CottageOwnerResponse;
 import net.javaguides.isa.service.IBoatOwnerService;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,5 +41,11 @@ public class BoatOwnerController {
     public BoatOwnerResponse updateBoatOwner(@RequestBody BoatOwnerRequest request, @PathVariable Long id) {
         return _boatOwnerService.updateBoatOwner(request, id);
     }
+
+    @GetMapping("/{id}")
+    public BoatOwnerResponse getBoatOwner(@PathVariable Long id) {
+        return _boatOwnerService.getBoatOwner(id);
+    }
+
 
 }

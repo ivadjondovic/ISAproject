@@ -23,4 +23,9 @@ public class SearchController {
         return new ResponseEntity<>(iSearchService.searchOwnersCottages(ownerId, name), HttpStatus.OK);
     }
 
+    @GetMapping("/owners-boats")
+    public ResponseEntity<?> searchOwnersBoats(@RequestParam("ownerId") String ownerId, @RequestParam("name") String name){
+        return new ResponseEntity<>(iSearchService.searchOwnersBoats(ownerId, name), HttpStatus.OK);
+    }
+
 }

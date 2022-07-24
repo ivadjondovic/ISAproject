@@ -5,6 +5,7 @@ import net.javaguides.isa.dto.request.CottageOwnerRequest;
 import net.javaguides.isa.dto.request.GetIdRequest;
 import net.javaguides.isa.dto.request.StringRequest;
 import net.javaguides.isa.dto.response.CottageOwnerResponse;
+import net.javaguides.isa.dto.response.CottageResponse;
 import net.javaguides.isa.service.ICottageOwnerService;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,5 +46,11 @@ public class CottageOwnerController {
     public CottageOwnerResponse updateCottageOwner(@RequestBody CottageOwnerRequest request, @PathVariable Long id) {
         return _cottageOwnerService.updateCottageOwner(request, id);
     }
+
+    @GetMapping("/{id}")
+    public CottageOwnerResponse getCottage(@PathVariable Long id) {
+        return _cottageOwnerService.getCottageOwner(id);
+    }
+
 
 }

@@ -1,27 +1,35 @@
 package net.javaguides.isa.service.implementation;
 
+import net.javaguides.isa.dto.request.AdditionalServiceRequest;
 import net.javaguides.isa.dto.request.CottageRequest;
 import net.javaguides.isa.dto.response.CottageResponse;
-import net.javaguides.isa.model.Cottage;
-import net.javaguides.isa.model.CottageOwner;
-import net.javaguides.isa.repository.ICottageOwnerRepository;
-import net.javaguides.isa.repository.ICottageRepository;
-import net.javaguides.isa.repository.IUserRepository;
+import net.javaguides.isa.model.*;
+import net.javaguides.isa.repository.*;
 import net.javaguides.isa.service.ICottageService;
+import net.javaguides.isa.service.IReservationService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CottageService implements ICottageService {
 
     private final ICottageRepository _cottageRepository;
     private final ICottageOwnerRepository _cottageOwnerRepository;
+    private final IClientRepository _clientRepository;
+    private final IQuickReservationRepository _quickReservationRepository;
+    private final IReservationRepository _reservationRepository;
 
-    public CottageService(ICottageRepository cottageRepository, ICottageOwnerRepository cottageOwnerRepository) {
+    public CottageService(ICottageRepository cottageRepository, ICottageOwnerRepository cottageOwnerRepository,
+                          IClientRepository clientRepository, IQuickReservationRepository quickReservationRepository,
+                          IReservationRepository reservationRepository) {
         _cottageRepository = cottageRepository;
         _cottageOwnerRepository = cottageOwnerRepository;
+        _clientRepository = clientRepository;
+        _quickReservationRepository = quickReservationRepository;
+        _reservationRepository = reservationRepository;
     }
 
     @Override
@@ -73,8 +81,23 @@ public class CottageService implements ICottageService {
     public CottageResponse updateCottage(CottageRequest request, Long id)  throws Exception {
         Cottage cottage = _cottageRepository.findOneById(id);
 
-        if(!cottage.getReservations().isEmpty()){
-            throw new Exception("The cottage has reservations and cannot be updated.");
+        boolean hasReservation = false;
+        List<QuickReservation> allQuickReservations = _quickReservationRepository.findAll();
+        for(QuickReservation qr: allQuickReservations) {
+            if(qr.getCottage().getId().equals(cottage.getId())){
+                hasReservation = true;
+            }
+        }
+
+        List<Reservation> allReservation = _reservationRepository.findAll();
+        for(Reservation r: allReservation) {
+            if(r.getCottage().getId().equals(cottage.getId())){
+                hasReservation = true;
+            }
+        }
+
+        if(hasReservation){
+            throw new Exception("The cottage has reservations and cannot be deleted.");
         }
         cottage.setAddress(request.getAddress());
         cottage.setDescription(request.getDescription());
@@ -93,9 +116,31 @@ public class CottageService implements ICottageService {
     @Override
     public void deleteCottage(Long id)  throws Exception {
         Cottage cottage = _cottageRepository.findOneById(id);
+        boolean hasReservation = false;
+        List<QuickReservation> allQuickReservations = _quickReservationRepository.findAll();
+        for(QuickReservation qr: allQuickReservations) {
+            if(qr.getCottage().getId().equals(cottage.getId())){
+                hasReservation = true;
+            }
+        }
 
-        if(!cottage.getReservations().isEmpty()){
+        List<Reservation> allReservation = _reservationRepository.findAll();
+        for(Reservation r: allReservation) {
+            if(r.getCottage().getId().equals(cottage.getId())){
+                hasReservation = true;
+            }
+        }
+
+        if(hasReservation){
             throw new Exception("The cottage has reservations and cannot be deleted.");
+        }
+        List<Client> allClients = _clientRepository.findAll();
+        for(Client client: allClients) {
+            for(Cottage c: client.getSubscribedCottages()){
+                if(c.getId().equals(cottage.getId())){
+                    client.getSubscribedCottages().remove(c);
+                }
+            }
         }
         _cottageRepository.delete(cottage);
     }
