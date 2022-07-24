@@ -157,14 +157,19 @@ public class AuthService implements IAuthService {
         UserResponse userResponse = new UserResponse();
         if(user.getBoatOwner() != null){
             userResponse.setId(user.getBoatOwner().getId());
+            userResponse.setUserRole("BOAT_OWNER");
         }else if(user.getCottageOwner() != null){
             userResponse.setId(user.getCottageOwner().getId());
+            userResponse.setUserRole("COTTAGE_OWNER");
         }else if(user.getFishingInstructor() != null){
             userResponse.setId(user.getFishingInstructor().getId());
+            userResponse.setUserRole("FISHING_INSTRUCTOR");
         }else if(user.getSystemAdmin() != null){
             userResponse.setId(user.getSystemAdmin().getId());
+            userResponse.setUserRole("SYSTEM_ADMIN");
         }else if(user.getClient() != null){
             userResponse.setId(user.getClient().getId());
+            userResponse.setUserRole("CLIENT");
         }
         userResponse.setUsername(user.getUsername());
         return userResponse;

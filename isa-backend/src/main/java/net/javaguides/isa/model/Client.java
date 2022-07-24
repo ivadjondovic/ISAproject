@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -25,5 +26,12 @@ public class Client {
     private String firstName;
 
     private String lastName;
+
+    @ManyToMany(mappedBy = "clients")
+    private Collection<Boat> subscribedBoats;
+
+    @ManyToMany(mappedBy = "clients")
+    private Collection<Cottage> subscribedCottages;
+
 }
 

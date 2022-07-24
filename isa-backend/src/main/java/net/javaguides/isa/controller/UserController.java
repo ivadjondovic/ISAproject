@@ -1,5 +1,6 @@
 package net.javaguides.isa.controller;
 
+import net.javaguides.isa.dto.request.GetIdRequest;
 import net.javaguides.isa.dto.request.StringRequest;
 import net.javaguides.isa.dto.response.UserRequestedForDeletionResponse;
 import net.javaguides.isa.service.IUserService;
@@ -35,4 +36,5 @@ public class UserController {
     public void denyDeletionRequest(@RequestBody StringRequest request){
         _userService.denyDeletionRequest(request);
     }
+
 }

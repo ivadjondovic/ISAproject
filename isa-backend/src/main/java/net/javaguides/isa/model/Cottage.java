@@ -26,8 +26,9 @@ public class Cottage {
 
     private String description;
 
-    @OneToMany(mappedBy = "cottage", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Room> room;
+    private int numberOfRooms;
+
+    private String numberOfBedsPerRoom;
 
     @OneToMany(mappedBy = "cottage", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuickReservation> quickReservations;
@@ -44,4 +45,11 @@ public class Cottage {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cottage_owner_id")
     private CottageOwner cottageOwner;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "subscribed_clients_cottages",
+            joinColumns = @JoinColumn(name = "cottage_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "client_id", referencedColumnName = "id"))
+    private List<Client> clients;
 }

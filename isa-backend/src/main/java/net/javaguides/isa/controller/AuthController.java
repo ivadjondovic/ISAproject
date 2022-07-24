@@ -24,7 +24,7 @@ public class AuthController {
         _authService = authService;
     }
 
-    @PutMapping("/login")
+    @PostMapping("/login")
     public UserResponse login(@RequestBody LoginRequest request){
         return _authService.login(request);
     }
@@ -56,5 +56,4 @@ public class AuthController {
             }
         }
     }
-
 }

@@ -1,12 +1,9 @@
 package net.javaguides.isa.controller;
 
-import net.javaguides.isa.dto.request.GetIdRequest;
-import net.javaguides.isa.dto.request.StringRequest;
+import net.javaguides.isa.dto.request.*;
+import net.javaguides.isa.dto.response.BoatOwnerResponse;
 import net.javaguides.isa.service.IBoatOwnerService;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/boat-owners")
@@ -32,4 +29,16 @@ public class BoatOwnerController {
     public void confirmRegistrationRequest(@RequestBody GetIdRequest request){
         _boatOwnerService.confirmBoatOwnerRegistrationRequest(request);
     }
+
+    @PutMapping("/{id}/password")
+    public void changePasswordBoatOwner(@PathVariable("id")Long id, @RequestBody ChangePasswordRequest request){
+        _boatOwnerService.changePasswordBoatOwner(id, request);
+
+    }
+
+    @PutMapping("/update/{id}")
+    public BoatOwnerResponse updateBoatOwner(@RequestBody BoatOwnerRequest request, @PathVariable Long id) {
+        return _boatOwnerService.updateBoatOwner(request, id);
+    }
+
 }

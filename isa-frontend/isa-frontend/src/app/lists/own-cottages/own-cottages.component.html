@@ -1,0 +1,65 @@
+<nz-alert nzType="error"  *ngIf="!alert" nzMessage="Error" nzDescription="This medicament have reservation!" nzShowIcon> </nz-alert>
+<nz-alert
+      nzType="success"
+      nzMessage="Deleting cottage"
+      *ngIf="alertSucc"
+      nzDescription="Successfully deleted cottage!"
+      nzShowIcon
+    >
+</nz-alert>
+<div class="content">
+    <br> 
+    <form  nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
+          <nz-form-item>
+            <nz-form-label class="formica" >Name</nz-form-label>
+            <nz-form-control>
+              <input class="ime" nz-input formControlName="name" placeholder="Input name"/>
+            </nz-form-control>
+          </nz-form-item>
+         
+        <div nz-row>
+          <div nz-col [nzSpan]="24" class="search-area">
+            <button nz-button class="dugmic1" nzType="primary"  (click)="search()" ><i nz-icon nzType="search"></i>Search</button>
+            <button nz-button class="dugmic"  (click)="resetForm()"  >Clear</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <br><br>
+    <!--RESULT-->
+    <nz-table #basicTable [nzData]="ownCottages">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Description</th>
+          <th>Rules of conduct</th>
+          <th>Price List</th>
+          <th>Number of rooms</th>
+          <th>Number of beds per room</th>
+          <th>Other information</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ownCottage of ownCottages">
+          <td >{{ownCottage.name }}</td>
+          <td>{{ ownCottage.address }}</td>
+          <td>{{ ownCottage.description }}</td>
+          <td>{{ ownCottage.rulesOfConduct }}</td>
+          <td>{{ ownCottage.priceList }}</td>
+          <td>{{ ownCottage.numberOfRooms }}</td>
+          <td>{{ ownCottage.numberOfBedsPerRoom }}</td>
+          <td>{{ ownCottage.otherInformation }}</td>
+          <td>
+            <a (click)="change(ownCottage.id)" >Edit</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="delete(ownCottage.id)">Delete</a>
+          </td>
+        </tr>
+      </tbody>
+     
+    </nz-table> 
+    <button nz-button (click)="add()" nzType="primary" nzGhost>Add new cottage</button>
+    
+  

@@ -13,7 +13,7 @@ export class LoginFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      userName: [null, [Validators.required]],
+      username: [null, [Validators.required]],
       password: [null, [Validators.required]]
       });
       const id = this.route.snapshot.params['id'];
@@ -44,7 +44,7 @@ export class LoginFormComponent implements OnInit {
       this.validateForm.controls[i].updateValueAndValidity();
     }
     const body = {
-      email: this.validateForm.value.userName,
+      username: this.validateForm.value.username,
       password: this.validateForm.value.password
     }
 

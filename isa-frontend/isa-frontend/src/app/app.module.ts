@@ -1,3 +1,8 @@
+import { CottageComponent } from './new-items/cottage/cottage.component';
+import { UpdateCottageComponent } from './updates/update-cottage/update-cottage.component';
+import { OwnCottagesComponent } from './lists/own-cottages/own-cottages.component';
+import { RegisterServiceProviderComponent } from './components/register-service-provider/register-service-provider.component';
+import { HomepageComponent } from './components/homepage/homepage.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { FrontpageComponent } from './components/frontpage/frontpage.component';
 import { DemoNgZorroAntdModule } from './ng-zorro-antd.module';
@@ -20,7 +25,12 @@ registerLocaleData(en);
   declarations: [
     AppComponent,
     FrontpageComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    HomepageComponent,
+    RegisterServiceProviderComponent,
+    OwnCottagesComponent,
+    UpdateCottageComponent,
+    CottageComponent
   ],
   imports: [
     BrowserModule,

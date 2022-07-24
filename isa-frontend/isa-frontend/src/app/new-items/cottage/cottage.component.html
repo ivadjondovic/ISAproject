@@ -1,0 +1,64 @@
+<nz-alert
+nzType="success"
+*ngIf="addCottage"
+nzMessage="Success"
+nzDescription="Successfully added cottage!"
+nzShowIcon
+>
+</nz-alert>
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <br>
+     <nz-form-item>
+       <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">Name</nz-form-label>
+       <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid!">
+         <input nz-input formControlName="name" id="name" />
+       </nz-form-control>
+     </nz-form-item>
+     <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="address">Address</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid!">
+          <input nz-input formControlName="address" id="address" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="description">Description</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid!">
+          <input nz-input formControlName="description" id="description" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="rulesOfConduct">Rules of conduct</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid!">
+          <input nz-input formControlName="rulesOfConduct" id="rulesOfConduct" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+         <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="priceList">Price list</nz-form-label>
+         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid!">
+           <input nz-input formControlName="priceList" id="priceList" />
+         </nz-form-control>
+       </nz-form-item>
+       <nz-form-item>
+         <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="otherInformation">Other information</nz-form-label>
+         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid!">
+           <input nz-input formControlName="otherInformation" id="otherInformation" />
+         </nz-form-control>
+       </nz-form-item>
+       <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="noOfRooms">Number of rooms</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid!">
+          <input nz-input formControlName="numberOfRooms" id="numberOfRooms" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="numberOfBedsPerRoom">Number of beds per room</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid!">
+          <input nz-input formControlName="numberOfBedsPerRoom" id="numberOfBedsPerRoom" />
+        </nz-form-control>
+      </nz-form-item>
+     <nz-form-item nz-row class="register-area">
+       <nz-form-control [nzSpan]="14" [nzOffset]="6">
+         <button nz-button nzType="primary"  [disabled]="!validateForm.valid" nzGhost>Finish</button>
+       </nz-form-control>
+     </nz-form-item>
+   </form>

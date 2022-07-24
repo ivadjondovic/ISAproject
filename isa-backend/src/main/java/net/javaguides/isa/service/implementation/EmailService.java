@@ -24,7 +24,7 @@ public class EmailService implements IEmailService {
         String subject = "Your registration has been approved.";
         Context context = new Context();
         context.setVariable("name", String.format("%s %s", boatOwner.getFirstName(), boatOwner.getLastName()));
-        context.setVariable("link", String.format("http://localhost:4200/frontpage/login/%s", boatOwner.getId()));
+        context.setVariable("link", String.format("http://localhost:4200/frontpage/login/%s/bo", boatOwner.getId()));
         _emailContext.send(to, subject, "approvedRegistration", context);
     }
 
@@ -44,7 +44,7 @@ public class EmailService implements IEmailService {
         String subject = "Your registration has been approved.";
         Context context = new Context();
         context.setVariable("name", String.format("%s %s", cottageOwner.getFirstName(), cottageOwner.getLastName()));
-        context.setVariable("link", String.format("http://localhost:4200/frontpage/login/%s", cottageOwner.getId()));
+        context.setVariable("link", String.format("http://localhost:4200/frontpage/login/%s/co", cottageOwner.getId()));
         _emailContext.send(to, subject, "approvedRegistration", context);
     }
 
@@ -64,7 +64,7 @@ public class EmailService implements IEmailService {
         String subject = "Your registration has been approved.";
         Context context = new Context();
         context.setVariable("name", String.format("%s %s", fishingInstructor.getFirstName(), fishingInstructor.getLastName()));
-        context.setVariable("link", String.format("http://localhost:4200/frontpage/login/%s", fishingInstructor.getId()));
+        context.setVariable("link", String.format("http://localhost:4200/frontpage/login/%s/fi", fishingInstructor.getId()));
         _emailContext.send(to, subject, "approvedRegistration", context);
     }
 

@@ -68,4 +68,11 @@ public class Boat {
     @OneToMany(mappedBy = "boat", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "subscribed_clients_boats",
+            joinColumns = @JoinColumn(name = "boat_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "client_id", referencedColumnName = "id"))
+    private List<Client> clients;
+
 }

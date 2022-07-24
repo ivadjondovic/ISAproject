@@ -1,0 +1,11 @@
+<nz-layout class="layout">
+    <nz-header>
+      <div class="logo"></div>
+      <ul nz-menu nzTheme="dark" nzMode="horizontal">
+        <li nz-menu-item *ngIf="isCottageOwner" (click)="cottages()">My cottages </li>
+      </ul>
+    </nz-header>
+    <nz-content>
+      <router-outlet></router-outlet>
+    </nz-content>
+  </nz-layout>
