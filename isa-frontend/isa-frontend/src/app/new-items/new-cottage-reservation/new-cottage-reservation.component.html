@@ -1,0 +1,40 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <br>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="startDateReservation" nzRequired>
+          <span>Start date(YYYY-MM-dd)</span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input date!">
+          <input nz-input id="startDateReservation" formControlName="startDateReservation" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="endDateReservation" nzRequired>
+          <span>End date(YYYY-MM-dd)</span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input date!">
+          <input nz-input id="endDateReservation" formControlName="endDateReservation" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="startTimeReservation" nzRequired>
+          <span>Starting time for appointment</span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input start time!">
+          <input nz-input id="startTimeReservation" formControlName="startTimeReservation" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="endTimeReservation" nzRequired>
+          <span>Ending time for appointment</span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input end time!">
+          <input nz-input id="endTimeReservation" formControlName="endTimeReservation" />
+        </nz-form-control>
+    </nz-form-item>
+     <nz-form-item nz-row class="register-area">
+       <nz-form-control [nzSpan]="14" [nzOffset]="6">
+         <button nz-button nzType="primary"  [disabled]="!validateForm.valid" nzGhost>Finish</button>
+       </nz-form-control>
+     </nz-form-item>
+   </form>

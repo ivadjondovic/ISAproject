@@ -1,0 +1,65 @@
+<nz-alert nzType="error"  *ngIf="!alert" nzMessage="Error" nzDescription="This cottage has reservation and cannot be updated!" nzShowIcon> </nz-alert>
+<nz-alert
+      nzType="error"
+      nzMessage="Updating cottage"
+      *ngIf="alertDelete"
+      nzDescription="This cottage has reservation and cannot be updated!"
+      nzShowIcon
+    >
+</nz-alert>
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <br>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name">Name</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input id="name" formControlName="name"/>
+        </nz-form-control>
+      </nz-form-item>
+       <nz-form-item>
+         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="address">Address</nz-form-label>
+         <nz-form-control [nzSm]="14" [nzXs]="24">
+           <input nz-input id="address" formControlName="address"/>
+         </nz-form-control>
+       </nz-form-item>
+       <nz-form-item>
+         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">Description</nz-form-label>
+         <nz-form-control [nzSm]="14" [nzXs]="24">
+           <input nz-input id="description" formControlName="description"/>
+         </nz-form-control>
+       </nz-form-item>
+       <nz-form-item>
+         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="numberOfRooms">Rooms</nz-form-label>
+         <nz-form-control [nzSm]="14" [nzXs]="24">
+           <input nz-input id="numberOfRooms" formControlName="numberOfRooms"/>
+         </nz-form-control>
+       </nz-form-item>
+       <nz-form-item>
+         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="numberOfBedsPerRoom">Num of beds per room</nz-form-label>
+         <nz-form-control [nzSm]="14" [nzXs]="24">
+           <input nz-input id="numberOfBedsPerRoom" formControlName="numberOfBedsPerRoom"/>
+         </nz-form-control>
+       </nz-form-item>
+       <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="priceList">Price list</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input id="priceList" formControlName="priceList"/>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="rulesOfConduct">Rules of conduct</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input id="rulesOfConduct" formControlName="rulesOfConduct"/>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="otherInformation">Other information</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input id="otherInformation" formControlName="otherInformation"/>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item nz-row class="create-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+          <button nz-button nzType="primary" nzGhost>Update</button>
+        </nz-form-control>
+      </nz-form-item>
+</form>

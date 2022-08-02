@@ -1,0 +1,120 @@
+<nz-alert nzType="error"  *ngIf="!alert" nzMessage="Error" nzDescription="This boat has reservation and cannot be deleted!" nzShowIcon> </nz-alert>
+<nz-alert
+      nzType="error"
+      nzMessage="Deleting boat"
+      *ngIf="alertDelete"
+      nzDescription="This boat has reservation and cannot be deleted!"
+      nzShowIcon
+    >
+</nz-alert>
+<div class="content">
+    <br> 
+    <form  nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
+          <nz-form-item>
+            <nz-form-label class="formica" >Name</nz-form-label>
+            <nz-form-control>
+              <input class="ime" nz-input formControlName="name" placeholder="Input name"/>
+            </nz-form-control>
+          </nz-form-item>
+         
+        <div nz-row>
+          <div nz-col [nzSpan]="24" class="search-area">
+            <button nz-button class="dugmic1" nzType="primary"  (click)="search()" ><i nz-icon nzType="search"></i>Search</button>
+            <button nz-button class="dugmic"  (click)="resetForm()"  >Clear</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <br><br>
+    <!--RESULT-->
+    <nz-table #basicTable [nzData]="ownBoats">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Address</th>
+          <th>Description</th>
+          <th>Rules of conduct</th>
+          <th>Price List</th>
+          <th>Length</th>
+          <th>Engine number</th>
+          <th>Engine power</th>
+          <th>Max speed</th>
+          <th>Capacity</th>
+          <th>Fishing equipment</th>
+          <th>Cancellation reservation fee</th>
+          <th>Navigation equipment</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ownBoat of ownBoats">
+          <td >{{ownBoat.name }}</td>
+          <td *ngIf="ownBoat.type === 'YACHT' ">
+            Yacht
+          </td>
+          <td *ngIf="ownBoat.type === 'SAILING_BOAT' ">
+            Sailing boat
+          </td>
+          <td *ngIf="ownBoat.type === 'FISHING_BOAT' ">
+            Fishing boat
+          </td>
+          <td *ngIf="ownBoat.type === 'CARGO_SHIP' ">
+            Cargo ship
+          </td>
+          <td *ngIf="ownBoat.type === 'CRUISE_BOAT' ">
+            Cruise boat
+          </td>
+          <td>{{ ownBoat.address }}</td>
+          <td>{{ ownBoat.description }}</td>
+          <td>{{ ownBoat.rulesOfConduct }}</td>
+          <td>{{ ownBoat.priceList }}</td>
+          <td>{{ ownBoat.length }}</td>
+          <td>{{ ownBoat.engineNumber }}</td>
+          <td>{{ ownBoat.enginePower }}</td>
+          <td>{{ ownBoat.maxSpeed }}</td>
+          <td>{{ ownBoat.capacity }}</td>
+          <td>{{ ownBoat.fishingEquipment }}</td>
+          <td *ngIf="ownBoat.cancellationReservationFee === 'ZERO' ">
+            0%
+          </td>
+          <td *ngIf="ownBoat.cancellationReservationFee === 'FIVE' ">
+            5%
+          </td>
+          <td *ngIf="ownBoat.cancellationReservationFee === 'TEN' ">
+            10%
+          </td>
+          <td *ngIf="ownBoat.cancellationReservationFee === 'TWENTY' ">
+            20%
+          </td>
+          <td *ngIf="ownBoat.cancellationReservationFee === 'THIRTY' ">
+            30%
+          </td>
+          <td *ngIf="ownBoat.cancellationReservationFee === 'FORTY' ">
+            40%
+          </td>
+          <td *ngIf="ownBoat.cancellationReservationFee === 'FIFTY' ">
+            50%
+          </td>
+          <td *ngIf="ownBoat.cancellationReservationFee === 'HUNDRED' ">
+            100%
+          </td>
+          <div *ngFor="let equipment of ownBoat.navigationEquipmentResponseList; let i = index" [attr.data-index]="i" >
+             <td>{{equipment.name}}</td>
+          </div>
+            <td>
+            <a (click)="change(ownBoat.id)" >Edit</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="createAvailableTerm(ownBoat.id)" >Create available term</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="createQuickReservation(ownBoat.id)" >Create quick reservation</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="clientProfile(ownBoat.id)">View clients profile</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="delete(ownBoat.id)">Delete</a>
+          </td>
+        </tr>
+      </tbody>
+     
+    </nz-table> 
+    <button nz-button (click)="add()" nzType="primary" nzGhost>Add new boat</button>

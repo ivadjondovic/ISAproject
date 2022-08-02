@@ -1,0 +1,108 @@
+<nz-alert
+nzType="success"
+*ngIf="addBoat"
+nzMessage="Success"
+nzDescription="Successfully added boat!"
+nzShowIcon
+>
+</nz-alert>
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <br>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name">Name</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input id="name" formControlName="name"/>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="type">Type</nz-form-label>
+         <nz-form-control [nzSm]="14" [nzXs]="24">
+             <nz-select formControlName="type">
+                 <nz-option nzValue="YACHT" nzLabel="Yacht"></nz-option>
+                 <nz-option nzValue="SAILING_BOAT" nzLabel="Sailing boat"></nz-option>
+                 <nz-option nzValue="FISHING_BOAT" nzLabel="Fishing boat"></nz-option>
+                 <nz-option nzValue="CARGO_SHIP" nzLabel="Cargo ship"></nz-option>
+                 <nz-option nzValue="CRUISE_BOAT" nzLabel="Cruise boat"></nz-option>
+               </nz-select>
+           </nz-form-control> 
+       </nz-form-item>
+      <nz-form-item>
+         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="length">Length</nz-form-label>
+         <nz-form-control [nzSm]="14" [nzXs]="24">
+           <input nz-input id="length" formControlName="length"/>
+         </nz-form-control>
+       </nz-form-item>
+       <nz-form-item>
+         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="engineNumber">Engine number</nz-form-label>
+         <nz-form-control [nzSm]="14" [nzXs]="24">
+           <input nz-input id="engineNumber" formControlName="engineNumber"/>
+         </nz-form-control>
+       </nz-form-item>
+       <nz-form-item>
+         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="enginePower">Engine power</nz-form-label>
+         <nz-form-control [nzSm]="14" [nzXs]="24">
+           <input nz-input id="enginePower" formControlName="enginePower"/>
+         </nz-form-control>
+       </nz-form-item>
+       <nz-form-item>
+         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="priceList">Price list</nz-form-label>
+         <nz-form-control [nzSm]="14" [nzXs]="24">
+           <input nz-input id="priceList" formControlName="priceList"/>
+         </nz-form-control>
+       </nz-form-item>
+       <nz-form-item>
+         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="maxSpeed">Max speed</nz-form-label>
+         <nz-form-control [nzSm]="14" [nzXs]="24">
+           <input nz-input id="maxSpeed" formControlName="maxSpeed"/>
+         </nz-form-control>
+       </nz-form-item>
+       <nz-form-item>
+         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="address">Address</nz-form-label>
+         <nz-form-control [nzSm]="14" [nzXs]="24">
+           <input nz-input id="address" formControlName="address"/>
+         </nz-form-control>
+       </nz-form-item>
+       <nz-form-item>
+         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">Description</nz-form-label>
+         <nz-form-control [nzSm]="14" [nzXs]="24">
+           <input nz-input id="description" formControlName="description"/>
+         </nz-form-control>
+       </nz-form-item>
+       <nz-form-item>
+         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="capacity">Capacity</nz-form-label>
+         <nz-form-control [nzSm]="14" [nzXs]="24">
+           <input nz-input id="capacity" formControlName="capacity"/>
+         </nz-form-control>
+       </nz-form-item>
+       <nz-form-item>
+         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="rulesOfConduct">Rules of conduct</nz-form-label>
+         <nz-form-control [nzSm]="14" [nzXs]="24">
+           <input nz-input id="rulesOfConduct" formControlName="rulesOfConduct"/>
+         </nz-form-control>
+       </nz-form-item>
+       <nz-form-item>
+         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="fishingEquipment">Fishing equipment</nz-form-label>
+         <nz-form-control [nzSm]="14" [nzXs]="24">
+           <input nz-input id="fishingEquipment" formControlName="fishingEquipment"/>
+         </nz-form-control>
+       </nz-form-item>
+       <nz-form-item>
+         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="cancellationReservationFee">Cancellation reservation fee</nz-form-label>
+         <nz-form-control [nzSm]="14" [nzXs]="24">
+             <nz-select formControlName="cancellationReservationFee">
+                 <nz-option nzValue="FIVE" nzLabel="5%"></nz-option>
+                 <nz-option nzValue="TEN" nzLabel="10%"></nz-option>
+                 <nz-option nzValue="TWENTY" nzLabel="20%"></nz-option>
+                 <nz-option nzValue="THIRTY" nzLabel="30%"></nz-option>
+                 <nz-option nzValue="FORTY" nzLabel="40%"></nz-option>
+                 <nz-option nzValue="FIFTY" nzLabel="50%"></nz-option>
+                 <nz-option nzValue="HUNDRED" nzLabel="100%"></nz-option>
+               </nz-select>
+           </nz-form-control> 
+       </nz-form-item>
+      <nz-form-item nz-row class="create-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+          <button nz-button nzType="primary" nzGhost>Finish</button>
+        </nz-form-control>
+      </nz-form-item>
+   </form>

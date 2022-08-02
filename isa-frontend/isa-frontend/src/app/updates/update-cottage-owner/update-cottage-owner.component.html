@@ -1,0 +1,51 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <br>
+     <!--FIRST NAME-->
+     <nz-form-item>
+       <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="firstName">First name</nz-form-label>
+       <nz-form-control [nzSm]="14" [nzXs]="24">
+         <input nz-input id="firstName" formControlName="firstName"/>
+       </nz-form-control>
+     </nz-form-item>
+     <!--LAST NAME-->
+     <nz-form-item>
+       <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="lastName">Last name</nz-form-label>
+       <nz-form-control [nzSm]="14" [nzXs]="24">
+         <input nz-input id="lastName" formControlName="lastName"/>
+       </nz-form-control>
+     </nz-form-item>
+     <!--NUMBER-->
+     <nz-form-item>
+         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phoneNumber" >Phone number</nz-form-label>
+         <nz-form-control [nzSm]="14" [nzXs]="24">
+           <input nz-input id="phoneNumber" formControlName="phoneNumber"/>
+         </nz-form-control>
+     </nz-form-item>
+     <!--ADDRESS-->
+     <nz-form-item>
+       <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="address" >Address</nz-form-label>
+       <nz-form-control [nzSm]="14" [nzXs]="24">
+         <input nz-input id="address" formControlName="address"/>
+       </nz-form-control>
+     </nz-form-item>
+      <!--CITY-->
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="city" >City</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input id="city" formControlName="city"/>
+        </nz-form-control>
+    </nz-form-item>
+     <!--COUNTRY-->
+     <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="country" >Country</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input id="country" formControlName="country"/>
+        </nz-form-control>
+    </nz-form-item>
+     <!--Update-->
+     <nz-form-item nz-row class="create-area">
+       <nz-form-control [nzSpan]="14" [nzOffset]="6">
+         <button nz-button nzType="primary" nzGhost>Update</button>
+       </nz-form-control>
+     </nz-form-item>
+   </form>
