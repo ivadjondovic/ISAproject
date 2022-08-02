@@ -43,6 +43,7 @@
           <th>Capacity</th>
           <th>Fishing equipment</th>
           <th>Cancellation reservation fee</th>
+          <th>Navigation equipment</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -98,8 +99,17 @@
           <td *ngIf="ownBoat.cancellationReservationFee === 'HUNDRED' ">
             100%
           </td>
-          <td>
+          <div *ngFor="let equipment of ownBoat.navigationEquipmentResponseList; let i = index" [attr.data-index]="i" >
+             <td>{{equipment.name}}</td>
+          </div>
+            <td>
             <a (click)="change(ownBoat.id)" >Edit</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="createAvailableTerm(ownBoat.id)" >Create available term</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="createQuickReservation(ownBoat.id)" >Create quick reservation</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="clientProfile(ownBoat.id)">View clients profile</a>
             <nz-divider nzType="vertical"></nz-divider>
             <a (click)="delete(ownBoat.id)">Delete</a>
           </td>

@@ -11,4 +11,5 @@ public class StringRequest {
 
     private Long id;
     private String text;
+    private String type;
 }

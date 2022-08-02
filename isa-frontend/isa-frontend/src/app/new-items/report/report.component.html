@@ -1,0 +1,22 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <br>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="report" nzRequired>
+          <span>Reason for deletion</span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input report!">
+          <input nz-input id="report" formControlName="report" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <label nz-checkbox [(ngModel)]="checked">The client should be sanctioned</label>
+    </nz-form-item>
+    <nz-form-item>
+        <label nz-checkbox [(ngModel)]="checkedShowed">The client did not show up</label>
+    </nz-form-item>
+     <nz-form-item nz-row class="register-area">
+       <nz-form-control [nzSpan]="14" [nzOffset]="6">
+         <button nz-button nzType="primary"  [disabled]="!validateForm.valid" nzGhost>Finish</button>
+       </nz-form-control>
+     </nz-form-item>
+</form>

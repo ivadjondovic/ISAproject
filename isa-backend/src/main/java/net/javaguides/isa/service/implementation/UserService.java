@@ -2,7 +2,7 @@ package net.javaguides.isa.service.implementation;
 
 import net.javaguides.isa.dto.request.StringRequest;
 import net.javaguides.isa.dto.response.UserRequestedForDeletionResponse;
-import net.javaguides.isa.model.User;
+import net.javaguides.isa.model.*;
 import net.javaguides.isa.repository.*;
 import net.javaguides.isa.service.IEmailService;
 import net.javaguides.isa.service.IUserService;
@@ -18,11 +18,20 @@ public class UserService implements IUserService {
 
     private final IUserRepository _userRepository;
     private final IEmailService _emailService;
+    private final IFishingInstructorRepository _fishingInstructorRepository;
+    private final ICottageOwnerRepository _cottageOwnerRepository;
+    private final IBoatOwnerRepository _boatOwnerRepository;
+    private final IClientRepository _clientRepository;
 
-    public UserService(IUserRepository userRepository, IEmailService emailService) {
+    public UserService(IUserRepository userRepository, IEmailService emailService, IFishingInstructorRepository fishingInstructorRepository,
+                       ICottageOwnerRepository cottageOwnerRepository, IBoatOwnerRepository boatOwnerRepository, IClientRepository clientRepository) {
 
         _userRepository = userRepository;
         _emailService = emailService;
+        _clientRepository = clientRepository;
+        _cottageOwnerRepository = cottageOwnerRepository;
+        _boatOwnerRepository = boatOwnerRepository;
+        _fishingInstructorRepository = fishingInstructorRepository;
     }
 
 
@@ -40,10 +49,32 @@ public class UserService implements IUserService {
 
     @Override
     public void requestDeletion(StringRequest request) {
-        User user = _userRepository.findOneById(request.getId());
-        user.setReasonForDeletion(request.getText());
-        user.setRequestedForDeletion(true);
-        _userRepository.save(user);
+        if(request.getType().equals("fi")){
+              FishingInstructor fishingInstructor = _fishingInstructorRepository.findOneById(request.getId());
+             User user = fishingInstructor.getUser();
+            user.setReasonForDeletion(request.getText());
+            user.setRequestedForDeletion(true);
+            _userRepository.save(user);
+        }else if(request.getType().equals("co")) {
+            CottageOwner cottageOwner = _cottageOwnerRepository.findOneById(request.getId());
+            User user = cottageOwner.getUser();
+            user.setReasonForDeletion(request.getText());
+            user.setRequestedForDeletion(true);
+            _userRepository.save(user);
+        }else if(request.getType().equals("bo")) {
+            BoatOwner boatOwner = _boatOwnerRepository.findOneById(request.getId());
+            User user = boatOwner.getUser();
+            user.setReasonForDeletion(request.getText());
+            user.setRequestedForDeletion(true);
+            _userRepository.save(user);
+        }else if(request.getType().equals("c")) {
+            Client client = _clientRepository.findOneById(request.getId());
+            User user = client.getUser();
+            user.setReasonForDeletion(request.getText());
+            user.setRequestedForDeletion(true);
+            _userRepository.save(user);
+        }
+
     }
 
     @Override

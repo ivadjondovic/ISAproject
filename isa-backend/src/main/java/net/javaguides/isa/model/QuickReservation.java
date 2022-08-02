@@ -54,6 +54,8 @@ public class QuickReservation {
     private Boat boat;
 
     @Column(name = "reservation_type")
+    @Enumerated(EnumType.STRING)
     private ReservationType reservationType;
 
+    private Long serviceId;
 }

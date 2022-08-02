@@ -40,9 +40,14 @@ export class OwnCottagesComponent implements OnInit {
   private getAllCottagesByCottageOwnerId(id): void {
     this.cottageService.getAllCottagesByCottageOwnerId(id).subscribe(data => {
       this.ownCottages = data;
+      console.log(data);
     }, error => {
       alert("Error");
     })
+  }
+
+  public clientProfile(id) : void {
+
   }
 
 
@@ -65,6 +70,14 @@ export class OwnCottagesComponent implements OnInit {
   resetForm(): void {
     this.validateForm.reset();
     this.getAllCottagesByCottageOwnerId(this.cottageOwnerId);
+  }
+
+  public createAvailableTerm(id): void {
+    this.router.navigateByUrl(`home-page/new-items/new-cottage-reservation/${this.user.id}`);
+  }
+
+  public createQuickReservation(id): void {
+    this.router.navigateByUrl(`home-page/new-items/new-cottage-quick-reservation/${this.user.id}`);
   }
 
   change(id): void {

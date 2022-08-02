@@ -68,6 +68,30 @@ export class HomepageComponent implements OnInit {
     this.router.navigateByUrl(`home-page/updates/update-boat-owner/${this.user.id}`);
   }
 
+  public requestedDeletion(): void {
+    this.router.navigateByUrl(`home-page/lists/requested-deletions`);
+  }
+
+  
+  public requestForDeletion(): void {
+    let type;
+    if(this.user.userRole === 'COTTAGE_OWNER'){
+      type = "co";
+    }else if(this.user.userRole === 'BOAT_OWNER'){
+      type = "bi";
+    }else if(this.user.userRole === 'CLIENT'){
+      type = "c";
+    }else if(this.user.userRole === 'FISHING_INSTRUCTOR'){
+      type = "fi";
+    }
+    this.router.navigateByUrl(`home-page/new-items/request-for-deletion/${type}`);
+  }
+
+
+  public seeHistoryOfReservation(): void {
+    this.router.navigateByUrl(`home-page/lists/cottage-owner-history-of-reservations/${this.user.id}`);
+  }
+  
   public clearStorage(): void {
     localStorage.clear();
     this.router.navigateByUrl('front-page');

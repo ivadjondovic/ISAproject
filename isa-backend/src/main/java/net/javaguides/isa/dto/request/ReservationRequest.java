@@ -3,6 +3,7 @@ package net.javaguides.isa.dto.request;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.javaguides.isa.utils.ReservationStatus;
 import net.javaguides.isa.utils.ReservationType;
 
 import java.time.LocalDate;
@@ -24,4 +25,6 @@ public class ReservationRequest {
     private ReservationType reservationType;
 
     private Long idOfType;
+
+    private ReservationStatus reservationStatus;
 }

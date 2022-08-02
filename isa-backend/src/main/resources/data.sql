@@ -21,7 +21,7 @@ insert into client (id, user_id, first_name, last_name) values
 (100000, 500000, 'Marija', 'Markovic');
 
 insert into boat (id, name, type, length, engine_number, engine_power, max_speed, address, description, capacity, rules_of_conduct, price_list, fishing_equipment, cancellation_reservation_fee, boat_owner_id) values
-(100000, 'Marina', 'SAILING_BOAT', '100', 100, 100, '80', 'Marka Markovica 19', 'desc', 20, 'Pravila ponasanja', 'Pricelist', 'Fishing equipment', 1, 100000),s
+(100000, 'Marina', 'SAILING_BOAT', '100', 100, 100, '80', 'Marka Markovica 19', 'desc', 20, 'Pravila ponasanja', 'Pricelist', 'Fishing equipment', 1, 100000),
 (200000, 'Anita', 'CARGO_SHIP', '100', 100, 100, '80','Marka Markovica 19', 'desc', 20, 'Pravila ponasanja', 'Pricelist', 'Fishing equipment', 2, 100000);
 
 insert into cottage (id, name, address, description, rules_of_conduct, price_list, other_information, number_of_rooms, number_of_beds_per_room, cottage_owner_id) values
@@ -29,9 +29,9 @@ insert into cottage (id, name, address, description, rules_of_conduct, price_lis
 (200000, 'Yellow house', 'Prvomajska 39', 'Description', 'Pravila ponasanja', 'Pricelist', 'Other', 2, '2, 3', 100000);
 
 
-insert into quick_reservation (id, start_time_quick_reservation, end_time_quick_reservation, start_date_quick_reservation, end_date_quick_reservation, max_number_of_people, price, expires_in, cottage_id, boat_id, reservation_type) values
-(100000, '08:00', '08:00', '2022-08-08', '2021-08-20', 10, 1000, 2, null, 100000, 1),
-(200000, '08:00', '08:00', '2021-09-01', '2021-09-04', 3, 200, 1, 100000, null, 2),
+insert into quick_reservation (id, start_time_quick_reservation, end_time_quick_reservation, start_date_quick_reservation, end_date_quick_reservation, max_number_of_people, price, expires_in, cottage_id, boat_id, reservation_type, service_id) values
+(100000, '08:00', '08:00', '2022-08-08', '2021-08-20', 10, 1000, 2, null, 100000, 'BOAT', 100000),
+(200000, '08:00', '08:00', '2021-09-01', '2021-09-04', 3, 200, 1, 100000, null, 'COTTAGE', 100000);
 
 insert into additional_service(id, tag, quick_reservation_id) values
 (100000, 'Wi-Fi', 100000),
@@ -44,6 +44,15 @@ insert into subscribed_clients_boats(boat_id, client_id) values
 insert into subscribed_clients_cottages(cottage_id, client_id) values
 (100000, 100000);
 
+insert into reservation (id, start_time_reservation, end_time_reservation, start_date_reservation, end_date_reservation, cottage_id, boat_id, reservation_type, reservation_status, service_id) values
+(100000, '08:00', '08:00', '2022-08-08', '2021-08-20',  null, 100000, 'BOAT', 'AVAILABLE', 100000),
+(200000, '08:00', '08:00', '2020-08-08', '2020-08-20',  null, 100000, 'BOAT', 'AVAILABLE', 100000),
+(300000, '08:00', '08:00', '2021-09-01', '2021-09-04', 100000, null, 'COTTAGE', 'RESERVED', 100000);
+
+insert into navigation_equipment (id, name, boat_id) values
+(100000, 'VHF_RADIO', 100000),
+(200000, 'FISH_FINDER', 100000),
+(300000, 'GPS', 200000);
 
 
 

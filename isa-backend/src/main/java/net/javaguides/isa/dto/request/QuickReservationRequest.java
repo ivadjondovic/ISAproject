@@ -15,22 +15,13 @@ import java.util.List;
 public class QuickReservationRequest {
 
     private LocalTime startTimeReservation;
-
     private LocalTime endTimeReservation;
-
     private LocalDate startDateReservation;
-
     private LocalDate endDateReservation;
-
     private int maxNumberOfPeople;
-
     private double price;
-
     private int expiresIn;
-
     private List<AdditionalServiceRequest> additionalServices;
-
     private ReservationType reservationType;
-
     private Long idOfType;
 }

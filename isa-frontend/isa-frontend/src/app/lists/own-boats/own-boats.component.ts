@@ -36,6 +36,19 @@ export class OwnBoatsComponent implements OnInit {
     this.boatOwnerId = this.user.id;
   } 
 
+  public clientProfile(id) : void {
+
+  }
+
+  public createAvailableTerm(id): void {
+    this.router.navigateByUrl(`home-page/new-items/new-cottage-reservation/${this.user.id}`);
+  }
+
+  public createQuickReservation(id): void {
+    this.router.navigateByUrl(`home-page/new-items/new-cottage-quick-reservation/${this.user.id}`);
+  }
+
+
   private getAllBoatsByBoatOwnerId(id): void {
     this.boatService.getAllBoatsByBoatOwnerId(id).subscribe(data => {
       this.ownBoats = data;

@@ -1,17 +1,15 @@
 package net.javaguides.isa.service.implementation;
 
-import net.javaguides.isa.dto.request.AdditionalServiceRequest;
 import net.javaguides.isa.dto.request.CottageRequest;
 import net.javaguides.isa.dto.response.CottageResponse;
 import net.javaguides.isa.model.*;
 import net.javaguides.isa.repository.*;
 import net.javaguides.isa.service.ICottageService;
-import net.javaguides.isa.service.IReservationService;
+import net.javaguides.isa.utils.ReservationType;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class CottageService implements ICottageService {
@@ -80,19 +78,22 @@ public class CottageService implements ICottageService {
     @Override
     public CottageResponse updateCottage(CottageRequest request, Long id)  throws Exception {
         Cottage cottage = _cottageRepository.findOneById(id);
-
         boolean hasReservation = false;
         List<QuickReservation> allQuickReservations = _quickReservationRepository.findAll();
         for(QuickReservation qr: allQuickReservations) {
-            if(qr.getCottage().getId().equals(cottage.getId())){
-                hasReservation = true;
+            if(qr.getReservationType().equals(ReservationType.COTTAGE)){
+                if(qr.getServiceId().equals(cottage.getId())){
+                    hasReservation = true;
+                }
             }
         }
 
         List<Reservation> allReservation = _reservationRepository.findAll();
         for(Reservation r: allReservation) {
-            if(r.getCottage().getId().equals(cottage.getId())){
-                hasReservation = true;
+            if(r.getReservationType().equals(ReservationType.COTTAGE)){
+                if(r.getServiceId().equals(cottage.getId())){
+                    hasReservation = true;
+                }
             }
         }
 

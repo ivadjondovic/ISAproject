@@ -8,6 +8,7 @@ import net.javaguides.isa.utils.BoatType;
 import net.javaguides.isa.utils.CancellationReservationFee;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -38,8 +39,6 @@ public class Boat {
     @Column(name = "max_speed")
     private String maxSpeed;
 
-   // private List<NavigationEquipment> navigationEquipments;
-
     private String address;
 
     private String description;
@@ -63,10 +62,10 @@ public class Boat {
     private BoatOwner boatOwner;
 
     @OneToMany(mappedBy = "boat", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<QuickReservation> quickReservations;
+    private List<QuickReservation> quickReservations = new ArrayList<>();
 
     @OneToMany(mappedBy = "boat", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reservation> reservations;
+    private List<Reservation> reservations = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
@@ -75,4 +74,6 @@ public class Boat {
             inverseJoinColumns = @JoinColumn(name = "client_id", referencedColumnName = "id"))
     private List<Client> clients;
 
+    @OneToMany(mappedBy = "boat", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<NavigationEquipment> navigationEquipments;
 }

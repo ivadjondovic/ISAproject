@@ -1,0 +1,24 @@
+    <!--RESULT-->
+    <nz-table #basicTable [nzData]="users">
+      <thead>
+        <tr>
+          <th>First name</th>
+          <th>Last name</th>
+          <th>Reason</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.firstName }}</td>   
+          <td>{{ user.lastName }}</td>  
+          <td>{{ user.reasonForDeletion }}</td>        
+          <td>
+            <a (click)="approve(user.id)" >Approve</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="deny(user.id)" >Deny</a>
+          </td>
+        </tr>
+      </tbody>
+     
+    </nz-table> 

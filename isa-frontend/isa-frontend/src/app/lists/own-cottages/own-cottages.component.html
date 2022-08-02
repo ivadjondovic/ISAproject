@@ -54,6 +54,12 @@
           <td>
             <a (click)="change(ownCottage.id)" >Edit</a>
             <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="createAvailableTerm(ownCottage.id)" >Create available term</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="createQuickReservation(ownCottage.id)" >Create quick reservation</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="clientProfile(ownCottage.id)">View clients profile</a>
+            <nz-divider nzType="vertical"></nz-divider>
             <a (click)="delete(ownCottage.id)">Delete</a>
           </td>
         </tr>

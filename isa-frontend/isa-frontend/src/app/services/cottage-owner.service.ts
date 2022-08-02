@@ -20,4 +20,8 @@ export class CottageOwnerService {
   public getCottageOwnerById(id): Observable<any> {
     return this.http.get(`http://localhost:8080/cottage-owners/${id}`);
   }
+
+  public activateRegistration(body): Observable<any> {
+    return this.http.put('http://localhost:8080/cottage-owners/confirm', body);
+  }
 }

@@ -23,4 +23,5 @@ public class QuickReservationResponse {
     private int expiresIn;
     private List<AdditionalServiceResponse> additionalServices;
     private ReservationType reservationType;
+    private Long idOfType;
 }

@@ -1,13 +1,13 @@
 package net.javaguides.isa.service.implementation;
 
 import net.javaguides.isa.dto.request.BoatRequest;
+import net.javaguides.isa.dto.request.NavigationEquipmentRequest;
 import net.javaguides.isa.dto.response.BoatResponse;
-import net.javaguides.isa.model.Boat;
-import net.javaguides.isa.model.BoatOwner;
-import net.javaguides.isa.repository.IBoatOwnerRepository;
-import net.javaguides.isa.repository.IBoatRepository;
-import net.javaguides.isa.repository.IUserRepository;
+import net.javaguides.isa.dto.response.NavigationEquipmentResponse;
+import net.javaguides.isa.model.*;
+import net.javaguides.isa.repository.*;
 import net.javaguides.isa.service.IBoatService;
+import net.javaguides.isa.utils.ReservationType;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,10 +18,20 @@ public class BoatService implements IBoatService {
 
     private final IBoatRepository _boatRepository;
     private final IBoatOwnerRepository _boatOwnerRepository;
+    private final IQuickReservationRepository _quickReservationRepository;
+    private final IReservationRepository _reservationRepository;
+    private final IClientRepository _clientRepository;
+    private final INavigationEquipmentRepository _navigationEquipmentRepository;
 
-    public BoatService(IBoatRepository boatRepository, IBoatOwnerRepository boatOwnerRepository) {
+    public BoatService(IBoatRepository boatRepository, IBoatOwnerRepository boatOwnerRepository, IQuickReservationRepository quickReservationRepository,
+                       IReservationRepository reservationRepository, IClientRepository clientRepository, INavigationEquipmentRepository navigationEquipmentRepository) {
         _boatRepository = boatRepository;
         _boatOwnerRepository = boatOwnerRepository;
+        _quickReservationRepository = quickReservationRepository;
+        _reservationRepository = reservationRepository;
+        _clientRepository = clientRepository;
+        _navigationEquipmentRepository = navigationEquipmentRepository;
+
     }
 
     @Override
@@ -67,10 +77,27 @@ public class BoatService implements IBoatService {
 
         BoatOwner boatOwner = _boatOwnerRepository.findOneById(request.getBoatOwnerId());
         boat.setBoatOwner(boatOwner);
-        _boatRepository.save(boat);
+        Boat savedBoat = _boatRepository.save(boat);
 
         boatOwner.getBoats().add(boat);
         _boatOwnerRepository.save(boatOwner);
+
+        for(NavigationEquipmentRequest n : request.getNavigationEquipmentRequests()) {
+            NavigationEquipment navigationEquipment = new NavigationEquipment();
+            if(n.getName().equals(net.javaguides.isa.utils.NavigationEquipment.FISH_FINDER)){
+                navigationEquipment.setName(net.javaguides.isa.utils.NavigationEquipment.FISH_FINDER);
+                navigationEquipment.setBoat(savedBoat);
+            }else if(n.getName().equals(net.javaguides.isa.utils.NavigationEquipment.RADAR)){
+                navigationEquipment.setName(net.javaguides.isa.utils.NavigationEquipment.RADAR);
+                navigationEquipment.setBoat(savedBoat);
+            }else if(n.getName().equals(net.javaguides.isa.utils.NavigationEquipment.GPS)){
+                navigationEquipment.setName(net.javaguides.isa.utils.NavigationEquipment.GPS);
+                navigationEquipment.setBoat(savedBoat);
+            }else if(n.getName().equals(net.javaguides.isa.utils.NavigationEquipment.VHF_RADIO)){
+                navigationEquipment.setName(net.javaguides.isa.utils.NavigationEquipment.VHF_RADIO);
+                navigationEquipment.setBoat(savedBoat);
+            }
+        }
 
         return mapBoatToBoatResponse(boat);
     }
@@ -79,8 +106,29 @@ public class BoatService implements IBoatService {
     public BoatResponse updateBoat(BoatRequest request, Long id)  throws Exception {
         Boat boat = _boatRepository.findOneById(id);
 
-        if(!boat.getReservations().isEmpty()){
-            throw new Exception("The boat has reservations and cannot be updated.");
+        boolean hasReservation = false;
+
+        List<QuickReservation> allQuickReservations = _quickReservationRepository.findAll();
+        for(QuickReservation qr: allQuickReservations) {
+            if(qr.getReservationType().equals(ReservationType.BOAT)){
+                if(qr.getServiceId().equals(boat.getId())){
+                    hasReservation = true;
+                }
+            }
+        }
+
+        List<Reservation> allReservation = _reservationRepository.findAll();
+        for(Reservation r: allReservation) {
+            if(r.getReservationType().equals(ReservationType.BOAT)){
+
+                if(r.getBoat().getId().equals(boat.getId())){
+                    hasReservation = true;
+                }
+            }
+        }
+
+        if(hasReservation){
+            throw new Exception("The cottage has reservations and cannot be deleted.");
         }
         boat.setAddress(request.getAddress());
         boat.setDescription(request.getDescription());
@@ -104,10 +152,33 @@ public class BoatService implements IBoatService {
 
     @Override
     public void deleteBoat(Long id)  throws Exception {
-        Boat boat = _boatRepository.findOneById(id);
 
-        if(!boat.getReservations().isEmpty()){
+        Boat boat = _boatRepository.findOneById(id);
+        boolean hasReservation = false;
+        List<QuickReservation> allQuickReservations = _quickReservationRepository.findAll();
+        for(QuickReservation qr: allQuickReservations) {
+            if(qr.getCottage().getId().equals(boat.getId())){
+                hasReservation = true;
+            }
+        }
+
+        List<Reservation> allReservation = _reservationRepository.findAll();
+        for(Reservation r: allReservation) {
+            if(r.getCottage().getId().equals(boat.getId())){
+                hasReservation = true;
+            }
+        }
+
+        if(hasReservation){
             throw new Exception("The boat has reservations and cannot be deleted.");
+        }
+        List<Client> allClients = _clientRepository.findAll();
+        for(Client client: allClients) {
+            for(Cottage c: client.getSubscribedCottages()){
+                if(c.getId().equals(boat.getId())){
+                    client.getSubscribedCottages().remove(c);
+                }
+            }
         }
         _boatRepository.delete(boat);
     }
@@ -129,6 +200,15 @@ public class BoatService implements IBoatService {
         boatResponse.setFishingEquipment(boat.getFishingEquipment());
         boatResponse.setMaxSpeed(boat.getMaxSpeed());
         boatResponse.setType(boat.getType());
+        List<NavigationEquipmentResponse> navigationEquipmentResponses = new ArrayList<>();
+        for(NavigationEquipment ne: boat.getNavigationEquipments()){
+            NavigationEquipmentResponse navigationEquipmentResponse = new NavigationEquipmentResponse();
+            navigationEquipmentResponse.setId(ne.getId());
+            navigationEquipmentResponse.setName(ne.getName());
+            navigationEquipmentResponses.add(navigationEquipmentResponse);
+
+        }
+        boatResponse.setNavigationEquipmentResponseList(navigationEquipmentResponses);
         return boatResponse;
     }
 

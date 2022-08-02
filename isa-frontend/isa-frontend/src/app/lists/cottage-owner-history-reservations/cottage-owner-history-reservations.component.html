@@ -1,0 +1,36 @@
+<div class="content">
+    <br> 
+    <form  nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
+          <nz-form-item>
+            <nz-form-label class="formica" >Name</nz-form-label>
+            <nz-form-control>
+              <input class="ime" nz-input formControlName="name" placeholder="Input name"/>
+            </nz-form-control>
+          </nz-form-item>
+      </form>
+    </div>
+    <br><br>
+    <!--RESULT-->
+    <nz-table #basicTable [nzData]="reservations">
+      <thead>
+        <tr>
+          <th>Start date</th>
+          <th>End date</th>
+          <th>Status</th>
+          <th>Type</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reservation of reservations">
+          <td >{{reservation.startDateReservation[2]}}.{{reservation.startDateReservation[1]}}.{{reservation.startDateReservation[0]}}.</td>
+          <td >{{reservation.endDateReservation[2]}}.{{reservation.endDateReservation[1]}}.{{reservation.endDateReservation[0]}}.</td>
+          <td>{{ reservation.reservationStatus }}</td>   
+          <td>{{ reservation.reservationType }}</td>     
+          <td>
+            <a *ngIf="reservation.reservationStatus === 'EXPIRED' " onclick="report(reservation.id)">Fill the report</a>
+          </td>
+        </tr>
+      </tbody>
+     
+    </nz-table> 

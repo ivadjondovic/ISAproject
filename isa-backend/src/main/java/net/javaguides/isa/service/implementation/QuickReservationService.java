@@ -35,7 +35,7 @@ public class QuickReservationService implements IQuickReservationService {
         quickReservation.setPrice(request.getPrice());
         quickReservation.setExpiresIn(request.getExpiresIn());
         quickReservation.setReservationType(request.getReservationType());
-
+        quickReservation.setServiceId(request.getIdOfType());
         if(request.getReservationType().equals(ReservationType.BOAT)){
           Boat boat = _boatRepository.findOneById(request.getIdOfType());
           quickReservation.setBoat(boat);

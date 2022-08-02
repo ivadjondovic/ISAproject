@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import net.javaguides.isa.utils.BoatType;
 import net.javaguides.isa.utils.CancellationReservationFee;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,4 +26,5 @@ public class BoatResponse {
     private String priceList;
     private String fishingEquipment;
     private CancellationReservationFee cancellationReservationFee;
+    private List<NavigationEquipmentResponse> navigationEquipmentResponseList;
 }

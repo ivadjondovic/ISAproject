@@ -20,4 +20,9 @@ export class BoatOwnerService {
   public getBoatOwnerById(id): Observable<any> {
     return this.http.get(`http://localhost:8080/boat-owners/${id}`);
   }
+
+  public activateRegistration(body): Observable<any> {
+    return this.http.put('http://localhost:8080/boat-owners/confirm', body);
+  }
+
 }

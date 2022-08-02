@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.javaguides.isa.utils.ReservationStatus;
 import net.javaguides.isa.utils.ReservationType;
 
 import javax.persistence.*;
@@ -22,16 +23,16 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "start_time_quick_reservation")
+    @Column(name = "start_time_reservation")
     private LocalTime startTimeReservation;
 
-    @Column(name = "end_time_quick_reservation")
+    @Column(name = "end_time_reservation")
     private LocalTime endTimeReservation;
 
-    @Column(name = "start_date_quick_reservation")
+    @Column(name = "start_date_reservation")
     private LocalDate startDateReservation;
 
-    @Column(name = "end_date_quick_reservation")
+    @Column(name = "end_date_reservation")
     private LocalDate endDateReservation;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,6 +44,12 @@ public class Reservation {
     private Boat boat;
 
     @Column(name = "reservation_type")
+    @Enumerated(EnumType.STRING)
     private ReservationType ReservationType;
+
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus reservationStatus;
+
+    private Long serviceId;
 
 }

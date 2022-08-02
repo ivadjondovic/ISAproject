@@ -53,6 +53,7 @@ export class UpdateBoatComponent implements OnInit {
   public getDetails(): void {
     this.id = this.route.snapshot.params.id;
     this.boatService.getBoat(this.id).subscribe(data =>{
+  
       const formValues = {
         name: data.name,
         type: data.type,
@@ -67,6 +68,7 @@ export class UpdateBoatComponent implements OnInit {
         capacity: data.capacity,
         fishingEquipment: data.fishingEquipment,
         cancellationReservationFee: data.cancellationReservationFee
+        
       }
       console.log(data);
       this.validateForm.setValue(formValues);
@@ -89,7 +91,7 @@ export class UpdateBoatComponent implements OnInit {
       fishingEquipment:  this.validateForm.value.fishingEquipment,
       cancellationReservationFee: this.validateForm.value.cancellationReservationFee
     }
-    this.boatService.updateBoat(this.id, this.validateForm.value).subscribe(data => {
+    this.boatService.updateBoat(this.id, body).subscribe(data => {
       this.router.navigateByUrl(`home-page`);
     }, error => {
       this.alertDelete = true;

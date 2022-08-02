@@ -1,3 +1,7 @@
+import { ClientService } from './../../services/client.service';
+import { CottageOwnerService } from './../../services/cottage-owner.service';
+import { BoatOwnerService } from './../../services/boat-owner.service';
+import { FishingInstructorService } from './../../services/fishing-instructor.service';
 import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
@@ -17,24 +21,55 @@ export class LoginFormComponent implements OnInit {
       password: [null, [Validators.required]]
       });
       const id = this.route.snapshot.params['id'];
+      const client = this.route.snapshot.params['client'];
 
       if(id != undefined){
         const body = {
           patientId: id
         }
-        this.authService.activateRegistration(body).subscribe(() => {
+        if(client === 'fi'){
+          this.fishingInstructorService.activateRegistration(body).subscribe(() => {
+            alert('Uspešno ste se registrovali!');
+            this.router.navigateByUrl(`home-page/login`);
+          },
+          error => {
+            alert("Error login");
+          });
+       } else if(client === 'bo'){
+            this.boatOwnerService.activateRegistration(body).subscribe(() => {
+              alert('Uspešno ste se registrovali!');
+              this.router.navigateByUrl(`home-page/login`);
+            },
+            error => {
+              alert("Error login");
+            });
+        }else if(client === 'co'){
+          this.cottageOwnerService.activateRegistration(body).subscribe(() => {
+            alert('Uspešno ste se registrovali!');
+            this.router.navigateByUrl(`home-page/login`);
+          },
+          error => {
+            alert("Error login");
+          });
+      }
+      else if(client === 'c'){
+        this.clientService.activateRegistration(body).subscribe(() => {
           alert('Uspešno ste se registrovali!');
           this.router.navigateByUrl(`home-page/login`);
         },
         error => {
           alert("Error login");
         });
+    }
       }
+        
 
   }
   
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private route: ActivatedRoute) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private route: ActivatedRoute, 
+    private fishingInstructorService: FishingInstructorService, private boatOwnerService: BoatOwnerService, 
+    private cottageOwnerService: CottageOwnerService, private clientService: ClientService) {}
 
   
 
