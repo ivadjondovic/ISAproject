@@ -10,6 +10,9 @@ public class UserDTO {
 	private String city;
 	private String country;
 	private String phoneNumber;
+	private String type;
+	
+	
 	public String getEmail() {
 		return email;
 	}
@@ -58,6 +61,14 @@ public class UserDTO {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	
 	
 	
 }

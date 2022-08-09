@@ -1,0 +1,39 @@
+.rounded {
+    border-radius: 25px;
+
+    border-color: 	 #ffe6e6;
+    border-style: solid;
+    padding: 20px;
+    border-width: 0.2px;
+    position: absolute;
+    top:75px;
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.roundedImage {
+    border-radius: 25px;
+    border-color: 	 #ffe6e6;
+    border-width: 0.2px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+.centerCol {
+    border-radius: 20px;
+
+    border-color: 	 #ffe6e6;
+    background-color: rgba(0, 0, 0, 0.4);
+
+    position: absolute;
+    width: 220px;
+    height:170px;
+    margin-left: 650px;
+    margin-top: 235px;
+    text-align: center;
+    
+    
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
