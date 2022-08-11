@@ -11,6 +11,7 @@ import com.isa.project.model.Authority;
 import com.isa.project.model.Client;
 import com.isa.project.model.User;
 import com.isa.project.repository.UserRepository;
+import com.isa.project.security.SecurityUtils;
 import com.isa.project.service.AuthorityService;
 import com.isa.project.service.UserService;
 
@@ -36,7 +37,7 @@ public class UserServiceImplementation implements UserService{
 	        }
 
 	        Client client = new Client();
-	        List<Authority> auth = authorityService.findByName(userDTO.getType());
+	        List<Authority> auth = authorityService.findByName("ROLE_CLIENT");
 	        client.setAuthorities(auth);
 	        client.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 	        client.setUsername(userDTO.getUsername());
@@ -49,5 +50,11 @@ public class UserServiceImplementation implements UserService{
 
 	        return userRepository.save(client);
 	}
+	
+	@Override
+	public User currentUser() {
+        String username = SecurityUtils.getCurrentUserLogin().get();
+        return userRepository.findByUsername(username);
+    }
 
 }

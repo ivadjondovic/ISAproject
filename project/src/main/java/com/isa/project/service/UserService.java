@@ -6,4 +6,5 @@ import com.isa.project.model.User;
 public interface UserService {
 
 	public User registerClient(UserDTO userDTO);
+	public User currentUser();
 }
