@@ -1,5 +1,7 @@
 package com.isa.project.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,7 @@ public class UserController {
 	@PostMapping(consumes = "application/json", path = "/register")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
 
+		
 		if(userDTO.getType().equals("Client")) {
 	        User user = userService.registerClient(userDTO);
 	
@@ -90,5 +93,12 @@ public class UserController {
     public ResponseEntity<?> currentUser() {
 		User user = userService.currentUser();
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+	
+	@GetMapping(path = "/users")
+	@PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<?> users() {
+		List<User> users = userService.getAll();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 }

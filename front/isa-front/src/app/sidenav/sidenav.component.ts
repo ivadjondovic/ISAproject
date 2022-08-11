@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidenav',
@@ -9,13 +10,28 @@ export class SidenavComponent implements OnInit {
 
   @Output() sidenavClose = new EventEmitter();
 
-  constructor() { }
 
+  isLogout: string
+  constructor(public router:Router) { }
+
+  currentUser = localStorage.getItem('user')
+  
   ngOnInit() {
+   
   }
 
-  public onSidenavClose = () => {
+  public onSidenavClose = (commandType: string) => {
+   
+    if(commandType == 'logout'){
+      localStorage.clear();
+      location.reload();
+      
+    this.router.navigate(['/homepage']);
+    }
     this.sidenavClose.emit();
+    
   }
+
+
 
 }

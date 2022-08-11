@@ -21,6 +21,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
 import { RegistrationComponent } from './registration/registration.component';
+import { LoginComponent } from './login/login.component';
+import { AuthenticationGuard } from './authentication.guard';
 
 
 
@@ -32,6 +34,7 @@ import { RegistrationComponent } from './registration/registration.component';
     HeaderComponent,
     SidenavComponent,
     RegistrationComponent,
+    LoginComponent,
     
   ],
   imports: [
@@ -53,7 +56,7 @@ import { RegistrationComponent } from './registration/registration.component';
     
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [],
+  providers: [AuthenticationGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

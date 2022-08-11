@@ -31,7 +31,7 @@ export class RegistrationComponent implements OnInit {
     }else{
 
       let data = {
-        email: this.email,
+        username: this.email,
         password: this.password, 
         name: this.name,
         surname: this.surname,
