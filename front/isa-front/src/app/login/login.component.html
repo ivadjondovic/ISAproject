@@ -1,0 +1,23 @@
+<div>
+    <mat-card>
+        <mat-card-title style="text-align: center;">Sign in</mat-card-title>
+    </mat-card>
+    <div class="login">
+
+        <label for="email">Email</label>
+        <input type="text" id="email" name="firstname" [(ngModel)]="username" placeholder="Your email..">
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" [(ngModel)]="password" placeholder="Your password..">
+
+        <div class="row">
+            <div class="col-sm"></div>
+            <div class="col-sm">
+                <button (click)="login()">Sign in</button>
+            </div>
+            <div class="col-sm"></div>
+        </div>
+
+    </div>
+
+</div>
