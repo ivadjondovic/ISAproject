@@ -1,14 +1,18 @@
-package com.isa.project.service;
+package com.isa.project.service.implementation;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.isa.project.dto.UserDTO;
+import com.isa.project.model.Authority;
 import com.isa.project.model.Client;
 import com.isa.project.model.User;
 import com.isa.project.repository.UserRepository;
+import com.isa.project.service.AuthorityService;
+import com.isa.project.service.UserService;
 
 @Service
 public class UserServiceImplementation implements UserService{
@@ -17,17 +21,25 @@ public class UserServiceImplementation implements UserService{
 	@Autowired
     private UserRepository userRepository;
 	
+	@Autowired
+    private AuthorityService authorityService;
+	
+	@Autowired
+    private PasswordEncoder passwordEncoder;
+	
 	@Override
 	public User registerClient(UserDTO userDTO) {
-		 Optional<User> optionalUser = userRepository.findByEmail(userDTO.getEmail());
+		 User user = userRepository.findByUsername(userDTO.getUsername());
 
-	        if(!optionalUser.isEmpty()) {
+	        if(user != null) {
 	            return null;
 	        }
 
 	        Client client = new Client();
-	        client.setEmail(userDTO.getEmail());
-	        client.setPassword(userDTO.getPassword());
+	        List<Authority> auth = authorityService.findByName(userDTO.getType());
+	        client.setAuthorities(auth);
+	        client.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+	        client.setUsername(userDTO.getUsername());
 	        client.setName(userDTO.getName());
 	        client.setSurname(userDTO.getSurname());
 	        client.setPhoneNumber(userDTO.getPhoneNumber());

@@ -3,6 +3,7 @@ package com.isa.project.repository;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.isa.project.model.User;
@@ -10,5 +11,7 @@ import com.isa.project.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
 
-	Optional<User> findByEmail(String username);
+	User findByUsername(String username);
+	@Query(value = "SELECT type FROM users_table WHERE id = ?1",nativeQuery = true)
+	String findTypeById(Long id);
 }
