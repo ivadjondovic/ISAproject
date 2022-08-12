@@ -51,6 +51,7 @@ public abstract class User implements UserDetails{
 	private String city;
 	private String country;
 	private String phoneNumber;
+	private String status;
 	@Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
 
@@ -120,8 +121,15 @@ public abstract class User implements UserDetails{
 	public void setAuthorities(List<Authority> authorities) {
         this.authorities = authorities;
     }
+	
 
-    @Override
+    public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;
     }

@@ -2,6 +2,7 @@ package com.isa.project.controller;
 
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.isa.project.dto.UserDTO;
 import com.isa.project.dto.UserTokenState;
@@ -80,6 +83,10 @@ public class UserController {
 
 		// Kreiraj token za tog korisnika
 		User user = (User) authentication.getPrincipal();
+		if(!user.getStatus().equals("Activated")) {
+			System.out.println("Ne");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		String jwt = tokenUtils.generateToken(user.getUsername(), userRepository.findTypeById(user.getId()));
 		int expiresIn = tokenUtils.getExpiredIn();
 
@@ -100,5 +107,11 @@ public class UserController {
     public ResponseEntity<?> users() {
 		List<User> users = userService.getAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+	
+	@GetMapping(path = "/activate/{username}")
+    public RedirectView activateClient(@PathVariable String username){
+        userService.findUserByUsername(username);
+        return new RedirectView("http://localhost:4200/activatedAccount");
     }
 }
