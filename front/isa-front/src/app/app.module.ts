@@ -23,6 +23,7 @@ import {MatCardModule} from '@angular/material/card';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { AuthenticationGuard } from './authentication.guard';
+import { ActivatedAccountComponent } from './activated-account/activated-account.component';
 
 
 
@@ -35,6 +36,7 @@ import { AuthenticationGuard } from './authentication.guard';
     SidenavComponent,
     RegistrationComponent,
     LoginComponent,
+    ActivatedAccountComponent,
     
   ],
   imports: [

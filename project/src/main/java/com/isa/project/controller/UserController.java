@@ -112,6 +112,6 @@ public class UserController {
 	@GetMapping(path = "/activate/{username}")
     public RedirectView activateClient(@PathVariable String username){
         userService.findUserByUsername(username);
-        return new RedirectView("http://localhost:4200");
+        return new RedirectView("http://localhost:4200/activatedAccount");
     }
 }
