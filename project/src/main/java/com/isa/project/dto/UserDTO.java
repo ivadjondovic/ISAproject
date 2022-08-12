@@ -11,8 +11,15 @@ public class UserDTO {
 	private String country;
 	private String phoneNumber;
 	private String type;
+	private String explanation;
 	
 	
+	public String getExplanation() {
+		return explanation;
+	}
+	public void setExplanation(String explanation) {
+		this.explanation = explanation;
+	}
 	public String getUsername() {
 		return username;
 	}

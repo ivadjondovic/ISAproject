@@ -32,11 +32,38 @@ public class EmailServiceImplementation implements EmailService{
 	    helper=new MimeMessageHelper(message,true);
 	    helper.setTo(new InternetAddress(user.getUsername()));
 	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
-	    helper.setSubject("Testing from Spring Boot");
+	    helper.setSubject("Account activation");
 	    helper.setText("Hello " + user.getName() + " " + user.getSurname() +  ",\n\nPlease click the link below to verify your account" + "\n\nhttp://localhost:8080/api/users/activate/"+ user.getUsername() + "\n\nThank you!");
 	    javaMailSender.send(message);
 		         
 		
+	}
+
+	@Override
+	public void acceptEmail(User user) throws MessagingException {
+		
+		MimeMessage message=javaMailSender.createMimeMessage();
+	    MimeMessageHelper helper;
+	    helper=new MimeMessageHelper(message,true);
+	    helper.setTo(new InternetAddress(user.getUsername()));
+	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
+	    helper.setSubject("Account activation");
+	    helper.setText("Hello " + user.getName() + " " + user.getSurname() +  ",\n\nYour registration has been accepted!" + "\n\nThank you for registering!");
+	    javaMailSender.send(message);
+		
+	}
+
+	@Override
+	public void declineEmail(User user, String reason) throws MessagingException {
+		// TODO Auto-generated method stub
+		MimeMessage message=javaMailSender.createMimeMessage();
+	    MimeMessageHelper helper;
+	    helper=new MimeMessageHelper(message,true);
+	    helper.setTo(new InternetAddress(user.getUsername()));
+	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
+	    helper.setSubject("Account activation");
+	    helper.setText("Hello " + user.getName() + " " + user.getSurname() +  ",\n\nYour registration has been declined because " + reason + "." + "\n\nThank you for registering!");
+	    javaMailSender.send(message);
 	}
 
 }
