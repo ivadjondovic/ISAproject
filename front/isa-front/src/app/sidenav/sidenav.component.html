@@ -3,8 +3,12 @@
         <mat-icon>home</mat-icon> <span class="nav-caption">Home</span>
     </a>
 
-    <a mat-list-item routerLink="/registration" (click)="onSidenavClose('')">
-        <mat-icon>person_add</mat-icon><span class="nav-caption">Registration</span>
+    <a mat-list-item routerLink="/registration" (click)="onSidenavClose('')" *ngIf="currentUser == null">
+        <mat-icon>person_add</mat-icon><span class="nav-caption">Client Registration</span>
+    </a>
+
+    <a mat-list-item routerLink="/serviceProviderRegistration" (click)="onSidenavClose('')" *ngIf="currentUser == null">
+        <mat-icon>people</mat-icon><span class="nav-caption">Service Provider Registration</span>
     </a>
 
     <a *ngIf="currentUser == null" style="position: absolute; bottom: 0;" mat-list-item routerLink="/login" (click)="onSidenavClose('')">
@@ -15,6 +19,8 @@
         <mat-icon>login</mat-icon><span class="nav-caption">Log out</span>
     </a>
 
-    
-    
+    <a mat-list-item routerLink="/registrationApproval" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_ADMIN'">
+        <mat-icon>list_alt</mat-icon><span class="nav-caption">Registration approval</span>
+    </a>
+
   </mat-nav-list>

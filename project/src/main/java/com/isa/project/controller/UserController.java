@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.isa.project.dto.AccountActivationDTO;
 import com.isa.project.dto.UserDTO;
 import com.isa.project.dto.UserTokenState;
 import com.isa.project.model.User;
@@ -64,7 +66,33 @@ public class UserController {
 	
 	        return new ResponseEntity<>(HttpStatus.CREATED);
         
-		}
+		} else if(userDTO.getType().equals("Boat owner")) {
+			User user = userService.registerBoatOwner(userDTO);
+			
+	        if(user == null) {
+	            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	        }
+	
+	        return new ResponseEntity<>(HttpStatus.CREATED);
+	        
+		} else if(userDTO.getType().equals("Cottage owner")) {
+			User user = userService.registerCottageOwner(userDTO);
+			
+	        if(user == null) {
+	            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	        }
+	
+	        return new ResponseEntity<>(HttpStatus.CREATED);
+	        
+		} else if(userDTO.getType().equals("Instructor")) {
+			User user = userService.registerInstructor(userDTO);
+			
+	        if(user == null) {
+	            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	        }
+	
+	        return new ResponseEntity<>(HttpStatus.CREATED);
+		} 
 		
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -83,7 +111,7 @@ public class UserController {
 
 		// Kreiraj token za tog korisnika
 		User user = (User) authentication.getPrincipal();
-		if(!user.getStatus().equals("Activated")) {
+		if(!user.getStatus().equals("Activated") || user.getStatus().equals("Declined")) {
 			System.out.println("Ne");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
@@ -96,16 +124,16 @@ public class UserController {
 	
 	
 	@GetMapping(path = "/current")
-	@PreAuthorize("hasRole('CLIENT')")
+	@PreAuthorize("hasAnyRole('CLIENT', 'ADMIN', 'BOATOWNER', 'COTTAGEOWNER', 'INSTRUCTOR')")
     public ResponseEntity<?> currentUser() {
 		User user = userService.currentUser();
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 	
-	@GetMapping(path = "/users")
-	@PreAuthorize("hasRole('CLIENT')")
-    public ResponseEntity<?> users() {
-		List<User> users = userService.getAll();
+	@GetMapping(path = "/notActivatedUsers")
+	@PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> notActivatedUsers() {
+		List<User> users = userService.getNotActivatedUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 	
@@ -114,4 +142,28 @@ public class UserController {
         userService.findUserByUsername(username);
         return new RedirectView("http://localhost:4200/activatedAccount");
     }
+	
+	@PutMapping(path = "/acceptActivation")
+	@PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> acceptActivation(@RequestBody AccountActivationDTO accountActivationDTO){
+        User user = userService.accept(accountActivationDTO);
+        if(user == null) {
+        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+	
+	@PutMapping(path = "/declineActivation")
+	@PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> declineActivation(@RequestBody AccountActivationDTO accountActivationDTO){
+        User user = userService.decline(accountActivationDTO);
+        if(user == null) {
+        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+	
+	
 }

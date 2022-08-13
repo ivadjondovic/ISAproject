@@ -32,4 +32,16 @@ export class UserService {
     return this.http.get(this.baseURL + "api/users/current", this.getAuthoHeader());
   }
 
+  notActivatedUsers(){
+    return this.http.get(this.baseURL + "api/users/notActivatedUsers", this.getAuthoHeader());
+  }
+
+  acceptActivation(data: any){
+    return this.http.put(this.baseURL + "api/users/acceptActivation", data, this.getAuthoHeader());
+  }
+
+  declineActivation(data: any){
+    return this.http.put(this.baseURL + "api/users/declineActivation", data, this.getAuthoHeader());
+  }
+
 }

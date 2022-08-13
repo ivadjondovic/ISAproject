@@ -7,4 +7,6 @@ import com.isa.project.model.User;
 public interface EmailService {
 	
 	public void sendEmail(User user) throws MessagingException;
+	public void acceptEmail(User user) throws MessagingException;
+	public void declineEmail(User user, String reason) throws MessagingException;
 }
