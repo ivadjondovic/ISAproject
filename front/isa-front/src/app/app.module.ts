@@ -18,12 +18,16 @@ import { MatMenuModule } from '@angular/material/menu';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatGridListModule} from '@angular/material/grid-list';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { AuthenticationGuard } from './authentication.guard';
 import { ActivatedAccountComponent } from './activated-account/activated-account.component';
+import { ServiceProviderRegistrationComponent } from './service-provider-registration/service-provider-registration.component';
+import { RegistrationApprovalComponent } from './registration-approval/registration-approval.component';
+import { DialogOverviewComponent } from './dialog-overview/dialog-overview.component';
 
 
 
@@ -37,6 +41,9 @@ import { ActivatedAccountComponent } from './activated-account/activated-account
     RegistrationComponent,
     LoginComponent,
     ActivatedAccountComponent,
+    ServiceProviderRegistrationComponent,
+    RegistrationApprovalComponent,
+    DialogOverviewComponent,
     
   ],
   imports: [
@@ -54,7 +61,8 @@ import { ActivatedAccountComponent } from './activated-account/activated-account
     ReactiveFormsModule,
     FormsModule,
     MatCardModule,
-    HttpClientModule
+    HttpClientModule,
+    MatDialogModule
     
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

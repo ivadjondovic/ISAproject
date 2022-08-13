@@ -124,7 +124,7 @@ public class UserController {
 	
 	
 	@GetMapping(path = "/current")
-	@PreAuthorize("hasRole('CLIENT')")
+	@PreAuthorize("hasAnyRole('CLIENT', 'ADMIN', 'BOATOWNER', 'COTTAGEOWNER', 'INSTRUCTOR')")
     public ResponseEntity<?> currentUser() {
 		User user = userService.currentUser();
         return new ResponseEntity<>(user, HttpStatus.OK);

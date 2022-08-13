@@ -1,0 +1,56 @@
+
+<div>
+    <mat-card>
+        <mat-card-title style="text-align: center;">Registration approval</mat-card-title>
+    </mat-card>
+    <div class = "approval">
+        
+        <ul style="list-style-type: none">
+            <div class="row mb-4">
+                <div class="col-2">
+                    <b>approve</b>
+                </div>
+                <div class="col-2">
+                    <b>disapprove</b>
+                </div>
+                <div class="col-3">
+                    <b>user</b>
+                </div>
+                <div class="col-2">
+                    <b>role</b>
+                </div>
+                <div class="col-3">
+                    <b>explanation</b>
+                </div>
+            </div>
+            
+            <li *ngFor="let user of notActivatedUsers">
+                <div class="row mt-2" >
+                    <div class="col-2">
+                        <button (click)="acceptActivation(user.username)" class="button1">
+                        <mat-icon>done</mat-icon>
+                        </button>
+                    </div>
+                    <div class="col-2">
+                        <button class="button2" (click)="openDialog('0ms', '0ms', user.username)">
+                        <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                    <div class="col-3">
+                        {{user.username}}
+                    </div>
+                    <div class="col-2">
+                        {{user.userType}}
+                    </div>
+                    <div class="col-3">
+                        {{user.explanation}}
+                    </div>
+                    
+                </div>
+            </li>
+        </ul>
+        
+
+    </div>
+
+</div>

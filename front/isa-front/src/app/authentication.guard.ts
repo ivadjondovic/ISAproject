@@ -28,6 +28,7 @@ export class AuthenticationGuard implements CanActivate {
       let user = JSON.parse(userStrng);
       console.log(user)
       this.userRole = user.userType;
+      console.log(this.userRole);
       return this.userRole;
     }
 

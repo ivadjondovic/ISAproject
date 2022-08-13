@@ -10,14 +10,20 @@ export class SidenavComponent implements OnInit {
 
   @Output() sidenavClose = new EventEmitter();
 
-
   isLogout: string
+  role: any
+
   constructor(public router:Router) { }
+
 
   currentUser = localStorage.getItem('user')
   
   ngOnInit() {
-   
+    let userStrng = localStorage.getItem('user');
+    if(userStrng) {
+      let user = JSON.parse(userStrng);
+      this.role = user.userType;
+    }
   }
 
   public onSidenavClose = (commandType: string) => {
