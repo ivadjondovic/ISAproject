@@ -23,4 +23,8 @@
         <mat-icon>list_alt</mat-icon><span class="nav-caption">Registration approval</span>
     </a>
 
+    <a mat-list-item routerLink="/clientProfile" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_CLIENT'">
+        <mat-icon>person</mat-icon><span class="nav-caption">Profile</span>
+    </a>
+
   </mat-nav-list>

@@ -211,7 +211,7 @@ public class UserServiceImplementation implements UserService{
 	public User editClient(UserDTO userDTO) {
 		User user = userRepository.findByUsername(userDTO.getUsername());
 		if(userDTO.getPassword() != "") {
-			user.setPassword(userDTO.getPassword());
+			user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		}
 		if(userDTO.getName() != "") {
 			user.setName(userDTO.getName());

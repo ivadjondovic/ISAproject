@@ -28,6 +28,7 @@ import { ActivatedAccountComponent } from './activated-account/activated-account
 import { ServiceProviderRegistrationComponent } from './service-provider-registration/service-provider-registration.component';
 import { RegistrationApprovalComponent } from './registration-approval/registration-approval.component';
 import { DialogOverviewComponent } from './dialog-overview/dialog-overview.component';
+import { ClientProfileComponent } from './client-profile/client-profile.component';
 
 
 
@@ -44,6 +45,7 @@ import { DialogOverviewComponent } from './dialog-overview/dialog-overview.compo
     ServiceProviderRegistrationComponent,
     RegistrationApprovalComponent,
     DialogOverviewComponent,
+    ClientProfileComponent,
     
   ],
   imports: [
