@@ -206,6 +206,34 @@ public class UserServiceImplementation implements UserService{
 		}
 		return userRepository.save(user);
 	}
+
+	@Override
+	public User editClient(UserDTO userDTO) {
+		User user = userRepository.findByUsername(userDTO.getUsername());
+		if(userDTO.getPassword() != "") {
+			user.setPassword(userDTO.getPassword());
+		}
+		if(userDTO.getName() != "") {
+			user.setName(userDTO.getName());
+		}
+		if(userDTO.getSurname() != "") {
+			user.setSurname(userDTO.getSurname());
+		}
+		if(userDTO.getAddress() != "") {
+			user.setAddress(userDTO.getAddress());
+		}
+		if(userDTO.getCity() != "") {
+			user.setCity(userDTO.getCity());
+		}
+		if(userDTO.getCountry() != "") {
+			user.setCountry(userDTO.getCountry());
+		}
+		if(userDTO.getPhoneNumber() != "") {
+			user.setPhoneNumber(userDTO.getPhoneNumber());
+		}
+		
+		return userRepository.save(user);
+	}
 	
 	
 	
