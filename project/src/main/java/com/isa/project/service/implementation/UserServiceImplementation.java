@@ -12,6 +12,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -204,6 +207,34 @@ public class UserServiceImplementation implements UserService{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return userRepository.save(user);
+	}
+
+	@Override
+	public User editClient(UserDTO userDTO) {
+		User user = userRepository.findByUsername(userDTO.getUsername());
+		if(userDTO.getPassword() != "") {
+			user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+		}
+		if(userDTO.getName() != "") {
+			user.setName(userDTO.getName());
+		}
+		if(userDTO.getSurname() != "") {
+			user.setSurname(userDTO.getSurname());
+		}
+		if(userDTO.getAddress() != "") {
+			user.setAddress(userDTO.getAddress());
+		}
+		if(userDTO.getCity() != "") {
+			user.setCity(userDTO.getCity());
+		}
+		if(userDTO.getCountry() != "") {
+			user.setCountry(userDTO.getCountry());
+		}
+		if(userDTO.getPhoneNumber() != "") {
+			user.setPhoneNumber(userDTO.getPhoneNumber());
+		}
+		
 		return userRepository.save(user);
 	}
 	

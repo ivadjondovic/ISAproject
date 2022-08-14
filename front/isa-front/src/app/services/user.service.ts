@@ -44,4 +44,12 @@ export class UserService {
     return this.http.put(this.baseURL + "api/users/declineActivation", data, this.getAuthoHeader());
   }
 
+  editClient(data: any){
+    return this.http.put(this.baseURL + "api/users/editClient", data, this.getAuthoHeader());
+  }
+
+  changePassword(data: any){
+    return this.http.put(this.baseURL + "api/users/changePassword", data, this.getAuthoHeader());
+  }
+
 }

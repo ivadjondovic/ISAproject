@@ -17,5 +17,6 @@ public interface UserService {
 	public User findUserByUsername(String username);
 	public User accept(AccountActivationDTO accountActivationDTO);
 	public User decline(AccountActivationDTO accountActivationDTO);
+	public User editClient(UserDTO userDTO);
 	
 }

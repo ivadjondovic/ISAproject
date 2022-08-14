@@ -7,6 +7,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { ActivatedAccountComponent } from './activated-account/activated-account.component';
 import { ServiceProviderRegistrationComponent } from './service-provider-registration/service-provider-registration.component';
 import { RegistrationApprovalComponent } from './registration-approval/registration-approval.component';
+import { ClientProfileComponent } from './client-profile/client-profile.component';
 
 const routes: Routes = [
 
@@ -15,7 +16,8 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'activatedAccount', component: ActivatedAccountComponent},
   {path: 'serviceProviderRegistration', component: ServiceProviderRegistrationComponent},
-  {path: 'registrationApproval', component: RegistrationApprovalComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}}
+  {path: 'registrationApproval', component: RegistrationApprovalComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
+  {path: 'clientProfile', component: ClientProfileComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}}
   
 ];
 
