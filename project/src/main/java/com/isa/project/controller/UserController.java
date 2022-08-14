@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.isa.project.dto.AccountActivationDTO;
+import com.isa.project.dto.ChangePasswordDTO;
 import com.isa.project.dto.UserDTO;
 import com.isa.project.dto.UserTokenState;
 import com.isa.project.model.User;
@@ -174,6 +175,13 @@ public class UserController {
         }
         
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+	
+	@PutMapping(path = "/changePassword")
+	@PreAuthorize("hasAnyRole('CLIENT', 'ADMIN', 'BOATOWNER', 'COTTAGEOWNER', 'INSTRUCTOR')")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO passwordDTO){  
+        userDetailsService.changePassword(passwordDTO.getOldPassword(), passwordDTO.getNewPassword()); 
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 	
 	

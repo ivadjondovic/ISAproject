@@ -41,20 +41,10 @@
                 <input type="text" id="country" name="country" [(ngModel)] = "user.country">
             </div>
 
-            <div class="form-group" *ngIf="isChangePasswordClicked">
-                <label for="oldPassword">Old Password</label>
-                <input type="password" id="oldPassword" name="oldPassword" [(ngModel)] = "oldPassword">
-            </div>
-
-            <div class="form-group" *ngIf="isChangePasswordClicked">
-                <label for="newPassword">New Password</label>
-                <input type="text" id="newPassword" name="newPassword" [(ngModel)] = "newPassword">
-            </div>
-            
 
             <div  class="row">
                 <div class="col-3">
-                    <button *ngIf="!isChangePasswordClicked" (click)="changePasswordClick()">Change password</button>
+                    <button (click)="openDialog('0ms', '0ms', user.username)">Change password</button>
                 </div>
                 <div class="col-3">
                     

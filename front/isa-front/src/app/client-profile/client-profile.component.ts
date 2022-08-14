@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { PasswordDialogComponent } from '../password-dialog/password-dialog.component';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -14,13 +16,26 @@ export class ClientProfileComponent implements OnInit {
   oldPassword: string
   password: string
   newPassword = ""
-  constructor(public service: UserService) { }
+  username: string
+  constructor(public service: UserService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.service.current().subscribe((response: any) => {
       this.user = response;
       this.password = this.user.password;
     })
+  }
+
+  openDialog(enterAnimationDuration: string, exitAnimationDuration: string, username: string): void {
+    this.username = username;
+    const dialogRef = this.dialog.open(PasswordDialogComponent, {
+      width: '40%',
+      data: {username: this.username}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.username = result;
+    });
   }
   
 
@@ -31,6 +46,7 @@ export class ClientProfileComponent implements OnInit {
   editClient(){
     console.log(this.password)
     console.log(this.user.country)
+    console.log(this.newPassword)
     let data = {
       username: this.user.username,
       password: this.newPassword,
@@ -44,6 +60,7 @@ export class ClientProfileComponent implements OnInit {
     this.service.editClient(data).subscribe((response: any) => {
       console.log(response);
       location.reload();
+
     })
     
   }

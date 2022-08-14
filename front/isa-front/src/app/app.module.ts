@@ -29,6 +29,7 @@ import { ServiceProviderRegistrationComponent } from './service-provider-registr
 import { RegistrationApprovalComponent } from './registration-approval/registration-approval.component';
 import { DialogOverviewComponent } from './dialog-overview/dialog-overview.component';
 import { ClientProfileComponent } from './client-profile/client-profile.component';
+import { PasswordDialogComponent } from './password-dialog/password-dialog.component';
 
 
 
@@ -46,6 +47,7 @@ import { ClientProfileComponent } from './client-profile/client-profile.componen
     RegistrationApprovalComponent,
     DialogOverviewComponent,
     ClientProfileComponent,
+    PasswordDialogComponent,
     
   ],
   imports: [
