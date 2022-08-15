@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.isa.project.dto.UserDTO;
+import com.isa.project.model.Admin;
 import com.isa.project.model.Authority;
 import com.isa.project.model.BoatOwner;
 import com.isa.project.model.Client;
@@ -151,6 +152,31 @@ public class UserServiceImplementation implements UserService{
 	}
 	
 	@Override
+	public User registerAdmin(UserDTO userDTO) {
+		 User user = userRepository.findByUsername(userDTO.getUsername());
+
+	        if(user != null) {
+	            return null;
+	        }
+
+	        Admin admin = new Admin();
+	        List<Authority> auth = authorityService.findByName("ROLE_ADMIN");
+	        admin.setAuthorities(auth);
+	        admin.setPassword(passwordEncoder.encode("admin"));
+	        admin.setUsername(userDTO.getUsername());
+	        admin.setName(userDTO.getName());
+	        admin.setSurname(userDTO.getSurname());
+	        admin.setPhoneNumber(userDTO.getPhoneNumber());
+	        admin.setAddress(userDTO.getAddress());
+	        admin.setCity(userDTO.getCity());
+	        admin.setCountry(userDTO.getCountry());
+	        admin.setStatus("Activated");
+	        admin.setFirstPasswordChanged(false);
+	        return userRepository.save(admin);
+	        
+	}
+	
+	@Override
 	public User currentUser() {
         String username = SecurityUtils.getCurrentUserLogin().get();
         return userRepository.findByUsername(username);
@@ -212,6 +238,35 @@ public class UserServiceImplementation implements UserService{
 
 	@Override
 	public User editClient(UserDTO userDTO) {
+		User user = userRepository.findByUsername(userDTO.getUsername());
+		if(userDTO.getPassword() != "") {
+			user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+		}
+		if(userDTO.getName() != "") {
+			user.setName(userDTO.getName());
+		}
+		if(userDTO.getSurname() != "") {
+			user.setSurname(userDTO.getSurname());
+		}
+		if(userDTO.getAddress() != "") {
+			user.setAddress(userDTO.getAddress());
+		}
+		if(userDTO.getCity() != "") {
+			user.setCity(userDTO.getCity());
+		}
+		if(userDTO.getCountry() != "") {
+			user.setCountry(userDTO.getCountry());
+		}
+		if(userDTO.getPhoneNumber() != "") {
+			user.setPhoneNumber(userDTO.getPhoneNumber());
+		}
+		
+		return userRepository.save(user);
+	}
+	
+	
+	@Override
+	public User editAdmin(UserDTO userDTO) {
 		User user = userRepository.findByUsername(userDTO.getUsername());
 		if(userDTO.getPassword() != "") {
 			user.setPassword(passwordEncoder.encode(userDTO.getPassword()));

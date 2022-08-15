@@ -93,7 +93,16 @@ public class UserController {
 	        }
 	
 	        return new ResponseEntity<>(HttpStatus.CREATED);
-		} 
+		} else if(userDTO.getType().equals("Admin")) {
+			User user = userService.registerAdmin(userDTO);
+			
+	        if(user == null) {
+	            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	        }
+	
+	        return new ResponseEntity<>(HttpStatus.CREATED);
+	      
+		}
 		
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -131,7 +140,7 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 	
-	@GetMapping(path = "/notActivatedUsers")
+	@GetMapping(path = "/notActivatedUsers") 
 	@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> notActivatedUsers() {
 		List<User> users = userService.getNotActivatedUsers();
@@ -183,6 +192,19 @@ public class UserController {
         userDetailsService.changePassword(passwordDTO.getOldPassword(), passwordDTO.getNewPassword()); 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+	
+	@PutMapping(path = "/editAdmin")
+	@PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> editAdmin(@RequestBody UserDTO userDTO){
+        User user = userService.editAdmin(userDTO);
+        if(user == null) {
+        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+	
+	
 	
 	
 }
