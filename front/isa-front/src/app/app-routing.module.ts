@@ -8,6 +8,9 @@ import { ActivatedAccountComponent } from './activated-account/activated-account
 import { ServiceProviderRegistrationComponent } from './service-provider-registration/service-provider-registration.component';
 import { RegistrationApprovalComponent } from './registration-approval/registration-approval.component';
 import { ClientProfileComponent } from './client-profile/client-profile.component';
+import { AdminProfileComponent } from './admin-profile/admin-profile.component';
+import { AdminRegistrationComponent } from './admin-registration/admin-registration.component';
+import { ChangeAdminPasswordComponent } from './change-admin-password/change-admin-password.component';
 
 const routes: Routes = [
 
@@ -16,8 +19,11 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'activatedAccount', component: ActivatedAccountComponent},
   {path: 'serviceProviderRegistration', component: ServiceProviderRegistrationComponent},
+  {path: 'adminRegistration', component: AdminRegistrationComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
   {path: 'registrationApproval', component: RegistrationApprovalComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
-  {path: 'clientProfile', component: ClientProfileComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}}
+  {path: 'clientProfile', component: ClientProfileComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
+  {path: 'adminProfile', component: AdminProfileComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
+  {path: 'changeAdminPassword', component: ChangeAdminPasswordComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}}
   
 ];
 

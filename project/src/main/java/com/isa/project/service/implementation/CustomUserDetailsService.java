@@ -1,5 +1,8 @@
 package com.isa.project.service.implementation;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +16,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.isa.project.model.Admin;
+import com.isa.project.model.Authority;
 import com.isa.project.model.User;
 import com.isa.project.repository.UserRepository;
+import com.isa.project.service.AuthorityService;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -29,6 +35,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+    private AuthorityService authorityService;
 
 	// Funkcija koja na osnovu username-a iz baze vraca objekat User-a
 	@Override
@@ -61,6 +70,24 @@ public class CustomUserDetailsService implements UserDetailsService {
 		LOGGER.debug("Changing password for user '" + username + "'");
 
 		User user = (User) loadUserByUsername(username);
+		
+		if(user.getUserType().equals("ROLE_ADMIN")) {
+			Admin admin = new Admin();
+	        List<Authority> auth = authorityService.findByName("ROLE_ADMIN");
+	        admin.setId(user.getId());
+	        admin.setAuthorities(auth);
+	        admin.setPassword(passwordEncoder.encode(newPassword));
+	        admin.setUsername(user.getUsername());
+	        admin.setName(user.getName());
+	        admin.setSurname(user.getSurname());
+	        admin.setPhoneNumber(user.getPhoneNumber());
+	        admin.setAddress(user.getAddress());
+	        admin.setCity(user.getCity());
+	        admin.setCountry(user.getCountry());
+	        admin.setStatus("Activated");
+	        admin.setFirstPasswordChanged(true);
+	        userRepository.save(admin);
+		}
 
 		// pre nego sto u bazu upisemo novu lozinku, potrebno ju je hesirati
 		// ne zelimo da u bazi cuvamo lozinke u plain text formatu

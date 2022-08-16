@@ -12,6 +12,8 @@ export class SidenavComponent implements OnInit {
 
   isLogout: string
   role: any
+  username: string
+  isPasswordOk = true
 
   constructor(public router:Router) { }
 
@@ -22,6 +24,9 @@ export class SidenavComponent implements OnInit {
     let userStrng = localStorage.getItem('user');
     if(userStrng) {
       let user = JSON.parse(userStrng);
+      this.username = user.username;
+      this.isPasswordOk = user.firstPasswordChanged
+      console.log(user.firstPasswordChanged)
       this.role = user.userType;
     }
   }
