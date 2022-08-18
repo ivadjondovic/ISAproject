@@ -2,7 +2,7 @@ package com.isa.project.dto;
 
 import java.time.LocalDateTime;
 
-public class AvailableCottagePeriodDTO {
+public class AvailablePeriodDTO {
 	
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;

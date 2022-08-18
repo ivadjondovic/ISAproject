@@ -7,11 +7,11 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.isa.project.dto.AdditionalCottageServiceDTO;
-import com.isa.project.dto.AvailableCottagePeriodDTO;
+import com.isa.project.dto.AdditionalServiceDTO;
+import com.isa.project.dto.AvailablePeriodDTO;
 import com.isa.project.dto.CottageDTO;
 import com.isa.project.dto.ImageDTO;
-import com.isa.project.dto.QuickCottageReservationDTO;
+import com.isa.project.dto.QuickReservationDTO;
 import com.isa.project.dto.RoomDTO;
 import com.isa.project.dto.RuleDTO;
 import com.isa.project.model.AdditionalCottageService;
@@ -86,7 +86,7 @@ public class CottageServiceImplementation implements CottageService{
 			rules.add(rule);
 		}
 		
-		for(AdditionalCottageServiceDTO serviceDto: dto.getAdditionalServices()) {		
+		for(AdditionalServiceDTO serviceDto: dto.getAdditionalServices()) {		
 			AdditionalCottageService service = new AdditionalCottageService();
 			service.setDescription(serviceDto.getDescription());
 			service.setPrice(serviceDto.getPrice());
@@ -95,7 +95,7 @@ public class CottageServiceImplementation implements CottageService{
 			additionalServices.add(savedService);
 		}
 		
-		for(AvailableCottagePeriodDTO periodDto: dto.getAvailablePeriods()) {
+		for(AvailablePeriodDTO periodDto: dto.getAvailablePeriods()) {
 			AvailableCottagePeriod period = new AvailableCottagePeriod();
 			period.setStartDate(periodDto.getStartDate());
 			period.setEndDate(periodDto.getEndDate());
@@ -104,7 +104,7 @@ public class CottageServiceImplementation implements CottageService{
 			availablePeriods.add(savedPeriod);
 		}
 		
-		for(QuickCottageReservationDTO quickReservationDto: dto.getQuickReservations()) {
+		for(QuickReservationDTO quickReservationDto: dto.getQuickReservations()) {
 			QuickCottageReservation quickReservation = new QuickCottageReservation();
 			quickReservation.setStartDate(quickReservationDto.getStartDate());
 			quickReservation.setEndDate(quickReservationDto.getEndDate());

@@ -1,6 +1,6 @@
 package com.isa.project.dto;
 
-public class AdditionalCottageServiceDTO {
+public class AdditionalServiceDTO {
 	
 	private String description;
 	private Double price;

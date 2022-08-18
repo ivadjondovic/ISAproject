@@ -2,7 +2,7 @@ package com.isa.project.dto;
 
 import java.time.LocalDateTime;
 
-public class QuickCottageReservationDTO {
+public class QuickReservationDTO {
 
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;

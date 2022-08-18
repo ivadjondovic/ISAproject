@@ -13,9 +13,9 @@ public class CottageDTO {
 	private Double price;
 	private Set<RoomDTO> rooms;
 	private Set<RuleDTO> rules;
-	private Set<AdditionalCottageServiceDTO> additionalServices;
-	private Set<AvailableCottagePeriodDTO> availablePeriods;
-	private Set<QuickCottageReservationDTO> quickReservations;
+	private Set<AdditionalServiceDTO> additionalServices;
+	private Set<AvailablePeriodDTO> availablePeriods;
+	private Set<QuickReservationDTO> quickReservations;
 	private Long cottageOwnerId;
 	private Set<ImageDTO> images;
 	
@@ -69,22 +69,22 @@ public class CottageDTO {
 	public void setRules(Set<RuleDTO> rules) {
 		this.rules = rules;
 	}
-	public Set<AdditionalCottageServiceDTO> getAdditionalServices() {
+	public Set<AdditionalServiceDTO> getAdditionalServices() {
 		return additionalServices;
 	}
-	public void setAdditionalServices(Set<AdditionalCottageServiceDTO> additionalServices) {
+	public void setAdditionalServices(Set<AdditionalServiceDTO> additionalServices) {
 		this.additionalServices = additionalServices;
 	}
-	public Set<AvailableCottagePeriodDTO> getAvailablePeriods() {
+	public Set<AvailablePeriodDTO> getAvailablePeriods() {
 		return availablePeriods;
 	}
-	public void setAvailablePeriods(Set<AvailableCottagePeriodDTO> availablePeriods) {
+	public void setAvailablePeriods(Set<AvailablePeriodDTO> availablePeriods) {
 		this.availablePeriods = availablePeriods;
 	}
-	public Set<QuickCottageReservationDTO> getQuickReservations() {
+	public Set<QuickReservationDTO> getQuickReservations() {
 		return quickReservations;
 	}
-	public void setQuickReservations(Set<QuickCottageReservationDTO> quickReservations) {
+	public void setQuickReservations(Set<QuickReservationDTO> quickReservations) {
 		this.quickReservations = quickReservations;
 	}
 	public Set<ImageDTO> getImages() {
