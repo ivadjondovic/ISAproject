@@ -1,6 +1,7 @@
 package com.isa.project.service.implementation;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -135,6 +136,12 @@ public class CottageServiceImplementation implements CottageService{
 		
 		
 		return cottageRepository.save(savedCottage);
+	}
+
+
+	@Override
+	public List<Cottage> getAll() {	
+		return cottageRepository.findAll();
 	}
 
 	

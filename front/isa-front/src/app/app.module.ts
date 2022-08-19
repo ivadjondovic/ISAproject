@@ -33,6 +33,8 @@ import { PasswordDialogComponent } from './password-dialog/password-dialog.compo
 import { AdminProfileComponent } from './admin-profile/admin-profile.component';
 import { AdminRegistrationComponent } from './admin-registration/admin-registration.component';
 import { ChangeAdminPasswordComponent } from './change-admin-password/change-admin-password.component';
+import { BoatsComponent } from './boats/boats.component';
+import { BoatAdditionalInfoComponent } from './boat-additional-info/boat-additional-info.component';
 
 
 
@@ -54,6 +56,8 @@ import { ChangeAdminPasswordComponent } from './change-admin-password/change-adm
     AdminProfileComponent,
     AdminRegistrationComponent,
     ChangeAdminPasswordComponent,
+    BoatsComponent,
+    BoatAdditionalInfoComponent,
     
   ],
   imports: [

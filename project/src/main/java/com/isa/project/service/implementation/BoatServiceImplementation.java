@@ -1,6 +1,7 @@
 package com.isa.project.service.implementation;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -154,6 +155,16 @@ public class BoatServiceImplementation implements BoatService{
 		savedBoat.setBoatOwner((BoatOwner) owner.get());
 			
 		return boatRepository.save(savedBoat);
+	}
+
+	@Override
+	public List<Boat> getAll() {
+		return boatRepository.findAll();
+	}
+
+	@Override
+	public Boat getById(Long id) {
+		return boatRepository.findById(id).get();
 	}
 
 }

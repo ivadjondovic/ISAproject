@@ -1,10 +1,14 @@
 package com.isa.project.controller;
 
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +38,16 @@ public class BoatController {
         }
         
         return new ResponseEntity<>(boat, HttpStatus.OK);
+    }
+	
+	@GetMapping(path = "/boats")
+    public ResponseEntity<?> getAll() {
+        return new ResponseEntity<>(boatService.getAll(), HttpStatus.OK);
+    }
+	
+	@GetMapping(path = "/boat/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        return new ResponseEntity<>(boatService.getById(id), HttpStatus.OK);
     }
 
 }

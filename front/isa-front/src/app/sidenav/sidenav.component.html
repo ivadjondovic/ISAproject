@@ -3,6 +3,10 @@
         <mat-icon>home</mat-icon> <span class="nav-caption">Home</span>
     </a>
 
+    <a mat-list-item routerLink="/boats" (click)="onSidenavClose('')">
+        <mat-icon>directions_boat</mat-icon><span class="nav-caption">Boats</span>
+    </a>
+
     <a mat-list-item routerLink="/registration" (click)="onSidenavClose('')" *ngIf="currentUser == null">
         <mat-icon>person_add</mat-icon><span class="nav-caption">Client Registration</span>
     </a>
