@@ -10,5 +10,6 @@ public interface CottageService {
 	public Cottage createCottage(CottageDTO dto);
 	
 	public List<Cottage> getAll();
+	public Cottage getById(Long id);
 
 }

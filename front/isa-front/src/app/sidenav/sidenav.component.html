@@ -7,6 +7,10 @@
         <mat-icon>directions_boat</mat-icon><span class="nav-caption">Boats</span>
     </a>
 
+    <a mat-list-item routerLink="/cottages" (click)="onSidenavClose('')">
+        <mat-icon>cottage</mat-icon><span class="nav-caption">Cottages</span>
+    </a>
+
     <a mat-list-item routerLink="/registration" (click)="onSidenavClose('')" *ngIf="currentUser == null">
         <mat-icon>person_add</mat-icon><span class="nav-caption">Client Registration</span>
     </a>

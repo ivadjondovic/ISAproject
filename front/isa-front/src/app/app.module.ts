@@ -35,6 +35,8 @@ import { AdminRegistrationComponent } from './admin-registration/admin-registrat
 import { ChangeAdminPasswordComponent } from './change-admin-password/change-admin-password.component';
 import { BoatsComponent } from './boats/boats.component';
 import { BoatAdditionalInfoComponent } from './boat-additional-info/boat-additional-info.component';
+import { CottagesComponent } from './cottages/cottages.component';
+import { CottageAdditionalInfoComponent } from './cottage-additional-info/cottage-additional-info.component';
 
 
 
@@ -58,6 +60,8 @@ import { BoatAdditionalInfoComponent } from './boat-additional-info/boat-additio
     ChangeAdminPasswordComponent,
     BoatsComponent,
     BoatAdditionalInfoComponent,
+    CottagesComponent,
+    CottageAdditionalInfoComponent,
     
   ],
   imports: [

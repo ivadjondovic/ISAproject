@@ -1,0 +1,40 @@
+.rounded {
+    border-radius: 25px;
+    
+    border-color: #ffe6e6;
+    border-style: solid;
+    padding: 20px;
+    border-width: 0.2px;
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.roundedImage {
+    border-radius: 25px;
+    border-color: #ffe6e6;
+    border-width: 0.2px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+mat-card {
+    background: #ffd480;
+    width: 16%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15px;
+   
+}
+
+
+hr {
+    border: 0;
+    clear: both;
+    display: block;
+    width: 96%;
+    background-color: #4c7d85;
+    height: 1px;
+}

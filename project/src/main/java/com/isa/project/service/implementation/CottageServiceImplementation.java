@@ -144,5 +144,11 @@ public class CottageServiceImplementation implements CottageService{
 		return cottageRepository.findAll();
 	}
 
+
+	@Override
+	public Cottage getById(Long id) {
+		return cottageRepository.findById(id).get();
+	}
+
 	
 }

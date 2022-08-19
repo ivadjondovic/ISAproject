@@ -13,6 +13,8 @@ import { AdminRegistrationComponent } from './admin-registration/admin-registrat
 import { ChangeAdminPasswordComponent } from './change-admin-password/change-admin-password.component';
 import { BoatsComponent } from './boats/boats.component';
 import { BoatAdditionalInfoComponent } from './boat-additional-info/boat-additional-info.component';
+import { CottagesComponent } from './cottages/cottages.component';
+import { CottageAdditionalInfoComponent } from './cottage-additional-info/cottage-additional-info.component';
 
 const routes: Routes = [
 
@@ -27,7 +29,9 @@ const routes: Routes = [
   {path: 'adminProfile', component: AdminProfileComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
   {path: 'changeAdminPassword', component: ChangeAdminPasswordComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
   {path: 'boats', component: BoatsComponent},
-  { path: 'boatInfo/:id', component: BoatAdditionalInfoComponent }
+  {path: 'boatInfo/:id', component: BoatAdditionalInfoComponent},
+  {path: 'cottages', component: CottagesComponent},
+  {path: 'cottageInfo/:id', component: CottageAdditionalInfoComponent},
   
 ];
 

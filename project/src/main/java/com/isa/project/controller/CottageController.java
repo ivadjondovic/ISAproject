@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,6 +38,11 @@ public class CottageController {
 	@GetMapping(path = "/cottages")
     public ResponseEntity<?> getAll() {
         return new ResponseEntity<>(cottageService.getAll(), HttpStatus.OK);
+    }
+	
+	@GetMapping(path = "/cottage/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        return new ResponseEntity<>(cottageService.getById(id), HttpStatus.OK);
     }
 	
 	
