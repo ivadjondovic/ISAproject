@@ -1,5 +1,7 @@
 package com.isa.project.service.implementation;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,11 @@ public class DeleteAccountRequestServiceImplementation implements DeleteAccountR
 		User user = userRepository.findById(dto.getUserId()).get();
 		deleteAccountRequest.setUser(user);		
 		return deleteAccountRequestRepository.save(deleteAccountRequest);
+	}
+
+	@Override
+	public List<DeleteAccountRequest> getAll() {
+		return deleteAccountRequestRepository.findAll();
 	}
 
 }

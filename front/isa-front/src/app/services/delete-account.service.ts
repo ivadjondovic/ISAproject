@@ -23,4 +23,9 @@ export class DeleteAccountService {
   addRequest(data: any){
     return this.http.post(this.baseURL + "api/deactivation/addRequest", data, this.getAuthoHeader());
   }
+
+  getAll(){
+    return this.http.get(this.baseURL + "api/deactivation/requests", this.getAuthoHeader());
+  }
+
 }

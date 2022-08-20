@@ -25,6 +25,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.isa.project.dto.AccountActivationDTO;
 import com.isa.project.dto.ChangePasswordDTO;
+import com.isa.project.dto.DeleteAccountRequestDTO;
 import com.isa.project.dto.UserDTO;
 import com.isa.project.dto.UserTokenState;
 import com.isa.project.model.User;
@@ -197,6 +198,28 @@ public class UserController {
 	@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> editAdmin(@RequestBody UserDTO userDTO){
         User user = userService.editAdmin(userDTO);
+        if(user == null) {
+        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+	
+	@PutMapping(path = "/declineDeactivation")
+	@PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> declineDeactivation(@RequestBody DeleteAccountRequestDTO deleteAccountRequestDTO){
+        User user = userService.declineDeletingAccount(deleteAccountRequestDTO);
+        if(user == null) {
+        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+	
+	@PutMapping(path = "/acceptDeactivation")
+	@PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> acceptDeactivation(@RequestBody DeleteAccountRequestDTO deleteAccountRequestDTO){
+        User user = userService.acceptDeletingAccount(deleteAccountRequestDTO);
         if(user == null) {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

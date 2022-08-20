@@ -40,6 +40,8 @@ import { CottageAdditionalInfoComponent } from './cottage-additional-info/cottag
 import { MatInputModule } from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import { DeleteAccountComponent } from './delete-account/delete-account.component';
+import { DeleteRequestsComponent } from './delete-requests/delete-requests.component';
+import { DeleteReasonDialogComponent } from './delete-reason-dialog/delete-reason-dialog.component';
 
 
 
@@ -66,6 +68,8 @@ import { DeleteAccountComponent } from './delete-account/delete-account.componen
     CottagesComponent,
     CottageAdditionalInfoComponent,
     DeleteAccountComponent,
+    DeleteRequestsComponent,
+    DeleteReasonDialogComponent,
     
   ],
   imports: [

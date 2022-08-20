@@ -29,6 +29,7 @@ import com.isa.project.model.User;
 import com.isa.project.repository.UserRepository;
 import com.isa.project.security.SecurityUtils;
 import com.isa.project.dto.AccountActivationDTO;
+import com.isa.project.dto.DeleteAccountRequestDTO;
 import com.isa.project.service.AuthorityService;
 import com.isa.project.service.EmailService;
 import com.isa.project.service.UserService;
@@ -69,6 +70,7 @@ public class UserServiceImplementation implements UserService{
 	        client.setCity(userDTO.getCity());
 	        client.setCountry(userDTO.getCountry());
 	        client.setStatus("Not Activated");
+	        client.setDeleted(false);
 	        try {
 				emailService.sendEmail(client);
 			} catch (MessagingException e) {
@@ -99,6 +101,7 @@ public class UserServiceImplementation implements UserService{
 	        boatOwner.setCountry(userDTO.getCountry());
 	        boatOwner.setStatus("Not Activated");
 	        boatOwner.setExplanation(userDTO.getExplanation());
+	        boatOwner.setDeleted(false);
 	        return userRepository.save(boatOwner);
 	}
 	
@@ -123,6 +126,7 @@ public class UserServiceImplementation implements UserService{
 	        cottageOwner.setCountry(userDTO.getCountry());
 	        cottageOwner.setStatus("Not Activated");
 	        cottageOwner.setExplanation(userDTO.getExplanation());
+	        cottageOwner.setDeleted(false);
 	        return userRepository.save(cottageOwner);
 	}
 	
@@ -147,6 +151,7 @@ public class UserServiceImplementation implements UserService{
 	        instructor.setCountry(userDTO.getCountry());
 	        instructor.setStatus("Not Activated");
 	        instructor.setExplanation(userDTO.getExplanation());
+	        instructor.setDeleted(false);
 	        return userRepository.save(instructor);
 	        
 	}
@@ -172,6 +177,7 @@ public class UserServiceImplementation implements UserService{
 	        admin.setCountry(userDTO.getCountry());
 	        admin.setStatus("Activated");
 	        admin.setFirstPasswordChanged(false);
+	        admin.setDeleted(false);
 	        return userRepository.save(admin);
 	        
 	}
@@ -290,6 +296,32 @@ public class UserServiceImplementation implements UserService{
 			user.setPhoneNumber(userDTO.getPhoneNumber());
 		}
 		
+		return userRepository.save(user);
+	}
+
+	@Override
+	public User declineDeletingAccount(DeleteAccountRequestDTO dto) {
+		User user = userRepository.findById(dto.getUserId()).get();
+		user.setDeleted(false);	
+		try {
+			emailService.declineDeletingAccountEmail(user, dto.getReason());
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return userRepository.save(user);
+	}
+
+	@Override
+	public User acceptDeletingAccount(DeleteAccountRequestDTO dto) {
+		User user = userRepository.findById(dto.getUserId()).get();
+		user.setDeleted(true);
+		try {
+			emailService.acceptDeletingAccountEmail(user, dto.getReason());
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return userRepository.save(user);
 	}
 	
