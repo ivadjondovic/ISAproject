@@ -17,6 +17,7 @@ public class DeleteAccountRequest {
     )
     private Long id;
 	private String reason;
+	private Boolean processed;
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
@@ -38,6 +39,14 @@ public class DeleteAccountRequest {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	public Boolean getProcessed() {
+		return processed;
+	}
+	public void setProcessed(Boolean processed) {
+		this.processed = processed;
+	}
+	
+	
 	
 	
 	

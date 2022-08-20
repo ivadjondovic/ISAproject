@@ -42,6 +42,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { DeleteAccountComponent } from './delete-account/delete-account.component';
 import { DeleteRequestsComponent } from './delete-requests/delete-requests.component';
 import { DeleteReasonDialogComponent } from './delete-reason-dialog/delete-reason-dialog.component';
+import { NotDeleteReasonDialogComponent } from './not-delete-reason-dialog/not-delete-reason-dialog.component';
 
 
 
@@ -70,6 +71,7 @@ import { DeleteReasonDialogComponent } from './delete-reason-dialog/delete-reaso
     DeleteAccountComponent,
     DeleteRequestsComponent,
     DeleteReasonDialogComponent,
+    NotDeleteReasonDialogComponent,
     
   ],
   imports: [

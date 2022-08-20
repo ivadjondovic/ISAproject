@@ -24,8 +24,10 @@ import com.isa.project.model.Authority;
 import com.isa.project.model.BoatOwner;
 import com.isa.project.model.Client;
 import com.isa.project.model.CottageOwner;
+import com.isa.project.model.DeleteAccountRequest;
 import com.isa.project.model.Instructor;
 import com.isa.project.model.User;
+import com.isa.project.repository.DeleteAccountRequestRepository;
 import com.isa.project.repository.UserRepository;
 import com.isa.project.security.SecurityUtils;
 import com.isa.project.dto.AccountActivationDTO;
@@ -49,6 +51,9 @@ public class UserServiceImplementation implements UserService{
 	
 	@Autowired
     private EmailService emailService;
+	
+	@Autowired
+    private DeleteAccountRequestRepository deleteAccountRequestRepository;
 	
 	@Override
 	public User registerClient(UserDTO userDTO) {
@@ -309,6 +314,11 @@ public class UserServiceImplementation implements UserService{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		List<DeleteAccountRequest> requests = deleteAccountRequestRepository.findByUserId(dto.getUserId());
+		for(DeleteAccountRequest deleteRequest: requests) {
+			deleteRequest.setProcessed(true);
+			deleteAccountRequestRepository.save(deleteRequest);
+		}
 		return userRepository.save(user);
 	}
 
@@ -321,6 +331,11 @@ public class UserServiceImplementation implements UserService{
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		List<DeleteAccountRequest> requests = deleteAccountRequestRepository.findByUserId(dto.getUserId());
+		for(DeleteAccountRequest deleteRequest: requests) {
+			deleteRequest.setProcessed(true);
+			deleteAccountRequestRepository.save(deleteRequest);
 		}
 		return userRepository.save(user);
 	}

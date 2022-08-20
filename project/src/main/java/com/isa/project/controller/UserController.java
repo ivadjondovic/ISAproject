@@ -122,7 +122,7 @@ public class UserController {
 
 		// Kreiraj token za tog korisnika
 		User user = (User) authentication.getPrincipal();
-		if(!user.getStatus().equals("Activated") || user.getStatus().equals("Declined")) {
+		if(!user.getStatus().equals("Activated") || user.getStatus().equals("Declined") || user.getDeleted()) {
 			System.out.println("Ne");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteReasonDialogComponent } from '../delete-reason-dialog/delete-reason-dialog.component';
+import { NotDeleteReasonDialogComponent } from '../not-delete-reason-dialog/not-delete-reason-dialog.component';
 import { DeleteAccountService } from '../services/delete-account.service';
 
 @Component({
@@ -24,7 +25,19 @@ export class DeleteRequestsComponent implements OnInit {
 
   }
 
-  openDialog(enterAnimationDuration: string, exitAnimationDuration: string, id: string): void {
+  decline(enterAnimationDuration: string, exitAnimationDuration: string, id: string): void {
+    this.id = id;
+    const dialogRef = this.dialog.open(NotDeleteReasonDialogComponent, {
+      width: '50%',
+      data: {id: this.id}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.id = result;
+    });
+  }
+
+  accept(enterAnimationDuration: string, exitAnimationDuration: string, id: string): void {
     this.id = id;
     const dialogRef = this.dialog.open(DeleteReasonDialogComponent, {
       width: '50%',
