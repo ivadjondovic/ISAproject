@@ -15,6 +15,7 @@ import { BoatsComponent } from './boats/boats.component';
 import { BoatAdditionalInfoComponent } from './boat-additional-info/boat-additional-info.component';
 import { CottagesComponent } from './cottages/cottages.component';
 import { CottageAdditionalInfoComponent } from './cottage-additional-info/cottage-additional-info.component';
+import { DeleteAccountComponent } from './delete-account/delete-account.component';
 
 const routes: Routes = [
 
@@ -32,6 +33,7 @@ const routes: Routes = [
   {path: 'boatInfo/:id', component: BoatAdditionalInfoComponent},
   {path: 'cottages', component: CottagesComponent},
   {path: 'cottageInfo/:id', component: CottageAdditionalInfoComponent},
+  {path: 'deleteAccount', component: DeleteAccountComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
   
 ];
 

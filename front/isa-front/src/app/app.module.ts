@@ -39,6 +39,7 @@ import { CottagesComponent } from './cottages/cottages.component';
 import { CottageAdditionalInfoComponent } from './cottage-additional-info/cottage-additional-info.component';
 import { MatInputModule } from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
+import { DeleteAccountComponent } from './delete-account/delete-account.component';
 
 
 
@@ -64,6 +65,7 @@ import {MatSelectModule} from '@angular/material/select';
     BoatAdditionalInfoComponent,
     CottagesComponent,
     CottageAdditionalInfoComponent,
+    DeleteAccountComponent,
     
   ],
   imports: [
