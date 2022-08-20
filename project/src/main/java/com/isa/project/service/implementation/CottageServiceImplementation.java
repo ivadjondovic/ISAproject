@@ -1,6 +1,7 @@
 package com.isa.project.service.implementation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,7 @@ import com.isa.project.dto.ImageDTO;
 import com.isa.project.dto.QuickReservationDTO;
 import com.isa.project.dto.RoomDTO;
 import com.isa.project.dto.RuleDTO;
+import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalCottageService;
 import com.isa.project.model.AvailableCottagePeriod;
 import com.isa.project.model.Cottage;
@@ -170,6 +172,56 @@ public class CottageServiceImplementation implements CottageService{
 		
 		filtered = result.stream().distinct().collect( Collectors.toList() );
 		return filtered;
+	}
+
+
+	@Override
+	public List<Cottage> sort(SortDTO dto) {
+		
+		List<Cottage> cottages = cottageRepository.findAll();
+		if(dto.getSortBy().equals("Name")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(cottages, (c1, c2) ->
+			    (c1.getName().compareTo(c2.getName())));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(cottages, (c1, c2) ->
+			    (c2.getName().compareTo(c1.getName())));
+			}
+		}
+		
+		if(dto.getSortBy().equals("Address")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(cottages, (c1, c2) ->
+			    (c1.getAddress().compareTo(c2.getAddress())));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(cottages, (c1, c2) ->
+			    (c2.getAddress().compareTo(c1.getAddress())));
+			}
+		}
+		if(dto.getSortBy().equals("Price")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(cottages, (c1, c2) ->
+			    Double.compare(c1.getPrice(), c2.getPrice()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(cottages, (c1, c2) ->
+				 Double.compare(c2.getPrice(), c1.getPrice()));
+			}
+		}
+		
+		if(dto.getSortBy().equals("Number of rooms")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(cottages, (c1, c2) ->
+			   Integer.compare(c1.getNumberOfRooms(), c2.getNumberOfRooms()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(cottages, (c1, c2) ->
+				Integer.compare(c2.getNumberOfRooms(), c1.getNumberOfRooms()));
+			}
+		}
+		return cottages;
 	}
 
 	

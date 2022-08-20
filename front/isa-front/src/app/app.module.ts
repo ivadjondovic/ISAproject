@@ -38,6 +38,7 @@ import { BoatAdditionalInfoComponent } from './boat-additional-info/boat-additio
 import { CottagesComponent } from './cottages/cottages.component';
 import { CottageAdditionalInfoComponent } from './cottage-additional-info/cottage-additional-info.component';
 import { MatInputModule } from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
 
 
 
@@ -82,7 +83,8 @@ import { MatInputModule } from '@angular/material/input';
     MatCardModule,
     HttpClientModule,
     MatDialogModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule
     
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

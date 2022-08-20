@@ -11,6 +11,8 @@ export class CottagesComponent implements OnInit {
 
   cottages: any = {} as any;
   searchTerm = '';
+  sortBy = '';
+  sortType = '';
   constructor(public service: CottageService, public router: Router) { }
 
 
@@ -36,6 +38,30 @@ export class CottagesComponent implements OnInit {
         this.cottages = response;
       })
 
+    }
+  }
+
+  sort(){
+    console.log(this.sortBy)
+    let sortingBy = this.sortBy
+    let sortingType = this.sortType
+    console.log(this.sortType)
+    if(this.sortBy = ''){
+      alert('Choose sort by');
+    }else if (this.sortType = ''){
+      alert('Choose sort type');
+    }else{
+      console.log('OK')
+      let data = {
+        sortBy: sortingBy,
+        sortType: sortingType
+      }
+      console.log(data)
+
+      this.service.sort(data).subscribe((response: any) => {
+        this.cottages = response;
+        console.log(this.cottages)
+      })
     }
   }
 

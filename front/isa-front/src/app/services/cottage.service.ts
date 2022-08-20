@@ -31,4 +31,8 @@ export class CottageService {
   search(searchTerm: any){
     return this.http.get(this.baseURL + "api/cottage/search/" + searchTerm);
   }
+
+  sort(data: any){
+    return this.http.post(this.baseURL + "api/cottage/sort" ,  data);
+  }
 }

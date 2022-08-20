@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.project.dto.CottageDTO;
+import com.isa.project.dto.SortDTO;
 import com.isa.project.model.Cottage;
 import com.isa.project.service.CottageService;
 
@@ -48,6 +49,11 @@ public class CottageController {
 	@GetMapping(path = "/search/{searchTerm}")
     public ResponseEntity<?> search(@PathVariable String searchTerm) {
         return new ResponseEntity<>(cottageService.search(searchTerm), HttpStatus.OK);
+    }
+	
+	@PostMapping(path = "/sort")
+    public ResponseEntity<?> sort(@RequestBody SortDTO dto) {
+        return new ResponseEntity<>(cottageService.sort(dto), HttpStatus.OK);
     }
 	
 	
