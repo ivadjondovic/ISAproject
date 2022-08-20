@@ -1,0 +1,45 @@
+textarea {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    margin-top: 10px;
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background: #ffd480;
+}
+
+button:hover {
+    
+    background: #fbcc6e;
+}
+
+.deleteAccount {
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: #f2f2f2;
+    padding: 20px;
+    width: 45%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+}
+
+
+mat-card {
+    background: #ffd480;
+    width: 20%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+}

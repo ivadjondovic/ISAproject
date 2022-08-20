@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>Decline request</h1>
+<div mat-dialog-content>
+    Reason why you want to decline deleting account?
+    <textarea id="deleteRequest" name="deleteRequest" rows="4" [(ngModel)] = "reason"></textarea>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Close</button>
+    <button mat-button (click)="decline()" >Decline</button>
+</div>

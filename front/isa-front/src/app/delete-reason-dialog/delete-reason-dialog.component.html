@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>Accept request</h1>
+<div mat-dialog-content>
+    Reason why you want to accept deleting account?
+    <textarea id="deleteRequest" name="deleteRequest" rows="4" [(ngModel)] = "reason"></textarea>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Close</button>
+    <button mat-button (click)="accept()" >Accept</button>
+</div>

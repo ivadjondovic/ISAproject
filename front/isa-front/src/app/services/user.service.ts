@@ -56,4 +56,12 @@ export class UserService {
     return this.http.put(this.baseURL + "api/users/editAdmin", data, this.getAuthoHeader());
   }
 
+  declineDeactivation(data: any){
+    return this.http.put(this.baseURL + "api/users/declineDeactivation", data, this.getAuthoHeader());
+  }
+
+  acceptDeactivation(data: any){
+    return this.http.put(this.baseURL + "api/users/acceptDeactivation", data, this.getAuthoHeader());
+  }
+
 }

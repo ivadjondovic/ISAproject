@@ -3,6 +3,22 @@
         <mat-icon>home</mat-icon> <span class="nav-caption">Home</span>
     </a>
 
+    <a mat-list-item routerLink="/boats" (click)="onSidenavClose('')">
+        <mat-icon>directions_boat</mat-icon><span class="nav-caption">Boats</span>
+    </a>
+
+    <a mat-list-item routerLink="/cottages" (click)="onSidenavClose('')">
+        <mat-icon>cottage</mat-icon><span class="nav-caption">Cottages</span>
+    </a>
+
+    <a mat-list-item routerLink="/deleteAccount" *ngIf="role == 'ROLE_CLIENT'" (click)="onSidenavClose('')">
+        <mat-icon>delete</mat-icon><span class="nav-caption">Delete account</span>
+    </a>
+
+    <a mat-list-item routerLink="/deleteRequests" *ngIf="role == 'ROLE_ADMIN'" (click)="onSidenavClose('')">
+        <mat-icon>delete_forever</mat-icon><span class="nav-caption">Delete requests</span>
+    </a>
+
     <a mat-list-item routerLink="/registration" (click)="onSidenavClose('')" *ngIf="currentUser == null">
         <mat-icon>person_add</mat-icon><span class="nav-caption">Client Registration</span>
     </a>

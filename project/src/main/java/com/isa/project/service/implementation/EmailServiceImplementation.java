@@ -66,4 +66,30 @@ public class EmailServiceImplementation implements EmailService{
 	    javaMailSender.send(message);
 	}
 
+	@Override
+	public void acceptDeletingAccountEmail(User user, String reason) throws MessagingException {
+		MimeMessage message=javaMailSender.createMimeMessage();
+	    MimeMessageHelper helper;
+	    helper=new MimeMessageHelper(message,true);
+	    helper.setTo(new InternetAddress(user.getUsername()));
+	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
+	    helper.setSubject("Account activation");
+	    helper.setText("Hello " + user.getName() + " " + user.getSurname() +  ",\n\nYour account has been deleted successfully because " + reason + "." + "\n\n");
+	    javaMailSender.send(message);
+		
+	}
+
+	@Override
+	public void declineDeletingAccountEmail(User user, String reason) throws MessagingException {
+		MimeMessage message=javaMailSender.createMimeMessage();
+	    MimeMessageHelper helper;
+	    helper=new MimeMessageHelper(message,true);
+	    helper.setTo(new InternetAddress(user.getUsername()));
+	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
+	    helper.setSubject("Account activation");
+	    helper.setText("Hello " + user.getName() + " " + user.getSurname() +  ",\n\nYour request for deleting account is declined because " + reason + "." + "\n\n");
+	    javaMailSender.send(message);
+		
+	}
+
 }

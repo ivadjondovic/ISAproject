@@ -1,0 +1,99 @@
+<div>
+    <mat-grid-list [cols]="3" [rowHeight]="300">
+        <div *ngFor="let image of boat.images">
+            <mat-grid-tile [rowspan]="1" [colspan]="1">
+                <img class="roundedImage" src="{{image.path}}" style="width:438px; height: 260px;">
+            </mat-grid-tile>
+        </div>
+    </mat-grid-list>
+
+    <hr>
+    <mat-card style="margin-top: 15px;">
+        <mat-card-title style="text-align: center; font-size: 18px;">Available periods</mat-card-title>
+    </mat-card>
+
+    <mat-grid-list [cols]="3" [rowHeight]="100">
+        <div *ngFor="let period of dateList">
+            <mat-grid-tile [rowspan]="1" [colspan]="1">
+                <div class="rounded">
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">From-To:&nbsp;</span>  {{period.startDate| date:'medium'}}-{{period.endDate | date:'medium'}}</p>
+                </div>
+            </mat-grid-tile>
+        </div>
+    </mat-grid-list>
+
+    <mat-card *ngIf="!isEmpty(boat.additionalServices)" style="margin-top: 15px;">
+        <mat-card-title style="text-align: center; font-size: 18px;">Additional services</mat-card-title>
+    </mat-card>
+
+    <mat-grid-list *ngIf="!isEmpty(boat.additionalServices)" [cols]="3" [rowHeight]="150">
+        <div *ngFor="let service of boat.additionalServices">
+            <mat-grid-tile [rowspan]="1" [colspan]="1">
+                <div class="rounded">
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Description:&nbsp;</span> {{service.description}}</p>
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Price:&nbsp;</span> {{service.price}}</p>
+                </div>
+            </mat-grid-tile>
+        </div>
+    </mat-grid-list>
+
+    <mat-card style="margin-top: 15px;">
+        <mat-card-title style="text-align: center; font-size: 18px;">Quick reservations</mat-card-title>
+    </mat-card>
+
+    <mat-grid-list [cols]="3" [rowHeight]="200">
+        <div *ngFor="let reservation of quickReservationList">
+            <mat-grid-tile [rowspan]="1" [colspan]="1">
+                <div class="rounded">
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">From-To:&nbsp;</span> {{reservation.startDate | date:'medium'}} - {{reservation.endDate | date:'medium'}}</p>
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Price:&nbsp;</span> {{reservation.price}}</p>
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Number of person:&nbsp;</span> {{reservation.maxNumberOfPerson}}</p>
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Additional services:&nbsp;</span> {{reservation.additionalServices}}</p>
+                </div>
+            </mat-grid-tile>
+        </div>
+    </mat-grid-list>
+
+    <mat-card *ngIf="!isEmpty(boat.navigationEquipment)" style="margin-top: 15px;">
+        <mat-card-title style="text-align: center; font-size: 18px;">Navigation equipment</mat-card-title>
+    </mat-card>
+
+    <mat-grid-list *ngIf="!isEmpty(boat.navigationEquipment)" [cols]="3" [rowHeight]="100">
+        <div *ngFor="let nav of boat.navigationEquipment">
+            <mat-grid-tile [rowspan]="1" [colspan]="1">
+                <div class="rounded">
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Description:&nbsp;</span> {{nav.description}}</p>
+                </div>
+            </mat-grid-tile>
+        </div>
+    </mat-grid-list>
+
+
+    <mat-card *ngIf="!isEmpty(boat.fishingEquipment)" style="margin-top: 15px;">
+        <mat-card-title style="text-align: center; font-size: 18px;">Fishing equipment</mat-card-title>
+    </mat-card>
+
+    <mat-grid-list *ngIf="!isEmpty(boat.fishingEquipment)" [cols]="3" [rowHeight]="100">
+        <div *ngFor="let fishEq of boat.fishingEquipment">
+            <mat-grid-tile [rowspan]="1" [colspan]="1">
+                <div class="rounded">
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Description:&nbsp;</span> {{fishEq.description}}</p>
+                </div>
+            </mat-grid-tile>
+        </div>
+    </mat-grid-list>
+
+    <mat-card style="margin-top: 15px;">
+        <mat-card-title style="text-align: center; font-size: 18px;">Rules</mat-card-title>
+    </mat-card>
+
+    <mat-grid-list [cols]="3" [rowHeight]="100">
+        <div *ngFor="let rule of boat.rules">
+            <mat-grid-tile [rowspan]="1" [colspan]="1">
+                <div class="rounded">
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Description:&nbsp;</span> {{rule.description}}</p>
+                </div>
+            </mat-grid-tile>
+        </div>
+    </mat-grid-list>
+</div>

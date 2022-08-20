@@ -1,0 +1,30 @@
+<div>
+    <mat-card>
+        <mat-card-title style="text-align: center;">Delete account</mat-card-title>
+    </mat-card>
+    <div class="deleteAccount">
+
+        <div class="row">
+            <div class="col-2">
+                <img  src="assets/warning2.png"  style="width:95px; height: 95px;">
+            </div>
+            <div class="col-10">
+                <p>Please note that after the password has been entered and submitted, there’s no option to restore the
+                    account and its data.
+                    Also, it won’t be possible to register with the same username again. If you click the button, we
+                    will send you an email with further instructions on deleting your account.</p>
+            </div>
+        </div>
+        <label style="margin-top: 15px;" for="deleteRequest">Enter deletion request</label>
+        <textarea id="deleteRequest" name="deleteRequest" rows="4" [(ngModel)] = "reason"></textarea>
+        <div class="row">
+            <div class="col-sm"></div>
+            <div class="col-sm">
+                <button (click)="deleteAccount()">Submit</button>
+            </div>
+            <div class="col-sm"></div>
+        </div>
+
+    </div>
+
+</div>

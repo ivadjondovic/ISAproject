@@ -11,6 +11,12 @@ import { ClientProfileComponent } from './client-profile/client-profile.componen
 import { AdminProfileComponent } from './admin-profile/admin-profile.component';
 import { AdminRegistrationComponent } from './admin-registration/admin-registration.component';
 import { ChangeAdminPasswordComponent } from './change-admin-password/change-admin-password.component';
+import { BoatsComponent } from './boats/boats.component';
+import { BoatAdditionalInfoComponent } from './boat-additional-info/boat-additional-info.component';
+import { CottagesComponent } from './cottages/cottages.component';
+import { CottageAdditionalInfoComponent } from './cottage-additional-info/cottage-additional-info.component';
+import { DeleteAccountComponent } from './delete-account/delete-account.component';
+import { DeleteRequestsComponent } from './delete-requests/delete-requests.component';
 
 const routes: Routes = [
 
@@ -23,7 +29,13 @@ const routes: Routes = [
   {path: 'registrationApproval', component: RegistrationApprovalComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
   {path: 'clientProfile', component: ClientProfileComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
   {path: 'adminProfile', component: AdminProfileComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
-  {path: 'changeAdminPassword', component: ChangeAdminPasswordComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}}
+  {path: 'changeAdminPassword', component: ChangeAdminPasswordComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
+  {path: 'boats', component: BoatsComponent},
+  {path: 'boatInfo/:id', component: BoatAdditionalInfoComponent},
+  {path: 'cottages', component: CottagesComponent},
+  {path: 'cottageInfo/:id', component: CottageAdditionalInfoComponent},
+  {path: 'deleteAccount', component: DeleteAccountComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
+  {path: 'deleteRequests', component: DeleteRequestsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
   
 ];
 

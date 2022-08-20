@@ -33,6 +33,16 @@ import { PasswordDialogComponent } from './password-dialog/password-dialog.compo
 import { AdminProfileComponent } from './admin-profile/admin-profile.component';
 import { AdminRegistrationComponent } from './admin-registration/admin-registration.component';
 import { ChangeAdminPasswordComponent } from './change-admin-password/change-admin-password.component';
+import { BoatsComponent } from './boats/boats.component';
+import { BoatAdditionalInfoComponent } from './boat-additional-info/boat-additional-info.component';
+import { CottagesComponent } from './cottages/cottages.component';
+import { CottageAdditionalInfoComponent } from './cottage-additional-info/cottage-additional-info.component';
+import { MatInputModule } from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import { DeleteAccountComponent } from './delete-account/delete-account.component';
+import { DeleteRequestsComponent } from './delete-requests/delete-requests.component';
+import { DeleteReasonDialogComponent } from './delete-reason-dialog/delete-reason-dialog.component';
+import { NotDeleteReasonDialogComponent } from './not-delete-reason-dialog/not-delete-reason-dialog.component';
 
 
 
@@ -54,6 +64,14 @@ import { ChangeAdminPasswordComponent } from './change-admin-password/change-adm
     AdminProfileComponent,
     AdminRegistrationComponent,
     ChangeAdminPasswordComponent,
+    BoatsComponent,
+    BoatAdditionalInfoComponent,
+    CottagesComponent,
+    CottageAdditionalInfoComponent,
+    DeleteAccountComponent,
+    DeleteRequestsComponent,
+    DeleteReasonDialogComponent,
+    NotDeleteReasonDialogComponent,
     
   ],
   imports: [
@@ -72,7 +90,9 @@ import { ChangeAdminPasswordComponent } from './change-admin-password/change-adm
     FormsModule,
     MatCardModule,
     HttpClientModule,
-    MatDialogModule
+    MatDialogModule,
+    MatInputModule,
+    MatSelectModule
     
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
