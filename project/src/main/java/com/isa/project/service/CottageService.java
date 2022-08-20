@@ -11,5 +11,6 @@ public interface CottageService {
 	
 	public List<Cottage> getAll();
 	public Cottage getById(Long id);
+	public List<Cottage> search(String searchTerm);
 
 }

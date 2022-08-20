@@ -27,4 +27,8 @@ export class CottageService {
   getById(id: any){
     return this.http.get(this.baseURL + "api/cottage/cottage/" + id);
   }
+
+  search(searchTerm: any){
+    return this.http.get(this.baseURL + "api/cottage/search/" + searchTerm);
+  }
 }

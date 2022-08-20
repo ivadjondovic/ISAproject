@@ -10,6 +10,7 @@ import { BoatService } from '../services/boat.service';
 export class BoatsComponent implements OnInit {
 
   boats: any = {} as any;
+  searchTerm: string;
   constructor(public service: BoatService, public router: Router) { }
 
 

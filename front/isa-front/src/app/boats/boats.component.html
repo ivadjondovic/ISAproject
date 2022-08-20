@@ -1,30 +1,51 @@
-<mat-grid-list [cols]="3" [rowHeight]="450">
-    <div *ngFor="let b of boats">
-        <mat-grid-tile [rowspan]="1" [colspan]="1">
-            <div class="rounded">
-                <h2>{{b.name}}</h2>
-                <!-- <img class="roundedImage" src="{{b.images[0].path}}" style="width:438px; height: 260px; margin-bottom: 15px;"> -->
-                <p style="font-size: 17px; color: #4c7d85;">{{b.description}}</p>
-                <p style="font-size: 17px;"><span style="color: #4c7d85;">Type:&nbsp;</span> {{b.boatType}}</p>
-                <p style="font-size: 17px;"><span style="color: #4c7d85;">Length:&nbsp;</span> {{b.boatLength}} m</p>
-                <p style="font-size: 17px;"><span style="color: #4c7d85;">Number of engines:&nbsp;</span> {{b.engines}}
-                </p>
-                <p style="font-size: 17px;"><span style="color: #4c7d85;">Engine power:&nbsp;</span> {{b.enginePower}}
-                </p>
-                <p style="font-size: 17px;"><span style="color: #4c7d85;">Max speed:&nbsp;</span> {{b.maxSpeed}}</p>
-                <p style="font-size: 17px;"><span style="color: #4c7d85;">Capacity:&nbsp;</span> {{b.capacity}}</p>
-                <p style="font-size: 17px;"><span style="color: #4c7d85;">Price:&nbsp;</span> {{b.price}} din</p>
-                <p style="font-size: 17px;"><span style="color: #4c7d85;">
-                        The percentage for keep in case of cancellation:&nbsp;</span> {{b.percentageForKeep}}%</p>
-                <div class="row">
-                    <div class="col-sm"></div>
-                    <div class="col-sm">
-                        <button style="bottom: 0;" (click)="showMore(b.id)">Show more</button>
-                    </div>
-                    <div class="col-sm"></div>
-                </div>
+<div>
 
-            </div>
-        </mat-grid-tile>
+    <div class="row">
+        <div class="col-sm"></div>
+        <div class="col-sm"></div>
+        <div class="col-sm"></div>
+        <div class="col-sm"></div>
+        <div class="col-sm"></div>
+
+        <div class="col-sm">
+            <mat-form-field appearance="fill">
+                <mat-label>Search by name or address</mat-label>
+                <input matInput [(ngModel)]="searchTerm" />
+                <mat-icon matPrefix>search</mat-icon>
+            </mat-form-field>
+        </div>
     </div>
-</mat-grid-list>
+    <mat-grid-list [cols]="3" [rowHeight]="450">
+        <div *ngFor="let b of boats">
+            <mat-grid-tile [rowspan]="1" [colspan]="1">
+                <div class="rounded">
+                    <h2>{{b.name}}</h2>
+                    <!-- <img class="roundedImage" src="{{b.images[0].path}}" style="width:438px; height: 260px; margin-bottom: 15px;"> -->
+                    <p style="font-size: 17px; color: #4c7d85;">{{b.description}}</p>
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Type:&nbsp;</span> {{b.boatType}}</p>
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Length:&nbsp;</span> {{b.boatLength}} m
+                    </p>
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Number of engines:&nbsp;</span>
+                        {{b.engines}}
+                    </p>
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Engine power:&nbsp;</span>
+                        {{b.enginePower}}
+                    </p>
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Max speed:&nbsp;</span> {{b.maxSpeed}}</p>
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Capacity:&nbsp;</span> {{b.capacity}}</p>
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Price:&nbsp;</span> {{b.price}} din</p>
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">
+                            The percentage for keep in case of cancellation:&nbsp;</span> {{b.percentageForKeep}}%</p>
+                    <div class="row">
+                        <div class="col-sm"></div>
+                        <div class="col-sm">
+                            <button style="bottom: 0;" (click)="showMore(b.id)">Show more</button>
+                        </div>
+                        <div class="col-sm"></div>
+                    </div>
+
+                </div>
+            </mat-grid-tile>
+        </div>
+    </mat-grid-list>
+</div>

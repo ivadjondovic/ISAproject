@@ -10,6 +10,7 @@ import { CottageService } from '../services/cottage.service';
 export class CottagesComponent implements OnInit {
 
  cottages: any = {} as any;
+ searchTerm = '';
   constructor(public service: CottageService, public router: Router) { }
 
 
@@ -23,6 +24,17 @@ export class CottagesComponent implements OnInit {
   showMore(id: string){
     this.router.navigate(['/cottageInfo', id]);
   
+  }
+
+  search(){
+    if(this.searchTerm == ''){
+      this.service.getAll().subscribe((response: any) => {
+        this.cottages = response;
+      })
+    }
+    this.service.search(this.searchTerm).subscribe((response: any) => {
+      this.cottages = response;
+    })
   }
 
 }

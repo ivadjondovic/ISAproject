@@ -45,5 +45,10 @@ public class CottageController {
         return new ResponseEntity<>(cottageService.getById(id), HttpStatus.OK);
     }
 	
+	@GetMapping(path = "/search/{searchTerm}")
+    public ResponseEntity<?> search(@PathVariable String searchTerm) {
+        return new ResponseEntity<>(cottageService.search(searchTerm), HttpStatus.OK);
+    }
+	
 	
 }

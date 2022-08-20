@@ -1,9 +1,11 @@
 package com.isa.project.service.implementation;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -148,6 +150,26 @@ public class CottageServiceImplementation implements CottageService{
 	@Override
 	public Cottage getById(Long id) {
 		return cottageRepository.findById(id).get();
+	}
+
+
+	@Override
+	public List<Cottage> search(String searchTerm) {
+		List<Cottage> cottages = cottageRepository.findAll();
+		List<Cottage> result = new ArrayList<>();
+		List<Cottage> filtered = new ArrayList<>();
+		for(Cottage cottage: cottages) {
+			if(cottage.getAddress().toLowerCase().contains(searchTerm.toLowerCase())) {
+				result.add(cottage);
+			}
+			if(cottage.getName().toLowerCase().contains(searchTerm.toLowerCase())) {
+				result.add(cottage);
+			}
+			
+		}
+		
+		filtered = result.stream().distinct().collect( Collectors.toList() );
+		return filtered;
 	}
 
 	
