@@ -10,7 +10,7 @@ import { BoatService } from '../services/boat.service';
 export class BoatsComponent implements OnInit {
 
   boats: any = {} as any;
-  searchTerm: string;
+  searchTerm = '';
   constructor(public service: BoatService, public router: Router) { }
 
 
@@ -21,8 +21,21 @@ export class BoatsComponent implements OnInit {
     })
   }
 
-  showMore(id: string){
+  showMore(id: string) {
     this.router.navigate(['/boatInfo', id]);
   }
+
+  search() {
+    if (this.searchTerm == '') {
+      this.service.getAll().subscribe((response: any) => {
+        this.boats = response;
+      })
+    } else {
+      this.service.search(this.searchTerm).subscribe((response: any) => {
+        this.boats = response;
+      })
+    }
+  }
+
 
 }

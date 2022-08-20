@@ -8,7 +8,6 @@ import com.isa.project.model.Cottage;
 public interface CottageService {
 	
 	public Cottage createCottage(CottageDTO dto);
-	
 	public List<Cottage> getAll();
 	public Cottage getById(Long id);
 	public List<Cottage> search(String searchTerm);

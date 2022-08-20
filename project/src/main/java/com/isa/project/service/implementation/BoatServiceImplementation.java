@@ -1,9 +1,11 @@
 package com.isa.project.service.implementation;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -165,6 +167,29 @@ public class BoatServiceImplementation implements BoatService{
 	@Override
 	public Boat getById(Long id) {
 		return boatRepository.findById(id).get();
+	}
+
+	@Override
+	public List<Boat> search(String searchTerm) {
+		List<Boat> boats = boatRepository.findAll();
+		List<Boat> result = new ArrayList<>();
+		List<Boat> filtered = new ArrayList<>();
+		for(Boat boat: boats) {
+			if(boat.getAddress().toLowerCase().contains(searchTerm.toLowerCase())) {
+				result.add(boat);
+			}
+			if(boat.getName().toLowerCase().contains(searchTerm.toLowerCase())) {
+				result.add(boat);
+			}
+			
+			if(boat.getBoatType().toLowerCase().contains(searchTerm.toLowerCase())) {
+				result.add(boat);
+			}
+			
+		}
+		
+		filtered = result.stream().distinct().collect( Collectors.toList() );
+		return filtered;
 	}
 
 }

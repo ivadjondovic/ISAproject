@@ -27,4 +27,8 @@ export class BoatService {
   getById(id: any){
     return this.http.get(this.baseURL + "api/boat/boat/" + id);
   }
+
+  search(searchTerm: any){
+    return this.http.get(this.baseURL + "api/boat/search/" + searchTerm);
+  }
 }

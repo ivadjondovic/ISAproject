@@ -10,4 +10,5 @@ public interface BoatService {
 	public Boat createBoat(BoatDTO dto);
 	public List<Boat> getAll();
 	public Boat getById(Long id);
+	public List<Boat> search(String searchTerm);
 }

@@ -49,5 +49,10 @@ public class BoatController {
     public ResponseEntity<?> getById(@PathVariable Long id) {
         return new ResponseEntity<>(boatService.getById(id), HttpStatus.OK);
     }
+	
+	@GetMapping(path = "/search/{searchTerm}")
+    public ResponseEntity<?> search(@PathVariable String searchTerm) {
+        return new ResponseEntity<>(boatService.search(searchTerm), HttpStatus.OK);
+    }
 
 }
