@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.project.dto.BoatDTO;
+import com.isa.project.dto.SortDTO;
 import com.isa.project.model.Boat;
 import com.isa.project.service.BoatService;
 
@@ -53,6 +54,11 @@ public class BoatController {
 	@GetMapping(path = "/search/{searchTerm}")
     public ResponseEntity<?> search(@PathVariable String searchTerm) {
         return new ResponseEntity<>(boatService.search(searchTerm), HttpStatus.OK);
+    }
+	
+	@PostMapping(path = "/sort")
+    public ResponseEntity<?> sort(@RequestBody SortDTO dto) {
+        return new ResponseEntity<>(boatService.sort(dto), HttpStatus.OK);
     }
 
 }

@@ -31,4 +31,9 @@ export class BoatService {
   search(searchTerm: any){
     return this.http.get(this.baseURL + "api/boat/search/" + searchTerm);
   }
+
+  sort(data: any){
+    return this.http.post(this.baseURL + "api/boat/sort" ,  data);
+  }
+  
 }

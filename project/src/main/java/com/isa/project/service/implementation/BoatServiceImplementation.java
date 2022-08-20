@@ -1,6 +1,7 @@
 package com.isa.project.service.implementation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,7 @@ import com.isa.project.dto.ImageDTO;
 import com.isa.project.dto.NavigationEquipmentDTO;
 import com.isa.project.dto.QuickReservationDTO;
 import com.isa.project.dto.RuleDTO;
+import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalBoatService;
 import com.isa.project.model.AvailableBoatPeriod;
 import com.isa.project.model.Boat;
@@ -190,6 +192,109 @@ public class BoatServiceImplementation implements BoatService{
 		
 		filtered = result.stream().distinct().collect( Collectors.toList() );
 		return filtered;
+	}
+
+	@Override
+	public List<Boat> sort(SortDTO dto) {
+		List<Boat> boats = boatRepository.findAll();
+		if(dto.getSortBy().equals("Name")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(boats, (b1, b2) ->
+			    (b1.getName().compareTo(b2.getName())));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(boats, (b1, b2) ->
+			    (b2.getName().compareTo(b1.getName())));
+			}
+		}
+		
+		if(dto.getSortBy().equals("Type")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(boats, (b1, b2) ->
+			    (b1.getBoatType().compareTo(b2.getBoatType())));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(boats, (b1, b2) ->
+				 (b2.getBoatType().compareTo(b1.getBoatType())));
+			}
+		}
+		if(dto.getSortBy().equals("Price")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(boats, (b1, b2) ->
+			    Double.compare(b1.getPrice(), b2.getPrice()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(boats, (b1, b2) ->
+				 Double.compare(b2.getPrice(), b1.getPrice()));
+			}
+		}
+		
+		if(dto.getSortBy().equals("Length")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(boats, (b1, b2) ->
+			    Double.compare(b1.getBoatLength(), b2.getBoatLength()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(boats, (b1, b2) ->
+				 Double.compare(b2.getBoatLength(), b1.getBoatLength()));
+			}
+		}
+		
+		if(dto.getSortBy().equals("Number of engines")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(boats, (b1, b2) ->
+			   Integer.compare(b1.getEngines(), b2.getEngines()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(boats, (b1, b2) ->
+				Integer.compare(b2.getEngines(), b1.getEngines()));
+			}
+		}
+		
+		if(dto.getSortBy().equals("Engine power")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(boats, (b1, b2) ->
+			    Double.compare(b1.getEnginePower(), b2.getEnginePower()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(boats, (b1, b2) ->
+				 Double.compare(b2.getEnginePower(), b1.getEnginePower()));
+			}
+		}
+		
+		if(dto.getSortBy().equals("Max speed")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(boats, (b1, b2) ->
+			    Double.compare(b1.getMaxSpeed(), b2.getMaxSpeed()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(boats, (b1, b2) ->
+				 Double.compare(b2.getMaxSpeed(), b1.getMaxSpeed()));
+			}
+		}
+		
+		if(dto.getSortBy().equals("Capacity")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(boats, (b1, b2) ->
+			   Integer.compare(b1.getCapacity(), b2.getCapacity()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(boats, (b1, b2) ->
+				Integer.compare(b2.getCapacity(), b1.getCapacity()));
+			}
+		}
+		
+		if(dto.getSortBy().equals("Percentage for keep")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(boats, (b1, b2) ->
+			    Double.compare(b1.getPercentageForKeep(), b2.getPercentageForKeep()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(boats, (b1, b2) ->
+				 Double.compare(b2.getPercentageForKeep(), b1.getPercentageForKeep()));
+			}
+		}
+		return boats;
 	}
 
 }
