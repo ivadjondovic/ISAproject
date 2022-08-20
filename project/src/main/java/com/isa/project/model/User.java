@@ -43,6 +43,7 @@ public abstract class User implements UserDetails{
             strategy = GenerationType.IDENTITY
     )
     private Long id;
+	private Boolean deleted;
 	private String username;
 	private String password;
 	private String name;
@@ -179,6 +180,14 @@ public abstract class User implements UserDetails{
 		// TODO Auto-generated method stub
 		return true;
 	}
+	public Boolean getDeleted() {
+		return deleted;
+	}
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+    
+    
 	
 	
 	

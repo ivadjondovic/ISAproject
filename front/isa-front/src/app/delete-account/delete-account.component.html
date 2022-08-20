@@ -16,11 +16,11 @@
             </div>
         </div>
         <label style="margin-top: 15px;" for="deleteRequest">Enter deletion request</label>
-        <textarea id="deleteRequest" name="deleteRequest" rows="4"></textarea>
+        <textarea id="deleteRequest" name="deleteRequest" rows="4" [(ngModel)] = "reason"></textarea>
         <div class="row">
             <div class="col-sm"></div>
             <div class="col-sm">
-                <button>Submit</button>
+                <button (click)="deleteAccount()">Submit</button>
             </div>
             <div class="col-sm"></div>
         </div>
