@@ -19,7 +19,7 @@ public class BoatDTO {
 	private Long boatOwnerId;
 	private Set<NavigationEquipmentDTO> navigationEquipment;
 	private Set<QuickReservationDTO> quickReservations;
-	private Set<BoatFishingEquipmentDTO> fishingEquipment;
+	private Set<FishingEquipmentDTO> fishingEquipment;
 	private Set<AdditionalServiceDTO> additionalServices;
 	private Set<AvailablePeriodDTO> availablePeriods;
 	private Set<RuleDTO> rules;
@@ -102,10 +102,10 @@ public class BoatDTO {
 	public void setQuickReservations(Set<QuickReservationDTO> quickReservations) {
 		this.quickReservations = quickReservations;
 	}
-	public Set<BoatFishingEquipmentDTO> getFishingEquipment() {
+	public Set<FishingEquipmentDTO> getFishingEquipment() {
 		return fishingEquipment;
 	}
-	public void setFishingEquipment(Set<BoatFishingEquipmentDTO> fishingEquipment) {
+	public void setFishingEquipment(Set<FishingEquipmentDTO> fishingEquipment) {
 		this.fishingEquipment = fishingEquipment;
 	}
 	public Set<AdditionalServiceDTO> getAdditionalServices() {

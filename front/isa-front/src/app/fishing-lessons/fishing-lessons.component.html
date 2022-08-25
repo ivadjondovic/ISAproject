@@ -1,0 +1,26 @@
+<div>
+    <mat-grid-list [cols]="3" [rowHeight]="300">
+        <div *ngFor="let f of fishingLessons">
+            <mat-grid-tile [rowspan]="1" [colspan]="1">
+                <div class="rounded">
+                    <h2>{{f.name}}</h2>
+                    <!-- <img class="roundedImage" src="{{b.images[0].path}}" style="width:438px; height: 260px; margin-bottom: 15px;"> -->
+                    <p style="font-size: 17px; color: #4c7d85;">{{f.description}}</p>
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Address:&nbsp;</span> {{f.address}}</p>
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Number of people:&nbsp;</span>
+                        {{f.numberOfPeople}}</p>
+
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Price:&nbsp;</span> {{f.price}} din</p>
+                    <div class="row">
+                        <div class="col-sm"></div>
+                        <div class="col-sm">
+                            <button style="bottom: 0;" (click)="showMore(f.id)">Show more</button>
+                        </div>
+                        <div class="col-sm"></div>
+                    </div>
+
+                </div>
+            </mat-grid-tile>
+        </div>
+    </mat-grid-list>
+</div>

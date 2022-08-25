@@ -17,6 +17,8 @@ import { CottagesComponent } from './cottages/cottages.component';
 import { CottageAdditionalInfoComponent } from './cottage-additional-info/cottage-additional-info.component';
 import { DeleteAccountComponent } from './delete-account/delete-account.component';
 import { DeleteRequestsComponent } from './delete-requests/delete-requests.component';
+import { FishingLessonsComponent } from './fishing-lessons/fishing-lessons.component';
+import { EditFishingLessonComponent } from './edit-fishing-lesson/edit-fishing-lesson.component';
 
 const routes: Routes = [
 
@@ -36,6 +38,8 @@ const routes: Routes = [
   {path: 'cottageInfo/:id', component: CottageAdditionalInfoComponent},
   {path: 'deleteAccount', component: DeleteAccountComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
   {path: 'deleteRequests', component: DeleteRequestsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
+  {path: 'fishingLessons', component: FishingLessonsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_INSTRUCTOR'}},
+  {path: 'editFishingLesson/:id', component: EditFishingLessonComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_INSTRUCTOR'}}
   
 ];
 
