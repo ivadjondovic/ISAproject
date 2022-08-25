@@ -55,4 +55,8 @@
         <mat-icon>settings_applications</mat-icon><span class="nav-caption">Change password</span>
     </a>
 
+    <a mat-list-item routerLink="/fishingLessons" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_INSTRUCTOR'">
+        <mat-icon>water</mat-icon><span class="nav-caption">Fishing lessons</span>
+    </a>
+
   </mat-nav-list>

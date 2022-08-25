@@ -43,6 +43,8 @@ import { DeleteAccountComponent } from './delete-account/delete-account.componen
 import { DeleteRequestsComponent } from './delete-requests/delete-requests.component';
 import { DeleteReasonDialogComponent } from './delete-reason-dialog/delete-reason-dialog.component';
 import { NotDeleteReasonDialogComponent } from './not-delete-reason-dialog/not-delete-reason-dialog.component';
+import { FishingLessonsComponent } from './fishing-lessons/fishing-lessons.component';
+import { EditFishingLessonComponent } from './edit-fishing-lesson/edit-fishing-lesson.component';
 
 
 
@@ -72,6 +74,8 @@ import { NotDeleteReasonDialogComponent } from './not-delete-reason-dialog/not-d
     DeleteRequestsComponent,
     DeleteReasonDialogComponent,
     NotDeleteReasonDialogComponent,
+    FishingLessonsComponent,
+    EditFishingLessonComponent,
     
   ],
   imports: [
