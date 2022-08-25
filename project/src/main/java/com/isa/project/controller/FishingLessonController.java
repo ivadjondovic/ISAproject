@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.project.dto.FishingLessonDTO;
+import com.isa.project.dto.SortDTO;
 import com.isa.project.model.FishingLesson;
 import com.isa.project.service.FishingLessonService;
 
@@ -67,6 +68,11 @@ public class FishingLessonController {
 	@GetMapping(path = "/lessonById/{id}")
     public ResponseEntity<?> getOneLesson(@PathVariable Long id) {
         return new ResponseEntity<>(fishingLessonService.getById(id), HttpStatus.OK);
+    }
+	
+	@PostMapping(path = "/sort")
+    public ResponseEntity<?> sort(@RequestBody SortDTO dto) {
+        return new ResponseEntity<>(fishingLessonService.sort(dto), HttpStatus.OK);
     }
 	
 }

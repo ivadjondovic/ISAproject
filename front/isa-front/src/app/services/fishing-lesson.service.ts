@@ -44,4 +44,8 @@ export class FishingLessonService {
     return this.http.get(this.baseURL + "api/fishing/lessonById/" + id);
   }
 
+  sort(data: any){
+    return this.http.post(this.baseURL + "api/fishing/sort" ,  data);
+  }
+
 }

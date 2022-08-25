@@ -32,6 +32,27 @@ export class ClientFishingLessonsComponent implements OnInit {
   }
 
   sort(){
+    console.log(this.sortBy)
+    let sortingBy = this.sortBy
+    let sortingType = this.sortType
+    console.log(this.sortType)
+    if(this.sortBy = ''){
+      alert('Choose sort by');
+    }else if (this.sortType = ''){
+      alert('Choose sort type');
+    }else{
+      console.log('OK')
+      let data = {
+        sortBy: sortingBy,
+        sortType: sortingType
+      }
+      console.log(data)
+
+      this.service.sort(data).subscribe((response: any) => {
+        this.lessons = response;
+        console.log(this.lessons)
+      })
+    }
    
   }
 
