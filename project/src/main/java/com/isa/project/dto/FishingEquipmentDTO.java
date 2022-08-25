@@ -1,6 +1,6 @@
 package com.isa.project.dto;
 
-public class BoatFishingEquipmentDTO {
+public class FishingEquipmentDTO {
 
 	private String description;
 

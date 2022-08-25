@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import com.isa.project.dto.AdditionalServiceDTO;
 import com.isa.project.dto.AvailablePeriodDTO;
 import com.isa.project.dto.BoatDTO;
-import com.isa.project.dto.BoatFishingEquipmentDTO;
+import com.isa.project.dto.FishingEquipmentDTO;
 import com.isa.project.dto.ImageDTO;
 import com.isa.project.dto.NavigationEquipmentDTO;
 import com.isa.project.dto.QuickReservationDTO;
@@ -133,7 +133,7 @@ public class BoatServiceImplementation implements BoatService{
 			
 		}
 		
-		for(BoatFishingEquipmentDTO fishingEquipmentDTO: dto.getFishingEquipment()) {
+		for(FishingEquipmentDTO fishingEquipmentDTO: dto.getFishingEquipment()) {
 			BoatFishingEquipment fishingEquipment = new BoatFishingEquipment();
 			fishingEquipment.setDescription(fishingEquipmentDTO.getDescription());
 			fishingEquipment.setBoat(savedBoat);
