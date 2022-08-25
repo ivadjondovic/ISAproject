@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.project.dto.FishingLessonDTO;
-import com.isa.project.dto.UserDTO;
 import com.isa.project.model.FishingLesson;
-import com.isa.project.model.User;
 import com.isa.project.service.FishingLessonService;
 
 @RestController

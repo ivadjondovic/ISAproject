@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class QuickReservationDTO {
 
+	private Long id;
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
 	private Double price;
@@ -46,6 +47,12 @@ public class QuickReservationDTO {
 	}
 	public void setLocation(String location) {
 		this.location = location;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	

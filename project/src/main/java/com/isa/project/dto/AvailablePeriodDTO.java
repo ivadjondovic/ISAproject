@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class AvailablePeriodDTO {
 	
+	private Long id;
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
 	public LocalDateTime getStartDate() {
@@ -17,6 +18,12 @@ public class AvailablePeriodDTO {
 	}
 	public void setEndDate(LocalDateTime endDate) {
 		this.endDate = endDate;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	

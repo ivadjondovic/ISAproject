@@ -29,6 +29,7 @@ import com.isa.project.repository.AvailableFishingLessonPeriodRepository;
 import com.isa.project.repository.FishingEquipmentRepository;
 import com.isa.project.repository.FishingLessonRepository;
 import com.isa.project.repository.QuickFishingLessonReservationRepository;
+import com.isa.project.repository.RuleRepository;
 import com.isa.project.repository.UserRepository;
 import com.isa.project.service.FishingLessonService;
 
@@ -37,6 +38,9 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private RuleRepository ruleRepository;
 	
 	@Autowired
 	private FishingLessonRepository fishingLessonRepository;
@@ -170,16 +174,14 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 			fishingLesson.setPercentageForKeep(dto.getPercentageForKeep());
 		}
 		
-		
-		
-		Set<FishingEquipment> fishingEquipments = new HashSet<>();
-		Set<Rule> rules = new HashSet<>();
-		Set<AvailableFishingLessonPeriod> availablePeriods = new HashSet<>();
-		Set<QuickFishingLessonReservation> quickReservations = new HashSet<>();
-		Set<AdditionalFishingLessonService> additionalServices = new HashSet<>();
-		Set<Image> images = new HashSet<>();
-		
 		FishingLesson savedFishingLesson = fishingLessonRepository.save(fishingLesson);
+		
+		Set<FishingEquipment> fishingEquipments = savedFishingLesson.getFishingEquipment();
+		Set<Rule> rules = savedFishingLesson.getRules();
+		Set<AvailableFishingLessonPeriod> availablePeriods = savedFishingLesson.getAvailablePeriods();
+		Set<QuickFishingLessonReservation> quickReservations = savedFishingLesson.getQuickReservations();
+		Set<AdditionalFishingLessonService> additionalServices = savedFishingLesson.getAdditionalServices();
+		Set<Image> images = savedFishingLesson.getImages();
 		
 		/*
 		for(RuleDTO ruleDto: dto.getRules()) {
@@ -190,10 +192,18 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		 */
 		if(!dto.getRules().isEmpty()) {
 			for(RuleDTO ruleDto: dto.getRules()) {
-				Rule rule = new Rule();
-				rule.setDescription(ruleDto.getDescription());
-				rules.add(rule);
+				if(ruleDto.getId() != null) {
+					Rule existingRule = ruleRepository.findById(ruleDto.getId()).get();
+					existingRule.setDescription(ruleDto.getDescription());
+					ruleRepository.save(existingRule);
+				}
+				else {
+					Rule rule = new Rule();
+					rule.setDescription(ruleDto.getDescription());
+					rules.add(rule);
+				}
 			}
+			
 			savedFishingLesson.setRules(rules);
 		}
 		
@@ -207,16 +217,28 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		}
 		
 		if(!dto.getQuickReservations().isEmpty()) {
+			
 			for(QuickReservationDTO quickReservationDto: dto.getQuickReservations()) {
-				QuickFishingLessonReservation quickReservation = new QuickFishingLessonReservation();
-				quickReservation.setStartDate(quickReservationDto.getStartDate());
-				quickReservation.setEndDate(quickReservationDto.getEndDate());
-				quickReservation.setAdditionalServices(quickReservationDto.getAdditionalServices());
-				quickReservation.setMaxNumberOfPerson(quickReservationDto.getMaxNumberOfPerson());
-				quickReservation.setPrice(quickReservationDto.getPrice());
-				quickReservation.setFishingLesson(savedFishingLesson);
-				QuickFishingLessonReservation savedReservation = quickReservationRepository.save(quickReservation);
-				quickReservations.add(savedReservation);
+				if(quickReservationDto.getId() != null) {
+					QuickFishingLessonReservation existingReservation = quickReservationRepository.findById(quickReservationDto.getId()).get();
+					existingReservation.setStartDate(quickReservationDto.getStartDate());
+					existingReservation.setEndDate(quickReservationDto.getEndDate());
+					existingReservation.setAdditionalServices(quickReservationDto.getAdditionalServices());
+					existingReservation.setMaxNumberOfPerson(quickReservationDto.getMaxNumberOfPerson());
+					existingReservation.setPrice(quickReservationDto.getPrice());
+					existingReservation.setFishingLesson(savedFishingLesson);
+					quickReservationRepository.save(existingReservation);
+				} else {
+					QuickFishingLessonReservation quickReservation = new QuickFishingLessonReservation();
+					quickReservation.setStartDate(quickReservationDto.getStartDate());
+					quickReservation.setEndDate(quickReservationDto.getEndDate());
+					quickReservation.setAdditionalServices(quickReservationDto.getAdditionalServices());
+					quickReservation.setMaxNumberOfPerson(quickReservationDto.getMaxNumberOfPerson());
+					quickReservation.setPrice(quickReservationDto.getPrice());
+					quickReservation.setFishingLesson(savedFishingLesson);
+					QuickFishingLessonReservation savedReservation = quickReservationRepository.save(quickReservation);
+					quickReservations.add(savedReservation);
+				}
 			}
 			savedFishingLesson.setQuickReservations(quickReservations);
 		}
@@ -224,12 +246,20 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		if(!dto.getAdditionalServices().isEmpty()) {
 			
 			for(AdditionalServiceDTO serviceDto: dto.getAdditionalServices()) {		
-				AdditionalFishingLessonService service = new AdditionalFishingLessonService();
-				service.setDescription(serviceDto.getDescription());
-				service.setPrice(serviceDto.getPrice());
-				service.setFishingLesson(savedFishingLesson);
-				AdditionalFishingLessonService savedService = additionalServiceRepository.save(service);
-				additionalServices.add(savedService);
+				if(serviceDto.getId() != null) {
+					AdditionalFishingLessonService existingService = additionalServiceRepository.findById(serviceDto.getId()).get();
+					existingService.setDescription(serviceDto.getDescription());
+					existingService.setPrice(serviceDto.getPrice());
+					existingService.setFishingLesson(savedFishingLesson);
+					additionalServiceRepository.save(existingService);
+				} else {
+					AdditionalFishingLessonService service = new AdditionalFishingLessonService();
+					service.setDescription(serviceDto.getDescription());
+					service.setPrice(serviceDto.getPrice());
+					service.setFishingLesson(savedFishingLesson);
+					AdditionalFishingLessonService savedService = additionalServiceRepository.save(service);
+					additionalServices.add(savedService);
+				}
 			}
 			
 			savedFishingLesson.setAdditionalServices(additionalServices);
@@ -237,12 +267,20 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		
 		if(!dto.getAvailablePeriods().isEmpty()) {
 			for(AvailablePeriodDTO periodDto: dto.getAvailablePeriods()) {
-				AvailableFishingLessonPeriod period = new AvailableFishingLessonPeriod();
-				period.setStartDate(periodDto.getStartDate());
-				period.setEndDate(periodDto.getEndDate());
-				period.setFishingLesson(savedFishingLesson);
-				AvailableFishingLessonPeriod savedPeriod = availablePeriodRepository.save(period);
-				availablePeriods.add(savedPeriod);
+				if(periodDto.getId() != null) {
+					AvailableFishingLessonPeriod existingPeriod = availablePeriodRepository.findById(periodDto.getId()).get();
+					existingPeriod.setStartDate(periodDto.getStartDate());
+					existingPeriod.setEndDate(periodDto.getEndDate());
+					existingPeriod.setFishingLesson(savedFishingLesson);
+					availablePeriodRepository.save(existingPeriod);
+				} else {
+					AvailableFishingLessonPeriod period = new AvailableFishingLessonPeriod();
+					period.setStartDate(periodDto.getStartDate());
+					period.setEndDate(periodDto.getEndDate());
+					period.setFishingLesson(savedFishingLesson);
+					AvailableFishingLessonPeriod savedPeriod = availablePeriodRepository.save(period);
+					availablePeriods.add(savedPeriod);
+				}
 			}
 			savedFishingLesson.setAvailablePeriods(availablePeriods);
 			
@@ -250,11 +288,18 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		
 		if(!dto.getEquipment().isEmpty()) {
 			for(FishingEquipmentDTO fishingEquipmentDTO: dto.getEquipment()) {
-				FishingEquipment fishingEquipment = new FishingEquipment();
-				fishingEquipment.setDescription(fishingEquipmentDTO.getDescription());
-				fishingEquipment.setFishingLesson(savedFishingLesson);
-				FishingEquipment savedFishingEquipment = fishingEquipmentRepository.save(fishingEquipment);
-				fishingEquipments.add(savedFishingEquipment);
+				if(fishingEquipmentDTO.getId() != null) {
+					FishingEquipment existingEquipment = fishingEquipmentRepository.findById(fishingEquipmentDTO.getId()).get();
+					existingEquipment.setDescription(fishingEquipmentDTO.getDescription());
+					existingEquipment.setFishingLesson(savedFishingLesson);
+					fishingEquipmentRepository.save(existingEquipment);
+				} else {
+					FishingEquipment fishingEquipment = new FishingEquipment();
+					fishingEquipment.setDescription(fishingEquipmentDTO.getDescription());
+					fishingEquipment.setFishingLesson(savedFishingLesson);
+					FishingEquipment savedFishingEquipment = fishingEquipmentRepository.save(fishingEquipment);
+					fishingEquipments.add(savedFishingEquipment);
+				}
 			}
 			savedFishingLesson.setFishingEquipment(fishingEquipments);
 			

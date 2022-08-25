@@ -2,6 +2,7 @@ package com.isa.project.dto;
 
 public class FishingEquipmentDTO {
 
+	private Long id;
 	private String description;
 
 	public String getDescription() {
@@ -10,6 +11,14 @@ public class FishingEquipmentDTO {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	
