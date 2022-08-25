@@ -36,4 +36,8 @@ export class FishingLessonService {
     return this.http.put(this.baseURL + "api/fishing/editFishingLesson", data, this.getAuthoHeader());
   }
 
+  getAll(){
+    return this.http.get(this.baseURL + "api/fishing/fishingLessons");
+  }
+
 }

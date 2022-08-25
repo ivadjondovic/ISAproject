@@ -59,4 +59,9 @@ public class FishingLessonController {
         return new ResponseEntity<>(fishingLesson, HttpStatus.OK);
     }
 	
+	@GetMapping(path = "/fishingLessons")
+    public ResponseEntity<?> getAll() {
+        return new ResponseEntity<>(fishingLessonService.getAll(), HttpStatus.OK);
+    }
+	
 }

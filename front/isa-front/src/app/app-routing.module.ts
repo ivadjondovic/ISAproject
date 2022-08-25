@@ -19,6 +19,7 @@ import { DeleteAccountComponent } from './delete-account/delete-account.componen
 import { DeleteRequestsComponent } from './delete-requests/delete-requests.component';
 import { FishingLessonsComponent } from './fishing-lessons/fishing-lessons.component';
 import { EditFishingLessonComponent } from './edit-fishing-lesson/edit-fishing-lesson.component';
+import { ClientFishingLessonsComponent } from './client-fishing-lessons/client-fishing-lessons.component';
 
 const routes: Routes = [
 
@@ -39,7 +40,8 @@ const routes: Routes = [
   {path: 'deleteAccount', component: DeleteAccountComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
   {path: 'deleteRequests', component: DeleteRequestsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
   {path: 'fishingLessons', component: FishingLessonsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_INSTRUCTOR'}},
-  {path: 'editFishingLesson/:id', component: EditFishingLessonComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_INSTRUCTOR'}}
+  {path: 'editFishingLesson/:id', component: EditFishingLessonComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_INSTRUCTOR'}},
+  {path: 'lessons', component: ClientFishingLessonsComponent},
   
 ];
 

@@ -314,4 +314,10 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		return fishingLesson;
 	}
 
+	@Override
+	public List<FishingLesson> getAll() {
+
+		return fishingLessonRepository.findAll();
+	}
+
 }
