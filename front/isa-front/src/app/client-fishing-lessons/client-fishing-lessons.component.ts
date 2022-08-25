@@ -28,6 +28,16 @@ export class ClientFishingLessonsComponent implements OnInit {
   }
 
   search() {
+    if (this.searchTerm == '') {
+      this.service.getAll().subscribe((response: any) => {
+        this.lessons = response;
+      })
+    } else {
+      this.service.search(this.searchTerm).subscribe((response: any) => {
+        this.lessons = response;
+      })
+
+    }
     
   }
 

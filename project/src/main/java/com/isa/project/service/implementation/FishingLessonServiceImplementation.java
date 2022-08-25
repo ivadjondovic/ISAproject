@@ -1,10 +1,12 @@
 package com.isa.project.service.implementation;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -379,6 +381,25 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 			}
 		}
 		return lessons;
+	}
+
+	@Override
+	public List<FishingLesson> search(String searchTerm) {
+		List<FishingLesson> lessons = fishingLessonRepository.findAll();
+		List<FishingLesson> result = new ArrayList<>();
+		List<FishingLesson> filtered = new ArrayList<>();
+		for(FishingLesson lesson: lessons) {
+			if(lesson.getAddress().toLowerCase().contains(searchTerm.toLowerCase())) {
+				result.add(lesson);
+			}
+			if(lesson.getName().toLowerCase().contains(searchTerm.toLowerCase())) {
+				result.add(lesson);
+			}
+			
+		}
+		
+		filtered = result.stream().distinct().collect( Collectors.toList() );
+		return filtered;
 	}
 
 }

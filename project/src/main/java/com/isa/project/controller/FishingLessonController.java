@@ -75,4 +75,9 @@ public class FishingLessonController {
         return new ResponseEntity<>(fishingLessonService.sort(dto), HttpStatus.OK);
     }
 	
+	@GetMapping(path = "/search/{searchTerm}")
+    public ResponseEntity<?> search(@PathVariable String searchTerm) {
+        return new ResponseEntity<>(fishingLessonService.search(searchTerm), HttpStatus.OK);
+    }
+	
 }

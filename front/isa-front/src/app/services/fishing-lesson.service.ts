@@ -48,4 +48,8 @@ export class FishingLessonService {
     return this.http.post(this.baseURL + "api/fishing/sort" ,  data);
   }
 
+  search(searchTerm: any){
+    return this.http.get(this.baseURL + "api/fishing/search/" + searchTerm);
+  }
+
 }

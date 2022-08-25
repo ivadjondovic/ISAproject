@@ -14,5 +14,5 @@ public interface FishingLessonService {
 	public FishingLesson editFishingLesson(FishingLessonDTO dto);
 	public List<FishingLesson> getAll();
 	public List<FishingLesson> sort(SortDTO dto);
-	
+	public List<FishingLesson> search(String searchTerm);
 }
