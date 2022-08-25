@@ -308,4 +308,10 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		return fishingLessonRepository.save(savedFishingLesson);
 	}
 
+	@Override
+	public FishingLesson getById(Long id) {
+		FishingLesson fishingLesson = fishingLessonRepository.findById(id).get();
+		return fishingLesson;
+	}
+
 }
