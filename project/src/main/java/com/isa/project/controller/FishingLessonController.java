@@ -64,4 +64,9 @@ public class FishingLessonController {
         return new ResponseEntity<>(fishingLessonService.getAll(), HttpStatus.OK);
     }
 	
+	@GetMapping(path = "/lessonById/{id}")
+    public ResponseEntity<?> getOneLesson(@PathVariable Long id) {
+        return new ResponseEntity<>(fishingLessonService.getById(id), HttpStatus.OK);
+    }
+	
 }

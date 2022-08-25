@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FishingLessonService } from '../services/fishing-lesson.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class ClientFishingLessonsComponent implements OnInit {
   searchTerm = '';
   sortBy = '';
   sortType = '';
-  constructor(public service: FishingLessonService) { }
+  constructor(public service: FishingLessonService, public router: Router) { }
 
   ngOnInit(): void {
     this.service.getAll().subscribe((response: any) => {
@@ -22,7 +23,7 @@ export class ClientFishingLessonsComponent implements OnInit {
   }
 
   showMore(id: string) {
-    //this.router.navigate(['/cottageInfo', id]);
+    this.router.navigate(['/lessonInfo', id]);
 
   }
 

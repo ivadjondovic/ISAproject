@@ -20,6 +20,7 @@ import { DeleteRequestsComponent } from './delete-requests/delete-requests.compo
 import { FishingLessonsComponent } from './fishing-lessons/fishing-lessons.component';
 import { EditFishingLessonComponent } from './edit-fishing-lesson/edit-fishing-lesson.component';
 import { ClientFishingLessonsComponent } from './client-fishing-lessons/client-fishing-lessons.component';
+import { FishingLessonAdditionalInfoComponent } from './fishing-lesson-additional-info/fishing-lesson-additional-info.component';
 
 const routes: Routes = [
 
@@ -42,6 +43,7 @@ const routes: Routes = [
   {path: 'fishingLessons', component: FishingLessonsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_INSTRUCTOR'}},
   {path: 'editFishingLesson/:id', component: EditFishingLessonComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_INSTRUCTOR'}},
   {path: 'lessons', component: ClientFishingLessonsComponent},
+  {path: 'lessonInfo/:id', component: FishingLessonAdditionalInfoComponent},
   
 ];
 

@@ -46,6 +46,7 @@ import { NotDeleteReasonDialogComponent } from './not-delete-reason-dialog/not-d
 import { FishingLessonsComponent } from './fishing-lessons/fishing-lessons.component';
 import { EditFishingLessonComponent } from './edit-fishing-lesson/edit-fishing-lesson.component';
 import { ClientFishingLessonsComponent } from './client-fishing-lessons/client-fishing-lessons.component';
+import { FishingLessonAdditionalInfoComponent } from './fishing-lesson-additional-info/fishing-lesson-additional-info.component';
 
 
 
@@ -78,6 +79,7 @@ import { ClientFishingLessonsComponent } from './client-fishing-lessons/client-f
     FishingLessonsComponent,
     EditFishingLessonComponent,
     ClientFishingLessonsComponent,
+    FishingLessonAdditionalInfoComponent,
     
   ],
   imports: [

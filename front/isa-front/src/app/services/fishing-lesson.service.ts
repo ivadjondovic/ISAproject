@@ -40,4 +40,8 @@ export class FishingLessonService {
     return this.http.get(this.baseURL + "api/fishing/fishingLessons");
   }
 
+  getOneLesson(id: any){
+    return this.http.get(this.baseURL + "api/fishing/lessonById/" + id);
+  }
+
 }
