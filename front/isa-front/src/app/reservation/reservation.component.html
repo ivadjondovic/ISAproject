@@ -65,6 +65,32 @@
                 <div class="col-8"></div>
                 <div class="col-sm"></div>
             </div>
+            <div class="row">
+                <div class="col-sm">
+        
+                    <mat-form-field appearance="fill">
+                        <mat-label>Sort by</mat-label>
+                        <mat-select [(ngModel)]="sortCottageBy">
+                            <mat-option value="Price">Price</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Choose sort type</mat-label>
+                        <mat-select [(ngModel)]="sortCottageType">
+                            <mat-option value="Descending">Descending</mat-option>
+                            <mat-option value="Ascending">Ascending</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+        
+                </div>
+                <div class="col-sm">
+                    <button class="searchButton" (click)="sortCottage()"><mat-icon>search</mat-icon></button>
+                </div>
+                <div class="col-sm"></div>
+        
+            </div>
             <div class="booking-list" *ngFor="let cottage of cottages">
                 <div class="row">
                     <div class="col-sm"></div>
@@ -105,9 +131,9 @@
                     <div class="col-sm"></div>
                 </div>
             </div>
-
+            <hr>
         </div>
-        <hr *ngIf="cottages != null && !isCottageListEmpty()">
+        
 
 
 
@@ -119,6 +145,32 @@
                 </div>
                 <div class="col-8"></div>
                 <div class="col-sm"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+        
+                    <mat-form-field appearance="fill">
+                        <mat-label>Sort by</mat-label>
+                        <mat-select [(ngModel)]="sortBoatBy">
+                            <mat-option value="Price">Price</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Choose sort type</mat-label>
+                        <mat-select [(ngModel)]="sortBoatType">
+                            <mat-option value="Descending">Descending</mat-option>
+                            <mat-option value="Ascending">Ascending</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+        
+                </div>
+                <div class="col-sm">
+                    <button class="searchButton" (click)="sortBoat()"><mat-icon>search</mat-icon></button>
+                </div>
+                <div class="col-sm"></div>
+        
             </div>
             <div class="booking-list" *ngFor="let boat of boats">
                 <div class="row">
@@ -174,9 +226,9 @@
                     <div class="col-sm"></div>
                 </div>
             </div>
-
+            <hr>
         </div>
-        <hr *ngIf="cottages != null && !isCottageListEmpty()">
+        
 
     
 
@@ -188,6 +240,32 @@
                 </div>
                 <div class="col-8"></div>
                 <div class="col-sm"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+        
+                    <mat-form-field appearance="fill">
+                        <mat-label>Sort by</mat-label>
+                        <mat-select [(ngModel)]="sortLessonBy">
+                            <mat-option value="Price">Price</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Choose sort type</mat-label>
+                        <mat-select [(ngModel)]="sortLessonType">
+                            <mat-option value="Descending">Descending</mat-option>
+                            <mat-option value="Ascending">Ascending</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+        
+                </div>
+                <div class="col-sm">
+                    <button class="searchButton" (click)="sortLesson()"><mat-icon>search</mat-icon></button>
+                </div>
+                <div class="col-sm"></div>
+        
             </div>
             <div class="booking-list" *ngFor="let lesson of lessons">
                 <div class="row">
@@ -230,9 +308,9 @@
                     <div class="col-sm"></div>
                 </div>
             </div>
-
+            <hr>
         </div>
-        <hr *ngIf="cottages != null && !isCottageListEmpty()">
+        
 
 
 

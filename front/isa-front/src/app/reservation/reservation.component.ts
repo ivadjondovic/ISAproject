@@ -17,6 +17,12 @@ export class ReservationComponent implements OnInit {
   cottages: any[]
   boats: any[]
   lessons: any[]
+  sortCottageBy = '';
+  sortCottageType = '';
+  sortBoatBy = '';
+  sortBoatType = '';
+  sortLessonBy = '';
+  sortLessonType = '';
   constructor(public cottageService: CottageService, public boatService: BoatService, public lessonService: FishingLessonService) { }
 
   ngOnInit(): void {
@@ -32,6 +38,8 @@ export class ReservationComponent implements OnInit {
       this.cottageService.getAvailableCottages(data).subscribe((response: any) => {
         this.cottages = response;
         console.log(this.cottages)
+        this.boats = []
+        this.lessons = []
       })
     } else if (this.entity == 'Boat') {
       let data = {
@@ -42,6 +50,8 @@ export class ReservationComponent implements OnInit {
       this.boatService.getAvailableBoats(data).subscribe((response: any) => {
         this.boats = response;
         console.log(this.boats)
+        this.cottages = [];
+        this.lessons = [];
       })
     } else if (this.entity == 'Fishing lesson'){
       let data = {
@@ -52,6 +62,8 @@ export class ReservationComponent implements OnInit {
       this.lessonService.getAvailableLessons(data).subscribe((response: any) => {
         this.lessons = response;
         console.log(this.lessons)
+        this.cottages = [];
+        this.boats = [];
       })
     }
   }
@@ -91,5 +103,78 @@ export class ReservationComponent implements OnInit {
       return false
     }
   }
+
+  sortCottage(){
+    console.log(this.sortCottageBy)
+    let sortingBy = this.sortCottageBy
+    let sortingType = this.sortCottageType
+    console.log(this.sortCottageType)
+    if(this.sortCottageBy = ''){
+      alert('Choose sort by');
+    }else if (this.sortCottageType = ''){
+      alert('Choose sort type');
+    }else{
+      console.log('OK')
+      let data = {
+        sortBy: sortingBy,
+        sortType: sortingType
+      }
+      console.log(data)
+
+      this.cottageService.sort(data).subscribe((response: any) => {
+        this.cottages = response;
+        console.log(this.cottages)
+      })
+    }
+  }
+
+  sortBoat(){
+    console.log(this.sortBoatBy)
+    let sortingBy = this.sortBoatBy
+    let sortingType = this.sortBoatType
+    console.log(this.sortBoatType)
+    if(this.sortBoatBy = ''){
+      alert('Choose sort by');
+    }else if (this.sortBoatType = ''){
+      alert('Choose sort type');
+    }else{
+      console.log('OK')
+      let data = {
+        sortBy: sortingBy,
+        sortType: sortingType
+      }
+      console.log(data)
+
+      this.boatService.sort(data).subscribe((response: any) => {
+        this.boats = response;
+        console.log(this.boats)
+      })
+    }
+  }
+
+  sortLesson(){
+    console.log(this.sortLessonBy)
+    let sortingBy = this.sortLessonBy
+    let sortingType = this.sortLessonType
+    console.log(this.sortLessonType)
+    if(this.sortLessonBy = ''){
+      alert('Choose sort by');
+    }else if (this.sortLessonType = ''){
+      alert('Choose sort type');
+    }else{
+      console.log('OK')
+      let data = {
+        sortBy: sortingBy,
+        sortType: sortingType
+      }
+      console.log(data)
+
+      this.lessonService.sort(data).subscribe((response: any) => {
+        this.lessons = response;
+        console.log(this.lessons)
+      })
+    }
+  }
+
 
 }
