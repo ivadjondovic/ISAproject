@@ -52,4 +52,8 @@ export class FishingLessonService {
     return this.http.get(this.baseURL + "api/fishing/search/" + searchTerm);
   }
 
+  getAvailableLessons(data: any){
+    return this.http.post(this.baseURL + "api/fishing/availableLessons" ,  data, this.getAuthoHeader());
+  }
+
 }

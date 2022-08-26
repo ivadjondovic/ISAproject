@@ -1,5 +1,6 @@
 package com.isa.project.service.implementation;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -18,6 +19,7 @@ import com.isa.project.dto.FishingEquipmentDTO;
 import com.isa.project.dto.ImageDTO;
 import com.isa.project.dto.NavigationEquipmentDTO;
 import com.isa.project.dto.QuickReservationDTO;
+import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.RuleDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalBoatService;
@@ -295,6 +297,22 @@ public class BoatServiceImplementation implements BoatService{
 			}
 		}
 		return boats;
+	}
+
+	@Override
+	public List<Boat> getAvailableBoats(ReservationSearchDTO dto) {
+		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
+		List<Boat> boats = boatRepository.findAll();
+		List<Boat> result = new ArrayList<>();
+		for(Boat boat: boats) {
+			Set<AvailableBoatPeriod> periods = boat.getAvailablePeriods();
+			for(AvailableBoatPeriod period: periods) {
+				if(dto.getStartDate().compareTo(period.getStartDate()) >=0 && endDate.compareTo(period.getEndDate()) <= 0 && boat.getCapacity() >= dto.getNumberOfGuests()) {
+					result.add(boat);
+				}
+			}
+		}
+		return result;
 	}
 
 }

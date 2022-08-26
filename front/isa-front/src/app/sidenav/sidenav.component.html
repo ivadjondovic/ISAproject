@@ -15,6 +15,10 @@
         <mat-icon>water</mat-icon><span class="nav-caption">Fishing lessons</span>
     </a>
 
+    <a mat-list-item routerLink="/reservation" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_CLIENT'">
+        <mat-icon>book</mat-icon><span class="nav-caption">Reservation</span>
+    </a>
+
     <a mat-list-item routerLink="/deleteAccount" *ngIf="role == 'ROLE_CLIENT'" (click)="onSidenavClose('')">
         <mat-icon>delete</mat-icon><span class="nav-caption">Delete account</span>
     </a>

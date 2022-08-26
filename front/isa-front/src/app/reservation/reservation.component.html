@@ -1,0 +1,280 @@
+<div>
+    <mat-card>
+        <mat-card-title style="text-align: center;">Reservation</mat-card-title>
+    </mat-card>
+    <div class="reservation">
+
+        <div>
+            <div class="row">
+                <div class="col-sm">
+                    <p style="font-size: 18px;"><b>Step 1</b></p>
+                </div>
+                <div class="col-8">
+                    <label for="entity">Select entity for reservation</label>
+                    <select [(ngModel)]="entity">
+                        <option value="Cottage">Cottage</option>
+                        <option value="Boat">Boat</option>
+                        <option value="Fishing lesson">Fishing lesson</option>
+                    </select>
+                </div>
+                <div class="col-sm"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm"></div>
+                <div class="col-8">
+                    <label for="startDate">Start date</label>
+                    <input id="startDate" [(ngModel)]="startDate" type="datetime-local">
+                </div>
+                <div class="col-sm"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm"></div>
+                <div class="col-8">
+                    <label for="days">Number of days</label>
+                    <input id="days" [(ngModel)]="numberOfDays" type="text">
+                </div>
+                <div class="col-sm"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm"></div>
+                <div class="col-8">
+                    <label for="guests">Number of guests</label>
+                    <input id="guests" type="text" [(ngModel)]="numberOfGuests">
+                </div>
+                <div class="col-sm"></div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm"></div>
+                <div class="col-sm"></div>
+                <div class="col-sm">
+                    <button (click)="find()">Find</button>
+                </div>
+                <div class="col-sm"></div>
+                <div class="col-sm"></div>
+            </div>
+            <hr>
+
+        </div>
+        <div *ngIf="cottages != null && !isCottageListEmpty()">
+            <div class="row">
+                <div class="col-sm">
+                    <p style="font-size: 18px;"><b>Step 2</b></p>
+                </div>
+                <div class="col-8"></div>
+                <div class="col-sm"></div>
+            </div>
+            <div class="booking-list" *ngFor="let cottage of cottages">
+                <div class="row">
+                    <div class="col-sm"></div>
+                    <div class="col-10">
+                        <div class="row">
+                            <div class="col-8">
+                                <h2 style="color: #4c7d85;" class="classes">{{cottage.name}} - {{cottage.address}}</h2>
+                            </div>
+                            <div class="col-sm"></div>
+                            <div class="col-sm"><button class="book">
+                                    <mat-icon>book</mat-icon>
+                                </button></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <p style="font-size: 17px;">{{cottage.description}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4">
+                                <p>
+                                    <mat-icon matPrefix>bedroom_parent</mat-icon>
+                                    <span style="margin-left: 10px;">{{cottage.numberOfRooms}} rooms</span>
+                                </p>
+                            </div>
+
+                            <div class="col-4">
+                                <p>
+                                    <mat-icon matPrefix>attach_money</mat-icon>
+                                    <span style="margin-left: 10px;">{{cottage.price}} din</span>
+                                </p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-sm"></div>
+                </div>
+            </div>
+
+        </div>
+        <hr *ngIf="cottages != null && !isCottageListEmpty()">
+
+
+
+
+        <div *ngIf="boats != null && !isBoatListEmpty()">
+            <div class="row">
+                <div class="col-sm">
+                    <p style="font-size: 18px;"><b>Step 2</b></p>
+                </div>
+                <div class="col-8"></div>
+                <div class="col-sm"></div>
+            </div>
+            <div class="booking-list" *ngFor="let boat of boats">
+                <div class="row">
+                    <div class="col-sm"></div>
+                    <div class="col-10">
+                        <div class="row">
+                            <div class="col-8">
+                                <h2 style="color: #4c7d85;" class="classes">{{boat.name}} - {{boat.boatType}}</h2>
+                            </div>
+                            <div class="col-sm"></div>
+                            <div class="col-sm"><button class="book">
+                                    <mat-icon>book</mat-icon>
+                                </button></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <p style="font-size: 17px;">{{boat.description}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm">
+                                <p>
+                                    <mat-icon matPrefix>brightness_5</mat-icon>
+                                    <span style="margin-left: 10px;">{{boat.engines}} engines</span>
+                                </p>
+                            </div>
+
+                            <div class="col-sm">
+                                <p>
+                                    <mat-icon matPrefix>power</mat-icon>
+                                    <span style="margin-left: 10px;">{{boat.enginePower}} power</span>
+                                </p>
+                            </div>
+
+                            <div class="col-sm">
+                                <p>
+                                    <mat-icon matPrefix>speed</mat-icon>
+                                    <span style="margin-left: 10px;">{{boat.maxSpeed}} speed</span>
+                                </p>
+                            </div>
+
+                            <div class="col-3">
+                                <p>
+                                    <mat-icon matPrefix>attach_money</mat-icon>
+                                    <span style="margin-left: 10px;">{{boat.price}} din</span>
+                                </p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-sm"></div>
+                </div>
+            </div>
+
+        </div>
+        <hr *ngIf="cottages != null && !isCottageListEmpty()">
+
+    
+
+
+        <div *ngIf="lessons != null && !isLessonListEmpty()">
+            <div class="row">
+                <div class="col-sm">
+                    <p style="font-size: 18px;"><b>Step 2</b></p>
+                </div>
+                <div class="col-8"></div>
+                <div class="col-sm"></div>
+            </div>
+            <div class="booking-list" *ngFor="let lesson of lessons">
+                <div class="row">
+                    <div class="col-sm"></div>
+                    <div class="col-10">
+                        <div class="row">
+                            <div class="col-8">
+                                <h2 style="color: #4c7d85;" class="classes">{{lesson.name}} - {{lesson.address}}</h2>
+                            </div>
+                            <div class="col-sm"></div>
+                            <div class="col-sm"><button class="book">
+                                    <mat-icon>book</mat-icon>
+                                </button></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <p style="font-size: 17px;">{{lesson.description}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-8">
+                                <p style="font-size: 17px;"><span style="color: #4c7d85;">Biography:&nbsp;</span>{{lesson.fishingInstructorBio}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            
+
+                            <div class="col-3">
+                                <p>
+                                    <mat-icon matPrefix>attach_money</mat-icon>
+                                    <span style="margin-left: 10px;">{{lesson.price}} din</span>
+                                </p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-sm"></div>
+                </div>
+            </div>
+
+        </div>
+        <hr *ngIf="cottages != null && !isCottageListEmpty()">
+
+
+
+        <!--
+        <div>
+            <div class="row">
+                <div class="col-sm">
+                    <p style="font-size: 18px;"><b>Step 3</b></p>
+                </div>
+                <div class="col-8"></div>
+                <div class="col-sm"></div>
+            </div>
+            <div class="booking-list" *ngFor="let batch of batches">
+                <div class="row">
+                    <div class="col-sm"></div>
+                    <div class="col-8">
+                        <div>
+                            <h4 class="classes">Opis
+                                <span class="chips">
+
+                                </span>
+                            </h4>
+                            <p class="ylet-primary-500 booking">
+                                <a>
+                                    <mat-icon>add_circle_outline</mat-icon>Add
+                                </a>
+                            </p>
+                        </div>
+                        <div style="clear: both;">
+                            <p class="timings">
+                                <mat-icon matPrefix>attach_money</mat-icon>
+                                <span>1000 din</span>
+
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm"></div>
+                </div>
+            </div>
+
+        </div>
+    -->
+    </div>
+
+</div>

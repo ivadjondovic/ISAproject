@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.project.dto.FishingLessonDTO;
+import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.FishingLesson;
 import com.isa.project.service.FishingLessonService;
@@ -78,6 +79,12 @@ public class FishingLessonController {
 	@GetMapping(path = "/search/{searchTerm}")
     public ResponseEntity<?> search(@PathVariable String searchTerm) {
         return new ResponseEntity<>(fishingLessonService.search(searchTerm), HttpStatus.OK);
+    }
+	
+	@PreAuthorize("hasRole('CLIENT')")
+	@PostMapping(path = "/availableLessons")
+    public ResponseEntity<?> availableLessons(@RequestBody ReservationSearchDTO dto) {
+        return new ResponseEntity<>(fishingLessonService.getAvailableLessons(dto), HttpStatus.OK);
     }
 	
 }

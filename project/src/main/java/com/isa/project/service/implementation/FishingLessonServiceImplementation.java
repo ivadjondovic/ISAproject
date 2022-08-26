@@ -1,5 +1,6 @@
 package com.isa.project.service.implementation;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -17,6 +18,7 @@ import com.isa.project.dto.FishingEquipmentDTO;
 import com.isa.project.dto.FishingLessonDTO;
 import com.isa.project.dto.ImageDTO;
 import com.isa.project.dto.QuickReservationDTO;
+import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.RuleDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalFishingLessonService;
@@ -400,6 +402,22 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		
 		filtered = result.stream().distinct().collect( Collectors.toList() );
 		return filtered;
+	}
+
+	@Override
+	public List<FishingLesson> getAvailableLessons(ReservationSearchDTO dto) {
+		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
+		List<FishingLesson> lessons = fishingLessonRepository.findAll();
+		List<FishingLesson> result = new ArrayList<>();
+		for(FishingLesson lesson: lessons) {
+			Set<AvailableFishingLessonPeriod> periods = lesson.getAvailablePeriods();
+			for(AvailableFishingLessonPeriod period: periods) {
+				if(dto.getStartDate().compareTo(period.getStartDate()) >=0 && endDate.compareTo(period.getEndDate()) <= 0 && lesson.getNumberOfPeople() >= dto.getNumberOfGuests()) {
+					result.add(lesson);
+				}
+			}
+		}
+		return result;
 	}
 
 }

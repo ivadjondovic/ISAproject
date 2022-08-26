@@ -47,6 +47,7 @@ import { FishingLessonsComponent } from './fishing-lessons/fishing-lessons.compo
 import { EditFishingLessonComponent } from './edit-fishing-lesson/edit-fishing-lesson.component';
 import { ClientFishingLessonsComponent } from './client-fishing-lessons/client-fishing-lessons.component';
 import { FishingLessonAdditionalInfoComponent } from './fishing-lesson-additional-info/fishing-lesson-additional-info.component';
+import { ReservationComponent } from './reservation/reservation.component';
 
 
 
@@ -80,6 +81,7 @@ import { FishingLessonAdditionalInfoComponent } from './fishing-lesson-additiona
     EditFishingLessonComponent,
     ClientFishingLessonsComponent,
     FishingLessonAdditionalInfoComponent,
+    ReservationComponent,
     
   ],
   imports: [

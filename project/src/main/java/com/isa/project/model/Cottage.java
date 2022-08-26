@@ -65,6 +65,10 @@ public class Cottage {
 	@JsonBackReference
 	@ManyToOne
 	private CottageOwner cottageOwner;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "cottage", fetch = FetchType.EAGER)
+	private Set<CottageReservation> reservations;
 
 	public Long getId() {
 		return id;
@@ -169,6 +173,16 @@ public class Cottage {
 	public void setCottageOwner(CottageOwner cottageOwner) {
 		this.cottageOwner = cottageOwner;
 	}
+
+	public Set<CottageReservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(Set<CottageReservation> reservations) {
+		this.reservations = reservations;
+	}
+	
+	
 	
 	
 	
