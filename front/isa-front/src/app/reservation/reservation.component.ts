@@ -1,3 +1,4 @@
+import { NullVisitor } from '@angular/compiler/src/render3/r3_ast';
 import { Component, OnInit } from '@angular/core';
 import { BoatService } from '../services/boat.service';
 import { CottageService } from '../services/cottage.service';
@@ -23,9 +24,19 @@ export class ReservationComponent implements OnInit {
   sortBoatType = '';
   sortLessonBy = '';
   sortLessonType = '';
+  cottage: any = {} as any
+  boat: any = {} as any
+  lesson: any = {} as any
+  additionalCottageServices =  new Set<string>();
+  additionalBoatServices = new Set<string>();
+  additionalLessonServices = new Set<string>();
   constructor(public cottageService: CottageService, public boatService: BoatService, public lessonService: FishingLessonService) { }
 
   ngOnInit(): void {
+    this.cottage = null
+    this.boat = null
+    this.lesson = null
+    
   }
 
   find() {
@@ -40,6 +51,8 @@ export class ReservationComponent implements OnInit {
         console.log(this.cottages)
         this.boats = []
         this.lessons = []
+        this.boat = null
+        this.lesson = null
       })
     } else if (this.entity == 'Boat') {
       let data = {
@@ -52,6 +65,8 @@ export class ReservationComponent implements OnInit {
         console.log(this.boats)
         this.cottages = [];
         this.lessons = [];
+        this.cottage = null
+        this.lesson = null
       })
     } else if (this.entity == 'Fishing lesson'){
       let data = {
@@ -64,6 +79,8 @@ export class ReservationComponent implements OnInit {
         console.log(this.lessons)
         this.cottages = [];
         this.boats = [];
+        this.cottage = null
+        this.boat = null
       })
     }
   }
@@ -175,6 +192,79 @@ export class ReservationComponent implements OnInit {
       })
     }
   }
+
+  bookCottage(id: string){
+    this.cottageService.getById(id).subscribe((response: any) => {
+      this.cottage = response;
+      console.log(this.cottage)
+    })
+  }
+
+  bookBoat(id: string){
+    this.boatService.getById(id).subscribe((response: any) => {
+      this.boat = response;
+      console.log(this.boat)
+    })
+  }
+
+  bookLesson(id: string){
+    this.lessonService.getOneLesson(id).subscribe((response: any) => {
+      this.lesson = response;
+      console.log(this.lesson)
+    })
+  }
+
+  addCottageService(id: string){
+    this.additionalCottageServices.add(id);
+    console.log(this.additionalCottageServices)
+    
+  }
+
+  deleteCottageService(id: string) {
+    this.additionalCottageServices.delete(id)
+    console.log(this.additionalCottageServices)
+
+  }
+
+  isCottageServiceAdded(id: string){ 
+    return this.additionalCottageServices.has(id)
+  }
+
+
+  addBoatService(id: string){
+    this.additionalBoatServices.add(id);
+    console.log(this.additionalBoatServices)
+    
+  }
+
+  deleteBoatService(id: string) {
+    this.additionalBoatServices.delete(id)
+    console.log(this.additionalBoatServices)
+
+  }
+
+  isBoatServiceAdded(id: string){ 
+    return this.additionalBoatServices.has(id)
+  }
+
+
+  addLessonService(id: string){
+    this.additionalLessonServices.add(id);
+    console.log(this.additionalLessonServices)
+    
+  }
+
+  deleteLessonService(id: string) {
+    this.additionalLessonServices.delete(id)
+    console.log(this.additionalLessonServices)
+
+  }
+
+  isLessonServiceAdded(id: string){ 
+    return this.additionalLessonServices.has(id)
+  }
+
+
 
 
 }
