@@ -11,25 +11,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.project.dto.ReservationDTO;
-import com.isa.project.model.CottageReservation;
-import com.isa.project.service.CottageReservationService;
+import com.isa.project.model.BoatReservation;
+import com.isa.project.service.BoatReservationService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("api/cottageReservations")
-public class CottageReservationController {
-
+@RequestMapping("api/boatReservations")
+public class BoatReservationController {
+	
 	@Autowired
-	private CottageReservationService reservationService;
+	private BoatReservationService reservationService;
 	
 	@PostMapping(path = "/createReservation")
 	@PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<?> createReservatio(@RequestBody ReservationDTO reservationDTO){
-        CottageReservation reservation = reservationService.createReservation(reservationDTO);
+        BoatReservation reservation = reservationService.createReservation(reservationDTO);
         if(reservation == null) {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
+
 }

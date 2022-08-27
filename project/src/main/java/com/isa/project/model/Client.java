@@ -22,20 +22,34 @@ public class Client extends User{
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
-	private Set<CottageReservation> reservations;
+	private Set<CottageReservation> cottageReservations;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+	private Set<BoatReservation> boatReservations;
 	
 	@Override
     public String getUserType() {
         return userType;
     }
 
-	public Set<CottageReservation> getReservations() {
-		return reservations;
+	public Set<CottageReservation> getCottageReservations() {
+		return cottageReservations;
 	}
 
-	public void setReservations(Set<CottageReservation> reservations) {
-		this.reservations = reservations;
+	public void setCottageReservations(Set<CottageReservation> reservations) {
+		this.cottageReservations = reservations;
 	}
+
+	public Set<BoatReservation> getBoatReservations() {
+		return boatReservations;
+	}
+
+	public void setBoatReservations(Set<BoatReservation> boatReservations) {
+		this.boatReservations = boatReservations;
+	}
+	
+	
 	
 	
 }

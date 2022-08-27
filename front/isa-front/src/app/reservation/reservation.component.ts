@@ -1,6 +1,7 @@
 import { NullVisitor } from '@angular/compiler/src/render3/r3_ast';
 import { Component, OnInit } from '@angular/core';
 import { idText } from 'typescript';
+import { BoatReservationService } from '../services/boat-reservation.service';
 import { BoatService } from '../services/boat.service';
 import { CottageReservationService } from '../services/cottage-reservation.service';
 import { CottageService } from '../services/cottage.service';
@@ -32,9 +33,9 @@ export class ReservationComponent implements OnInit {
   lesson: any = {} as any
   user: any
   additionalCottageServices = new Set<number>();
-  additionalBoatServices = new Set<string>();
-  additionalLessonServices = new Set<string>();
-  constructor(public cottageReservationService: CottageReservationService, public userService: UserService, public cottageService: CottageService, public boatService: BoatService, public lessonService: FishingLessonService) { }
+  additionalBoatServices = new Set<number>();
+  additionalLessonServices = new Set<number>();
+  constructor(public boatReservationService: BoatReservationService, public cottageReservationService: CottageReservationService, public userService: UserService, public cottageService: CottageService, public boatService: BoatService, public lessonService: FishingLessonService) { }
 
   ngOnInit(): void {
     this.cottage = null
@@ -239,36 +240,36 @@ export class ReservationComponent implements OnInit {
 
 
   addBoatService(id: string) {
-    this.additionalBoatServices.add(id);
+    this.additionalBoatServices.add(+id);
     console.log(this.additionalBoatServices)
 
   }
 
   deleteBoatService(id: string) {
-    this.additionalBoatServices.delete(id)
+    this.additionalBoatServices.delete(+id)
     console.log(this.additionalBoatServices)
 
   }
 
   isBoatServiceAdded(id: string) {
-    return this.additionalBoatServices.has(id)
+    return this.additionalBoatServices.has(+id)
   }
 
 
   addLessonService(id: string) {
-    this.additionalLessonServices.add(id);
+    this.additionalLessonServices.add(+id);
     console.log(this.additionalLessonServices)
 
   }
 
   deleteLessonService(id: string) {
-    this.additionalLessonServices.delete(id)
+    this.additionalLessonServices.delete(+id)
     console.log(this.additionalLessonServices)
 
   }
 
   isLessonServiceAdded(id: string) {
-    return this.additionalLessonServices.has(id)
+    return this.additionalLessonServices.has(+id)
   }
 
   reservation() {
@@ -280,11 +281,27 @@ export class ReservationComponent implements OnInit {
         startDate: this.startDate,
         numberOfDays: this.numberOfDays,
         clientId: this.user.id,
-        cottageId: this.cottage.id,
+        entityId: this.cottage.id,
         additionalServices: additionalServicesForCottage
 
       }
       this.cottageReservationService.createReservation(data).subscribe((response: any) => {
+        console.log(response)
+      })
+
+    }
+
+    let additionalServicesForBoat = Array.from(this.additionalBoatServices);
+    if (this.entity == 'Boat') {
+      let data = {
+        startDate: this.startDate,
+        numberOfDays: this.numberOfDays,
+        clientId: this.user.id,
+        entityId: this.boat.id,
+        additionalServices: additionalServicesForBoat
+
+      }
+      this.boatReservationService.createReservation(data).subscribe((response: any) => {
         console.log(response)
       })
 

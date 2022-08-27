@@ -3,12 +3,12 @@ package com.isa.project.dto;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-public class CottageReservationDTO {
+public class ReservationDTO {
 	
 	private LocalDateTime startDate;
 	private int numberOfDays;
 	private Set<Long> additionalServices;
-	private Long cottageId;
+	private Long entityId;
 	private Long clientId;
 	
 	public LocalDateTime getStartDate() {
@@ -29,11 +29,11 @@ public class CottageReservationDTO {
 	public void setAdditionalServices(Set<Long> additionalServices) {
 		this.additionalServices = additionalServices;
 	}
-	public Long getCottageId() {
-		return cottageId;
+	public Long getEntityId() {
+		return entityId;
 	}
-	public void setCottageId(Long cottageId) {
-		this.cottageId = cottageId;
+	public void setEntityId(Long cottageId) {
+		this.entityId = cottageId;
 	}
 	public Long getClientId() {
 		return clientId;

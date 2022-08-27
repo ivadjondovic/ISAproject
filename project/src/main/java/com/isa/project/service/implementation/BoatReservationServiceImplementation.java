@@ -8,59 +8,63 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isa.project.dto.ReservationDTO;
+import com.isa.project.model.AdditionalBoatService;
 import com.isa.project.model.AdditionalCottageService;
+import com.isa.project.model.AvailableBoatPeriod;
 import com.isa.project.model.AvailableCottagePeriod;
+import com.isa.project.model.Boat;
+import com.isa.project.model.BoatReservation;
 import com.isa.project.model.Client;
 import com.isa.project.model.Cottage;
 import com.isa.project.model.CottageReservation;
-import com.isa.project.repository.AdditionalCottageServiceRepository;
-import com.isa.project.repository.AvailableCottagePeriodRepository;
-import com.isa.project.repository.CottageRepository;
-import com.isa.project.repository.CottageReservationRepository;
+import com.isa.project.repository.AdditionalBoatServiceRepository;
+import com.isa.project.repository.AvailableBoatPeriodRepository;
+import com.isa.project.repository.BoatRepository;
+import com.isa.project.repository.BoatReservationRepository;
 import com.isa.project.repository.UserRepository;
-import com.isa.project.service.CottageReservationService;
+import com.isa.project.service.BoatReservationService;
 
 @Service
-public class CottageReservationServiceImplementation implements CottageReservationService{
+public class BoatReservationServiceImplementation implements BoatReservationService{
 
 	@Autowired
-	private CottageReservationRepository cottageReservationRepository;
-	
-	@Autowired
-	private CottageRepository cottageRepository;
+	private BoatRepository boatRepository;
 	
 	@Autowired
 	private UserRepository userRepository;
 	
 	@Autowired
-	private AdditionalCottageServiceRepository additionalCottageServiceRepository;
+	private BoatReservationRepository boatReservationRepository;
 	
 	@Autowired
-	private AvailableCottagePeriodRepository periodRepository;
+	private AdditionalBoatServiceRepository additionalBoatServiceRepository;
+	
+	@Autowired
+	private AvailableBoatPeriodRepository periodRepository;
 	
 	@Override
-	public CottageReservation createReservation(ReservationDTO dto) {
+	public BoatReservation createReservation(ReservationDTO dto) {
 		
-		CottageReservation cottageReservation = new CottageReservation();
-		cottageReservation.setStartDate(dto.getStartDate());
+		BoatReservation boatReservation = new BoatReservation();
+		boatReservation.setStartDate(dto.getStartDate());
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
-		cottageReservation.setEndDate(endDate);
+		boatReservation.setEndDate(endDate);
 		
-		Cottage cottage = cottageRepository.findById(dto.getEntityId()).get();
+		Boat boat = boatRepository.findById(dto.getEntityId()).get();
 		Client client = (Client) userRepository.findById(dto.getClientId()).get();
 		
-		cottageReservation.setClient(client);
-		cottageReservation.setCottage(cottage);
+		boatReservation.setClient(client);
+		boatReservation.setBoat(boat);
 		
-		CottageReservation savedReservation = cottageReservationRepository.save(cottageReservation);
+		BoatReservation savedReservation = boatReservationRepository.save(boatReservation);
 		
-		Set<AdditionalCottageService> additionalServices = new HashSet<>();
-		Double price = cottage.getPrice() * dto.getNumberOfDays();
+		Set<AdditionalBoatService> additionalServices = new HashSet<>();
+		Double price = boat.getPrice() * dto.getNumberOfDays();
 		for(Long id: dto.getAdditionalServices()) {
-			AdditionalCottageService service = additionalCottageServiceRepository.findById(id).get();
+			AdditionalBoatService service = additionalBoatServiceRepository.findById(id).get();
 			price += service.getPrice();
-			service.setCottageReservation(savedReservation);
-			AdditionalCottageService savedService = additionalCottageServiceRepository.save(service);
+			service.setBoatReservation(savedReservation);
+			AdditionalBoatService savedService = additionalBoatServiceRepository.save(service);
 			additionalServices.add(savedService);
 			
 		}
@@ -68,43 +72,43 @@ public class CottageReservationServiceImplementation implements CottageReservati
 		savedReservation.setPrice(price);
 		savedReservation.setAdditionalServices(additionalServices);
 		
-		Set<AvailableCottagePeriod> newPeriods = new HashSet<>();
-		Set<AvailableCottagePeriod> periods = cottage.getAvailablePeriods();
-		for(AvailableCottagePeriod period: periods) {
+		Set<AvailableBoatPeriod> newPeriods = new HashSet<>();
+		Set<AvailableBoatPeriod> periods = boat.getAvailablePeriods();
+		for(AvailableBoatPeriod period: periods) {
 			if(period.getStartDate().compareTo(dto.getStartDate()) < 0 && period.getEndDate().compareTo(endDate) > 0) {
-				AvailableCottagePeriod availablePeriodFirst = new AvailableCottagePeriod();
+				AvailableBoatPeriod availablePeriodFirst = new AvailableBoatPeriod();
 				availablePeriodFirst.setStartDate(period.getStartDate());
 				availablePeriodFirst.setEndDate(dto.getStartDate());
-				availablePeriodFirst.setCottage(cottage);
-				AvailableCottagePeriod savedFirst = periodRepository.save(availablePeriodFirst);
+				availablePeriodFirst.setBoat(boat);
+				AvailableBoatPeriod savedFirst = periodRepository.save(availablePeriodFirst);
 				newPeriods.add(savedFirst);
 				
-				AvailableCottagePeriod availablePeriodSecond = new AvailableCottagePeriod();
+				AvailableBoatPeriod availablePeriodSecond = new AvailableBoatPeriod();
 				availablePeriodSecond.setStartDate(endDate);
 				availablePeriodSecond.setEndDate(period.getEndDate());
-				availablePeriodSecond.setCottage(cottage);
-				AvailableCottagePeriod savedSecond = periodRepository.save(availablePeriodSecond);
+				availablePeriodSecond.setBoat(boat);
+				AvailableBoatPeriod savedSecond = periodRepository.save(availablePeriodSecond);
 				newPeriods.add(savedSecond);
 				
 				periodRepository.delete(period);
 				
 			}
 			if(period.getStartDate().compareTo(dto.getStartDate()) == 0 && period.getEndDate().compareTo(endDate) > 0) {
-				AvailableCottagePeriod availablePeriod = new AvailableCottagePeriod();
+				AvailableBoatPeriod availablePeriod = new AvailableBoatPeriod();
 				availablePeriod.setStartDate(endDate);
 				availablePeriod.setEndDate(period.getEndDate());
-				availablePeriod.setCottage(cottage);
-				AvailableCottagePeriod savedFirst = periodRepository.save(availablePeriod);
+				availablePeriod.setBoat(boat);
+				AvailableBoatPeriod savedFirst = periodRepository.save(availablePeriod);
 				newPeriods.add(savedFirst);
 				
 				periodRepository.delete(period);
 			}
 			if(period.getStartDate().compareTo(dto.getStartDate()) < 0 && period.getEndDate().compareTo(endDate) == 0) {
-				AvailableCottagePeriod availablePeriod = new AvailableCottagePeriod();
+				AvailableBoatPeriod availablePeriod = new AvailableBoatPeriod();
 				availablePeriod.setStartDate(period.getStartDate());
 				availablePeriod.setEndDate(dto.getStartDate());
-				availablePeriod.setCottage(cottage);
-				AvailableCottagePeriod savedFirst = periodRepository.save(availablePeriod);
+				availablePeriod.setBoat(boat);
+				AvailableBoatPeriod savedFirst = periodRepository.save(availablePeriod);
 				newPeriods.add(savedFirst);
 				
 				periodRepository.delete(period);
@@ -120,11 +124,11 @@ public class CottageReservationServiceImplementation implements CottageReservati
 			}
 		}
 		
-		cottage.setAvailablePeriods(newPeriods);
-		Cottage savedCottage = cottageRepository.save(cottage);
-		savedReservation.setCottage(savedCottage);
+		boat.setAvailablePeriods(newPeriods);
+		Boat savedBoat = boatRepository.save(boat);
+		savedReservation.setBoat(savedBoat);
 		
-		return cottageReservationRepository.save(savedReservation);
+		return boatReservationRepository.save(savedReservation);
 	}
 
 }
