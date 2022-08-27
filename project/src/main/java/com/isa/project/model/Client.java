@@ -28,6 +28,10 @@ public class Client extends User{
 	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
 	private Set<BoatReservation> boatReservations;
 	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+	private Set<FishingLessonReservation> fishingLessonReservations;
+	
 	@Override
     public String getUserType() {
         return userType;
@@ -48,6 +52,16 @@ public class Client extends User{
 	public void setBoatReservations(Set<BoatReservation> boatReservations) {
 		this.boatReservations = boatReservations;
 	}
+
+	public Set<FishingLessonReservation> getFishingLessonReservations() {
+		return fishingLessonReservations;
+	}
+
+	public void setFishingLessonReservations(Set<FishingLessonReservation> fishingLessonReservations) {
+		this.fishingLessonReservations = fishingLessonReservations;
+	}
+	
+	
 	
 	
 	

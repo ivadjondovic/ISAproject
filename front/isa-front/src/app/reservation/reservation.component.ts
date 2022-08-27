@@ -5,6 +5,7 @@ import { BoatReservationService } from '../services/boat-reservation.service';
 import { BoatService } from '../services/boat.service';
 import { CottageReservationService } from '../services/cottage-reservation.service';
 import { CottageService } from '../services/cottage.service';
+import { FishingLessonReservationService } from '../services/fishing-lesson-reservation.service';
 import { FishingLessonService } from '../services/fishing-lesson.service';
 import { UserService } from '../services/user.service';
 
@@ -35,7 +36,7 @@ export class ReservationComponent implements OnInit {
   additionalCottageServices = new Set<number>();
   additionalBoatServices = new Set<number>();
   additionalLessonServices = new Set<number>();
-  constructor(public boatReservationService: BoatReservationService, public cottageReservationService: CottageReservationService, public userService: UserService, public cottageService: CottageService, public boatService: BoatService, public lessonService: FishingLessonService) { }
+  constructor(public lessonReservationService: FishingLessonReservationService, public boatReservationService: BoatReservationService, public cottageReservationService: CottageReservationService, public userService: UserService, public cottageService: CottageService, public boatService: BoatService, public lessonService: FishingLessonService) { }
 
   ngOnInit(): void {
     this.cottage = null
@@ -287,6 +288,7 @@ export class ReservationComponent implements OnInit {
       }
       this.cottageReservationService.createReservation(data).subscribe((response: any) => {
         console.log(response)
+        location.reload();
       })
 
     }
@@ -303,6 +305,23 @@ export class ReservationComponent implements OnInit {
       }
       this.boatReservationService.createReservation(data).subscribe((response: any) => {
         console.log(response)
+        location.reload();
+      })
+
+    }
+    let additionalServicesForLesson = Array.from(this.additionalLessonServices);
+    if (this.entity == 'Fishing lesson') {
+      let data = {
+        startDate: this.startDate,
+        numberOfDays: this.numberOfDays,
+        clientId: this.user.id,
+        entityId: this.lesson.id,
+        additionalServices: additionalServicesForLesson
+
+      }
+      this.lessonReservationService.createReservation(data).subscribe((response: any) => {
+        console.log(response)
+        location.reload();
       })
 
     }

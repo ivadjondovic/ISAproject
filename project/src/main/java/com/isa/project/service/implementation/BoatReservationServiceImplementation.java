@@ -9,14 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.isa.project.dto.ReservationDTO;
 import com.isa.project.model.AdditionalBoatService;
-import com.isa.project.model.AdditionalCottageService;
 import com.isa.project.model.AvailableBoatPeriod;
-import com.isa.project.model.AvailableCottagePeriod;
 import com.isa.project.model.Boat;
 import com.isa.project.model.BoatReservation;
 import com.isa.project.model.Client;
-import com.isa.project.model.Cottage;
-import com.isa.project.model.CottageReservation;
 import com.isa.project.repository.AdditionalBoatServiceRepository;
 import com.isa.project.repository.AvailableBoatPeriodRepository;
 import com.isa.project.repository.BoatRepository;
