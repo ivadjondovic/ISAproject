@@ -1,14 +1,18 @@
 package com.isa.project.model;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class CottageReservation {
@@ -19,6 +23,11 @@ public class CottageReservation {
     private Long id;
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
+	private Double price;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "cottageReservation", fetch = FetchType.LAZY)
+	private Set<AdditionalCottageService> additionalServices;
 	
 	@JsonBackReference
 	@ManyToOne
@@ -67,6 +76,24 @@ public class CottageReservation {
 	public void setClient(Client client) {
 		this.client = client;
 	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public Set<AdditionalCottageService> getAdditionalServices() {
+		return additionalServices;
+	}
+
+	public void setAdditionalServices(Set<AdditionalCottageService> additionalServices) {
+		this.additionalServices = additionalServices;
+	}
+	
+	
 	
 	
 	

@@ -1,8 +1,11 @@
 import { NullVisitor } from '@angular/compiler/src/render3/r3_ast';
 import { Component, OnInit } from '@angular/core';
+import { idText } from 'typescript';
 import { BoatService } from '../services/boat.service';
+import { CottageReservationService } from '../services/cottage-reservation.service';
 import { CottageService } from '../services/cottage.service';
 import { FishingLessonService } from '../services/fishing-lesson.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-reservation',
@@ -27,16 +30,20 @@ export class ReservationComponent implements OnInit {
   cottage: any = {} as any
   boat: any = {} as any
   lesson: any = {} as any
-  additionalCottageServices =  new Set<string>();
+  user: any
+  additionalCottageServices = new Set<number>();
   additionalBoatServices = new Set<string>();
   additionalLessonServices = new Set<string>();
-  constructor(public cottageService: CottageService, public boatService: BoatService, public lessonService: FishingLessonService) { }
+  constructor(public cottageReservationService: CottageReservationService, public userService: UserService, public cottageService: CottageService, public boatService: BoatService, public lessonService: FishingLessonService) { }
 
   ngOnInit(): void {
     this.cottage = null
     this.boat = null
     this.lesson = null
-    
+    this.userService.current().subscribe((response: any) => {
+      this.user = response;
+    })
+
   }
 
   find() {
@@ -68,7 +75,7 @@ export class ReservationComponent implements OnInit {
         this.cottage = null
         this.lesson = null
       })
-    } else if (this.entity == 'Fishing lesson'){
+    } else if (this.entity == 'Fishing lesson') {
       let data = {
         startDate: this.startDate,
         numberOfDays: this.numberOfDays,
@@ -121,16 +128,16 @@ export class ReservationComponent implements OnInit {
     }
   }
 
-  sortCottage(){
+  sortCottage() {
     console.log(this.sortCottageBy)
     let sortingBy = this.sortCottageBy
     let sortingType = this.sortCottageType
     console.log(this.sortCottageType)
-    if(this.sortCottageBy = ''){
+    if (this.sortCottageBy = '') {
       alert('Choose sort by');
-    }else if (this.sortCottageType = ''){
+    } else if (this.sortCottageType = '') {
       alert('Choose sort type');
-    }else{
+    } else {
       console.log('OK')
       let data = {
         sortBy: sortingBy,
@@ -145,16 +152,16 @@ export class ReservationComponent implements OnInit {
     }
   }
 
-  sortBoat(){
+  sortBoat() {
     console.log(this.sortBoatBy)
     let sortingBy = this.sortBoatBy
     let sortingType = this.sortBoatType
     console.log(this.sortBoatType)
-    if(this.sortBoatBy = ''){
+    if (this.sortBoatBy = '') {
       alert('Choose sort by');
-    }else if (this.sortBoatType = ''){
+    } else if (this.sortBoatType = '') {
       alert('Choose sort type');
-    }else{
+    } else {
       console.log('OK')
       let data = {
         sortBy: sortingBy,
@@ -169,16 +176,16 @@ export class ReservationComponent implements OnInit {
     }
   }
 
-  sortLesson(){
+  sortLesson() {
     console.log(this.sortLessonBy)
     let sortingBy = this.sortLessonBy
     let sortingType = this.sortLessonType
     console.log(this.sortLessonType)
-    if(this.sortLessonBy = ''){
+    if (this.sortLessonBy = '') {
       alert('Choose sort by');
-    }else if (this.sortLessonType = ''){
+    } else if (this.sortLessonType = '') {
       alert('Choose sort type');
-    }else{
+    } else {
       console.log('OK')
       let data = {
         sortBy: sortingBy,
@@ -193,48 +200,48 @@ export class ReservationComponent implements OnInit {
     }
   }
 
-  bookCottage(id: string){
+  bookCottage(id: string) {
     this.cottageService.getById(id).subscribe((response: any) => {
       this.cottage = response;
       console.log(this.cottage)
     })
   }
 
-  bookBoat(id: string){
+  bookBoat(id: string) {
     this.boatService.getById(id).subscribe((response: any) => {
       this.boat = response;
       console.log(this.boat)
     })
   }
 
-  bookLesson(id: string){
+  bookLesson(id: string) {
     this.lessonService.getOneLesson(id).subscribe((response: any) => {
       this.lesson = response;
       console.log(this.lesson)
     })
   }
 
-  addCottageService(id: string){
-    this.additionalCottageServices.add(id);
+  addCottageService(id: string) {
+    this.additionalCottageServices.add(+id);
     console.log(this.additionalCottageServices)
-    
+
   }
 
   deleteCottageService(id: string) {
-    this.additionalCottageServices.delete(id)
+    this.additionalCottageServices.delete(+id)
     console.log(this.additionalCottageServices)
 
   }
 
-  isCottageServiceAdded(id: string){ 
-    return this.additionalCottageServices.has(id)
+  isCottageServiceAdded(id: string) {
+    return this.additionalCottageServices.has(+id)
   }
 
 
-  addBoatService(id: string){
+  addBoatService(id: string) {
     this.additionalBoatServices.add(id);
     console.log(this.additionalBoatServices)
-    
+
   }
 
   deleteBoatService(id: string) {
@@ -243,15 +250,15 @@ export class ReservationComponent implements OnInit {
 
   }
 
-  isBoatServiceAdded(id: string){ 
+  isBoatServiceAdded(id: string) {
     return this.additionalBoatServices.has(id)
   }
 
 
-  addLessonService(id: string){
+  addLessonService(id: string) {
     this.additionalLessonServices.add(id);
     console.log(this.additionalLessonServices)
-    
+
   }
 
   deleteLessonService(id: string) {
@@ -260,8 +267,28 @@ export class ReservationComponent implements OnInit {
 
   }
 
-  isLessonServiceAdded(id: string){ 
+  isLessonServiceAdded(id: string) {
     return this.additionalLessonServices.has(id)
+  }
+
+  reservation() {
+
+    let additionalServicesForCottage = Array.from(this.additionalCottageServices);
+    
+    if (this.entity == 'Cottage') {
+      let data = {
+        startDate: this.startDate,
+        numberOfDays: this.numberOfDays,
+        clientId: this.user.id,
+        cottageId: this.cottage.id,
+        additionalServices: additionalServicesForCottage
+
+      }
+      this.cottageReservationService.createReservation(data).subscribe((response: any) => {
+        console.log(response)
+      })
+
+    }
   }
 
 

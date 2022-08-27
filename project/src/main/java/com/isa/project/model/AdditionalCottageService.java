@@ -22,6 +22,10 @@ public class AdditionalCottageService {
 	@JsonBackReference
 	@ManyToOne
 	private Cottage cottage;
+	
+	@JsonBackReference
+	@ManyToOne
+	private CottageReservation cottageReservation;
 
 	public Long getId() {
 		return id;
@@ -54,6 +58,16 @@ public class AdditionalCottageService {
 	public void setCottage(Cottage cottage) {
 		this.cottage = cottage;
 	}
+
+	public CottageReservation getCottageReservation() {
+		return cottageReservation;
+	}
+
+	public void setCottageReservation(CottageReservation cottageReservation) {
+		this.cottageReservation = cottageReservation;
+	}
+	
+	
 	
 	
 	
