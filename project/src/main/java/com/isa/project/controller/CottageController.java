@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.project.dto.CottageDTO;
+import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.Cottage;
 import com.isa.project.service.CottageService;
@@ -54,6 +55,12 @@ public class CottageController {
 	@PostMapping(path = "/sort")
     public ResponseEntity<?> sort(@RequestBody SortDTO dto) {
         return new ResponseEntity<>(cottageService.sort(dto), HttpStatus.OK);
+    }
+	
+	@PreAuthorize("hasRole('CLIENT')")
+	@PostMapping(path = "/availableCottages")
+    public ResponseEntity<?> availableCottages(@RequestBody ReservationSearchDTO dto) {
+        return new ResponseEntity<>(cottageService.getAvailableCottages(dto), HttpStatus.OK);
     }
 	
 	

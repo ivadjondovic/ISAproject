@@ -67,6 +67,10 @@ public class FishingLesson {
 	@JsonBackReference
 	@ManyToOne
 	private Instructor instructor;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "fishingLesson", fetch = FetchType.EAGER)
+	private Set<FishingLessonReservation> reservations;
 
 	public Long getId() {
 		return id;

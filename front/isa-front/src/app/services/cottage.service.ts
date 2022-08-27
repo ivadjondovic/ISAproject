@@ -35,4 +35,8 @@ export class CottageService {
   sort(data: any){
     return this.http.post(this.baseURL + "api/cottage/sort" ,  data);
   }
+
+  getAvailableCottages(data: any){
+    return this.http.post(this.baseURL + "api/cottage/availableCottages" ,  data, this.getAuthoHeader());
+  }
 }

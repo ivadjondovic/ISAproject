@@ -1,0 +1,67 @@
+<div>
+    <div class="row">
+        <div class="col-sm">
+
+            <mat-form-field appearance="fill">
+                <mat-label>Sort by</mat-label>
+                <mat-select [(ngModel)]="sortBy">
+                    <mat-option value="Name">Name</mat-option>
+                    <mat-option value="Address">Address</mat-option>
+                    <mat-option value="Price">Price</mat-option>
+                    <mat-option value="Number of people">Number of people</mat-option>
+                    <mat-option value="Percentage for keep">Percentage for keep</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-sm">
+            <mat-form-field appearance="fill">
+                <mat-label>Choose sort type</mat-label>
+                <mat-select [(ngModel)]="sortType">
+                    <mat-option value="Descending">Descending</mat-option>
+                    <mat-option value="Ascending">Ascending</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </div>
+        <div class="col-sm">
+            <button class="searchButton" (click)="sort()"><mat-icon>search</mat-icon></button>
+        </div>
+        <div class="col-sm"></div>
+        <div class="col-sm"></div>
+
+
+        <div class="col-sm">
+            <mat-form-field appearance="fill">
+                <mat-label>Search by name or address</mat-label>
+                <input (input)="search()" matInput [(ngModel)]="searchTerm" />
+                <mat-icon matPrefix>search</mat-icon>
+            </mat-form-field>
+        </div>
+    </div>
+    <mat-grid-list [cols]="3" [rowHeight]="360">
+        <div *ngFor="let l of lessons">
+            <mat-grid-tile [rowspan]="1" [colspan]="1">
+                <div class="rounded">
+                    <h2>{{l.name}}</h2>
+                    <!-- <img class="roundedImage" src="{{b.images[0].path}}" style="width:438px; height: 260px; margin-bottom: 15px;"> -->
+                    <p style="font-size: 17px; color: #4c7d85;">{{l.description}}</p>
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Address:&nbsp;</span> {{l.address}}</p>
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Instructor biography:&nbsp;</span> {{l.fishingInstructorBio}}</p>
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Number of people:&nbsp;</span>
+                        {{l.numberOfPeople}}</p>
+
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Price:&nbsp;</span> {{l.price}} din</p>
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Percentage for keep:&nbsp;</span> {{l.percentageForKeep}}%</p>
+                    <div class="row">
+                        <div class="col-sm"></div>
+                        <div class="col-sm">
+                            <button style="bottom: 0;" (click)="showMore(l.id)">Show more</button>
+                        </div>
+                        <div class="col-sm"></div>
+                    </div>
+
+                </div>
+            </mat-grid-tile>
+        </div>
+    </mat-grid-list>
+</div>

@@ -1,5 +1,6 @@
 package com.isa.project.service.implementation;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -16,6 +17,7 @@ import com.isa.project.dto.AvailablePeriodDTO;
 import com.isa.project.dto.CottageDTO;
 import com.isa.project.dto.ImageDTO;
 import com.isa.project.dto.QuickReservationDTO;
+import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.RoomDTO;
 import com.isa.project.dto.RuleDTO;
 import com.isa.project.dto.SortDTO;
@@ -222,6 +224,28 @@ public class CottageServiceImplementation implements CottageService{
 			}
 		}
 		return cottages;
+	}
+
+
+	@Override
+	public List<Cottage> getAvailableCottages(ReservationSearchDTO dto) {
+		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
+		List<Cottage> cottages = cottageRepository.findAll();
+		List<Cottage> result = new ArrayList<>();
+		for(Cottage cottage: cottages) {
+			int numberOfGuests = 0;
+			Set<Room> rooms = cottage.getRooms();
+			for(Room room: rooms) {
+				numberOfGuests += room.getNumberOfBeds();
+			}
+			Set<AvailableCottagePeriod> periods = cottage.getAvailablePeriods();
+			for(AvailableCottagePeriod period: periods) {
+				if(dto.getStartDate().compareTo(period.getStartDate()) >=0 && endDate.compareTo(period.getEndDate()) <= 0 && numberOfGuests >= dto.getNumberOfGuests()) {
+					result.add(cottage);
+				}
+			}
+		}
+		return result;
 	}
 
 	

@@ -22,6 +22,10 @@ public class AdditionalBoatService {
 	@JsonBackReference
 	@ManyToOne
 	private Boat boat;
+	
+	@JsonBackReference
+	@ManyToOne
+	private BoatReservation boatReservation;
 
 	public Long getId() {
 		return id;
@@ -54,6 +58,16 @@ public class AdditionalBoatService {
 	public void setBoat(Boat boat) {
 		this.boat = boat;
 	}
+
+	public BoatReservation getBoatReservation() {
+		return boatReservation;
+	}
+
+	public void setBoatReservation(BoatReservation boatReservation) {
+		this.boatReservation = boatReservation;
+	}
+	
+	
 	
 	
 	

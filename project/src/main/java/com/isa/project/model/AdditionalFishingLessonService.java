@@ -22,6 +22,10 @@ public class AdditionalFishingLessonService {
 	@JsonBackReference
 	@ManyToOne
 	private FishingLesson fishingLesson;
+	
+	@JsonBackReference
+	@ManyToOne
+	private FishingLessonReservation fishingLessonReservation;
 
 	public Long getId() {
 		return id;
@@ -54,6 +58,16 @@ public class AdditionalFishingLessonService {
 	public void setFishingLesson(FishingLesson fishingLesson) {
 		this.fishingLesson = fishingLesson;
 	}
+
+	public FishingLessonReservation getFishingLessonReservation() {
+		return fishingLessonReservation;
+	}
+
+	public void setFishingLessonReservation(FishingLessonReservation fishingLessonReservation) {
+		this.fishingLessonReservation = fishingLessonReservation;
+	}
+	
+	
 
 	
 }

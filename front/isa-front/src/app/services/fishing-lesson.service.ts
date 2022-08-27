@@ -36,4 +36,24 @@ export class FishingLessonService {
     return this.http.put(this.baseURL + "api/fishing/editFishingLesson", data, this.getAuthoHeader());
   }
 
+  getAll(){
+    return this.http.get(this.baseURL + "api/fishing/fishingLessons");
+  }
+
+  getOneLesson(id: any){
+    return this.http.get(this.baseURL + "api/fishing/lessonById/" + id);
+  }
+
+  sort(data: any){
+    return this.http.post(this.baseURL + "api/fishing/sort" ,  data);
+  }
+
+  search(searchTerm: any){
+    return this.http.get(this.baseURL + "api/fishing/search/" + searchTerm);
+  }
+
+  getAvailableLessons(data: any){
+    return this.http.post(this.baseURL + "api/fishing/availableLessons" ,  data, this.getAuthoHeader());
+  }
+
 }

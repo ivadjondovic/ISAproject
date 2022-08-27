@@ -76,6 +76,10 @@ public class Boat {
 	@JsonBackReference
 	@ManyToOne
 	private BoatOwner boatOwner;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "boat", fetch = FetchType.EAGER)
+	private Set<BoatReservation> reservations;
 
 
 	public Long getId() {
@@ -277,6 +281,18 @@ public class Boat {
 	public void setBoatOwner(BoatOwner boatOwner) {
 		this.boatOwner = boatOwner;
 	}
+
+
+	public Set<BoatReservation> getReservations() {
+		return reservations;
+	}
+
+
+	public void setReservations(Set<BoatReservation> reservations) {
+		this.reservations = reservations;
+	}
+	
+	
 	
 	
 

@@ -1,9 +1,13 @@
 package com.isa.project.service.implementation;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +18,9 @@ import com.isa.project.dto.FishingEquipmentDTO;
 import com.isa.project.dto.FishingLessonDTO;
 import com.isa.project.dto.ImageDTO;
 import com.isa.project.dto.QuickReservationDTO;
+import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.RuleDTO;
+import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalFishingLessonService;
 import com.isa.project.model.AvailableFishingLessonPeriod;
 import com.isa.project.model.FishingEquipment;
@@ -312,6 +318,106 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 	public FishingLesson getById(Long id) {
 		FishingLesson fishingLesson = fishingLessonRepository.findById(id).get();
 		return fishingLesson;
+	}
+
+	@Override
+	public List<FishingLesson> getAll() {
+
+		return fishingLessonRepository.findAll();
+	}
+
+	@Override
+	public List<FishingLesson> sort(SortDTO dto) {
+		List<FishingLesson> lessons = fishingLessonRepository.findAll();
+		if(dto.getSortBy().equals("Name")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(lessons, (l1, l2) ->
+			    (l1.getName().compareTo(l2.getName())));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(lessons, (l1, l2) ->
+			    (l2.getName().compareTo(l1.getName())));
+			}
+		}
+		
+		if(dto.getSortBy().equals("Address")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(lessons, (l1, l2) ->
+			    (l1.getAddress().compareTo(l2.getAddress())));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(lessons, (l1, l2) ->
+			    (l2.getAddress().compareTo(l1.getAddress())));
+			}
+		}
+		if(dto.getSortBy().equals("Price")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(lessons, (l1, l2) ->
+			    Double.compare(l1.getPrice(), l2.getPrice()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(lessons, (l1, l2) ->
+				 Double.compare(l2.getPrice(), l1.getPrice()));
+			}
+		}
+		
+		if(dto.getSortBy().equals("Number of people")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(lessons, (l1, l2) ->
+			   Integer.compare(l1.getNumberOfPeople(), l2.getNumberOfPeople()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(lessons, (l1, l2) ->
+				 Integer.compare(l2.getNumberOfPeople(), l1.getNumberOfPeople()));
+			}
+		}
+		
+		if(dto.getSortBy().equals("Percentage for keep")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(lessons, (l1, l2) ->
+			    Double.compare(l1.getPercentageForKeep(), l2.getPercentageForKeep()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(lessons, (l1, l2) ->
+				 Double.compare(l2.getPercentageForKeep(), l1.getPercentageForKeep()));
+			}
+		}
+		return lessons;
+	}
+
+	@Override
+	public List<FishingLesson> search(String searchTerm) {
+		List<FishingLesson> lessons = fishingLessonRepository.findAll();
+		List<FishingLesson> result = new ArrayList<>();
+		List<FishingLesson> filtered = new ArrayList<>();
+		for(FishingLesson lesson: lessons) {
+			if(lesson.getAddress().toLowerCase().contains(searchTerm.toLowerCase())) {
+				result.add(lesson);
+			}
+			if(lesson.getName().toLowerCase().contains(searchTerm.toLowerCase())) {
+				result.add(lesson);
+			}
+			
+		}
+		
+		filtered = result.stream().distinct().collect( Collectors.toList() );
+		return filtered;
+	}
+
+	@Override
+	public List<FishingLesson> getAvailableLessons(ReservationSearchDTO dto) {
+		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
+		List<FishingLesson> lessons = fishingLessonRepository.findAll();
+		List<FishingLesson> result = new ArrayList<>();
+		for(FishingLesson lesson: lessons) {
+			Set<AvailableFishingLessonPeriod> periods = lesson.getAvailablePeriods();
+			for(AvailableFishingLessonPeriod period: periods) {
+				if(dto.getStartDate().compareTo(period.getStartDate()) >=0 && endDate.compareTo(period.getEndDate()) <= 0 && lesson.getNumberOfPeople() >= dto.getNumberOfGuests()) {
+					result.add(lesson);
+				}
+			}
+		}
+		return result;
 	}
 
 }

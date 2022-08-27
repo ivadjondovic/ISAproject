@@ -35,5 +35,9 @@ export class BoatService {
   sort(data: any){
     return this.http.post(this.baseURL + "api/boat/sort" ,  data);
   }
+
+  getAvailableBoats(data: any){
+    return this.http.post(this.baseURL + "api/boat/availableBoats" ,  data, this.getAuthoHeader());
+  }
   
 }
