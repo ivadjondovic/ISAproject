@@ -6,47 +6,524 @@
 
             <div class="form-group">
                 <label for="fname">Name</label>
-                <input type="text" id="fname" name="firstname" [(ngModel)] = "lesson.name">
+                <input type="text" id="fname" name="firstname" [(ngModel)]="lesson.name">
             </div>
 
             <div class="form-group">
                 <label for="lname">Adress</label>
-                <input type="text" id="lname" name="lasttname" [(ngModel)] = "lesson.adress">
+                <input type="text" id="lname" name="lasttname" [(ngModel)]="lesson.adress">
             </div>
 
             <div class="form-group">
                 <label for="email">Description</label>
-                <input type="text" id="email" name="email" [(ngModel)] = "lesson.description">
+                <input type="text" id="email" name="email" [(ngModel)]="lesson.description">
             </div>
 
             <div class="form-group">
                 <label for="email">Number of people</label>
-                <input type="text" id="email" name="email" [(ngModel)] = "lesson.numberOfPeople">
+                <input type="text" id="email" name="email" [(ngModel)]="lesson.numberOfPeople">
             </div>
 
             <div class="form-group">
                 <label for="email">Instructor biography</label>
-                <input type="text" id="email" name="email" [(ngModel)] = "lesson.fishingInstructorBio">
+                <input type="text" id="email" name="email" [(ngModel)]="lesson.fishingInstructorBio">
             </div>
 
             <div class="form-group">
                 <label for="email">Price</label>
-                <input type="text" id="email" name="email" [(ngModel)] = "lesson.price">
+                <input type="text" id="email" name="email" [(ngModel)]="lesson.price">
             </div>
 
             <div class="form-group">
                 <label for="email">Percentage for keep</label>
-                <input type="text" id="email" name="email" [(ngModel)] = "lesson.percentageForKeep">
+                <input type="text" id="email" name="email" [(ngModel)]="lesson.percentageForKeep">
             </div>
 
         </div>
 
     </mat-grid-tile>
+
     <mat-grid-tile [rowspan]="2" [colspan]="2">
         <div class="rounded">
-            <h1 style="text-align: center;">...</h1>
-            <hr>
+            <div class="row mb-4 mt-3">
+                <div class="col-7">
+                    <mat-card style="margin-top: 15px;">
+                        <mat-card-title style="text-align: center; font-size: 18px; color:white">Available periods
+                        </mat-card-title>
+                    </mat-card>
+                </div>
+
+                <div class="col-1"></div>
+
+                <div class="col-2">
+                    <button class="button1" (click)="addNewAvailablePeriods()">
+                        <mat-icon>playlist_add</mat-icon>
+                    </button>
+                </div>
+
+                <div class="col-2">
+                    <button class="button1" (click)="editAvailablePeriods()">
+                        <mat-icon>edit_note</mat-icon>
+                    </button>
+                </div>
+
+            </div>
+            <div class="row mb-4">
+                <div class="col-7">
+                    <mat-card style="margin-top: 15px;">
+                        <mat-card-title style="text-align: center; font-size: 18px; color:white">Additional services
+                        </mat-card-title>
+                    </mat-card>
+                </div>
+
+                <div class="col-1"></div>
+
+                <div class="col-2">
+                    <button class="button1" (click)="addNewAdditionalServices()">
+                        <mat-icon>playlist_add</mat-icon>
+                    </button>
+                </div>
+
+                <div class="col-2">
+                    <button class="button1" (click)="editAdditionalServices()">
+                        <mat-icon>edit_note</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-7">
+                    <mat-card style="margin-top: 15px;">
+                        <mat-card-title style="text-align: center; font-size: 18px; color:white">Quick reservations
+                        </mat-card-title>
+                    </mat-card>
+                </div>
+
+                <div class="col-1"></div>
+
+                <div class="col-2">
+                    <button class="button1" (click)="addNewQuickReservations()">
+                        <mat-icon>playlist_add</mat-icon>
+                    </button>
+                </div>
+
+                <div class="col-2">
+                    <button class="button1" (click)="editQuickReservations()">
+                        <mat-icon>edit_note</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-7">
+                    <mat-card style="margin-top: 15px;">
+                        <mat-card-title style="text-align: center; font-size: 18px; color:white">Fishing equipment
+                        </mat-card-title>
+                    </mat-card>
+                </div>
+
+                <div class="col-1"></div>
+
+                <div class="col-2">
+                    <button class="button1" (click)="addNewFishingEquipment()">
+                        <mat-icon>playlist_add</mat-icon>
+                    </button>
+                </div>
+
+                <div class="col-2">
+                    <button class="button1" (click)="editFishingEquipment()">
+                        <mat-icon>edit_note</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-7">
+                    <mat-card style="margin-top: 15px;">
+                        <mat-card-title style="text-align: center; font-size: 18px; color:white">Rules</mat-card-title>
+                    </mat-card>
+                </div>
+
+                <div class="col-1"></div>
+
+                <div class="col-2">
+                    <button class="button1" (click)="addNewRules()">
+                        <mat-icon>playlist_add</mat-icon>
+                    </button>
+                </div>
+
+                <div class="col-2">
+                    <button class="button1" (click)="editRules()">
+                        <mat-icon>edit_note</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm"></div>
+                <div class="col-sm"></div>
+                <div class="col-sm">
+                    <button class="button2">Save</button>
+                </div>
+                <div class="col-sm"></div>
+                <div class="col-sm"></div>
+            </div>
         </div>
     </mat-grid-tile>
+
+
+    <div *ngIf="rule">
+        <mat-grid-tile [rowspan]="2" [colspan]="1"> </mat-grid-tile>
+
+        <mat-grid-tile [rowspan]="2" [colspan]="2">
+            <div class="rounded">
+                <h1 style="text-align: center;">Add new rule</h1>
+                <hr>
+
+                <div class="form-group">
+                    <label for="email">Description</label>
+                    <textarea name="email" rows="4" [(ngModel)]="newRuleDescription"></textarea>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm"></div>
+                    <div class="col-sm"></div>
+                    <div class="col-sm">
+                        <button class="button2">Add</button>
+                    </div>
+                    <div class="col-sm"></div>
+                    <div class="col-sm"></div>
+                </div>
+            </div>
+
+        </mat-grid-tile>
+
+        <mat-grid-tile [rowspan]="2" [colspan]="1"> </mat-grid-tile>
+    </div>
+
+
+
+
+
+    <div *ngIf="equipment">
+        <mat-grid-tile [rowspan]="2" [colspan]="1"> </mat-grid-tile>
+
+        <mat-grid-tile [rowspan]="2" [colspan]="2">
+            <div class="rounded">
+                <h1 style="text-align: center;">Add new equipment</h1>
+                <hr>
+
+                <div class="form-group">
+                    <label for="email">Description</label>
+                    <textarea name="email" rows="4" [(ngModel)]="newRuleDescription"></textarea>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm"></div>
+                    <div class="col-sm"></div>
+                    <div class="col-sm">
+                        <button class="button2">Add</button>
+                    </div>
+                    <div class="col-sm"></div>
+                    <div class="col-sm"></div>
+                </div>
+            </div>
+
+        </mat-grid-tile>
+
+        <mat-grid-tile [rowspan]="2" [colspan]="1"> </mat-grid-tile>
+    </div>
+
+
+
+
+
+    <div *ngIf="quickReservations">
+        <mat-grid-tile [rowspan]="2" [colspan]="1"> </mat-grid-tile>
+
+        <mat-grid-tile [rowspan]="2" [colspan]="2">
+            <div class="rounded">
+                <h1 style="text-align: center;">Add new quick reservation</h1>
+                <hr>
+
+                <div class="form-group">
+                    <label for="startDate">Start date</label>
+                    <input id="startDate" [(ngModel)]="quickStartDate" type="datetime-local">
+                </div>
+
+                <div class="form-group">
+                    <label for="endDate">End date</label>
+                    <input id="endDate" [(ngModel)]="quickEndDate" type="datetime-local">
+                </div>
+
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input id="price" [(ngModel)]="price" type="text">
+                </div>
+
+                <div class="form-group">
+                    <label for="guests">Number of guests</label>
+                    <input id="guests" type="text" [(ngModel)]="numberOfGuests">
+                </div>
+
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input id="price" [(ngModel)]="price" type="text">
+                </div>
+
+                <div class="form-group">
+                    <label for="quickAdditionalServices">Additional services</label>
+                    <textarea name="quickAdditionalServices" rows="4" [(ngModel)]="quickAdditionalServices"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input id="location" [(ngModel)]="location" type="text">
+                </div>
+
+                <div class="row">
+                    <div class="col-sm"></div>
+                    <div class="col-sm"></div>
+                    <div class="col-sm">
+                        <button class="button2">Add</button>
+                    </div>
+                    <div class="col-sm"></div>
+                    <div class="col-sm"></div>
+                </div>
+
+            </div>
+
+        </mat-grid-tile>
+
+        <mat-grid-tile [rowspan]="2" [colspan]="1"> </mat-grid-tile>
+    </div>
+
+
+    <div *ngIf="additionalServices">
+        <mat-grid-tile [rowspan]="2" [colspan]="1"> </mat-grid-tile>
+
+        <mat-grid-tile [rowspan]="2" [colspan]="2">
+            <div class="rounded">
+                <h1 style="text-align: center;">Add new additional service</h1>
+                <hr>
+
+                <div class="form-group">
+                    <label for="email">Description</label>
+                    <textarea name="email" rows="4" [(ngModel)]="newServiceDescription"></textarea>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="text" id="price" name="price" [(ngModel)]="servicePrice">
+                </div>
+
+                <div class="row">
+                    <div class="col-sm"></div>
+                    <div class="col-sm"></div>
+                    <div class="col-sm">
+                        <button class="button2">Add</button>
+                    </div>
+                    <div class="col-sm"></div>
+                    <div class="col-sm"></div>
+                </div>
+
+            </div>
+
+        </mat-grid-tile>
+
+        <mat-grid-tile [rowspan]="2" [colspan]="1"> </mat-grid-tile>
+    </div>
+
+
+
+    <div *ngIf="availablePeriods">
+        <mat-grid-tile [rowspan]="2" [colspan]="1"> </mat-grid-tile>
+
+        <mat-grid-tile [rowspan]="2" [colspan]="2">
+            <div class="rounded">
+                <h1 style="text-align: center;">Add new available period</h1>
+                <hr>
+
+                <div class="form-group">
+                    <label for="startDate">Start date</label>
+                    <input id="startDate" [(ngModel)]="periodStartDate" type="datetime-local">
+                </div>
+
+                <div class="form-group">
+                    <label for="endDate">End date</label>
+                    <input id="endDate" [(ngModel)]="periodEndDate" type="datetime-local">
+                </div>
+
+                <div class="row">
+                    <div class="col-sm"></div>
+                    <div class="col-sm"></div>
+                    <div class="col-sm">
+                        <button class="button2">Add</button>
+                    </div>
+                    <div class="col-sm"></div>
+                    <div class="col-sm"></div>
+                </div>
+
+            </div>
+
+        </mat-grid-tile>
+
+        <mat-grid-tile [rowspan]="2" [colspan]="1"> </mat-grid-tile>
+    </div>
+
+    <div *ngIf="deleteRule">
+
+        <mat-grid-tile [rowspan]="2" [colspan]="4">
+            <div class="rounded">
+                <mat-grid-list [cols]="3" [rowHeight]="160">
+                    <div *ngFor="let r of existingRules">
+                        <mat-grid-tile [rowspan]="1" [colspan]="1">
+                            <div class="rounded">
+                                <p style="font-size: 17px; color: #4c7d85;">{{r.description}}</p>
+
+                                <div class="row">
+                                    <div class="col-sm"></div>
+                                    <div class="col-sm"></div>
+                                    <div class="col-sm">
+                                        <button class="buttonDelete">Delete</button>
+                                    </div>
+                                    <div class="col-sm"></div>
+                                    <div class="col-sm"></div>
+                                </div>
+
+                            </div>
+                        </mat-grid-tile>
+                    </div>
+                </mat-grid-list>
+            </div>
+
+        </mat-grid-tile>
+    </div>
+
+    
+    <div *ngIf="deleteEquipment">
+
+        <mat-grid-tile [rowspan]="2" [colspan]="4">
+            <div class="rounded">
+                <mat-grid-list [cols]="3" [rowHeight]="160">
+                    <div *ngFor="let e of existingFishingEquipment">
+                        <mat-grid-tile [rowspan]="1" [colspan]="1">
+                            <div class="rounded">
+                                <p style="font-size: 17px; color: #4c7d85;">{{e.description}}</p>
+
+                                <div class="row">
+                                    <div class="col-sm"></div>
+                                    <div class="col-sm"></div>
+                                    <div class="col-sm">
+                                        <button class="buttonDelete">Delete</button>
+                                    </div>
+                                    <div class="col-sm"></div>
+                                    <div class="col-sm"></div>
+                                </div>
+
+                            </div>
+                        </mat-grid-tile>
+                    </div>
+                </mat-grid-list>
+            </div>
+
+        </mat-grid-tile>
+    </div>
+
+
+    <div *ngIf="deleteQuickReservations">
+
+        <mat-grid-tile [rowspan]="2" [colspan]="4">
+            <div class="rounded">
+                <mat-grid-list [cols]="3" [rowHeight]="300">
+                    <div *ngFor="let reservation of quickReservationList">
+                        <mat-grid-tile [rowspan]="1" [colspan]="1">
+                            <div class="rounded">
+                                <p style="font-size: 17px;"><span style="color: #4c7d85;">From-To:&nbsp;</span> {{reservation.startDate | date:'medium'}} - {{reservation.endDate | date:'medium'}}</p>
+                                <p style="font-size: 17px;"><span style="color: #4c7d85;">Price:&nbsp;</span> {{reservation.price}}</p>
+                                <p style="font-size: 17px;"><span style="color: #4c7d85;">Location:&nbsp;</span> {{reservation.location}}</p>
+                                <p style="font-size: 17px;"><span style="color: #4c7d85;">Number of person:&nbsp;</span> {{reservation.maxNumberOfPerson}}</p>
+                                <p style="font-size: 17px;"><span style="color: #4c7d85;">Additional services:&nbsp;</span> {{reservation.additionalServices}}</p>
+                            
+                                <div class="row">
+                                    <div class="col-sm"></div>
+                                    <div class="col-sm"></div>
+                                    <div class="col-sm">
+                                        <button style="bottom: 0" class="buttonDelete">Delete</button>
+                                    </div>
+                                    <div class="col-sm"></div>
+                                    <div class="col-sm"></div>
+                                </div>
+                            
+                            </div>
+                        </mat-grid-tile>
+                    </div>
+                </mat-grid-list>
+            </div>
+
+        </mat-grid-tile>
+    </div>
+
+
+
+    <div *ngIf="deleteAdditionalServices">
+
+        <mat-grid-tile [rowspan]="2" [colspan]="4">
+            <div class="rounded">
+                <mat-grid-list [cols]="3" [rowHeight]="200">
+                    <div *ngFor="let a of existingAdditionalServices">
+                        <mat-grid-tile [rowspan]="1" [colspan]="1">
+                            <div class="rounded">
+                                <p style="font-size: 17px;"><span style="color: #4c7d85;">Service:&nbsp;</span> {{a.description}}</p>
+                                <p style="font-size: 17px;"><span style="color: #4c7d85;">Price:&nbsp;</span> {{a.price}}</p>
+
+                                <div class="row">
+                                    <div class="col-sm"></div>
+                                    <div class="col-sm"></div>
+                                    <div class="col-sm">
+                                        <button class="buttonDelete">Delete</button>
+                                    </div>
+                                    <div class="col-sm"></div>
+                                    <div class="col-sm"></div>
+                                </div>
+
+                            </div>
+                        </mat-grid-tile>
+                    </div>
+                </mat-grid-list>
+            </div>
+
+        </mat-grid-tile>
+    </div>
+
+
+    <div *ngIf="deleteAvailablePeriods">
+
+        <mat-grid-tile [rowspan]="2" [colspan]="4">
+            <div class="rounded">
+                <mat-grid-list [cols]="3" [rowHeight]="180">
+                    <div *ngFor="let period of dateList">
+                        <mat-grid-tile [rowspan]="1" [colspan]="1">
+                            <div class="rounded">
+                                <p style="font-size: 17px;"><span style="color: #4c7d85;">From-To:&nbsp;</span>  {{period.startDate| date:'medium'}}-{{period.endDate | date:'medium'}}</p>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm"></div>
+                                <div class="col-sm"></div>
+                                <div class="col-sm">
+                                    <button class="buttonDelete">Delete</button>
+                                </div>
+                                <div class="col-sm"></div>
+                                <div class="col-sm"></div>
+                            </div>
+                        </mat-grid-tile>
+                    </div>
+                </mat-grid-list>
+            </div>
+
+        </mat-grid-tile>
+    </div>
 
 </mat-grid-list>
