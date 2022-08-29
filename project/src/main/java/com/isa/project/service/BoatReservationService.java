@@ -6,5 +6,6 @@ import com.isa.project.model.BoatReservation;
 public interface BoatReservationService {
 	
 	public BoatReservation createReservation(ReservationDTO dto);
+	public BoatReservation accept(Long id);
 
 }

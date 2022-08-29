@@ -25,6 +25,7 @@ public class FishingLessonReservation {
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
 	private Double price;
+	private Boolean accepted;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "fishingLessonReservation", fetch = FetchType.LAZY)
@@ -94,6 +95,16 @@ public class FishingLessonReservation {
 	public void setClient(Client client) {
 		this.client = client;
 	}
+
+	public Boolean getAccepted() {
+		return accepted;
+	}
+
+	public void setAccepted(Boolean accepted) {
+		this.accepted = accepted;
+	}
+	
+	
 	
 	
 	

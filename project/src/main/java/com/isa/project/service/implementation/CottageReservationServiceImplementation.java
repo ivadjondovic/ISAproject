@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ import com.isa.project.repository.CottageRepository;
 import com.isa.project.repository.CottageReservationRepository;
 import com.isa.project.repository.UserRepository;
 import com.isa.project.service.CottageReservationService;
+import com.isa.project.service.EmailService;
 
 @Service
 public class CottageReservationServiceImplementation implements CottageReservationService{
@@ -38,6 +41,9 @@ public class CottageReservationServiceImplementation implements CottageReservati
 	@Autowired
 	private AvailableCottagePeriodRepository periodRepository;
 	
+	@Autowired
+	private EmailService emailService;
+	
 	@Override
 	public CottageReservation createReservation(ReservationDTO dto) {
 		
@@ -51,6 +57,7 @@ public class CottageReservationServiceImplementation implements CottageReservati
 		
 		cottageReservation.setClient(client);
 		cottageReservation.setCottage(cottage);
+		cottageReservation.setAccepted(false);
 		
 		CottageReservation savedReservation = cottageReservationRepository.save(cottageReservation);
 		
@@ -123,8 +130,26 @@ public class CottageReservationServiceImplementation implements CottageReservati
 		cottage.setAvailablePeriods(newPeriods);
 		Cottage savedCottage = cottageRepository.save(cottage);
 		savedReservation.setCottage(savedCottage);
+		try {
+			emailService.sendCottageReservationMail(client, savedReservation);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return cottageReservationRepository.save(savedReservation);
+	}
+
+	@Override
+	public CottageReservation accept(Long id) {
+		CottageReservation reservation = cottageReservationRepository.findById(id).get();
+		
+		if(reservation == null) {
+			return null;
+		}
+		reservation.setAccepted(true);
+		return cottageReservationRepository.save(reservation);
+		
 	}
 
 }

@@ -120,6 +120,7 @@ public class CottageServiceImplementation implements CottageService{
 			quickReservation.setPrice(quickReservationDto.getPrice());
 			quickReservation.setCottage(savedCottage);
 			quickReservation.setReserved(false);
+			quickReservation.setAccepted(false);
 			QuickCottageReservation savedReservation = quickReservationRepository.save(quickReservation);
 			quickReservations.add(savedReservation);
 			
@@ -154,7 +155,13 @@ public class CottageServiceImplementation implements CottageService{
 
 	@Override
 	public Cottage getById(Long id) {
-		return cottageRepository.findById(id).get();
+		Cottage cottage = cottageRepository.findById(id).get();
+		Set<QuickCottageReservation> reservations = cottage.getQuickReservations();
+		Set<QuickCottageReservation> filteredSet = reservations.stream()
+				.filter(r -> (r.getReserved() == false && r.getAccepted() == false))
+                .collect(Collectors.toSet());
+		cottage.setQuickReservations(filteredSet);
+		return cottage;
 	}
 
 

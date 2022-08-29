@@ -27,9 +27,11 @@ import com.isa.project.model.AvailableBoatPeriod;
 import com.isa.project.model.Boat;
 import com.isa.project.model.BoatFishingEquipment;
 import com.isa.project.model.BoatOwner;
+import com.isa.project.model.Cottage;
 import com.isa.project.model.Image;
 import com.isa.project.model.NavigationEquipment;
 import com.isa.project.model.QuickBoatReservation;
+import com.isa.project.model.QuickCottageReservation;
 import com.isa.project.model.Rule;
 import com.isa.project.model.User;
 import com.isa.project.repository.AdditionalBoatServiceRepository;
@@ -131,6 +133,7 @@ public class BoatServiceImplementation implements BoatService{
 			quickReservation.setPrice(quickReservationDto.getPrice());
 			quickReservation.setBoat(savedBoat);
 			quickReservation.setReserved(false);
+			quickReservation.setAccepted(false);
 			QuickBoatReservation savedReservation = quickReservationRepository.save(quickReservation);
 			quickReservations.add(savedReservation);
 			
@@ -171,7 +174,13 @@ public class BoatServiceImplementation implements BoatService{
 
 	@Override
 	public Boat getById(Long id) {
-		return boatRepository.findById(id).get();
+		Boat boat = boatRepository.findById(id).get();
+		Set<QuickBoatReservation> reservations = boat.getQuickReservations();
+		Set<QuickBoatReservation> filteredSet = reservations.stream()
+				.filter(r -> (r.getReserved() == false && r.getAccepted() == false))
+                .collect(Collectors.toSet());
+		boat.setQuickReservations(filteredSet);
+		return boat;
 	}
 
 	@Override

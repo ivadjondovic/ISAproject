@@ -2,14 +2,18 @@ package com.isa.project.service.implementation;
 
 import java.util.Set;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isa.project.dto.QuickClientReservationDTO;
 import com.isa.project.model.Client;
+import com.isa.project.model.CottageReservation;
 import com.isa.project.model.QuickCottageReservation;
 import com.isa.project.repository.QuickCottageReservationRepository;
 import com.isa.project.repository.UserRepository;
+import com.isa.project.service.EmailService;
 import com.isa.project.service.QuickCottageReservationService;
 
 @Service
@@ -21,6 +25,8 @@ public class QuickCottageReservationServiceImplementation implements QuickCottag
 	@Autowired
 	private QuickCottageReservationRepository quickCottageReservationRepository;
 	
+	@Autowired
+	private EmailService emailService;
 	
 	@Override
 	public Client clientReservation(QuickClientReservationDTO dto) {
@@ -36,7 +42,25 @@ public class QuickCottageReservationServiceImplementation implements QuickCottag
 		client.setQuickCottageReservations(reservations);
 		Client savedClient = userRepository.save(client);
 		
+		try {
+			emailService.sendQuickCottageReservationMail(savedClient, savedReservation);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return savedClient;
+	}
+
+	@Override
+	public QuickCottageReservation accept(Long id) {
+		QuickCottageReservation reservation = quickCottageReservationRepository.findById(id).get();
+		
+		if(reservation == null) {
+			return null;
+		}
+		reservation.setAccepted(true);
+		return quickCottageReservationRepository.save(reservation);
 	}
 
 }

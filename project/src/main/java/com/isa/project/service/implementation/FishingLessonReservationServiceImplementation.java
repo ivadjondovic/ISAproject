@@ -4,12 +4,15 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.isa.project.dto.ReservationDTO;
 import com.isa.project.model.AdditionalFishingLessonService;
 import com.isa.project.model.AvailableFishingLessonPeriod;
 import com.isa.project.model.Client;
+import com.isa.project.model.CottageReservation;
 import com.isa.project.model.FishingLesson;
 import com.isa.project.model.FishingLessonReservation;
 import com.isa.project.repository.AdditionalFishingLessonServiceRepository;
@@ -17,6 +20,7 @@ import com.isa.project.repository.AvailableFishingLessonPeriodRepository;
 import com.isa.project.repository.FishingLessonRepository;
 import com.isa.project.repository.FishingLessonReservationRepository;
 import com.isa.project.repository.UserRepository;
+import com.isa.project.service.EmailService;
 import com.isa.project.service.FishingLessonReservationService;
 
 @Service
@@ -37,6 +41,9 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 	@Autowired
 	private AvailableFishingLessonPeriodRepository periodRepository;
 	
+	@Autowired
+	private EmailService emailService;
+	
 	@Override
 	public FishingLessonReservation createReservation(ReservationDTO dto) {
 		
@@ -50,6 +57,7 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 		
 		lessonReservation.setClient(client);
 		lessonReservation.setFishingLesson(lesson);
+		lessonReservation.setAccepted(false);
 		
 		FishingLessonReservation savedReservation = fishingLessonReservationRepository.save(lessonReservation);
 		
@@ -123,7 +131,25 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 		FishingLesson savedLesson = fishingLessonRepository.save(lesson);
 		savedReservation.setFishingLesson(savedLesson);
 		
+		try {
+			emailService.sendFishingLessonReservationMail(client, savedReservation);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return fishingLessonReservationRepository.save(savedReservation);
+	}
+
+	@Override
+	public FishingLessonReservation accept(Long id) {
+		FishingLessonReservation reservation = fishingLessonReservationRepository.findById(id).get();
+		
+		if(reservation == null) {
+			return null;
+		}
+		reservation.setAccepted(true);
+		return fishingLessonReservationRepository.save(reservation);
 	}
 
 }

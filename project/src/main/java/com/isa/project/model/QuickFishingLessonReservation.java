@@ -25,6 +25,7 @@ public class QuickFishingLessonReservation {
 	private int maxNumberOfPerson;
 	private String additionalServices;
 	private Boolean reserved;
+	private Boolean accepted;
 	
 	@JsonBackReference
 	@ManyToOne
@@ -113,6 +114,16 @@ public class QuickFishingLessonReservation {
 	public void setReserved(Boolean reserved) {
 		this.reserved = reserved;
 	}
+
+	public Boolean getAccepted() {
+		return accepted;
+	}
+
+	public void setAccepted(Boolean accepted) {
+		this.accepted = accepted;
+	}
+	
+	
 	
 	
 	

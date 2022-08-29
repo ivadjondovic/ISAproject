@@ -115,6 +115,8 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 			quickReservation.setMaxNumberOfPerson(quickReservationDto.getMaxNumberOfPerson());
 			quickReservation.setPrice(quickReservationDto.getPrice());
 			quickReservation.setFishingLesson(savedFishingLesson);
+			quickReservation.setReserved(false);
+			quickReservation.setAccepted(false);
 			QuickFishingLessonReservation savedReservation = quickReservationRepository.save(quickReservation);
 			quickReservations.add(savedReservation);
 			
@@ -317,6 +319,11 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 	@Override
 	public FishingLesson getById(Long id) {
 		FishingLesson fishingLesson = fishingLessonRepository.findById(id).get();
+		Set<QuickFishingLessonReservation> reservations = fishingLesson.getQuickReservations();
+		Set<QuickFishingLessonReservation> filteredSet = reservations.stream()
+                .filter(r -> (r.getReserved() == false && r.getAccepted() == false))
+                .collect(Collectors.toSet());
+		fishingLesson.setQuickReservations(filteredSet);
 		return fishingLesson;
 	}
 

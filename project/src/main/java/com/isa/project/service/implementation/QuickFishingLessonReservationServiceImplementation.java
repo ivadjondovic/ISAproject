@@ -2,14 +2,18 @@ package com.isa.project.service.implementation;
 
 import java.util.Set;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isa.project.dto.QuickClientReservationDTO;
 import com.isa.project.model.Client;
+import com.isa.project.model.QuickCottageReservation;
 import com.isa.project.model.QuickFishingLessonReservation;
 import com.isa.project.repository.QuickFishingLessonReservationRepository;
 import com.isa.project.repository.UserRepository;
+import com.isa.project.service.EmailService;
 import com.isa.project.service.QuickFishingLessonReservationService;
 
 @Service
@@ -20,6 +24,9 @@ public class QuickFishingLessonReservationServiceImplementation implements Quick
 	
 	@Autowired
 	private QuickFishingLessonReservationRepository quickFishingLessonReservationRepository;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	@Override
 	public Client clientReservation(QuickClientReservationDTO dto) {
@@ -35,7 +42,25 @@ public class QuickFishingLessonReservationServiceImplementation implements Quick
 		client.setQuickFishingLessonReservations(reservations);
 		Client savedClient = userRepository.save(client);
 		
+		try {
+			emailService.sendQuickFishingLessonReservationMail(savedClient, savedReservation);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return savedClient;
+	}
+
+	@Override
+	public QuickFishingLessonReservation accept(Long id) {
+		QuickFishingLessonReservation reservation = quickFishingLessonReservationRepository.findById(id).get();
+		
+		if(reservation == null) {
+			return null;
+		}
+		reservation.setAccepted(true);
+		return quickFishingLessonReservationRepository.save(reservation);
 	}
 
 }

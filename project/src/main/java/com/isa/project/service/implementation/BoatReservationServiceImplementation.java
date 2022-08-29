@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ import com.isa.project.repository.BoatRepository;
 import com.isa.project.repository.BoatReservationRepository;
 import com.isa.project.repository.UserRepository;
 import com.isa.project.service.BoatReservationService;
+import com.isa.project.service.EmailService;
 
 @Service
 public class BoatReservationServiceImplementation implements BoatReservationService{
@@ -38,6 +41,9 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 	@Autowired
 	private AvailableBoatPeriodRepository periodRepository;
 	
+	@Autowired
+	private EmailService emailService;
+	
 	@Override
 	public BoatReservation createReservation(ReservationDTO dto) {
 		
@@ -51,6 +57,7 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 		
 		boatReservation.setClient(client);
 		boatReservation.setBoat(boat);
+		boatReservation.setAccepted(false);
 		
 		BoatReservation savedReservation = boatReservationRepository.save(boatReservation);
 		
@@ -124,7 +131,26 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 		Boat savedBoat = boatRepository.save(boat);
 		savedReservation.setBoat(savedBoat);
 		
+		try {
+			emailService.sendBoatReservationMail(client, savedReservation);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return boatReservationRepository.save(savedReservation);
+	}
+
+	@Override
+	public BoatReservation accept(Long id) {
+		
+		BoatReservation reservation = boatReservationRepository.findById(id).get();
+		
+		if(reservation == null) {
+			return null;
+		}
+		reservation.setAccepted(true);
+		return boatReservationRepository.save(reservation);
 	}
 
 }
