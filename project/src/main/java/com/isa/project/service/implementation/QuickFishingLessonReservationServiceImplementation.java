@@ -28,6 +28,7 @@ public class QuickFishingLessonReservationServiceImplementation implements Quick
 		QuickFishingLessonReservation quickReservation = quickFishingLessonReservationRepository.findById(dto.getReservationId()).get();
 		
 		quickReservation.setClient(client);
+		quickReservation.setReserved(true);
 		QuickFishingLessonReservation savedReservation =  quickFishingLessonReservationRepository.save(quickReservation);
 		Set<QuickFishingLessonReservation> reservations = client.getQuickFishingLessonReservations();
 		reservations.add(savedReservation);

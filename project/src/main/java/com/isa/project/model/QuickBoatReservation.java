@@ -23,6 +23,7 @@ public class QuickBoatReservation {
 	private Double price;
 	private int maxNumberOfPerson;
 	private String additionalServices;
+	private Boolean reserved;
 	
 	@JsonBackReference
 	@ManyToOne
@@ -95,6 +96,16 @@ public class QuickBoatReservation {
 	public void setClient(Client client) {
 		this.client = client;
 	}
+
+	public Boolean getReserved() {
+		return reserved;
+	}
+
+	public void setReserved(Boolean reserved) {
+		this.reserved = reserved;
+	}
+	
+	
 	
 	
 	

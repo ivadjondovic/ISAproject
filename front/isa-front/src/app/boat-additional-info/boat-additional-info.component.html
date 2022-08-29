@@ -43,12 +43,18 @@
 
     <mat-grid-list [cols]="3" [rowHeight]="200">
         <div *ngFor="let reservation of quickReservationList">
-            <mat-grid-tile [rowspan]="1" [colspan]="1">
+            <mat-grid-tile *ngIf="!reservation.reserved"  [rowspan]="1" [colspan]="1">
                 <div class="rounded">
                     <p style="font-size: 17px;"><span style="color: #4c7d85;">From-To:&nbsp;</span> {{reservation.startDate | date:'medium'}} - {{reservation.endDate | date:'medium'}}</p>
                     <p style="font-size: 17px;"><span style="color: #4c7d85;">Price:&nbsp;</span> {{reservation.price}}</p>
                     <p style="font-size: 17px;"><span style="color: #4c7d85;">Number of person:&nbsp;</span> {{reservation.maxNumberOfPerson}}</p>
                     <p style="font-size: 17px;"><span style="color: #4c7d85;">Additional services:&nbsp;</span> {{reservation.additionalServices}}</p>
+
+                    <div *ngIf="role == 'ROLE_CLIENT'" class="row">
+                        <div class="col-sm"></div>
+                        <div class="col-sm"><button (click)="reserve(reservation.id)">Book</button></div>
+                        <div class="col-sm"></div>
+                    </div>
                 </div>
             </mat-grid-tile>
         </div>

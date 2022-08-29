@@ -43,7 +43,7 @@
 
     <mat-grid-list [cols]="3" [rowHeight]="260">
         <div *ngFor="let reservation of quickReservationList">
-            <mat-grid-tile [rowspan]="1" [colspan]="1">
+            <mat-grid-tile *ngIf="!reservation.reserved" [rowspan]="1" [colspan]="1">
                 <div class="rounded">
                     <p style="font-size: 17px;"><span style="color: #4c7d85;">From-To:&nbsp;</span> {{reservation.startDate | date:'medium'}} - {{reservation.endDate | date:'medium'}}</p>
                     <p style="font-size: 17px;"><span style="color: #4c7d85;">Price:&nbsp;</span> {{reservation.price}}</p>

@@ -119,6 +119,7 @@ public class CottageServiceImplementation implements CottageService{
 			quickReservation.setMaxNumberOfPerson(quickReservationDto.getMaxNumberOfPerson());
 			quickReservation.setPrice(quickReservationDto.getPrice());
 			quickReservation.setCottage(savedCottage);
+			quickReservation.setReserved(false);
 			QuickCottageReservation savedReservation = quickReservationRepository.save(quickReservation);
 			quickReservations.add(savedReservation);
 			

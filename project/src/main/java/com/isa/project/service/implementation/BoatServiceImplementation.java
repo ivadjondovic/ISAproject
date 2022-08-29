@@ -130,6 +130,7 @@ public class BoatServiceImplementation implements BoatService{
 			quickReservation.setMaxNumberOfPerson(quickReservationDto.getMaxNumberOfPerson());
 			quickReservation.setPrice(quickReservationDto.getPrice());
 			quickReservation.setBoat(savedBoat);
+			quickReservation.setReserved(false);
 			QuickBoatReservation savedReservation = quickReservationRepository.save(quickReservation);
 			quickReservations.add(savedReservation);
 			

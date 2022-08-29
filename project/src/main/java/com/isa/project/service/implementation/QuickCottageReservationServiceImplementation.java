@@ -29,6 +29,7 @@ public class QuickCottageReservationServiceImplementation implements QuickCottag
 		QuickCottageReservation quickReservation = quickCottageReservationRepository.findById(dto.getReservationId()).get();
 		
 		quickReservation.setClient(client);
+		quickReservation.setReserved(true);
 		QuickCottageReservation savedReservation =  quickCottageReservationRepository.save(quickReservation);
 		Set<QuickCottageReservation> reservations = client.getQuickCottageReservations();
 		reservations.add(savedReservation);

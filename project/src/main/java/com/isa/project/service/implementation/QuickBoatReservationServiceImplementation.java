@@ -29,6 +29,7 @@ public class QuickBoatReservationServiceImplementation implements QuickBoatReser
 		QuickBoatReservation quickReservation = quickBoatReservationRepository.findById(dto.getReservationId()).get();
 		
 		quickReservation.setClient(client);
+		quickReservation.setReserved(true);
 		QuickBoatReservation savedReservation =  quickBoatReservationRepository.save(quickReservation);
 		Set<QuickBoatReservation> reservations = client.getQuickBoatReservations();
 		reservations.add(savedReservation);

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BoatService } from '../services/boat.service';
+import { QuickBoatReservationService } from '../services/quick-boat-reservation.service';
 
 @Component({
   selector: 'app-boat-additional-info',
@@ -15,7 +16,9 @@ export class BoatAdditionalInfoComponent implements OnInit {
   dates: any[]
   quickReservationList: any[]
   quickReservations: any[]
-  constructor(public activatedRoute: ActivatedRoute, public service: BoatService) { }
+  user: any
+  role: any
+  constructor(public quickBoatReservationService: QuickBoatReservationService, public activatedRoute: ActivatedRoute, public service: BoatService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -28,6 +31,11 @@ export class BoatAdditionalInfoComponent implements OnInit {
         this.convertToDate();
         this.corectDate();
         console.log(this.boat)
+        let userStrng = localStorage.getItem('user');
+        if (userStrng) {
+          this.user = JSON.parse(userStrng);
+          this.role = this.user.userType;
+        }
       })
 
     });
@@ -42,8 +50,12 @@ export class BoatAdditionalInfoComponent implements OnInit {
       let price = r.price;
       let maxNumberOfPerson = r.maxNumberOfPerson;
       let additionalServices = r.additionalServices;
+      let id = r.id;
+      let reserved = r.reserved;
 
       let data = {
+        id: id,
+        reserved: reserved,
         startDate: startDate,
         endDate: endDate,
         price: price,
@@ -81,6 +93,20 @@ export class BoatAdditionalInfoComponent implements OnInit {
       return false;
     }
   }
+
+  reserve(id: string) {
+    console.log(this.user.id)
+    console.log(id)
+    let data = {
+      clientId: this.user.id,
+      reservationId: id
+    }
+    this.quickBoatReservationService.reserve(data).subscribe((response: any) => {
+      console.log(response)
+      location.reload();
+    })
+  }
+
 
 
 

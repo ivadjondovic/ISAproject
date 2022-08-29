@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CottageService } from '../services/cottage.service';
+import { QuickCottageReservationService } from '../services/quick-cottage-reservation.service';
 
 @Component({
   selector: 'app-cottage-additional-info',
@@ -16,7 +17,8 @@ export class CottageAdditionalInfoComponent implements OnInit {
   quickReservationList: any[]
   quickReservations: any[]
   role: any
-  constructor(public activatedRoute: ActivatedRoute, public service: CottageService) { }
+  user: any
+  constructor(public quickCottageReservationService: QuickCottageReservationService, public activatedRoute: ActivatedRoute, public service: CottageService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -31,8 +33,8 @@ export class CottageAdditionalInfoComponent implements OnInit {
         console.log(this.cottage)
         let userStrng = localStorage.getItem('user');
         if (userStrng) {
-          let user = JSON.parse(userStrng);
-          this.role = user.userType;
+          this.user = JSON.parse(userStrng);
+          this.role = this.user.userType;
         }
       })
 
@@ -48,8 +50,12 @@ export class CottageAdditionalInfoComponent implements OnInit {
       let price = r.price;
       let maxNumberOfPerson = r.maxNumberOfPerson;
       let additionalServices = r.additionalServices;
+      let id = r.id;
+      let reserved = r.reserved;
 
       let data = {
+        id: id,
+        reserved: reserved,
         startDate: startDate,
         endDate: endDate,
         price: price,
@@ -88,8 +94,17 @@ export class CottageAdditionalInfoComponent implements OnInit {
     }
   }
 
-  reserve(id: string){
-    
+  reserve(id: string) {
+    console.log(this.user.id)
+    console.log(id)
+    let data = {
+      clientId: this.user.id,
+      reservationId: id
+    }
+    this.quickCottageReservationService.reserve(data).subscribe((response: any) => {
+      console.log(response)
+      location.reload();
+    })
   }
 
 }
