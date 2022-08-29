@@ -12,19 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isa.project.dto.BoatReservationResponseDTO;
-import com.isa.project.dto.CottageReservationResponseDTO;
 import com.isa.project.dto.ReservationDTO;
 import com.isa.project.model.AdditionalBoatService;
 import com.isa.project.model.AvailableBoatPeriod;
 import com.isa.project.model.Boat;
 import com.isa.project.model.BoatReservation;
 import com.isa.project.model.Client;
-import com.isa.project.model.Cottage;
-import com.isa.project.model.CottageReservation;
+import com.isa.project.model.QuickBoatReservation;
 import com.isa.project.repository.AdditionalBoatServiceRepository;
 import com.isa.project.repository.AvailableBoatPeriodRepository;
 import com.isa.project.repository.BoatRepository;
 import com.isa.project.repository.BoatReservationRepository;
+import com.isa.project.repository.QuickBoatReservationRepository;
 import com.isa.project.repository.UserRepository;
 import com.isa.project.service.BoatReservationService;
 import com.isa.project.service.EmailService;
@@ -49,6 +48,9 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 	
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private QuickBoatReservationRepository quickBoatReservationRepository;
 	
 	@Override
 	public BoatReservation createReservation(ReservationDTO dto) {
@@ -178,6 +180,22 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 			boatReservation.setStartDate(br.getStartDate());
 			
 			result.add(boatReservation);
+		}
+		
+		List<QuickBoatReservation> quickReservations = quickBoatReservationRepository.findByClientAndAccepted(client, true);
+		for(QuickBoatReservation quickR: quickReservations) {
+			
+			Boat boat = boatRepository.findById(quickR.getBoat().getId()).get();
+			BoatReservationResponseDTO boatReservation = new BoatReservationResponseDTO();
+			boatReservation.setAccepted(quickR.getAccepted());
+			boatReservation.setClient(quickR.getClient());
+			boatReservation.setBoat(boat);
+			boatReservation.setEndDate(quickR.getEndDate());
+			boatReservation.setId(quickR.getId());
+			boatReservation.setPrice(quickR.getPrice());
+			boatReservation.setStartDate(quickR.getStartDate());
+			result.add(boatReservation);
+			
 		}
 		return result;
 	}

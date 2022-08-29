@@ -18,10 +18,12 @@ import com.isa.project.model.AvailableFishingLessonPeriod;
 import com.isa.project.model.Client;
 import com.isa.project.model.FishingLesson;
 import com.isa.project.model.FishingLessonReservation;
+import com.isa.project.model.QuickFishingLessonReservation;
 import com.isa.project.repository.AdditionalFishingLessonServiceRepository;
 import com.isa.project.repository.AvailableFishingLessonPeriodRepository;
 import com.isa.project.repository.FishingLessonRepository;
 import com.isa.project.repository.FishingLessonReservationRepository;
+import com.isa.project.repository.QuickFishingLessonReservationRepository;
 import com.isa.project.repository.UserRepository;
 import com.isa.project.service.EmailService;
 import com.isa.project.service.FishingLessonReservationService;
@@ -46,6 +48,9 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 	
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private QuickFishingLessonReservationRepository quickFishingLessonReservationRepository;
 	
 	@Override
 	public FishingLessonReservation createReservation(ReservationDTO dto) {
@@ -173,6 +178,22 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 			lessonReservation.setStartDate(flr.getStartDate());
 			
 			result.add(lessonReservation);
+		}
+		
+		List<QuickFishingLessonReservation> quickReservations = quickFishingLessonReservationRepository.findByClientAndAccepted(client, true);
+		for(QuickFishingLessonReservation quickR: quickReservations) {
+			
+			FishingLesson lesson = fishingLessonRepository.findById(quickR.getFishingLesson().getId()).get();
+			FishingLessonReservationResponseDTO lessonReservation = new FishingLessonReservationResponseDTO();
+			lessonReservation.setAccepted(quickR.getAccepted());
+			lessonReservation.setClient(quickR.getClient());
+			lessonReservation.setFishingLesson(lesson);
+			lessonReservation.setEndDate(quickR.getEndDate());
+			lessonReservation.setId(quickR.getId());
+			lessonReservation.setPrice(quickR.getPrice());
+			lessonReservation.setStartDate(quickR.getStartDate());
+			result.add(lessonReservation);
+			
 		}
 		return result;
 	}

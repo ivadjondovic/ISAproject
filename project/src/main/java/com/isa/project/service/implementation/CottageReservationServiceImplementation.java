@@ -18,10 +18,12 @@ import com.isa.project.model.AvailableCottagePeriod;
 import com.isa.project.model.Client;
 import com.isa.project.model.Cottage;
 import com.isa.project.model.CottageReservation;
+import com.isa.project.model.QuickCottageReservation;
 import com.isa.project.repository.AdditionalCottageServiceRepository;
 import com.isa.project.repository.AvailableCottagePeriodRepository;
 import com.isa.project.repository.CottageRepository;
 import com.isa.project.repository.CottageReservationRepository;
+import com.isa.project.repository.QuickCottageReservationRepository;
 import com.isa.project.repository.UserRepository;
 import com.isa.project.service.CottageReservationService;
 import com.isa.project.service.EmailService;
@@ -46,6 +48,9 @@ public class CottageReservationServiceImplementation implements CottageReservati
 	
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private QuickCottageReservationRepository quickCottageReservationRepository;
 	
 	@Override
 	public CottageReservation createReservation(ReservationDTO dto) {
@@ -175,6 +180,23 @@ public class CottageReservationServiceImplementation implements CottageReservati
 			
 			result.add(cottageReservation);
 		}
+		
+		List<QuickCottageReservation> quickReservations = quickCottageReservationRepository.findByClientAndAccepted(client, true);
+		for(QuickCottageReservation quickR: quickReservations) {
+			
+			Cottage cottage = cottageRepository.findById(quickR.getCottage().getId()).get();
+			CottageReservationResponseDTO cottageReservation = new CottageReservationResponseDTO();
+			cottageReservation.setAccepted(quickR.getAccepted());
+			cottageReservation.setClient(quickR.getClient());
+			cottageReservation.setCottage(cottage);
+			cottageReservation.setEndDate(quickR.getEndDate());
+			cottageReservation.setId(quickR.getId());
+			cottageReservation.setPrice(quickR.getPrice());
+			cottageReservation.setStartDate(quickR.getStartDate());
+			result.add(cottageReservation);
+			
+		}
+		
 		return result;
 	}
 
