@@ -48,6 +48,9 @@ import { EditFishingLessonComponent } from './edit-fishing-lesson/edit-fishing-l
 import { ClientFishingLessonsComponent } from './client-fishing-lessons/client-fishing-lessons.component';
 import { FishingLessonAdditionalInfoComponent } from './fishing-lesson-additional-info/fishing-lesson-additional-info.component';
 import { ReservationComponent } from './reservation/reservation.component';
+import { CottageReservationsHistoryComponent } from './cottage-reservations-history/cottage-reservations-history.component';
+import { BoatReservationsHistoryComponent } from './boat-reservations-history/boat-reservations-history.component';
+import { FishingLessonReservationsHistoryComponent } from './fishing-lesson-reservations-history/fishing-lesson-reservations-history.component';
 
 
 
@@ -82,6 +85,9 @@ import { ReservationComponent } from './reservation/reservation.component';
     ClientFishingLessonsComponent,
     FishingLessonAdditionalInfoComponent,
     ReservationComponent,
+    CottageReservationsHistoryComponent,
+    BoatReservationsHistoryComponent,
+    FishingLessonReservationsHistoryComponent,
     
   ],
   imports: [

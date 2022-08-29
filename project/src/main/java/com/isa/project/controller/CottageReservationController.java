@@ -27,7 +27,7 @@ public class CottageReservationController {
 	
 	@PostMapping(path = "/createReservation")
 	@PreAuthorize("hasRole('CLIENT')")
-    public ResponseEntity<?> createReservatio(@RequestBody ReservationDTO reservationDTO){
+    public ResponseEntity<?> createReservation(@RequestBody ReservationDTO reservationDTO){
         CottageReservation reservation = reservationService.createReservation(reservationDTO);
         if(reservation == null) {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -40,5 +40,11 @@ public class CottageReservationController {
     public RedirectView acceptReservation(@PathVariable Long id){
         reservationService.accept(id);
         return new RedirectView("http://localhost:4200");
+    }
+	
+	@GetMapping(path = "/clientReservations/{clientId}")
+	@PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<?> clientReservations(@PathVariable Long clientId){
+        return new ResponseEntity<>(reservationService.getByClientId(clientId), HttpStatus.OK);
     }
 }

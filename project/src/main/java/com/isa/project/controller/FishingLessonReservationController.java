@@ -41,5 +41,11 @@ public class FishingLessonReservationController {
         reservationService.accept(id);
         return new RedirectView("http://localhost:4200");
     }
+	
+	@GetMapping(path = "/clientReservations/{clientId}")
+	@PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<?> clientReservations(@PathVariable Long clientId){
+        return new ResponseEntity<>(reservationService.getByClientId(clientId), HttpStatus.OK);
+    }
 
 }

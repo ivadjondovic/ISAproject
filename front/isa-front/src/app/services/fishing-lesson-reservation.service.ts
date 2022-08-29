@@ -23,4 +23,8 @@ export class FishingLessonReservationService {
   createReservation(data: any){
     return this.http.post(this.baseURL + "api/fishingLessonReservations/createReservation", data, this.getAuthoHeader());
   }
+
+  getByClientId(id: any){
+    return this.http.get(this.baseURL + "api/fishingLessonReservations/clientReservations/"+ id, this.getAuthoHeader());
+  }
 }

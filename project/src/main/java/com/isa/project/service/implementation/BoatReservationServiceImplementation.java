@@ -1,7 +1,9 @@
 package com.isa.project.service.implementation;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.mail.MessagingException;
@@ -9,12 +11,16 @@ import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.isa.project.dto.BoatReservationResponseDTO;
+import com.isa.project.dto.CottageReservationResponseDTO;
 import com.isa.project.dto.ReservationDTO;
 import com.isa.project.model.AdditionalBoatService;
 import com.isa.project.model.AvailableBoatPeriod;
 import com.isa.project.model.Boat;
 import com.isa.project.model.BoatReservation;
 import com.isa.project.model.Client;
+import com.isa.project.model.Cottage;
+import com.isa.project.model.CottageReservation;
 import com.isa.project.repository.AdditionalBoatServiceRepository;
 import com.isa.project.repository.AvailableBoatPeriodRepository;
 import com.isa.project.repository.BoatRepository;
@@ -151,6 +157,29 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 		}
 		reservation.setAccepted(true);
 		return boatReservationRepository.save(reservation);
+	}
+
+	@Override
+	public List<BoatReservationResponseDTO> getByClientId(Long clientId) {
+		
+		Client client = (Client) userRepository.findById(clientId).get();
+		List<BoatReservationResponseDTO> result = new ArrayList<>();
+		List<BoatReservation> boatReservations = boatReservationRepository.findByClientAndAccepted(client, true);
+		for(BoatReservation br: boatReservations) {
+			Boat boat = boatRepository.findById(br.getBoat().getId()).get();
+			BoatReservationResponseDTO boatReservation = new BoatReservationResponseDTO();
+			boatReservation.setAccepted(br.getAccepted());
+			boatReservation.setAdditionalServices(br.getAdditionalServices());
+			boatReservation.setClient(br.getClient());
+			boatReservation.setBoat(boat);
+			boatReservation.setEndDate(br.getEndDate());
+			boatReservation.setId(br.getId());
+			boatReservation.setPrice(br.getPrice());
+			boatReservation.setStartDate(br.getStartDate());
+			
+			result.add(boatReservation);
+		}
+		return result;
 	}
 
 }

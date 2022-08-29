@@ -1,18 +1,21 @@
 package com.isa.project.service.implementation;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.isa.project.dto.FishingLessonReservationResponseDTO;
 import com.isa.project.dto.ReservationDTO;
 import com.isa.project.model.AdditionalFishingLessonService;
 import com.isa.project.model.AvailableFishingLessonPeriod;
 import com.isa.project.model.Client;
-import com.isa.project.model.CottageReservation;
 import com.isa.project.model.FishingLesson;
 import com.isa.project.model.FishingLessonReservation;
 import com.isa.project.repository.AdditionalFishingLessonServiceRepository;
@@ -150,6 +153,28 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 		}
 		reservation.setAccepted(true);
 		return fishingLessonReservationRepository.save(reservation);
+	}
+
+	@Override
+	public List<FishingLessonReservationResponseDTO> getByClientId(Long clientId) {
+		Client client = (Client) userRepository.findById(clientId).get();
+		List<FishingLessonReservationResponseDTO> result = new ArrayList<>();
+		List<FishingLessonReservation> fishingLessonReservations = fishingLessonReservationRepository.findByClientAndAccepted(client, true);
+		for(FishingLessonReservation flr: fishingLessonReservations) {
+			FishingLesson fishingLesson = fishingLessonRepository.findById(flr.getFishingLesson().getId()).get();
+			FishingLessonReservationResponseDTO lessonReservation = new FishingLessonReservationResponseDTO();
+			lessonReservation.setAccepted(flr.getAccepted());
+			lessonReservation.setAdditionalServices(flr.getAdditionalServices());
+			lessonReservation.setClient(flr.getClient());
+			lessonReservation.setFishingLesson(fishingLesson);
+			lessonReservation.setEndDate(flr.getEndDate());
+			lessonReservation.setId(flr.getId());
+			lessonReservation.setPrice(flr.getPrice());
+			lessonReservation.setStartDate(flr.getStartDate());
+			
+			result.add(lessonReservation);
+		}
+		return result;
 	}
 
 }

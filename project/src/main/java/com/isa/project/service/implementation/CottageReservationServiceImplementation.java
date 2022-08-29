@@ -1,7 +1,9 @@
 package com.isa.project.service.implementation;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.mail.MessagingException;
@@ -9,6 +11,7 @@ import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.isa.project.dto.CottageReservationResponseDTO;
 import com.isa.project.dto.ReservationDTO;
 import com.isa.project.model.AdditionalCottageService;
 import com.isa.project.model.AvailableCottagePeriod;
@@ -150,6 +153,29 @@ public class CottageReservationServiceImplementation implements CottageReservati
 		reservation.setAccepted(true);
 		return cottageReservationRepository.save(reservation);
 		
+	}
+
+	@Override
+	public List<CottageReservationResponseDTO> getByClientId(Long clientId) {
+		
+		Client client = (Client) userRepository.findById(clientId).get();
+		List<CottageReservationResponseDTO> result = new ArrayList<>();
+		List<CottageReservation> cottageReservations = cottageReservationRepository.findByClientAndAccepted(client, true);
+		for(CottageReservation cr: cottageReservations) {
+			Cottage cottage = cottageRepository.findById(cr.getCottage().getId()).get();
+			CottageReservationResponseDTO cottageReservation = new CottageReservationResponseDTO();
+			cottageReservation.setAccepted(cr.getAccepted());
+			cottageReservation.setAdditionalServices(cr.getAdditionalServices());
+			cottageReservation.setClient(cr.getClient());
+			cottageReservation.setCottage(cottage);
+			cottageReservation.setEndDate(cr.getEndDate());
+			cottageReservation.setId(cr.getId());
+			cottageReservation.setPrice(cr.getPrice());
+			cottageReservation.setStartDate(cr.getStartDate());
+			
+			result.add(cottageReservation);
+		}
+		return result;
 	}
 
 }
