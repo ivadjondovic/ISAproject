@@ -32,6 +32,18 @@ public class Client extends User{
 	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
 	private Set<FishingLessonReservation> fishingLessonReservations;
 	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+	private Set<QuickCottageReservation> quickCottageReservations;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+	private Set<QuickBoatReservation> quickBoatReservations;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+	private Set<QuickFishingLessonReservation> quickFishingLessonReservations;
+	
 	@Override
     public String getUserType() {
         return userType;
@@ -60,6 +72,36 @@ public class Client extends User{
 	public void setFishingLessonReservations(Set<FishingLessonReservation> fishingLessonReservations) {
 		this.fishingLessonReservations = fishingLessonReservations;
 	}
+
+	public Set<QuickCottageReservation> getQuickCottageReservations() {
+		return quickCottageReservations;
+	}
+
+	public void setQuickCottageReservations(Set<QuickCottageReservation> quickCottageReservations) {
+		this.quickCottageReservations = quickCottageReservations;
+	}
+
+	public Set<QuickBoatReservation> getQuickBoatReservations() {
+		return quickBoatReservations;
+	}
+
+	public void setQuickBoatReservations(Set<QuickBoatReservation> quickBoatReservations) {
+		this.quickBoatReservations = quickBoatReservations;
+	}
+
+	public Set<QuickFishingLessonReservation> getQuickFishingLessonReservations() {
+		return quickFishingLessonReservations;
+	}
+
+	public void setQuickFishingLessonReservations(Set<QuickFishingLessonReservation> quickFishingLessonReservations) {
+		this.quickFishingLessonReservations = quickFishingLessonReservations;
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	

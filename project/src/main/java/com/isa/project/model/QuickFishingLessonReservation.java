@@ -28,6 +28,10 @@ public class QuickFishingLessonReservation {
 	@JsonBackReference
 	@ManyToOne
 	private FishingLesson fishingLesson;
+	
+	@JsonBackReference
+	@ManyToOne
+	private Client client;
 
 	public Long getId() {
 		return id;
@@ -92,5 +96,15 @@ public class QuickFishingLessonReservation {
 	public void setFishingLesson(FishingLesson fishingLesson) {
 		this.fishingLesson = fishingLesson;
 	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+	
+	
 	
 }

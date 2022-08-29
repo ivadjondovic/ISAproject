@@ -27,6 +27,10 @@ public class QuickCottageReservation {
 	@JsonBackReference
 	@ManyToOne
 	private Cottage cottage;
+	
+	@JsonBackReference
+	@ManyToOne
+	private Client client;
 
 	public Long getId() {
 		return id;
@@ -83,6 +87,16 @@ public class QuickCottageReservation {
 	public void setCottage(Cottage cottage) {
 		this.cottage = cottage;
 	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+	
+	
 	
 	
 	

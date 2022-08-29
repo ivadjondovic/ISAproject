@@ -15,6 +15,7 @@ export class CottageAdditionalInfoComponent implements OnInit {
   dates: any[]
   quickReservationList: any[]
   quickReservations: any[]
+  role: any
   constructor(public activatedRoute: ActivatedRoute, public service: CottageService) { }
 
   ngOnInit(): void {
@@ -28,6 +29,11 @@ export class CottageAdditionalInfoComponent implements OnInit {
         this.convertToDate();
         this.corectDate();
         console.log(this.cottage)
+        let userStrng = localStorage.getItem('user');
+        if (userStrng) {
+          let user = JSON.parse(userStrng);
+          this.role = user.userType;
+        }
       })
 
     });
@@ -74,12 +80,16 @@ export class CottageAdditionalInfoComponent implements OnInit {
     console.log(this.dateList)
   }
 
-  isEmpty(list: any[]){
-    if(list.length == 0){
+  isEmpty(list: any[]) {
+    if (list.length == 0) {
       return true;
-    }else {
+    } else {
       return false;
     }
+  }
+
+  reserve(id: string){
+    
   }
 
 }

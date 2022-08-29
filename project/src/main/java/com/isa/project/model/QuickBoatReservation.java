@@ -27,6 +27,10 @@ public class QuickBoatReservation {
 	@JsonBackReference
 	@ManyToOne
 	private Boat boat;
+	
+	@JsonBackReference
+	@ManyToOne
+	private Client client;
 
 	public Long getId() {
 		return id;
@@ -83,6 +87,16 @@ public class QuickBoatReservation {
 	public void setBoat(Boat boat) {
 		this.boat = boat;
 	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+	
+	
 	
 	
 }
