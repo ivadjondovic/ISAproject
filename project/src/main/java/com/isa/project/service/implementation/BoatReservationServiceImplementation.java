@@ -66,6 +66,7 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 		boatReservation.setClient(client);
 		boatReservation.setBoat(boat);
 		boatReservation.setAccepted(false);
+		boatReservation.setCanceled(false);
 		
 		BoatReservation savedReservation = boatReservationRepository.save(boatReservation);
 		
@@ -166,7 +167,7 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 		
 		Client client = (Client) userRepository.findById(clientId).get();
 		List<BoatReservationResponseDTO> result = new ArrayList<>();
-		List<BoatReservation> boatReservations = boatReservationRepository.findByClientAndAccepted(client, true);
+		List<BoatReservation> boatReservations = boatReservationRepository.findByClientAndAcceptedAndCanceled(client, true, false);
 		for(BoatReservation br: boatReservations) {
 			Boat boat = boatRepository.findById(br.getBoat().getId()).get();
 			BoatReservationResponseDTO boatReservation = new BoatReservationResponseDTO();
@@ -182,7 +183,7 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 			result.add(boatReservation);
 		}
 		
-		List<QuickBoatReservation> quickReservations = quickBoatReservationRepository.findByClientAndAccepted(client, true);
+		List<QuickBoatReservation> quickReservations = quickBoatReservationRepository.findByClientAndAcceptedAndCanceled(client, true, false);
 		for(QuickBoatReservation quickR: quickReservations) {
 			
 			Boat boat = boatRepository.findById(quickR.getBoat().getId()).get();

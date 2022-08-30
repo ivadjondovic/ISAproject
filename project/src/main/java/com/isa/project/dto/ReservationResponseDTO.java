@@ -10,6 +10,7 @@ public class ReservationResponseDTO {
 	private Double price;
 	private String entityName;
 	private String reservationType;
+	private Boolean posibleToCancel;
 	
 	public Long getId() {
 		return id;
@@ -47,6 +48,14 @@ public class ReservationResponseDTO {
 	public void setReservationType(String reservationType) {
 		this.reservationType = reservationType;
 	}
+	public Boolean getPosibleToCancel() {
+		return posibleToCancel;
+	}
+	public void setPosibleToCancel(Boolean posibleToCancell) {
+		this.posibleToCancel = posibleToCancell;
+	}
+	
+	
 	
 	
 	

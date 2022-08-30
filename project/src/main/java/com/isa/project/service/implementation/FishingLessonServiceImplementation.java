@@ -117,6 +117,7 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 			quickReservation.setFishingLesson(savedFishingLesson);
 			quickReservation.setReserved(false);
 			quickReservation.setAccepted(false);
+			quickReservation.setCanceled(false);
 			QuickFishingLessonReservation savedReservation = quickReservationRepository.save(quickReservation);
 			quickReservations.add(savedReservation);
 			

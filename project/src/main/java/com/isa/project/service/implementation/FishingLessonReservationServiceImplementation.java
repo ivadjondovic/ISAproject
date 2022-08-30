@@ -66,6 +66,7 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 		lessonReservation.setClient(client);
 		lessonReservation.setFishingLesson(lesson);
 		lessonReservation.setAccepted(false);
+		lessonReservation.setCanceled(false);
 		
 		FishingLessonReservation savedReservation = fishingLessonReservationRepository.save(lessonReservation);
 		
@@ -164,7 +165,7 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 	public List<FishingLessonReservationResponseDTO> getByClientId(Long clientId) {
 		Client client = (Client) userRepository.findById(clientId).get();
 		List<FishingLessonReservationResponseDTO> result = new ArrayList<>();
-		List<FishingLessonReservation> fishingLessonReservations = fishingLessonReservationRepository.findByClientAndAccepted(client, true);
+		List<FishingLessonReservation> fishingLessonReservations = fishingLessonReservationRepository.findByClientAndAcceptedAndCanceled(client, true, false);
 		for(FishingLessonReservation flr: fishingLessonReservations) {
 			FishingLesson fishingLesson = fishingLessonRepository.findById(flr.getFishingLesson().getId()).get();
 			FishingLessonReservationResponseDTO lessonReservation = new FishingLessonReservationResponseDTO();
@@ -180,7 +181,7 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 			result.add(lessonReservation);
 		}
 		
-		List<QuickFishingLessonReservation> quickReservations = quickFishingLessonReservationRepository.findByClientAndAccepted(client, true);
+		List<QuickFishingLessonReservation> quickReservations = quickFishingLessonReservationRepository.findByClientAndAcceptedAndCanceled(client, true, false);
 		for(QuickFishingLessonReservation quickR: quickReservations) {
 			
 			FishingLesson lesson = fishingLessonRepository.findById(quickR.getFishingLesson().getId()).get();

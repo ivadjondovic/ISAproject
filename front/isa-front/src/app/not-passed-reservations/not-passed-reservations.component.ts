@@ -37,6 +37,7 @@ export class NotPassedReservationsComponent implements OnInit {
       let entityName = r.entityName;
       let id = r.id;
       let reservationType = r.reservationType;
+      let posibleToCancel = r.posibleToCancel
 
       let data = {
         id: id,
@@ -44,12 +45,31 @@ export class NotPassedReservationsComponent implements OnInit {
         startDate: startDate,
         endDate: endDate,
         price: price,
-        reservationType: reservationType
+        reservationType: reservationType,
+        posibleToCancel: posibleToCancel
       }
       this.reservationList.push(data);
       console.log(startDate)
 
     }
+
+  }
+  cancel(id: any, type: any){
+
+    let data = {
+      reservationId: id,
+      reservationType: type
+    }
+
+    this.service.cancelReservation(data).subscribe((response: any) => {
+      console.log(response)
+      this.service.getClientReservations(this.user.id).subscribe((response: any) => {
+        this.reservations = response;
+        console.log(this.reservations)
+
+        this.corectDate();
+      })
+    })
 
   }
 

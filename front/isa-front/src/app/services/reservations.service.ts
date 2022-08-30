@@ -23,4 +23,9 @@ export class ReservationsService {
   getClientReservations(id: any){
     return this.http.get(this.baseURL + "api/reservations/notPassed/"+ id, this.getAuthoHeader());
   }
+
+  cancelReservation(data: any){
+    return this.http.put(this.baseURL + "api/reservations/cancel", data, this.getAuthoHeader());
+  }
+
 }

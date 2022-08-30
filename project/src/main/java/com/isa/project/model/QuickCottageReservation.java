@@ -25,6 +25,7 @@ public class QuickCottageReservation {
 	private String additionalServices;
 	private Boolean reserved;
 	private Boolean accepted;
+	private Boolean canceled;
 	
 	
 	@JsonBackReference
@@ -114,6 +115,16 @@ public class QuickCottageReservation {
 	public void setAccepted(Boolean accepted) {
 		this.accepted = accepted;
 	}
+
+	public Boolean getCanceled() {
+		return canceled;
+	}
+
+	public void setCanceled(Boolean canceled) {
+		this.canceled = canceled;
+	}
+	
+	
 	
 	
 	

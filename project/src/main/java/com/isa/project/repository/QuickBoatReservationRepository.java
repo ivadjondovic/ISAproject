@@ -11,5 +11,5 @@ import com.isa.project.model.QuickBoatReservation;
 @Repository
 public interface QuickBoatReservationRepository extends JpaRepository<QuickBoatReservation, Long>  {
 
-	public List<QuickBoatReservation> findByClientAndAccepted(Client client, Boolean accepted);
+	public List<QuickBoatReservation> findByClientAndAcceptedAndCanceled(Client client, Boolean accepted, Boolean canceled);
 }

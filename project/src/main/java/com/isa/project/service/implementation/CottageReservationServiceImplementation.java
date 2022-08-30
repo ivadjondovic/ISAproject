@@ -66,6 +66,7 @@ public class CottageReservationServiceImplementation implements CottageReservati
 		cottageReservation.setClient(client);
 		cottageReservation.setCottage(cottage);
 		cottageReservation.setAccepted(false);
+		cottageReservation.setCanceled(false);
 		
 		CottageReservation savedReservation = cottageReservationRepository.save(cottageReservation);
 		
@@ -165,7 +166,7 @@ public class CottageReservationServiceImplementation implements CottageReservati
 		
 		Client client = (Client) userRepository.findById(clientId).get();
 		List<CottageReservationResponseDTO> result = new ArrayList<>();
-		List<CottageReservation> cottageReservations = cottageReservationRepository.findByClientAndAccepted(client, true);
+		List<CottageReservation> cottageReservations = cottageReservationRepository.findByClientAndAcceptedAndCanceled(client, true, false);
 		for(CottageReservation cr: cottageReservations) {
 			Cottage cottage = cottageRepository.findById(cr.getCottage().getId()).get();
 			CottageReservationResponseDTO cottageReservation = new CottageReservationResponseDTO();
@@ -181,7 +182,7 @@ public class CottageReservationServiceImplementation implements CottageReservati
 			result.add(cottageReservation);
 		}
 		
-		List<QuickCottageReservation> quickReservations = quickCottageReservationRepository.findByClientAndAccepted(client, true);
+		List<QuickCottageReservation> quickReservations = quickCottageReservationRepository.findByClientAndAcceptedAndCanceled(client, true, false);
 		for(QuickCottageReservation quickR: quickReservations) {
 			
 			Cottage cottage = cottageRepository.findById(quickR.getCottage().getId()).get();

@@ -26,6 +26,7 @@ public class QuickFishingLessonReservation {
 	private String additionalServices;
 	private Boolean reserved;
 	private Boolean accepted;
+	private Boolean canceled;
 	
 	@JsonBackReference
 	@ManyToOne
@@ -122,6 +123,16 @@ public class QuickFishingLessonReservation {
 	public void setAccepted(Boolean accepted) {
 		this.accepted = accepted;
 	}
+
+	public Boolean getCanceled() {
+		return canceled;
+	}
+
+	public void setCanceled(Boolean canceled) {
+		this.canceled = canceled;
+	}
+	
+	
 	
 	
 	

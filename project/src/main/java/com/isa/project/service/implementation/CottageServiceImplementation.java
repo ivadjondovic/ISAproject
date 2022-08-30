@@ -35,11 +35,9 @@ import com.isa.project.repository.AvailableCottagePeriodRepository;
 import com.isa.project.repository.CottageRepository;
 import com.isa.project.repository.QuickCottageReservationRepository;
 import com.isa.project.repository.RoomRepository;
-import com.isa.project.repository.RuleRepository;
 import com.isa.project.repository.UserRepository;
 import com.isa.project.service.CottageService;
 
-import ch.qos.logback.classic.util.LevelToSyslogSeverity;
 
 @Service
 public class CottageServiceImplementation implements CottageService{
@@ -121,6 +119,7 @@ public class CottageServiceImplementation implements CottageService{
 			quickReservation.setCottage(savedCottage);
 			quickReservation.setReserved(false);
 			quickReservation.setAccepted(false);
+			quickReservation.setCanceled(false);
 			QuickCottageReservation savedReservation = quickReservationRepository.save(quickReservation);
 			quickReservations.add(savedReservation);
 			

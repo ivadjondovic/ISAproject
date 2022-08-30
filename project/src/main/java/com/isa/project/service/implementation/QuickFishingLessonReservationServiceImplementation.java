@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.isa.project.dto.QuickClientReservationDTO;
 import com.isa.project.model.Client;
-import com.isa.project.model.QuickCottageReservation;
 import com.isa.project.model.QuickFishingLessonReservation;
 import com.isa.project.repository.QuickFishingLessonReservationRepository;
 import com.isa.project.repository.UserRepository;

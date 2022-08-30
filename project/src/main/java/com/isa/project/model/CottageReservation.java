@@ -25,6 +25,7 @@ public class CottageReservation {
 	private LocalDateTime endDate;
 	private Double price;
 	private Boolean accepted;
+	private Boolean canceled;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "cottageReservation", fetch = FetchType.LAZY)
@@ -101,6 +102,16 @@ public class CottageReservation {
 	public void setAccepted(Boolean accepted) {
 		this.accepted = accepted;
 	}
+
+	public Boolean getCanceled() {
+		return canceled;
+	}
+
+	public void setCanceled(Boolean canceled) {
+		this.canceled = canceled;
+	}
+	
+	
 	
 	
 	

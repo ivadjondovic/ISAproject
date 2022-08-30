@@ -11,5 +11,5 @@ import com.isa.project.model.QuickCottageReservation;
 @Repository
 public interface QuickCottageReservationRepository extends JpaRepository<QuickCottageReservation, Long> {
 
-	public List<QuickCottageReservation> findByClientAndAccepted(Client client, Boolean accepted);
+	public List<QuickCottageReservation> findByClientAndAcceptedAndCanceled(Client client, Boolean accepted, Boolean canceled);
 }
