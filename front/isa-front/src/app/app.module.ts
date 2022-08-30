@@ -51,6 +51,7 @@ import { ReservationComponent } from './reservation/reservation.component';
 import { CottageReservationsHistoryComponent } from './cottage-reservations-history/cottage-reservations-history.component';
 import { BoatReservationsHistoryComponent } from './boat-reservations-history/boat-reservations-history.component';
 import { FishingLessonReservationsHistoryComponent } from './fishing-lesson-reservations-history/fishing-lesson-reservations-history.component';
+import { NotPassedReservationsComponent } from './not-passed-reservations/not-passed-reservations.component';
 
 
 
@@ -88,6 +89,7 @@ import { FishingLessonReservationsHistoryComponent } from './fishing-lesson-rese
     CottageReservationsHistoryComponent,
     BoatReservationsHistoryComponent,
     FishingLessonReservationsHistoryComponent,
+    NotPassedReservationsComponent,
     
   ],
   imports: [

@@ -31,6 +31,10 @@
         <mat-icon>history_edu</mat-icon><span class="nav-caption">Fishing lesson reservations history</span>
     </a>
 
+    <a mat-list-item routerLink="/notPassedReservations" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_CLIENT'">
+        <mat-icon>notes</mat-icon><span class="nav-caption">Reservations</span>
+    </a>
+
     <a mat-list-item routerLink="/deleteAccount" *ngIf="role == 'ROLE_CLIENT'" (click)="onSidenavClose('')">
         <mat-icon>delete</mat-icon><span class="nav-caption">Delete account</span>
     </a>

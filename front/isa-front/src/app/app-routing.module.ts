@@ -24,6 +24,7 @@ import { FishingLessonAdditionalInfoComponent } from './fishing-lesson-additiona
 import { ReservationComponent } from './reservation/reservation.component';
 import { CottageReservationsHistoryComponent } from './cottage-reservations-history/cottage-reservations-history.component';
 import { BoatReservationsHistoryComponent } from './boat-reservations-history/boat-reservations-history.component';
+import { NotPassedReservationsComponent } from './not-passed-reservations/not-passed-reservations.component';
 
 const routes: Routes = [
 
@@ -51,6 +52,7 @@ const routes: Routes = [
   {path: 'cottageReservationsHistory', component: CottageReservationsHistoryComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
   {path: 'boatReservationsHistory', component: BoatReservationsHistoryComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
   {path: 'fishingLessonReservationsHistory', component: BoatReservationsHistoryComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
+  {path: 'notPassedReservations', component: NotPassedReservationsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
   
 ];
 
