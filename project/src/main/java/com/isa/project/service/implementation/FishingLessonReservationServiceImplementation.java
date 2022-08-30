@@ -1,7 +1,9 @@
 package com.isa.project.service.implementation;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,9 +12,9 @@ import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.isa.project.dto.FishingLessonReservationResponseDTO;
 import com.isa.project.dto.ReservationDTO;
+import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalFishingLessonService;
 import com.isa.project.model.AvailableFishingLessonPeriod;
 import com.isa.project.model.Client;
@@ -205,6 +207,46 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 			
 		}
 		return result;
+	}
+
+	@Override
+	public List<FishingLessonReservationResponseDTO> sort(SortDTO dto) {
+		
+		List<FishingLessonReservationResponseDTO> reservations = getByClientId(dto.getClientId());
+		if(dto.getSortBy().equals("Date")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(reservations, (r1, r2) ->
+			    (r1.getStartDate().compareTo(r2.getStartDate())));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(reservations, (r1, r2) ->
+			    (r2.getStartDate().compareTo(r1.getStartDate())));
+			}
+		}
+		
+		if(dto.getSortBy().equals("Price")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(reservations, (r1, r2) ->
+				 Double.compare(r1.getPrice(), r2.getPrice()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(reservations, (r1, r2) ->
+				 Double.compare(r2.getPrice(), r1.getPrice()));
+			}
+		}
+		
+		if(dto.getSortBy().equals("Duration")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(reservations, (r1, r2) ->
+				 Duration.between(r1.getStartDate(), r1.getEndDate()).compareTo(Duration.between(r2.getStartDate(), r2.getEndDate())));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(reservations, (r1, r2) ->
+				 Duration.between(r2.getStartDate(), r2.getEndDate()).compareTo(Duration.between(r1.getStartDate(), r1.getEndDate())));
+			}
+		}
+		
+		return reservations;
 	}
 
 }
