@@ -55,13 +55,21 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 	@Override
 	public FishingLessonReservation createReservation(ReservationDTO dto) {
 		
+		Client client = (Client) userRepository.findById(dto.getClientId()).get();
+		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
+		List<FishingLessonReservation> clientReservations = fishingLessonReservationRepository.findByClient(client);
+		
+		for(FishingLessonReservation r: clientReservations) {
+			if(r.getStartDate().compareTo(dto.getStartDate()) == 0  && r.getEndDate().compareTo(endDate) == 0 && r.getFishingLesson().getId() == dto.getEntityId()) {
+				return null;
+			}
+		}
+		
 		FishingLessonReservation lessonReservation = new FishingLessonReservation();
 		lessonReservation.setStartDate(dto.getStartDate());
-		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
 		lessonReservation.setEndDate(endDate);
 		
 		FishingLesson lesson = fishingLessonRepository.findById(dto.getEntityId()).get();
-		Client client = (Client) userRepository.findById(dto.getClientId()).get();
 		
 		lessonReservation.setClient(client);
 		lessonReservation.setFishingLesson(lesson);

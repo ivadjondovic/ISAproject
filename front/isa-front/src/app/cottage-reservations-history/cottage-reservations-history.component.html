@@ -4,52 +4,21 @@
         <mat-card-title style="text-align: center;">Cottage reservations history</mat-card-title>
     </mat-card>
     <div class = "approval">
-        
-        <ul style="list-style-type: none">
-            <div class="row mb-4">
-                <div class="col-3">
-                    <b>Cottage</b>
-                </div>
-                <div class="col-3">
-                    <b>Price</b>
-                </div>
-                <div class="col-3">
-                    <b>Start date</b>
-                </div>
-                <div class="col-3">
-                    <b>End date</b>
-                </div>
-            </div>
-            
-            <li *ngFor="let reservation of reservationList">
-                <div class="row mt-2" >
-                    <!--<div class="col-2">
-                        <button class="button1" (click)="accept('0ms', '0ms', request.user.id)">
-                        <mat-icon>done</mat-icon>
-                        </button>
-                    </div>
-                    <div class="col-2">
-                        <button class="button2" (click)="decline('0ms', '0ms', request.user.id)">
-                        <mat-icon>close</mat-icon>
-                        </button>
-                    </div>-->
-                    <div class="col-3">
-                        {{reservation.cottage.name}}
-                    </div>
-                    <div class="col-3">
-                        {{reservation.price}}
-                    </div>
-                    <div class="col-3">
-                        {{reservation.startDate | date:'medium'}}
-                    </div>
-                    <div class="col-3">
-                        {{reservation.endDate | date:'medium'}}
-                    </div>
-                   
-                    
-                </div>
-            </li>
-        </ul>
+
+        <table id="registrations">
+            <tr>
+              <th>Cottage</th>
+              <th>Price</th>
+              <th>Start date</th>
+              <th>End date</th>
+            </tr>
+            <tr *ngFor="let reservation of reservationList">
+              <td>{{reservation.cottage.name}}</td>
+              <td>{{reservation.price}}</td>
+              <td>{{reservation.startDate | date:'medium'}}</td>
+              <td>{{reservation.endDate | date:'medium'}}</td>
+            </tr>
+        </table>
         
 
     </div>

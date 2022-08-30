@@ -1,5 +1,6 @@
 package com.isa.project.service.implementation;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.mail.MessagingException;
@@ -32,6 +33,15 @@ public class QuickFishingLessonReservationServiceImplementation implements Quick
 		
 		Client client = (Client) userRepository.findById(dto.getClientId()).get();
 		QuickFishingLessonReservation quickReservation = quickFishingLessonReservationRepository.findById(dto.getReservationId()).get();
+		
+		List<QuickFishingLessonReservation> quickReservations = quickFishingLessonReservationRepository.findByClient(client);
+		
+		for(QuickFishingLessonReservation r: quickReservations) {
+			
+			if(r.getStartDate().compareTo(quickReservation.getStartDate()) == 0 && r.getEndDate().compareTo(quickReservation.getEndDate()) == 0 && r.getFishingLesson().getId() == quickReservation.getFishingLesson().getId()) {
+				return null;
+			}
+		}
 		
 		quickReservation.setClient(client);
 		quickReservation.setReserved(true);

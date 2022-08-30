@@ -55,13 +55,23 @@ public class CottageReservationServiceImplementation implements CottageReservati
 	@Override
 	public CottageReservation createReservation(ReservationDTO dto) {
 		
+		Client client = (Client) userRepository.findById(dto.getClientId()).get();
+		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
+		List<CottageReservation> clientReservations = cottageReservationRepository.findByClient(client);
+		
+		for(CottageReservation r: clientReservations) {
+			if(r.getStartDate().compareTo(dto.getStartDate()) == 0  && r.getEndDate().compareTo(endDate) == 0 && r.getCottage().getId() == dto.getEntityId()) {
+				return null;
+			}
+		}
+		
 		CottageReservation cottageReservation = new CottageReservation();
 		cottageReservation.setStartDate(dto.getStartDate());
-		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
+		
 		cottageReservation.setEndDate(endDate);
 		
 		Cottage cottage = cottageRepository.findById(dto.getEntityId()).get();
-		Client client = (Client) userRepository.findById(dto.getClientId()).get();
+		
 		
 		cottageReservation.setClient(client);
 		cottageReservation.setCottage(cottage);

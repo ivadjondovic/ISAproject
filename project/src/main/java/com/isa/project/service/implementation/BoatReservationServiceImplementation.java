@@ -55,13 +55,23 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 	@Override
 	public BoatReservation createReservation(ReservationDTO dto) {
 		
+		
+		Client client = (Client) userRepository.findById(dto.getClientId()).get();
+		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
+		List<BoatReservation> clientReservations = boatReservationRepository.findByClient(client);
+		
+		for(BoatReservation r: clientReservations) {
+			if(r.getStartDate().compareTo(dto.getStartDate()) == 0  && r.getEndDate().compareTo(endDate) == 0 && r.getBoat().getId() == dto.getEntityId()) {
+				return null;
+			}
+		}
+		
 		BoatReservation boatReservation = new BoatReservation();
 		boatReservation.setStartDate(dto.getStartDate());
-		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
 		boatReservation.setEndDate(endDate);
 		
 		Boat boat = boatRepository.findById(dto.getEntityId()).get();
-		Client client = (Client) userRepository.findById(dto.getClientId()).get();
+		
 		
 		boatReservation.setClient(client);
 		boatReservation.setBoat(boat);

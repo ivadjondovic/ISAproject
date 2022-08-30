@@ -1,5 +1,6 @@
 package com.isa.project.service.implementation;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.mail.MessagingException;
@@ -32,6 +33,15 @@ public class QuickCottageReservationServiceImplementation implements QuickCottag
 		
 		Client client = (Client) userRepository.findById(dto.getClientId()).get();
 		QuickCottageReservation quickReservation = quickCottageReservationRepository.findById(dto.getReservationId()).get();
+		
+		List<QuickCottageReservation> quickReservations = quickCottageReservationRepository.findByClient(client);
+		
+		for(QuickCottageReservation r: quickReservations) {
+			
+			if(r.getStartDate().compareTo(quickReservation.getStartDate()) == 0 && r.getEndDate().compareTo(quickReservation.getEndDate()) == 0 && r.getCottage().getId() == quickReservation.getCottage().getId()) {
+				return null;
+			}
+		}
 		
 		quickReservation.setClient(client);
 		quickReservation.setReserved(true);
