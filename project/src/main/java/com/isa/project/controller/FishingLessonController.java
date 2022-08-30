@@ -1,5 +1,7 @@
 package com.isa.project.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,7 +86,11 @@ public class FishingLessonController {
 	@PreAuthorize("hasRole('CLIENT')")
 	@PostMapping(path = "/availableLessons")
     public ResponseEntity<?> availableLessons(@RequestBody ReservationSearchDTO dto) {
-        return new ResponseEntity<>(fishingLessonService.getAvailableLessons(dto), HttpStatus.OK);
+		List<FishingLesson> response = fishingLessonService.getAvailableLessons(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 	
 }

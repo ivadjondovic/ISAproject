@@ -175,10 +175,16 @@ public class BoatServiceImplementation implements BoatService{
 	public Boat getById(Long id) {
 		Boat boat = boatRepository.findById(id).get();
 		Set<QuickBoatReservation> reservations = boat.getQuickReservations();
+		Set<AvailableBoatPeriod> periods = boat.getAvailablePeriods();
 		Set<QuickBoatReservation> filteredSet = reservations.stream()
-				.filter(r -> (r.getReserved() == false && r.getAccepted() == false))
+				.filter(r -> (r.getReserved() == false && r.getAccepted() == false && r.getStartDate().compareTo(LocalDateTime.now()) >= 0))
+                .collect(Collectors.toSet());
+		
+		Set<AvailableBoatPeriod> filteredPeriods = periods.stream()
+				.filter(p -> p.getStartDate().compareTo(LocalDateTime.now()) >= 0)
                 .collect(Collectors.toSet());
 		boat.setQuickReservations(filteredSet);
+		boat.setAvailablePeriods(filteredPeriods);
 		return boat;
 	}
 
@@ -310,6 +316,9 @@ public class BoatServiceImplementation implements BoatService{
 
 	@Override
 	public List<Boat> getAvailableBoats(ReservationSearchDTO dto) {
+		if(dto.getStartDate().compareTo(LocalDateTime.now()) < 0) {
+			return null;
+		}
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
 		List<Boat> boats = boatRepository.findAll();
 		List<Boat> result = new ArrayList<>();

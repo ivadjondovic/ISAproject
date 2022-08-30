@@ -1,5 +1,7 @@
 package com.isa.project.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,7 +62,11 @@ public class CottageController {
 	@PreAuthorize("hasRole('CLIENT')")
 	@PostMapping(path = "/availableCottages")
     public ResponseEntity<?> availableCottages(@RequestBody ReservationSearchDTO dto) {
-        return new ResponseEntity<>(cottageService.getAvailableCottages(dto), HttpStatus.OK);
+		List<Cottage> response = cottageService.getAvailableCottages(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 	
 	

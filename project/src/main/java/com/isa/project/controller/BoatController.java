@@ -1,5 +1,7 @@
 package com.isa.project.controller;
 
+import java.util.List;
+
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +67,11 @@ public class BoatController {
 	@PreAuthorize("hasRole('CLIENT')")
 	@PostMapping(path = "/availableBoats")
     public ResponseEntity<?> availableBoats(@RequestBody ReservationSearchDTO dto) {
-        return new ResponseEntity<>(boatService.getAvailableBoats(dto), HttpStatus.OK);
+		List<Boat> response = boatService.getAvailableBoats(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

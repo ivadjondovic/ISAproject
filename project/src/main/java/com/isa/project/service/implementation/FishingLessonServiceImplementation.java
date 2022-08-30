@@ -321,10 +321,16 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 	public FishingLesson getById(Long id) {
 		FishingLesson fishingLesson = fishingLessonRepository.findById(id).get();
 		Set<QuickFishingLessonReservation> reservations = fishingLesson.getQuickReservations();
+		Set<AvailableFishingLessonPeriod> periods = fishingLesson.getAvailablePeriods();
 		Set<QuickFishingLessonReservation> filteredSet = reservations.stream()
-                .filter(r -> (r.getReserved() == false && r.getAccepted() == false))
+                .filter(r -> (r.getReserved() == false && r.getAccepted() == false && r.getStartDate().compareTo(LocalDateTime.now()) >= 0))
+                .collect(Collectors.toSet());
+		
+		Set<AvailableFishingLessonPeriod> filteredPeriods = periods.stream()
+                .filter(p -> p.getStartDate().compareTo(LocalDateTime.now()) >= 0)
                 .collect(Collectors.toSet());
 		fishingLesson.setQuickReservations(filteredSet);
+		fishingLesson.setAvailablePeriods(filteredPeriods);
 		return fishingLesson;
 	}
 
@@ -414,6 +420,9 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 
 	@Override
 	public List<FishingLesson> getAvailableLessons(ReservationSearchDTO dto) {
+		if(dto.getStartDate().compareTo(LocalDateTime.now()) < 0) {
+			return null;
+		}
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
 		List<FishingLesson> lessons = fishingLessonRepository.findAll();
 		List<FishingLesson> result = new ArrayList<>();

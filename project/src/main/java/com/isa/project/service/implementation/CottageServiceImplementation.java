@@ -156,10 +156,16 @@ public class CottageServiceImplementation implements CottageService{
 	public Cottage getById(Long id) {
 		Cottage cottage = cottageRepository.findById(id).get();
 		Set<QuickCottageReservation> reservations = cottage.getQuickReservations();
+		Set<AvailableCottagePeriod> periods = cottage.getAvailablePeriods();
 		Set<QuickCottageReservation> filteredSet = reservations.stream()
-				.filter(r -> (r.getReserved() == false && r.getAccepted() == false))
+				.filter(r -> (r.getReserved() == false && r.getAccepted() == false && r.getStartDate().compareTo(LocalDateTime.now()) >= 0))
+                .collect(Collectors.toSet());
+		
+		Set<AvailableCottagePeriod> filteredPeriods = periods.stream()
+				.filter(p -> p.getStartDate().compareTo(LocalDateTime.now()) >= 0)
                 .collect(Collectors.toSet());
 		cottage.setQuickReservations(filteredSet);
+		cottage.setAvailablePeriods(filteredPeriods);
 		return cottage;
 	}
 
@@ -236,6 +242,9 @@ public class CottageServiceImplementation implements CottageService{
 
 	@Override
 	public List<Cottage> getAvailableCottages(ReservationSearchDTO dto) {
+		if(dto.getStartDate().compareTo(LocalDateTime.now()) < 0) {
+			return null;
+		}
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
 		List<Cottage> cottages = cottageRepository.findAll();
 		List<Cottage> result = new ArrayList<>();
