@@ -39,4 +39,8 @@ export class CottageService {
   getAvailableCottages(data: any){
     return this.http.post(this.baseURL + "api/cottage/availableCottages" ,  data, this.getAuthoHeader());
   }
+
+  getAvailableBoatsForCertainDate(data: any){
+    return this.http.post(this.baseURL + "api/cottage/availableCottagesForCertainDate" ,  data, this.getAuthoHeader());
+  }
 }

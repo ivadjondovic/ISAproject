@@ -13,12 +13,21 @@ export class ClientFishingLessonsComponent implements OnInit {
   searchTerm = '';
   sortBy = '';
   sortType = '';
+  user: any
+  role: any
+  addSearch = false
+  dateForSearch: any
   constructor(public service: FishingLessonService, public router: Router) { }
 
   ngOnInit(): void {
     this.service.getAll().subscribe((response: any) => {
       this.lessons = response;
       console.log(this.lessons)
+      let userStrng = localStorage.getItem('user');
+      if (userStrng) {
+        this.user = JSON.parse(userStrng);
+        this.role = this.user.userType;
+      }
     })
   }
 
@@ -64,6 +73,19 @@ export class ClientFishingLessonsComponent implements OnInit {
       })
     }
    
+  }
+
+  additionalSearch(){
+    this.addSearch = true
+  }
+
+  searchByDate(){
+    let data = {
+      date: this.dateForSearch
+    }
+    this.service.getAvailableBoatsForCertainDate(data).subscribe((response: any) => {
+      this.lessons = response;
+     })
   }
 
 }

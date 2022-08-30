@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.isa.project.dto.AdditionalServiceDTO;
 import com.isa.project.dto.AvailablePeriodDTO;
 import com.isa.project.dto.CottageDTO;
+import com.isa.project.dto.DateSearchDTO;
 import com.isa.project.dto.ImageDTO;
 import com.isa.project.dto.QuickReservationDTO;
 import com.isa.project.dto.ReservationSearchDTO;
@@ -260,6 +261,23 @@ public class CottageServiceImplementation implements CottageService{
 					result.add(cottage);
 				}
 			}
+		}
+		return result;
+	}
+
+
+	@Override
+	public List<Cottage> cottagesAvailableForCertainDate(DateSearchDTO dto) {
+		List<Cottage> cottages = cottageRepository.findAll();
+		List<Cottage> result = new ArrayList<>();
+		for(Cottage c: cottages) {
+			Set<AvailableCottagePeriod> periods = c.getAvailablePeriods();
+			for(AvailableCottagePeriod period: periods) {
+				if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) > 0) {
+					result.add(c);
+				}
+			}
+			
 		}
 		return result;
 	}

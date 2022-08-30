@@ -2,6 +2,7 @@ package com.isa.project.service;
 
 import java.util.List;
 
+import com.isa.project.dto.DateSearchDTO;
 import com.isa.project.dto.FishingLessonDTO;
 import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.SortDTO;
@@ -17,4 +18,5 @@ public interface FishingLessonService {
 	public List<FishingLesson> sort(SortDTO dto);
 	public List<FishingLesson> search(String searchTerm);
 	public List<FishingLesson> getAvailableLessons(ReservationSearchDTO dto);
+	public List<FishingLesson> lessonsAvailableForCertainDate(DateSearchDTO dto);
 }

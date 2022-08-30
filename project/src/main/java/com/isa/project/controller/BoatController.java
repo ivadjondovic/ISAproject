@@ -2,7 +2,6 @@ package com.isa.project.controller;
 
 import java.util.List;
 
-import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.project.dto.BoatDTO;
+import com.isa.project.dto.DateSearchDTO;
 import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.Boat;
@@ -68,6 +68,16 @@ public class BoatController {
 	@PostMapping(path = "/availableBoats")
     public ResponseEntity<?> availableBoats(@RequestBody ReservationSearchDTO dto) {
 		List<Boat> response = boatService.getAvailableBoats(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+	
+	@PreAuthorize("hasRole('CLIENT')")
+	@PostMapping(path = "/availableBoatsForCertainDate")
+    public ResponseEntity<?> availableBoatsForCertainDate(@RequestBody DateSearchDTO dto) {
+		List<Boat> response = boatService.boatsAvailableForCertainDate(dto);
 		if(response == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}

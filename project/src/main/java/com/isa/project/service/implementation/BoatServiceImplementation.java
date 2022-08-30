@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.isa.project.dto.AdditionalServiceDTO;
 import com.isa.project.dto.AvailablePeriodDTO;
 import com.isa.project.dto.BoatDTO;
+import com.isa.project.dto.DateSearchDTO;
 import com.isa.project.dto.FishingEquipmentDTO;
 import com.isa.project.dto.ImageDTO;
 import com.isa.project.dto.NavigationEquipmentDTO;
@@ -329,6 +330,22 @@ public class BoatServiceImplementation implements BoatService{
 					result.add(boat);
 				}
 			}
+		}
+		return result;
+	}
+
+	@Override
+	public List<Boat> boatsAvailableForCertainDate(DateSearchDTO dto) {
+		List<Boat> boats = boatRepository.findAll();
+		List<Boat> result = new ArrayList<>();
+		for(Boat b: boats) {
+			Set<AvailableBoatPeriod> periods = b.getAvailablePeriods();
+			for(AvailableBoatPeriod period: periods) {
+				if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) > 0) {
+					result.add(b);
+				}
+			}
+			
 		}
 		return result;
 	}

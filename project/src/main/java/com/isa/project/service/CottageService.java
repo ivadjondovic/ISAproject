@@ -3,6 +3,7 @@ package com.isa.project.service;
 import java.util.List;
 
 import com.isa.project.dto.CottageDTO;
+import com.isa.project.dto.DateSearchDTO;
 import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.Cottage;
@@ -15,5 +16,6 @@ public interface CottageService {
 	public List<Cottage> search(String searchTerm);
 	public List<Cottage> sort(SortDTO dto);
 	public List<Cottage> getAvailableCottages(ReservationSearchDTO dto);
+	public List<Cottage> cottagesAvailableForCertainDate(DateSearchDTO dto);
 
 }

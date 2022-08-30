@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.isa.project.dto.AdditionalServiceDTO;
 import com.isa.project.dto.AvailablePeriodDTO;
+import com.isa.project.dto.DateSearchDTO;
 import com.isa.project.dto.FishingEquipmentDTO;
 import com.isa.project.dto.FishingLessonDTO;
 import com.isa.project.dto.ImageDTO;
@@ -22,7 +23,9 @@ import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.RuleDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalFishingLessonService;
+import com.isa.project.model.AvailableBoatPeriod;
 import com.isa.project.model.AvailableFishingLessonPeriod;
+import com.isa.project.model.Boat;
 import com.isa.project.model.FishingEquipment;
 import com.isa.project.model.FishingLesson;
 import com.isa.project.model.Image;
@@ -433,6 +436,22 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 					result.add(lesson);
 				}
 			}
+		}
+		return result;
+	}
+
+	@Override
+	public List<FishingLesson> lessonsAvailableForCertainDate(DateSearchDTO dto) {
+		List<FishingLesson> lessons = fishingLessonRepository.findAll();
+		List<FishingLesson> result = new ArrayList<>();
+		for(FishingLesson l: lessons) {
+			Set<AvailableFishingLessonPeriod> periods = l.getAvailablePeriods();
+			for(AvailableFishingLessonPeriod period: periods) {
+				if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) > 0) {
+					result.add(l);
+				}
+			}
+			
 		}
 		return result;
 	}

@@ -13,6 +13,10 @@ export class CottagesComponent implements OnInit {
   searchTerm = '';
   sortBy = '';
   sortType = '';
+  user: any
+  role: any
+  addSearch = false
+  dateForSearch: any
   constructor(public service: CottageService, public router: Router) { }
 
 
@@ -20,6 +24,11 @@ export class CottagesComponent implements OnInit {
     this.service.getAll().subscribe((response: any) => {
       this.cottages = response;
       console.log(this.cottages)
+      let userStrng = localStorage.getItem('user');
+      if (userStrng) {
+        this.user = JSON.parse(userStrng);
+        this.role = this.user.userType;
+      }
     })
   }
 
@@ -63,6 +72,19 @@ export class CottagesComponent implements OnInit {
         console.log(this.cottages)
       })
     }
+  }
+
+  additionalSearch(){
+    this.addSearch = true
+  }
+
+  searchByDate(){
+    let data = {
+      date: this.dateForSearch
+    }
+    this.service.getAvailableBoatsForCertainDate(data).subscribe((response: any) => {
+      this.cottages = response;
+     })
   }
 
 }
