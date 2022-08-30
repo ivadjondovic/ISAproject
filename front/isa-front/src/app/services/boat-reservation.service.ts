@@ -27,4 +27,8 @@ export class BoatReservationService {
   getByClientId(id: any){
     return this.http.get(this.baseURL + "api/boatReservations/clientReservations/"+ id, this.getAuthoHeader());
   }
+
+  sort(data: any){
+    return this.http.post(this.baseURL + "api/boatReservations/sort" ,  data, this.getAuthoHeader());
+  }
 }

@@ -13,4 +13,5 @@ public interface BoatReservationRepository  extends JpaRepository<BoatReservatio
 
 	public List<BoatReservation> findByClientAndAcceptedAndCanceled(Client client, Boolean accepted, Boolean canceled);
 	public List<BoatReservation> findByClient(Client client);
+	
 }
