@@ -12,6 +12,8 @@ export class BoatReservationsHistoryComponent implements OnInit {
   reservations: any[]
   reservationList: any[]
   user: any
+  sortBy: string
+  sortType: string
   constructor(public service: BoatReservationService, public userService: UserService) { }
 
   ngOnInit(): void {
@@ -52,5 +54,7 @@ export class BoatReservationsHistoryComponent implements OnInit {
     }
 
   }
+
+  sort(){}
 
 }

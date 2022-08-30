@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.isa.project.dto.ReservationDTO;
+import com.isa.project.dto.SortDTO;
 import com.isa.project.model.CottageReservation;
 import com.isa.project.service.CottageReservationService;
 
@@ -46,5 +47,11 @@ public class CottageReservationController {
 	@PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<?> clientReservations(@PathVariable Long clientId){
         return new ResponseEntity<>(reservationService.getByClientId(clientId), HttpStatus.OK);
+    }
+	
+	@PostMapping(path = "/sort")
+	@PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<?> sort(@RequestBody SortDTO dto) {
+        return new ResponseEntity<>(reservationService.sort(dto), HttpStatus.OK);
     }
 }

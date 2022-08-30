@@ -28,6 +28,10 @@ export class CottageReservationService {
     return this.http.get(this.baseURL + "api/cottageReservations/clientReservations/"+ id, this.getAuthoHeader());
   }
 
+  sort(data: any){
+    return this.http.post(this.baseURL + "api/cottageReservations/sort" ,  data, this.getAuthoHeader());
+  }
+
 
 
 }

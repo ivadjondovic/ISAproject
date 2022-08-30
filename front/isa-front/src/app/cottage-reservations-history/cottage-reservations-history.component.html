@@ -1,5 +1,39 @@
 
 <div>
+
+  <div class="row">
+    <div class="col-sm">
+
+        <mat-form-field appearance="fill">
+            <mat-label>Sort by</mat-label>
+            <mat-select [(ngModel)]="sortBy">
+                <mat-option value="Date">Date</mat-option>
+                <mat-option value="Price">Price</mat-option>
+                <mat-option value="Duration">Duration</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="col-sm">
+        <mat-form-field appearance="fill">
+            <mat-label>Choose sort type</mat-label>
+            <mat-select [(ngModel)]="sortType">
+                <mat-option value="Descending">Descending</mat-option>
+                <mat-option value="Ascending">Ascending</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+    </div>
+    <div class="col-sm">
+        <button class="searchButton" (click)="sort()"><mat-icon>search</mat-icon></button>
+    </div>
+    <div class="col-sm"></div>
+    <div class="col-sm"></div>
+    <div class="col-sm"></div>
+    <div class="col-sm"></div>
+</div>
+
+
+
     <mat-card>
         <mat-card-title style="text-align: center;">Cottage reservations history</mat-card-title>
     </mat-card>
