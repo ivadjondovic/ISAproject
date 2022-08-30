@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { RatingCottageDialogComponent } from '../rating-cottage-dialog/rating-cottage-dialog.component';
 import { CottageReservationService } from '../services/cottage-reservation.service';
 import { UserService } from '../services/user.service';
 
@@ -14,7 +16,8 @@ export class CottageReservationsHistoryComponent implements OnInit {
   user: any
   sortBy: string
   sortType: string
-  constructor(public service: CottageReservationService, public userService: UserService) { }
+  id: any
+  constructor(public dialog: MatDialog, public service: CottageReservationService, public userService: UserService) { }
 
   ngOnInit(): void {
     this.userService.current().subscribe((response: any) => {
@@ -26,7 +29,7 @@ export class CottageReservationsHistoryComponent implements OnInit {
         this.corectDate();
       })
     })
-    
+
   }
 
   corectDate() {
@@ -39,6 +42,8 @@ export class CottageReservationsHistoryComponent implements OnInit {
       let additionalServices = r.additionalServices;
       let id = r.id;
       let cottage = r.cottage;
+      let possibleToRate = r.possibleToRate;
+      let reservationType = r.reservationType
 
       let data = {
         id: id,
@@ -46,7 +51,9 @@ export class CottageReservationsHistoryComponent implements OnInit {
         startDate: startDate,
         endDate: endDate,
         price: price,
-        additionalServices: additionalServices
+        additionalServices: additionalServices,
+        possibleToRate: possibleToRate,
+        reservationType: reservationType
       }
       this.reservationList.push(data);
       console.log(startDate)
@@ -55,16 +62,16 @@ export class CottageReservationsHistoryComponent implements OnInit {
 
   }
 
-  sort(){
+  sort() {
     console.log(this.sortBy)
     let sortingBy = this.sortBy
     let sortingType = this.sortType
     console.log(this.sortType)
-    if(this.sortBy = ''){
+    if (this.sortBy = '') {
       alert('Choose sort by');
-    }else if (this.sortType = ''){
+    } else if (this.sortType = '') {
       alert('Choose sort type');
-    }else{
+    } else {
       console.log('OK')
       let data = {
 
@@ -79,6 +86,20 @@ export class CottageReservationsHistoryComponent implements OnInit {
         this.corectDate();
       })
     }
+  }
+  rate(enterAnimationDuration: string, exitAnimationDuration: string, id: any, type: any) {
+    this.id = id;
+    const dialogRef = this.dialog.open(RatingCottageDialogComponent, {
+      width: '45%',
+      data: {
+        id: this.id,
+        type: type
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.id = result;
+    });
   }
 
 }

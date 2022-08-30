@@ -17,6 +17,16 @@ public class CottageReservationResponseDTO {
 	private Boolean accepted;
 	private Set<AdditionalCottageService> additionalServices;
 	private Client client;
+	private Boolean possibleToRate;
+	private String reservationType;
+	
+	
+	public Boolean getPossibleToRate() {
+		return possibleToRate;
+	}
+	public void setPossibleToRate(Boolean possibleToRate) {
+		this.possibleToRate = possibleToRate;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -65,6 +75,14 @@ public class CottageReservationResponseDTO {
 	public void setClient(Client client) {
 		this.client = client;
 	}
+	public String getReservationType() {
+		return reservationType;
+	}
+	public void setReservationType(String reservationType) {
+		this.reservationType = reservationType;
+	}
+	
+	
 	
 	
 

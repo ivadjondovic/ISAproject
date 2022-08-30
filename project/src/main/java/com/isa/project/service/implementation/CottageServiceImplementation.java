@@ -71,6 +71,7 @@ public class CottageServiceImplementation implements CottageService{
 		cottage.setDescription(dto.getDescription());
 		cottage.setNumberOfRooms(dto.getNumberOfRooms());
 		cottage.setPrice(dto.getPrice());
+		cottage.setRating(0.0);
 		Cottage savedCottage = cottageRepository.save(cottage);
 		Set<Room> rooms = new HashSet<>();
 		Set<Rule> rules = new HashSet<>();

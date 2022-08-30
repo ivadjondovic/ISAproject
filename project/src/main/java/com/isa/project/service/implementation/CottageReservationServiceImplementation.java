@@ -191,6 +191,12 @@ public class CottageReservationServiceImplementation implements CottageReservati
 			cottageReservation.setId(cr.getId());
 			cottageReservation.setPrice(cr.getPrice());
 			cottageReservation.setStartDate(cr.getStartDate());
+			cottageReservation.setReservationType("Cottage reservation");
+			if(cr.getEndDate().compareTo(LocalDateTime.now()) <= 0) {
+				cottageReservation.setPossibleToRate(true);
+			}else {
+				cottageReservation.setPossibleToRate(false);
+			}
 			
 			result.add(cottageReservation);
 		}
@@ -207,6 +213,12 @@ public class CottageReservationServiceImplementation implements CottageReservati
 			cottageReservation.setId(quickR.getId());
 			cottageReservation.setPrice(quickR.getPrice());
 			cottageReservation.setStartDate(quickR.getStartDate());
+			cottageReservation.setReservationType("Quick cottage reservation");
+			if(quickR.getEndDate().compareTo(LocalDateTime.now()) <= 0) {
+				cottageReservation.setPossibleToRate(true);
+			}else {
+				cottageReservation.setPossibleToRate(false);
+			}
 			result.add(cottageReservation);
 			
 		}

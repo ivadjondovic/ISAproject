@@ -31,10 +31,15 @@ public class Cottage {
 	private String description;
 	private int numberOfRooms;
 	private Double price;
+	private Double rating;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "cottage", fetch = FetchType.LAZY)
 	private Set<Room> rooms;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "cottage", fetch = FetchType.LAZY)
+	private Set<CottageRevision> revisions;
 	
 	@ManyToMany(cascade=CascadeType.ALL)
 	@JoinTable(
@@ -69,6 +74,15 @@ public class Cottage {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "cottage", fetch = FetchType.EAGER)
 	private Set<CottageReservation> reservations;
+	
+
+	public Double getRating() {
+		return rating;
+	}
+
+	public void setRating(Double rating) {
+		this.rating = rating;
+	}
 
 	public Long getId() {
 		return id;
@@ -181,6 +195,16 @@ public class Cottage {
 	public void setReservations(Set<CottageReservation> reservations) {
 		this.reservations = reservations;
 	}
+
+	public Set<CottageRevision> getRevisions() {
+		return revisions;
+	}
+
+	public void setRevisions(Set<CottageRevision> revisions) {
+		this.revisions = revisions;
+	}
+	
+	
 	
 	
 	

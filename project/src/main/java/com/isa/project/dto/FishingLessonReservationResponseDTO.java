@@ -18,6 +18,15 @@ public class FishingLessonReservationResponseDTO {
 	private Boolean accepted;
 	private Set<AdditionalFishingLessonService> additionalServices;
 	private Client client;
+	private Boolean possibleToRate;
+	
+	
+	public Boolean getPossibleToRate() {
+		return possibleToRate;
+	}
+	public void setPossibleToRate(Boolean possibleToRate) {
+		this.possibleToRate = possibleToRate;
+	}
 	public Long getId() {
 		return id;
 	}

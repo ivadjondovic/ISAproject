@@ -18,6 +18,15 @@ public class BoatReservationResponseDTO {
 	private Boolean accepted;
 	private Set<AdditionalBoatService> additionalServices;
 	private Client client;
+	private Boolean possibleToRate;
+	
+	
+	public Boolean getPossibleToRate() {
+		return possibleToRate;
+	}
+	public void setPossibleToRate(Boolean possibleToRate) {
+		this.possibleToRate = possibleToRate;
+	}
 	public Long getId() {
 		return id;
 	}
