@@ -49,7 +49,7 @@
               <td>{{reservation.price}}</td>
               <td>{{reservation.startDate | date:'medium'}}</td>
               <td>{{reservation.endDate | date:'medium'}}</td>
-              <td><button *ngIf="reservation.possibleToRate"  class="button1">
+              <td><button (click) = "rate('0ms', '0ms', reservation.id, reservation.reservationType)" *ngIf="reservation.possibleToRate"  class="button1">
                 <mat-icon>rate_review</mat-icon>
                 </button></td>
             </tr>

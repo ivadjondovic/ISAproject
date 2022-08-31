@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { RatingLessonDialogComponent } from '../rating-lesson-dialog/rating-lesson-dialog.component';
 import { FishingLessonReservationService } from '../services/fishing-lesson-reservation.service';
 import { UserService } from '../services/user.service';
 
@@ -14,7 +16,8 @@ export class FishingLessonReservationsHistoryComponent implements OnInit {
   user: any
   sortBy: string
   sortType: string
-  constructor(public service: FishingLessonReservationService, public userService: UserService) { }
+  id: any
+  constructor(public dialog: MatDialog, public service: FishingLessonReservationService, public userService: UserService) { }
 
   ngOnInit(): void {
     this.userService.current().subscribe((response: any) => {
@@ -83,6 +86,21 @@ export class FishingLessonReservationsHistoryComponent implements OnInit {
         this.corectDate();
       })
     }
+  }
+
+  rate(enterAnimationDuration: string, exitAnimationDuration: string, id: any, type: any) {
+    this.id = id;
+    const dialogRef = this.dialog.open(RatingLessonDialogComponent, {
+      width: '45%',
+      data: {
+        id: this.id,
+        type: type
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.id = result;
+    });
   }
 
 }

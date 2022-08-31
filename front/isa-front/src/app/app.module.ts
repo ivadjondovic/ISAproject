@@ -54,6 +54,7 @@ import { FishingLessonReservationsHistoryComponent } from './fishing-lesson-rese
 import { NotPassedReservationsComponent } from './not-passed-reservations/not-passed-reservations.component';
 import { RatingCottageDialogComponent } from './rating-cottage-dialog/rating-cottage-dialog.component';
 import { RatingBoatDialogComponent } from './rating-boat-dialog/rating-boat-dialog.component';
+import { RatingLessonDialogComponent } from './rating-lesson-dialog/rating-lesson-dialog.component';
 
 
 
@@ -94,6 +95,7 @@ import { RatingBoatDialogComponent } from './rating-boat-dialog/rating-boat-dial
     NotPassedReservationsComponent,
     RatingCottageDialogComponent,
     RatingBoatDialogComponent,
+    RatingLessonDialogComponent,
     
   ],
   imports: [
