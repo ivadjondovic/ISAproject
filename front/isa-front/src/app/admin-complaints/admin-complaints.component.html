@@ -20,7 +20,7 @@
                 <td>{{complaint.entityName}}</td>
                 <td>{{complaint.date | date:'medium'}}</td>
                 <td>{{complaint.description}}</td>
-                <td><button (click)="answer()" class="button1">
+                <td><button (click)="answer('0ms', '0ms', complaint.id, complaint.complaintType, complaint.clientId)"  class="button1">
                         <mat-icon>question_answer</mat-icon></button>
                 
             </tr>

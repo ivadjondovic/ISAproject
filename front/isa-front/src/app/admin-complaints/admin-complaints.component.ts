@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { AnswerComplaintDialogComponent } from '../answer-complaint-dialog/answer-complaint-dialog.component';
 import { ComplaintsService } from '../services/complaints.service';
 
 @Component({
@@ -8,9 +10,10 @@ import { ComplaintsService } from '../services/complaints.service';
 })
 export class AdminComplaintsComponent implements OnInit {
 
+  id: any
   complaints: any[]
   complaintList: any[]
-  constructor(public service: ComplaintsService) { }
+  constructor(public dialog: MatDialog, public service: ComplaintsService) { }
 
   ngOnInit(): void {
     this.service.getNotAnsweredComplaints().subscribe((response: any) => {
@@ -28,13 +31,15 @@ export class AdminComplaintsComponent implements OnInit {
       let id = r.id;
       let entityName = r.entityName
       let complaintType = r.complaintType
+      let clientId = r.clientId
 
       let data = {
         id: id,
         description: description,
         date: date,
         entityName: entityName,
-        complaintType: complaintType
+        complaintType: complaintType,
+        clientId: clientId
 
 
       }
@@ -44,6 +49,25 @@ export class AdminComplaintsComponent implements OnInit {
 
   }
 
-  answer(){}
+  answer(enterAnimationDuration: string, exitAnimationDuration: string, id: any, type: any, clientId: any) {
+    this.id = id;
+    const dialogRef = this.dialog.open(AnswerComplaintDialogComponent, {
+      width: '45%',
+      data: {
+        id: this.id,
+        type: type,
+        clientId: clientId
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.id = result;
+      this.service.getNotAnsweredComplaints().subscribe((response: any) => {
+        this.complaints = response;
+        this.corectDate();
+      })
+    });
+  }
+
 
 }

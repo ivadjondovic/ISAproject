@@ -9,6 +9,7 @@ public class ComplaintResponseDTO {
 	private LocalDateTime date;
 	private String complaintType;
 	private String entityName;
+	private Long clientId;
 	public Long getId() {
 		return id;
 	}
@@ -39,6 +40,14 @@ public class ComplaintResponseDTO {
 	public void setEntityName(String entityName) {
 		this.entityName = entityName;
 	}
+	public Long getClientId() {
+		return clientId;
+	}
+	public void setClientId(Long clientId) {
+		this.clientId = clientId;
+	}
+	
+	
 	
 	
 

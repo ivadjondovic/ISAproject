@@ -60,6 +60,7 @@ import { BoatComplaintDialogComponent } from './boat-complaint-dialog/boat-compl
 import { CottageComplaintDialogComponent } from './cottage-complaint-dialog/cottage-complaint-dialog.component';
 import { FishingLessonComplaintDialogComponent } from './fishing-lesson-complaint-dialog/fishing-lesson-complaint-dialog.component';
 import { AdminComplaintsComponent } from './admin-complaints/admin-complaints.component';
+import { AnswerComplaintDialogComponent } from './answer-complaint-dialog/answer-complaint-dialog.component';
 
 
 
@@ -106,6 +107,7 @@ import { AdminComplaintsComponent } from './admin-complaints/admin-complaints.co
     CottageComplaintDialogComponent,
     FishingLessonComplaintDialogComponent,
     AdminComplaintsComponent,
+    AnswerComplaintDialogComponent,
     
   ],
   imports: [

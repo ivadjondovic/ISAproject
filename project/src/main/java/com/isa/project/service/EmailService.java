@@ -2,10 +2,10 @@ package com.isa.project.service;
 
 import javax.mail.MessagingException;
 
+import com.isa.project.dto.ComplaintResponseDTO;
 import com.isa.project.dto.RevisionResponseDTO;
 import com.isa.project.model.BoatReservation;
 import com.isa.project.model.CottageReservation;
-import com.isa.project.model.CottageRevision;
 import com.isa.project.model.FishingLessonReservation;
 import com.isa.project.model.QuickBoatReservation;
 import com.isa.project.model.QuickCottageReservation;
@@ -26,4 +26,6 @@ public interface EmailService {
 	public void sendFishingLessonReservationMail(User user, FishingLessonReservation fishingLessonReservation) throws MessagingException;
 	public void sendQuickFishingLessonReservationMail(User user, QuickFishingLessonReservation quickFishingLessonReservation) throws MessagingException;
 	public void approveRevisionEmail(User user,RevisionResponseDTO revision) throws MessagingException;
+	public void complaintOwnerEmail(User user, ComplaintResponseDTO dto, String answer) throws MessagingException;
+	public void complaintClientEmail(User user, ComplaintResponseDTO dto, String answer) throws MessagingException;
 }

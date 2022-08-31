@@ -23,4 +23,8 @@ export class ComplaintsService {
   getNotAnsweredComplaints(){
     return this.http.get(this.baseURL + "api/complaints/notAnswered", this.getAuthoHeader());
   }
+
+  answer(data: any){
+    return this.http.put(this.baseURL + "api/complaints/answer", data, this.getAuthoHeader());
+  }
 }

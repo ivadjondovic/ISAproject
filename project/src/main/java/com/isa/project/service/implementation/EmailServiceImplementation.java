@@ -11,6 +11,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.isa.project.dto.ComplaintResponseDTO;
 import com.isa.project.dto.RevisionResponseDTO;
 import com.isa.project.model.BoatReservation;
 import com.isa.project.model.CottageReservation;
@@ -197,6 +198,34 @@ public class EmailServiceImplementation implements EmailService{
 	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
 	    helper.setSubject("Revision");
 	    helper.setText("Hello " + user.getName() + " " + user.getSurname() +  ",\n\nWe are sending you a client revision for your entity." + "\n\nEntity: " + revision.getEntityName() + "\nEntity rate: " + revision.getEntityRate() + "\nEntity owner rate: " + revision.getOwnerRate() + "\nRevision: " + revision.getDescription());
+	    javaMailSender.send(message);
+		
+	}
+
+	@Async
+	@Override
+	public void complaintOwnerEmail(User user, ComplaintResponseDTO dto, String answer) throws MessagingException {
+		MimeMessage message=javaMailSender.createMimeMessage();
+	    MimeMessageHelper helper;
+	    helper=new MimeMessageHelper(message,true);
+	    helper.setTo(new InternetAddress(user.getUsername()));
+	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
+	    helper.setSubject("Complaint");
+	    helper.setText("Hello " + user.getName() + " " + user.getSurname() +  ",\n\nWe are sending you a client complaint for your entity." + "\n\n" + dto.getComplaintType() + ": " + dto.getEntityName()  + "\nComplaint: " + dto.getDescription() + "\n\nAdmin answer: " + answer);
+	    javaMailSender.send(message);
+		
+	}
+
+	@Async
+	@Override
+	public void complaintClientEmail(User user, ComplaintResponseDTO dto, String answer) throws MessagingException {
+		MimeMessage message=javaMailSender.createMimeMessage();
+	    MimeMessageHelper helper;
+	    helper=new MimeMessageHelper(message,true);
+	    helper.setTo(new InternetAddress(user.getUsername()));
+	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
+	    helper.setSubject("Complaint");
+	    helper.setText("Hello " + user.getName() + " " + user.getSurname() +  ",\n\nWe are sending admin answer for your complaint about "  + dto.getComplaintType() + ": " + dto.getEntityName()  + "\nYour complaint: " + dto.getDescription() + "\n\nAdmin answer: " + answer);
 	    javaMailSender.send(message);
 		
 	}

@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>Answer</h1>
+<div mat-dialog-content>
+    Answer
+    <textarea id="answer" name="answer" rows="4" [(ngModel)] = "answer"></textarea>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Close</button>
+    <button mat-button (click)="submit()" >Submit</button>
+</div>

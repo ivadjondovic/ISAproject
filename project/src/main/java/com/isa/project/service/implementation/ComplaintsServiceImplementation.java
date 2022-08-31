@@ -3,20 +3,31 @@ package com.isa.project.service.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.isa.project.dto.ComplaintAnswerDTO;
 import com.isa.project.dto.ComplaintResponseDTO;
 import com.isa.project.model.BoatComplaint;
+import com.isa.project.model.Client;
 import com.isa.project.model.CottageComplaint;
+import com.isa.project.model.CottageOwner;
 import com.isa.project.model.FishingLessonComplaint;
 import com.isa.project.repository.BoatComplaintRepository;
 import com.isa.project.repository.CottageComplaintRepository;
 import com.isa.project.repository.FishingLessonComplaintRepository;
+import com.isa.project.repository.UserRepository;
 import com.isa.project.service.ComplaintsService;
+import com.isa.project.service.EmailService;
 
 @Service
 public class ComplaintsServiceImplementation implements ComplaintsService{
+	
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	@Autowired
 	private BoatComplaintRepository boatComplaintRepository;
@@ -26,6 +37,9 @@ public class ComplaintsServiceImplementation implements ComplaintsService{
 	
 	@Autowired
 	private FishingLessonComplaintRepository fishingLessonComplaintRepository;
+	
+	@Autowired
+	private EmailService emailService;
 
 	@Override
 	public List<ComplaintResponseDTO> notAnsweredComplaints() {
@@ -42,6 +56,7 @@ public class ComplaintsServiceImplementation implements ComplaintsService{
 			response.setEntityName(complaint.getBoat().getName());
 			response.setId(complaint.getId());
 			response.setComplaintType("Boat");
+			response.setClientId(complaint.getClient().getId());
 			
 			complaints.add(response);
 		}
@@ -52,6 +67,7 @@ public class ComplaintsServiceImplementation implements ComplaintsService{
 			response.setEntityName(complaint.getCottage().getName());
 			response.setId(complaint.getId());
 			response.setComplaintType("Cottage");
+			response.setClientId(complaint.getClient().getId());
 			
 			complaints.add(response);
 		}
@@ -63,10 +79,51 @@ public class ComplaintsServiceImplementation implements ComplaintsService{
 			response.setEntityName(complaint.getFishingLesson().getName());
 			response.setId(complaint.getId());
 			response.setComplaintType("Fishing lesson");
+			response.setClientId(complaint.getClient().getId());
 			
 			complaints.add(response);
 		}
 		return complaints;
+	}
+
+	@Override
+	public ComplaintResponseDTO answer(ComplaintAnswerDTO dto) {
+		
+		ComplaintResponseDTO response = new ComplaintResponseDTO();
+		
+		if(dto.getComplaintType().equals("Cottage")) {
+			CottageComplaint complaint = cottageComplaintRepository.findById(dto.getComplaintId()).get();
+			complaint.setAnswered(true);
+			CottageComplaint savedComplaint = cottageComplaintRepository.save(complaint);
+			
+			CottageOwner owner = savedComplaint.getCottage().getCottageOwner();
+			Client client = (Client) userRepository.findById(dto.getClientId()).get();
+			
+			response = new ComplaintResponseDTO();
+			response.setDescription(savedComplaint.getDescription());
+			response.setEntityName(savedComplaint.getCottage().getName());
+			response.setComplaintType("Cottage");
+			response.setDate(savedComplaint.getDate());
+			response.setId(savedComplaint.getId());
+			
+			try {
+				emailService.complaintOwnerEmail(owner, response, dto.getAnswer());
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			try {
+				emailService.complaintClientEmail(client, response, dto.getAnswer());
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+					
+		}
+		
+		return response;
+		
 	}
 
 }
