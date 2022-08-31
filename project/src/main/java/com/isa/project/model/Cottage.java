@@ -39,6 +39,11 @@ public class Cottage {
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "cottage", fetch = FetchType.LAZY)
+	private Set<CottageComplaint> complaints;
+	
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "cottage", fetch = FetchType.LAZY)
 	private Set<CottageRevision> revisions;
 	
 	@ManyToMany(cascade=CascadeType.ALL)
@@ -203,6 +208,16 @@ public class Cottage {
 	public void setRevisions(Set<CottageRevision> revisions) {
 		this.revisions = revisions;
 	}
+
+	public Set<CottageComplaint> getComplaints() {
+		return complaints;
+	}
+
+	public void setComplaints(Set<CottageComplaint> complaints) {
+		this.complaints = complaints;
+	}
+	
+	
 	
 	
 	

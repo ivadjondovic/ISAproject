@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { FishingLessonComplaintDialogComponent } from '../fishing-lesson-complaint-dialog/fishing-lesson-complaint-dialog.component';
 import { RatingLessonDialogComponent } from '../rating-lesson-dialog/rating-lesson-dialog.component';
 import { FishingLessonReservationService } from '../services/fishing-lesson-reservation.service';
 import { UserService } from '../services/user.service';
@@ -91,6 +92,21 @@ export class FishingLessonReservationsHistoryComponent implements OnInit {
   rate(enterAnimationDuration: string, exitAnimationDuration: string, id: any, type: any) {
     this.id = id;
     const dialogRef = this.dialog.open(RatingLessonDialogComponent, {
+      width: '45%',
+      data: {
+        id: this.id,
+        type: type
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.id = result;
+    });
+  }
+
+  complaint(enterAnimationDuration: string, exitAnimationDuration: string, id: any, type: any) {
+    this.id = id;
+    const dialogRef = this.dialog.open(FishingLessonComplaintDialogComponent, {
       width: '45%',
       data: {
         id: this.id,

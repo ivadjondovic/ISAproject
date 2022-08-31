@@ -55,7 +55,7 @@
                         *ngIf="reservation.possibleToRate" class="button1">
                         <mat-icon>rate_review</mat-icon>
                     </button></td>
-                <td><button *ngIf="reservation.possibleToRate" class="button1">
+                <td><button (click)="complaint('0ms', '0ms', reservation.id, reservation.reservationType)" *ngIf="reservation.possibleToRate" class="button1">
                         <mat-icon>receipt_long</mat-icon>
                     </button></td>
             </tr>

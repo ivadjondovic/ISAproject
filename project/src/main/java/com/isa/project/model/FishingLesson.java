@@ -38,6 +38,10 @@ public class FishingLesson {
 	@OneToMany(mappedBy = "fishingLesson", fetch = FetchType.LAZY)
 	private Set<FishingLessonRevision> revisions;
 	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "fishingLesson", fetch = FetchType.LAZY)
+	private Set<FishingLessonComplaint> complaints;
+	
 	
 	@ManyToMany(cascade=CascadeType.ALL)
 	@JoinTable(
@@ -220,6 +224,16 @@ public class FishingLesson {
 	public void setReservations(Set<FishingLessonReservation> reservations) {
 		this.reservations = reservations;
 	}
+
+	public Set<FishingLessonComplaint> getComplaints() {
+		return complaints;
+	}
+
+	public void setComplaints(Set<FishingLessonComplaint> complaints) {
+		this.complaints = complaints;
+	}
+	
+	
 	
 	
 	

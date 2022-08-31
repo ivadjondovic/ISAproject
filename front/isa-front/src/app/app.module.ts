@@ -57,6 +57,8 @@ import { RatingBoatDialogComponent } from './rating-boat-dialog/rating-boat-dial
 import { RatingLessonDialogComponent } from './rating-lesson-dialog/rating-lesson-dialog.component';
 import { AdminRevisionsComponent } from './admin-revisions/admin-revisions.component';
 import { BoatComplaintDialogComponent } from './boat-complaint-dialog/boat-complaint-dialog.component';
+import { CottageComplaintDialogComponent } from './cottage-complaint-dialog/cottage-complaint-dialog.component';
+import { FishingLessonComplaintDialogComponent } from './fishing-lesson-complaint-dialog/fishing-lesson-complaint-dialog.component';
 
 
 
@@ -100,6 +102,8 @@ import { BoatComplaintDialogComponent } from './boat-complaint-dialog/boat-compl
     RatingLessonDialogComponent,
     AdminRevisionsComponent,
     BoatComplaintDialogComponent,
+    CottageComplaintDialogComponent,
+    FishingLessonComplaintDialogComponent,
     
   ],
   imports: [

@@ -63,7 +63,7 @@ public class BoatComplaintServiceImplementation implements BoatComplaintService{
 			
 		}
 		
-		if(dto.getReservationType().equals("Boat quick reservation")) {
+		if(dto.getReservationType().equals("Quick boat reservation")) {
 			QuickBoatReservation reservation = quickBoatReservationRepository.findById(dto.getReservationId()).get();
 			Boat boat = boatRepository.findById(reservation.getBoat().getId()).get();
 			complaint.setBoat(boat);
