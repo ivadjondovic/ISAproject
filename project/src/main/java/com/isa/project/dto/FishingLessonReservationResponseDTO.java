@@ -19,6 +19,7 @@ public class FishingLessonReservationResponseDTO {
 	private Set<AdditionalFishingLessonService> additionalServices;
 	private Client client;
 	private Boolean possibleToRate;
+	private String reservationType;
 	
 	
 	public Boolean getPossibleToRate() {
@@ -75,6 +76,14 @@ public class FishingLessonReservationResponseDTO {
 	public void setClient(Client client) {
 		this.client = client;
 	}
+	public String getReservationType() {
+		return reservationType;
+	}
+	public void setReservationType(String reservationType) {
+		this.reservationType = reservationType;
+	}
+	
+	
 	
 	
 	

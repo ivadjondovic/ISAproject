@@ -192,6 +192,7 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 			boatReservation.setId(br.getId());
 			boatReservation.setPrice(br.getPrice());
 			boatReservation.setStartDate(br.getStartDate());
+			boatReservation.setReservationType("Boat reservation");
 			if(br.getEndDate().compareTo(LocalDateTime.now()) <= 0) {
 				boatReservation.setPossibleToRate(true);
 			}else {
@@ -214,7 +215,7 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 			boatReservation.setId(quickR.getId());
 			boatReservation.setPrice(quickR.getPrice());
 			boatReservation.setStartDate(quickR.getStartDate());
-			
+			boatReservation.setReservationType("Quick boat reservation");
 			if(quickR.getEndDate().compareTo(LocalDateTime.now()) <= 0) {
 				boatReservation.setPossibleToRate(true);
 			}else {

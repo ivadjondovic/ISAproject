@@ -39,6 +39,8 @@ export class FishingLessonReservationsHistoryComponent implements OnInit {
       let additionalServices = r.additionalServices;
       let id = r.id;
       let fishingLesson = r.fishingLesson;
+      let possibleToRate = r.possibleToRate
+      let reservationType = r.reservationType
 
       let data = {
         id: id,
@@ -46,7 +48,9 @@ export class FishingLessonReservationsHistoryComponent implements OnInit {
         startDate: startDate,
         endDate: endDate,
         price: price,
-        additionalServices: additionalServices
+        additionalServices: additionalServices,
+        possibleToRate: possibleToRate,
+        reservationType: reservationType
       }
       this.reservationList.push(data);
       console.log(startDate)

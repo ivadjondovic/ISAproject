@@ -44,12 +44,16 @@
               <th>Price</th>
               <th>Start date</th>
               <th>End date</th>
+              <th>Rate</th>
             </tr>
             <tr *ngFor="let reservation of reservationList">
               <td>{{reservation.boat.name}}</td>
               <td>{{reservation.price}}</td>
               <td>{{reservation.startDate | date:'medium'}}</td>
               <td>{{reservation.endDate | date:'medium'}}</td>
+              <td><button (click) = "rate('0ms', '0ms', reservation.id, reservation.reservationType)" *ngIf="reservation.possibleToRate"  class="button1">
+                <mat-icon>rate_review</mat-icon>
+                </button></td>
             </tr>
         </table>
         

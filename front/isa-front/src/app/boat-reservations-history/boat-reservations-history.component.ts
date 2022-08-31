@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { RatingBoatDialogComponent } from '../rating-boat-dialog/rating-boat-dialog.component';
 import { BoatReservationService } from '../services/boat-reservation.service';
 import { UserService } from '../services/user.service';
 
@@ -14,7 +16,8 @@ export class BoatReservationsHistoryComponent implements OnInit {
   user: any
   sortBy: string
   sortType: string
-  constructor(public service: BoatReservationService, public userService: UserService) { }
+  id: any
+  constructor(public dialog: MatDialog, public service: BoatReservationService, public userService: UserService) { }
 
   ngOnInit(): void {
     this.userService.current().subscribe((response: any) => {
@@ -39,6 +42,8 @@ export class BoatReservationsHistoryComponent implements OnInit {
       let additionalServices = r.additionalServices;
       let id = r.id;
       let boat = r.boat;
+      let possibleToRate = r.possibleToRate
+      let reservationType = r.reservationType
 
       let data = {
         id: id,
@@ -46,7 +51,11 @@ export class BoatReservationsHistoryComponent implements OnInit {
         startDate: startDate,
         endDate: endDate,
         price: price,
-        additionalServices: additionalServices
+        additionalServices: additionalServices,
+        possibleToRate: possibleToRate,
+        reservationType: reservationType
+
+
       }
       this.reservationList.push(data);
       console.log(startDate)
@@ -79,6 +88,21 @@ export class BoatReservationsHistoryComponent implements OnInit {
         this.corectDate();
       })
     }
+  }
+
+  rate(enterAnimationDuration: string, exitAnimationDuration: string, id: any, type: any) {
+    this.id = id;
+    const dialogRef = this.dialog.open(RatingBoatDialogComponent, {
+      width: '45%',
+      data: {
+        id: this.id,
+        type: type
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.id = result;
+    });
   }
 
 

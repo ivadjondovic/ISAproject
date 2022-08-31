@@ -187,7 +187,7 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 			lessonReservation.setId(flr.getId());
 			lessonReservation.setPrice(flr.getPrice());
 			lessonReservation.setStartDate(flr.getStartDate());
-			
+			lessonReservation.setReservationType("Fishing lesson reservation");
 			if(flr.getEndDate().compareTo(LocalDateTime.now()) <= 0) {
 				lessonReservation.setPossibleToRate(true);
 			}else {
@@ -209,6 +209,7 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 			lessonReservation.setId(quickR.getId());
 			lessonReservation.setPrice(quickR.getPrice());
 			lessonReservation.setStartDate(quickR.getStartDate());
+			lessonReservation.setReservationType("Quick fishing lesson reservation");
 			if(quickR.getEndDate().compareTo(LocalDateTime.now()) <= 0) {
 				lessonReservation.setPossibleToRate(true);
 			}else {
