@@ -43,6 +43,10 @@
         <mat-icon>delete_forever</mat-icon><span class="nav-caption">Delete requests</span>
     </a>
 
+    <a mat-list-item routerLink="/revisions" *ngIf="role == 'ROLE_ADMIN'" (click)="onSidenavClose('')">
+        <mat-icon>star_rate</mat-icon><span class="nav-caption">Revisions</span>
+    </a>
+
     <a mat-list-item routerLink="/registration" (click)="onSidenavClose('')" *ngIf="currentUser == null">
         <mat-icon>person_add</mat-icon><span class="nav-caption">Client Registration</span>
     </a>

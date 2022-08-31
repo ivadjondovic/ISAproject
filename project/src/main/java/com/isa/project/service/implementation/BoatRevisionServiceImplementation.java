@@ -44,7 +44,7 @@ public class BoatRevisionServiceImplementation implements BoatRevisionService{
 	public BoatRevision addRevision(RevisionDTO dto) {
 		
 		BoatRevision boatRevision = new BoatRevision();
-		boatRevision.setAccepted(false);
+		boatRevision.setStatus("Waiting");
 		Client client = (Client) userRepository.findById(dto.getClientId()).get();
 		boatRevision.setClient(client);
 		boatRevision.setBoatRate(dto.getEntityRate());

@@ -44,7 +44,7 @@ public class FishingLessonRevisionServiceImplementation implements FishingLesson
 	public FishingLessonRevision addRevision(RevisionDTO dto) {
 		
 		FishingLessonRevision lessonRevision = new FishingLessonRevision();
-		lessonRevision.setAccepted(false);
+		lessonRevision.setStatus("Waiting");
 		Client client = (Client) userRepository.findById(dto.getClientId()).get();
 		lessonRevision.setClient(client);
 		lessonRevision.setLessonRate(dto.getEntityRate());

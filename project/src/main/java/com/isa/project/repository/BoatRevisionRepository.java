@@ -12,5 +12,6 @@ import com.isa.project.model.BoatRevision;
 public interface BoatRevisionRepository extends JpaRepository<BoatRevision, Long>  {
 	
 	public List<BoatRevision> findByBoat(Boat boat);
+	public List<BoatRevision> findByStatus(String status);
 
 }

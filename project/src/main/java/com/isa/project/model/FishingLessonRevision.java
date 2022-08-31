@@ -22,7 +22,7 @@ public class FishingLessonRevision {
 	private LocalDateTime date;
 	private int lessonRate;
 	private int instructorRate;
-	private Boolean accepted;
+	private String status;
 	
 	@JsonBackReference
 	@ManyToOne
@@ -72,12 +72,14 @@ public class FishingLessonRevision {
 		this.instructorRate = instructorRate;
 	}
 
-	public Boolean getAccepted() {
-		return accepted;
+
+
+	public String getStatus() {
+		return status;
 	}
 
-	public void setAccepted(Boolean accepted) {
-		this.accepted = accepted;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public FishingLesson getFishingLesson() {

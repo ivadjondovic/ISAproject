@@ -55,6 +55,7 @@ import { NotPassedReservationsComponent } from './not-passed-reservations/not-pa
 import { RatingCottageDialogComponent } from './rating-cottage-dialog/rating-cottage-dialog.component';
 import { RatingBoatDialogComponent } from './rating-boat-dialog/rating-boat-dialog.component';
 import { RatingLessonDialogComponent } from './rating-lesson-dialog/rating-lesson-dialog.component';
+import { AdminRevisionsComponent } from './admin-revisions/admin-revisions.component';
 
 
 
@@ -96,6 +97,7 @@ import { RatingLessonDialogComponent } from './rating-lesson-dialog/rating-lesso
     RatingCottageDialogComponent,
     RatingBoatDialogComponent,
     RatingLessonDialogComponent,
+    AdminRevisionsComponent,
     
   ],
   imports: [

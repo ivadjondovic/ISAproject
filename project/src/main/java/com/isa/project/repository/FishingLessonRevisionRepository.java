@@ -12,5 +12,6 @@ import com.isa.project.model.FishingLessonRevision;
 public interface FishingLessonRevisionRepository extends JpaRepository<FishingLessonRevision, Long>  {
 	
 	public List<FishingLessonRevision> findByFishingLesson(FishingLesson fishingLesson);
+	public List<FishingLessonRevision> findByStatus(String status);
 
 }

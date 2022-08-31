@@ -11,6 +11,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.isa.project.dto.RevisionResponseDTO;
 import com.isa.project.model.BoatReservation;
 import com.isa.project.model.CottageReservation;
 import com.isa.project.model.FishingLessonReservation;
@@ -182,6 +183,20 @@ public class EmailServiceImplementation implements EmailService{
 	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
 	    helper.setSubject("Quick fishing lesson reservation");
 	    helper.setText("Hello " + user.getName() + " " + user.getSurname() + "\n\nYour fishing lesson reservation:" + "\n\nFishing lesson: " + quickFishingLessonReservation.getFishingLesson().getName() + "\n\nFrom-To: " + quickFishingLessonReservation.getStartDate() + "-" + quickFishingLessonReservation.getEndDate() + "\n\nPrice: " + quickFishingLessonReservation.getPrice()  +  ",\n\nPlease click the link below to confirm your quick fishing lesson reservation" + "\n\nhttp://localhost:8080/api/quickFishingLessonReservations/accept/"+ quickFishingLessonReservation.getId() + "\n\nThank you!");
+	    javaMailSender.send(message);
+		
+	}
+
+	@Async
+	@Override
+	public void approveRevisionEmail(User user, RevisionResponseDTO revision) throws MessagingException {
+		MimeMessage message=javaMailSender.createMimeMessage();
+	    MimeMessageHelper helper;
+	    helper=new MimeMessageHelper(message,true);
+	    helper.setTo(new InternetAddress(user.getUsername()));
+	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
+	    helper.setSubject("Revision");
+	    helper.setText("Hello " + user.getName() + " " + user.getSurname() +  ",\n\nWe are sending you a client revision for your entity." + "\n\nEntity: " + revision.getEntityName() + "\nEntity rate: " + revision.getEntityRate() + "\nEntity owner rate: " + revision.getOwnerRate() + "\nRevision: " + revision.getDescription());
 	    javaMailSender.send(message);
 		
 	}

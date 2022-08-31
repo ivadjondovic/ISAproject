@@ -1,0 +1,38 @@
+<div>
+
+
+    <mat-card>
+        <mat-card-title style="text-align: center;">Boat reservations history</mat-card-title>
+    </mat-card>
+    <div class="approval">
+
+        <table id="revisions">
+            <tr>
+                <th>Revision for</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Entity rate</th>
+                <th>Owner rate</th>
+                <th>Approve</th>
+                <th>Disapprove</th>
+            </tr>
+            <tr *ngFor="let revision of revisionList">
+                <td>{{revision.revisionType}}</td>
+                <td>{{revision.entityName}}</td>
+                <td>{{revision.date | date:'medium'}}</td>
+                <td>{{revision.description}}</td>
+                <td>{{revision.entityRate}}</td>
+                <td>{{revision.ownerRate}}</td>
+                <td><button (click)="approve(revision.id, revision.revisionType)" class="button1">
+                        <mat-icon>done</mat-icon>
+                    </button></td>
+                <td><button (click)="disapprove(revision.id, revision.revisionType)" class="button1">
+                        <mat-icon>close</mat-icon>
+                    </button></td>
+            </tr>
+        </table>
+
+    </div>
+
+</div>

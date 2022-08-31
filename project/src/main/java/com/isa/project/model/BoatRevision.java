@@ -21,7 +21,7 @@ public class BoatRevision {
 	private LocalDateTime date;
 	private int boatRate;
 	private int ownerRate;
-	private Boolean accepted;
+	private String status;
 	
 	@JsonBackReference
 	@ManyToOne
@@ -71,12 +71,14 @@ public class BoatRevision {
 		this.ownerRate = ownerRate;
 	}
 
-	public Boolean getAccepted() {
-		return accepted;
+	
+
+	public String getStatus() {
+		return status;
 	}
 
-	public void setAccepted(Boolean accepted) {
-		this.accepted = accepted;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public Boat getBoat() {

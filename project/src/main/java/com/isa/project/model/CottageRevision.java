@@ -23,7 +23,7 @@ public class CottageRevision {
 	private LocalDateTime date;
 	private int cottageRate;
 	private int ownerRate;
-	private Boolean accepted;
+	private String status;
 	
 	@JsonBackReference
 	@ManyToOne
@@ -73,12 +73,13 @@ public class CottageRevision {
 		this.ownerRate = ownerRate;
 	}
 
-	public Boolean getAccepted() {
-		return accepted;
+
+	public String getStatus() {
+		return status;
 	}
 
-	public void setAccepted(Boolean accepted) {
-		this.accepted = accepted;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public Cottage getCottage() {

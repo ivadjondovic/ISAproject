@@ -11,6 +11,8 @@ import com.isa.project.model.CottageRevision;
 @Repository
 public interface CottageRevisionRepository extends JpaRepository<CottageRevision, Long> {
 	
-	public List<CottageRevision> findByCottage(Cottage cottage);
+	public List<CottageRevision> findByCottageAndStatus(Cottage cottage, String status);
+	public List<CottageRevision> findByStatus(String status);
+	
 
 }
