@@ -11,10 +11,12 @@ import org.springframework.stereotype.Service;
 import com.isa.project.dto.ComplaintAnswerDTO;
 import com.isa.project.dto.ComplaintResponseDTO;
 import com.isa.project.model.BoatComplaint;
+import com.isa.project.model.BoatOwner;
 import com.isa.project.model.Client;
 import com.isa.project.model.CottageComplaint;
 import com.isa.project.model.CottageOwner;
 import com.isa.project.model.FishingLessonComplaint;
+import com.isa.project.model.Instructor;
 import com.isa.project.repository.BoatComplaintRepository;
 import com.isa.project.repository.CottageComplaintRepository;
 import com.isa.project.repository.FishingLessonComplaintRepository;
@@ -108,6 +110,68 @@ public class ComplaintsServiceImplementation implements ComplaintsService{
 			
 			try {
 				emailService.complaintOwnerEmail(owner, response, dto.getAnswer());
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			try {
+				emailService.complaintClientEmail(client, response, dto.getAnswer());
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+					
+		}
+		
+		if(dto.getComplaintType().equals("Boat")) {
+			BoatComplaint complaint = boatComplaintRepository.findById(dto.getComplaintId()).get();
+			complaint.setAnswered(true);
+			BoatComplaint savedComplaint = boatComplaintRepository.save(complaint);
+			
+			BoatOwner owner = savedComplaint.getBoat().getBoatOwner();
+			Client client = (Client) userRepository.findById(dto.getClientId()).get();
+			
+			response = new ComplaintResponseDTO();
+			response.setDescription(savedComplaint.getDescription());
+			response.setEntityName(savedComplaint.getBoat().getName());
+			response.setComplaintType("Boat");
+			response.setDate(savedComplaint.getDate());
+			response.setId(savedComplaint.getId());
+			
+			try {
+				emailService.complaintOwnerEmail(owner, response, dto.getAnswer());
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			try {
+				emailService.complaintClientEmail(client, response, dto.getAnswer());
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+					
+		}
+		
+		if(dto.getComplaintType().equals("Fishing lesson")) {
+			FishingLessonComplaint complaint = fishingLessonComplaintRepository.findById(dto.getComplaintId()).get();
+			complaint.setAnswered(true);
+			FishingLessonComplaint savedComplaint = fishingLessonComplaintRepository.save(complaint);
+			
+			Instructor instructor = savedComplaint.getFishingLesson().getInstructor();
+			Client client = (Client) userRepository.findById(dto.getClientId()).get();
+			
+			response = new ComplaintResponseDTO();
+			response.setDescription(savedComplaint.getDescription());
+			response.setEntityName(savedComplaint.getFishingLesson().getName());
+			response.setComplaintType("Fishing lesson");
+			response.setDate(savedComplaint.getDate());
+			response.setId(savedComplaint.getId());
+			
+			try {
+				emailService.complaintOwnerEmail(instructor, response, dto.getAnswer());
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
