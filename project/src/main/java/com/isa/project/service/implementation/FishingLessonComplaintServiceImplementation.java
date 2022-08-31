@@ -46,6 +46,7 @@ public class FishingLessonComplaintServiceImplementation implements FishingLesso
 		complaint.setDescription(dto.getDescription());
 		Client client = (Client) userRepository.findById(dto.getClientId()).get();
 		complaint.setClient(client);
+		complaint.setAnswered(false);
 		
 		if(dto.getReservationType().equals("Fishing lesson reservation")) {
 			

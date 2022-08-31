@@ -47,6 +47,10 @@
         <mat-icon>star_rate</mat-icon><span class="nav-caption">Revisions</span>
     </a>
 
+    <a mat-list-item routerLink="/complaints" *ngIf="role == 'ROLE_ADMIN'" (click)="onSidenavClose('')">
+        <mat-icon>receipt_long</mat-icon><span class="nav-caption">Complaints</span>
+    </a>
+
     <a mat-list-item routerLink="/registration" (click)="onSidenavClose('')" *ngIf="currentUser == null">
         <mat-icon>person_add</mat-icon><span class="nav-caption">Client Registration</span>
     </a>

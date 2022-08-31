@@ -20,7 +20,18 @@ public class FishingLessonComplaint {
     private Long id;
 	private String description;
 	private LocalDateTime date;
+	private Boolean answered;
 	
+	
+	
+	public Boolean getAnswered() {
+		return answered;
+	}
+
+	public void setAnswered(Boolean answered) {
+		this.answered = answered;
+	}
+
 	@JsonBackReference
 	@ManyToOne
 	private FishingLesson fishingLesson;

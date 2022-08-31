@@ -48,6 +48,7 @@ public class BoatComplaintServiceImplementation implements BoatComplaintService{
 		complaint.setDescription(dto.getDescription());
 		Client client = (Client) userRepository.findById(dto.getClientId()).get();
 		complaint.setClient(client);
+		complaint.setAnswered(false);
 		
 		if(dto.getReservationType().equals("Boat reservation")) {
 			
