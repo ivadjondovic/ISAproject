@@ -24,6 +24,8 @@ public class CottageOwner extends User {
 	@OneToMany(mappedBy = "cottageOwner", fetch = FetchType.LAZY)
 	private Set<Cottage> cottages;
 	
+	private Double rating;
+	
 	@Override
     public String getUserType() {
         return userType;
@@ -36,6 +38,16 @@ public class CottageOwner extends User {
 	public void setCottages(Set<Cottage> cottages) {
 		this.cottages = cottages;
 	}
+
+	public Double getRating() {
+		return rating;
+	}
+
+	public void setRating(Double rating) {
+		this.rating = rating;
+	}
+	
+	
 	
 	
 	

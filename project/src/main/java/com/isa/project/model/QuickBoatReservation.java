@@ -23,10 +23,17 @@ public class QuickBoatReservation {
 	private Double price;
 	private int maxNumberOfPerson;
 	private String additionalServices;
+	private Boolean reserved;
+	private Boolean accepted;
+	private Boolean canceled;
 	
 	@JsonBackReference
 	@ManyToOne
 	private Boat boat;
+	
+	@JsonBackReference
+	@ManyToOne
+	private Client client;
 
 	public Long getId() {
 		return id;
@@ -83,6 +90,45 @@ public class QuickBoatReservation {
 	public void setBoat(Boat boat) {
 		this.boat = boat;
 	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
+	public Boolean getReserved() {
+		return reserved;
+	}
+
+	public void setReserved(Boolean reserved) {
+		this.reserved = reserved;
+	}
+
+	public Boolean getAccepted() {
+		return accepted;
+	}
+
+	public void setAccepted(Boolean accepted) {
+		this.accepted = accepted;
+	}
+
+	public Boolean getCanceled() {
+		return canceled;
+	}
+
+	public void setCanceled(Boolean canceled) {
+		this.canceled = canceled;
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

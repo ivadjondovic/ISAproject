@@ -49,48 +49,55 @@ export class ReservationComponent implements OnInit {
   }
 
   find() {
-    if (this.entity == 'Cottage') {
-      let data = {
-        startDate: this.startDate,
-        numberOfDays: this.numberOfDays,
-        numberOfGuests: this.numberOfGuests
+    let date = new Date(this.startDate)
+    if (date.getTime() < Date.now()) {
+      alert("You have selected a date that has passed!")
+    } else {
+
+      if (this.entity == 'Cottage') {
+        let data = {
+          startDate: this.startDate,
+          numberOfDays: this.numberOfDays,
+          numberOfGuests: this.numberOfGuests
+        }
+        this.cottageService.getAvailableCottages(data).subscribe((response: any) => {
+          this.cottages = response;
+          console.log(this.cottages)
+          this.boats = []
+          this.lessons = []
+          this.boat = null
+          this.lesson = null
+        })
+      } else if (this.entity == 'Boat') {
+        let data = {
+          startDate: this.startDate,
+          numberOfDays: this.numberOfDays,
+          numberOfGuests: this.numberOfGuests
+        }
+        this.boatService.getAvailableBoats(data).subscribe((response: any) => {
+          this.boats = response;
+          console.log(this.boats)
+          this.cottages = [];
+          this.lessons = [];
+          this.cottage = null
+          this.lesson = null
+        })
+      } else if (this.entity == 'Fishing lesson') {
+        let data = {
+          startDate: this.startDate,
+          numberOfDays: this.numberOfDays,
+          numberOfGuests: this.numberOfGuests
+        }
+        this.lessonService.getAvailableLessons(data).subscribe((response: any) => {
+          this.lessons = response;
+          console.log(this.lessons)
+          this.cottages = [];
+          this.boats = [];
+          this.cottage = null
+          this.boat = null
+        })
       }
-      this.cottageService.getAvailableCottages(data).subscribe((response: any) => {
-        this.cottages = response;
-        console.log(this.cottages)
-        this.boats = []
-        this.lessons = []
-        this.boat = null
-        this.lesson = null
-      })
-    } else if (this.entity == 'Boat') {
-      let data = {
-        startDate: this.startDate,
-        numberOfDays: this.numberOfDays,
-        numberOfGuests: this.numberOfGuests
-      }
-      this.boatService.getAvailableBoats(data).subscribe((response: any) => {
-        this.boats = response;
-        console.log(this.boats)
-        this.cottages = [];
-        this.lessons = [];
-        this.cottage = null
-        this.lesson = null
-      })
-    } else if (this.entity == 'Fishing lesson') {
-      let data = {
-        startDate: this.startDate,
-        numberOfDays: this.numberOfDays,
-        numberOfGuests: this.numberOfGuests
-      }
-      this.lessonService.getAvailableLessons(data).subscribe((response: any) => {
-        this.lessons = response;
-        console.log(this.lessons)
-        this.cottages = [];
-        this.boats = [];
-        this.cottage = null
-        this.boat = null
-      })
+
     }
   }
 
@@ -276,7 +283,7 @@ export class ReservationComponent implements OnInit {
   reservation() {
 
     let additionalServicesForCottage = Array.from(this.additionalCottageServices);
-    
+
     if (this.entity == 'Cottage') {
       let data = {
         startDate: this.startDate,

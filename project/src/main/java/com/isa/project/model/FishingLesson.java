@@ -32,6 +32,15 @@ public class FishingLesson {
 	private int numberOfPeople;
 	private Double price;
 	private Double percentageForKeep;
+	private Double rating;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "fishingLesson", fetch = FetchType.LAZY)
+	private Set<FishingLessonRevision> revisions;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "fishingLesson", fetch = FetchType.LAZY)
+	private Set<FishingLessonComplaint> complaints;
 	
 	
 	@ManyToMany(cascade=CascadeType.ALL)
@@ -191,6 +200,42 @@ public class FishingLesson {
 	public void setInstructor(Instructor instructor) {
 		this.instructor = instructor;
 	}
+
+	public Double getRating() {
+		return rating;
+	}
+
+	public void setRating(Double rating) {
+		this.rating = rating;
+	}
+
+	public Set<FishingLessonRevision> getRevisions() {
+		return revisions;
+	}
+
+	public void setRevisions(Set<FishingLessonRevision> revisions) {
+		this.revisions = revisions;
+	}
+
+	public Set<FishingLessonReservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(Set<FishingLessonReservation> reservations) {
+		this.reservations = reservations;
+	}
+
+	public Set<FishingLessonComplaint> getComplaints() {
+		return complaints;
+	}
+
+	public void setComplaints(Set<FishingLessonComplaint> complaints) {
+		this.complaints = complaints;
+	}
+	
+	
+	
+	
 	
 	
 	

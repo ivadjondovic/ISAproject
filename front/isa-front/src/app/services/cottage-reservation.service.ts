@@ -23,4 +23,15 @@ export class CottageReservationService {
   createReservation(data: any){
     return this.http.post(this.baseURL + "api/cottageReservations/createReservation", data, this.getAuthoHeader());
   }
+
+  getByClientId(id: any){
+    return this.http.get(this.baseURL + "api/cottageReservations/clientReservations/"+ id, this.getAuthoHeader());
+  }
+
+  sort(data: any){
+    return this.http.post(this.baseURL + "api/cottageReservations/sort" ,  data, this.getAuthoHeader());
+  }
+
+
+
 }

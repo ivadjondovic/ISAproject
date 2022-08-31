@@ -36,11 +36,20 @@ public class Boat {
 	private int capacity;
 	private Double percentageForKeep;
 	private Double price;
+	private Double rating;
 	
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "boat", fetch = FetchType.LAZY)
 	private Set<NavigationEquipment> navigationEquipment;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "boat", fetch = FetchType.LAZY)
+	private Set<BoatRevision> revisions;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "boat", fetch = FetchType.LAZY)
+	private Set<BoatComplaint> complaints;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "boat", fetch = FetchType.EAGER)
@@ -291,6 +300,42 @@ public class Boat {
 	public void setReservations(Set<BoatReservation> reservations) {
 		this.reservations = reservations;
 	}
+
+
+	public Double getRating() {
+		return rating;
+	}
+
+
+	public void setRating(Double rating) {
+		this.rating = rating;
+	}
+
+
+	public Set<BoatRevision> getRevisions() {
+		return revisions;
+	}
+
+
+	public void setRevisions(Set<BoatRevision> revisions) {
+		this.revisions = revisions;
+	}
+
+
+	public Set<BoatComplaint> getComplaints() {
+		return complaints;
+	}
+
+
+	public void setComplaints(Set<BoatComplaint> complaints) {
+		this.complaints = complaints;
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	

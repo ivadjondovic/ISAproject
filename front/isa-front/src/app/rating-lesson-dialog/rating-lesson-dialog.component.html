@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Rating fishing lesson</h1>
+<div mat-dialog-content>
+    Description
+    <textarea id="description" name="description" rows="4" [(ngModel)] = "description"></textarea>
+    Fishing lesson rate
+    <input type="text" [(ngModel)] = "entityRate">
+    Instructor rate
+    <input type="text" [(ngModel)] = "ownerRate">
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Close</button>
+    <button mat-button (click)="submit()" >Submit</button>
+</div>

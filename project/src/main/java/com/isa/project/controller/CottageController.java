@@ -1,5 +1,7 @@
 package com.isa.project.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.project.dto.CottageDTO;
+import com.isa.project.dto.DateSearchDTO;
 import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.Cottage;
@@ -60,7 +63,21 @@ public class CottageController {
 	@PreAuthorize("hasRole('CLIENT')")
 	@PostMapping(path = "/availableCottages")
     public ResponseEntity<?> availableCottages(@RequestBody ReservationSearchDTO dto) {
-        return new ResponseEntity<>(cottageService.getAvailableCottages(dto), HttpStatus.OK);
+		List<Cottage> response = cottageService.getAvailableCottages(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+	
+	@PreAuthorize("hasRole('CLIENT')")
+	@PostMapping(path = "/availableCottagesForCertainDate")
+    public ResponseEntity<?> availableCottagesForCertainDate(@RequestBody DateSearchDTO dto) {
+		List<Cottage> response = cottageService.cottagesAvailableForCertainDate(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 	
 	

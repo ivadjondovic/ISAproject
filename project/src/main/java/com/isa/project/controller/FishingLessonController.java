@@ -1,5 +1,7 @@
 package com.isa.project.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isa.project.dto.DateSearchDTO;
 import com.isa.project.dto.FishingLessonDTO;
 import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.SortDTO;
@@ -84,7 +87,21 @@ public class FishingLessonController {
 	@PreAuthorize("hasRole('CLIENT')")
 	@PostMapping(path = "/availableLessons")
     public ResponseEntity<?> availableLessons(@RequestBody ReservationSearchDTO dto) {
-        return new ResponseEntity<>(fishingLessonService.getAvailableLessons(dto), HttpStatus.OK);
+		List<FishingLesson> response = fishingLessonService.getAvailableLessons(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+	
+	@PreAuthorize("hasRole('CLIENT')")
+	@PostMapping(path = "/availableLessonsForCertainDate")
+    public ResponseEntity<?> availableLessonsForCertainDate(@RequestBody DateSearchDTO dto) {
+		List<FishingLesson> response = fishingLessonService.lessonsAvailableForCertainDate(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 	
 }

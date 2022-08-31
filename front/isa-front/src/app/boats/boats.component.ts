@@ -13,6 +13,10 @@ export class BoatsComponent implements OnInit {
   searchTerm = '';
   sortBy = '';
   sortType = '';
+  user: any
+  role: any
+  addSearch = false
+  dateForSearch: any
   constructor(public service: BoatService, public router: Router) { }
 
 
@@ -20,6 +24,11 @@ export class BoatsComponent implements OnInit {
     this.service.getAll().subscribe((response: any) => {
       this.boats = response;
       console.log(this.boats)
+      let userStrng = localStorage.getItem('user');
+      if (userStrng) {
+        this.user = JSON.parse(userStrng);
+        this.role = this.user.userType;
+      }
     })
   }
 
@@ -62,6 +71,21 @@ export class BoatsComponent implements OnInit {
       })
     }
   }
+
+  additionalSearch(){
+    this.addSearch = true
+  }
+
+  searchByDate(){
+    let data = {
+      date: this.dateForSearch
+    }
+    this.service.getAvailableBoatsForCertainDate(data).subscribe((response: any) => {
+      this.boats = response;
+     })
+  }
+
+ 
 
 
 }

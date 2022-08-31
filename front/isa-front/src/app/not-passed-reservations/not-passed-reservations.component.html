@@ -1,0 +1,31 @@
+
+<div>
+    <mat-card>
+        <mat-card-title style="text-align: center;">Reservations</mat-card-title>
+    </mat-card>
+    <div class = "approval">
+
+            <table id="registrations">
+                <tr>
+                  <th>Reservation type</th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Start date</th>
+                  <th>End date</th>
+                  <th>Cancel</th>
+                </tr>
+                <tr *ngFor="let reservation of reservationList">
+                  <td>{{reservation.reservationType}}</td>
+                  <td>{{reservation.entityName}}</td>
+                  <td>{{reservation.price}}</td>
+                  <td>{{reservation.startDate | date:'medium'}}</td>
+                  <td>{{reservation.endDate | date:'medium'}}</td>
+                  <td><button *ngIf="reservation.posibleToCancel"  class="button1" (click)="cancel(reservation.id, reservation.reservationType)">
+                    <mat-icon>close</mat-icon>
+                    </button></td>
+                </tr>
+              </table>
+
+    </div>
+
+</div>

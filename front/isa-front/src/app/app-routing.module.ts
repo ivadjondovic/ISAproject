@@ -22,6 +22,12 @@ import { EditFishingLessonComponent } from './edit-fishing-lesson/edit-fishing-l
 import { ClientFishingLessonsComponent } from './client-fishing-lessons/client-fishing-lessons.component';
 import { FishingLessonAdditionalInfoComponent } from './fishing-lesson-additional-info/fishing-lesson-additional-info.component';
 import { ReservationComponent } from './reservation/reservation.component';
+import { CottageReservationsHistoryComponent } from './cottage-reservations-history/cottage-reservations-history.component';
+import { BoatReservationsHistoryComponent } from './boat-reservations-history/boat-reservations-history.component';
+import { NotPassedReservationsComponent } from './not-passed-reservations/not-passed-reservations.component';
+import { FishingLessonReservationsHistoryComponent } from './fishing-lesson-reservations-history/fishing-lesson-reservations-history.component';
+import { AdminRevisionsComponent } from './admin-revisions/admin-revisions.component';
+import { AdminComplaintsComponent } from './admin-complaints/admin-complaints.component';
 
 const routes: Routes = [
 
@@ -46,6 +52,12 @@ const routes: Routes = [
   {path: 'lessons', component: ClientFishingLessonsComponent},
   {path: 'lessonInfo/:id', component: FishingLessonAdditionalInfoComponent},
   {path: 'reservation', component: ReservationComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
+  {path: 'cottageReservationsHistory', component: CottageReservationsHistoryComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
+  {path: 'boatReservationsHistory', component: BoatReservationsHistoryComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
+  {path: 'fishingLessonReservationsHistory', component: FishingLessonReservationsHistoryComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
+  {path: 'notPassedReservations', component: NotPassedReservationsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
+  {path: 'revisions', component: AdminRevisionsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
+  {path: 'complaints', component: AdminComplaintsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
   
 ];
 

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.isa.project.dto.AdditionalServiceDTO;
 import com.isa.project.dto.AvailablePeriodDTO;
 import com.isa.project.dto.BoatDTO;
+import com.isa.project.dto.DateSearchDTO;
 import com.isa.project.dto.FishingEquipmentDTO;
 import com.isa.project.dto.ImageDTO;
 import com.isa.project.dto.NavigationEquipmentDTO;
@@ -130,6 +131,9 @@ public class BoatServiceImplementation implements BoatService{
 			quickReservation.setMaxNumberOfPerson(quickReservationDto.getMaxNumberOfPerson());
 			quickReservation.setPrice(quickReservationDto.getPrice());
 			quickReservation.setBoat(savedBoat);
+			quickReservation.setReserved(false);
+			quickReservation.setAccepted(false);
+			quickReservation.setCanceled(false);
 			QuickBoatReservation savedReservation = quickReservationRepository.save(quickReservation);
 			quickReservations.add(savedReservation);
 			
@@ -170,7 +174,19 @@ public class BoatServiceImplementation implements BoatService{
 
 	@Override
 	public Boat getById(Long id) {
-		return boatRepository.findById(id).get();
+		Boat boat = boatRepository.findById(id).get();
+		Set<QuickBoatReservation> reservations = boat.getQuickReservations();
+		Set<AvailableBoatPeriod> periods = boat.getAvailablePeriods();
+		Set<QuickBoatReservation> filteredSet = reservations.stream()
+				.filter(r -> (r.getReserved() == false && r.getAccepted() == false && r.getStartDate().compareTo(LocalDateTime.now()) >= 0))
+                .collect(Collectors.toSet());
+		
+		Set<AvailableBoatPeriod> filteredPeriods = periods.stream()
+				.filter(p -> p.getStartDate().compareTo(LocalDateTime.now()) >= 0)
+                .collect(Collectors.toSet());
+		boat.setQuickReservations(filteredSet);
+		boat.setAvailablePeriods(filteredPeriods);
+		return boat;
 	}
 
 	@Override
@@ -301,6 +317,9 @@ public class BoatServiceImplementation implements BoatService{
 
 	@Override
 	public List<Boat> getAvailableBoats(ReservationSearchDTO dto) {
+		if(dto.getStartDate().compareTo(LocalDateTime.now()) < 0) {
+			return null;
+		}
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
 		List<Boat> boats = boatRepository.findAll();
 		List<Boat> result = new ArrayList<>();
@@ -311,6 +330,22 @@ public class BoatServiceImplementation implements BoatService{
 					result.add(boat);
 				}
 			}
+		}
+		return result;
+	}
+
+	@Override
+	public List<Boat> boatsAvailableForCertainDate(DateSearchDTO dto) {
+		List<Boat> boats = boatRepository.findAll();
+		List<Boat> result = new ArrayList<>();
+		for(Boat b: boats) {
+			Set<AvailableBoatPeriod> periods = b.getAvailablePeriods();
+			for(AvailableBoatPeriod period: periods) {
+				if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) > 0) {
+					result.add(b);
+				}
+			}
+			
 		}
 		return result;
 	}

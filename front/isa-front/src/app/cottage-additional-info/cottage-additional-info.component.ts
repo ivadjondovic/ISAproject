@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CottageService } from '../services/cottage.service';
+import { QuickCottageReservationService } from '../services/quick-cottage-reservation.service';
 
 @Component({
   selector: 'app-cottage-additional-info',
@@ -15,7 +16,9 @@ export class CottageAdditionalInfoComponent implements OnInit {
   dates: any[]
   quickReservationList: any[]
   quickReservations: any[]
-  constructor(public activatedRoute: ActivatedRoute, public service: CottageService) { }
+  role: any
+  user: any
+  constructor(public quickCottageReservationService: QuickCottageReservationService, public activatedRoute: ActivatedRoute, public service: CottageService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -28,6 +31,11 @@ export class CottageAdditionalInfoComponent implements OnInit {
         this.convertToDate();
         this.corectDate();
         console.log(this.cottage)
+        let userStrng = localStorage.getItem('user');
+        if (userStrng) {
+          this.user = JSON.parse(userStrng);
+          this.role = this.user.userType;
+        }
       })
 
     });
@@ -42,8 +50,12 @@ export class CottageAdditionalInfoComponent implements OnInit {
       let price = r.price;
       let maxNumberOfPerson = r.maxNumberOfPerson;
       let additionalServices = r.additionalServices;
+      let id = r.id;
+      let reserved = r.reserved;
 
       let data = {
+        id: id,
+        reserved: reserved,
         startDate: startDate,
         endDate: endDate,
         price: price,
@@ -74,12 +86,25 @@ export class CottageAdditionalInfoComponent implements OnInit {
     console.log(this.dateList)
   }
 
-  isEmpty(list: any[]){
-    if(list.length == 0){
+  isEmpty(list: any[]) {
+    if (list.length == 0) {
       return true;
-    }else {
+    } else {
       return false;
     }
+  }
+
+  reserve(id: string) {
+    console.log(this.user.id)
+    console.log(id)
+    let data = {
+      clientId: this.user.id,
+      reservationId: id
+    }
+    this.quickCottageReservationService.reserve(data).subscribe((response: any) => {
+      console.log(response)
+      location.reload();
+    })
   }
 
 }

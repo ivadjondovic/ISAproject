@@ -1,0 +1,31 @@
+<div>
+
+
+    <mat-card>
+        <mat-card-title style="text-align: center;">Revisions</mat-card-title>
+    </mat-card>
+    <div class="approval">
+
+        <table id="revisions">
+            <tr>
+                <th>Revision for</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Answer</th>
+                
+            </tr>
+            <tr *ngFor="let complaint of complaintList">
+                <td>{{complaint.complaintType}}</td>
+                <td>{{complaint.entityName}}</td>
+                <td>{{complaint.date | date:'medium'}}</td>
+                <td>{{complaint.description}}</td>
+                <td><button (click)="answer('0ms', '0ms', complaint.id, complaint.complaintType, complaint.clientId)"  class="button1">
+                        <mat-icon>question_answer</mat-icon></button>
+                
+            </tr>
+        </table>
+
+    </div>
+
+</div>

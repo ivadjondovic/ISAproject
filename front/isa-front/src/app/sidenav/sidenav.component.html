@@ -19,12 +19,36 @@
         <mat-icon>book</mat-icon><span class="nav-caption">Reservation</span>
     </a>
 
+    <a mat-list-item routerLink="/cottageReservationsHistory" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_CLIENT'">
+        <mat-icon>holiday_village</mat-icon><span class="nav-caption">Cottage reservations history</span>
+    </a>
+
+    <a mat-list-item routerLink="/boatReservationsHistory" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_CLIENT'">
+        <mat-icon>sailing</mat-icon><span class="nav-caption">Boat reservations history</span>
+    </a>
+
+    <a mat-list-item routerLink="/fishingLessonReservationsHistory" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_CLIENT'">
+        <mat-icon>history_edu</mat-icon><span class="nav-caption">Fishing lesson reservations history</span>
+    </a>
+
+    <a mat-list-item routerLink="/notPassedReservations" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_CLIENT'">
+        <mat-icon>notes</mat-icon><span class="nav-caption">Reservations</span>
+    </a>
+
     <a mat-list-item routerLink="/deleteAccount" *ngIf="role == 'ROLE_CLIENT'" (click)="onSidenavClose('')">
         <mat-icon>delete</mat-icon><span class="nav-caption">Delete account</span>
     </a>
 
     <a mat-list-item routerLink="/deleteRequests" *ngIf="role == 'ROLE_ADMIN'" (click)="onSidenavClose('')">
         <mat-icon>delete_forever</mat-icon><span class="nav-caption">Delete requests</span>
+    </a>
+
+    <a mat-list-item routerLink="/revisions" *ngIf="role == 'ROLE_ADMIN'" (click)="onSidenavClose('')">
+        <mat-icon>star_rate</mat-icon><span class="nav-caption">Revisions</span>
+    </a>
+
+    <a mat-list-item routerLink="/complaints" *ngIf="role == 'ROLE_ADMIN'" (click)="onSidenavClose('')">
+        <mat-icon>receipt_long</mat-icon><span class="nav-caption">Complaints</span>
     </a>
 
     <a mat-list-item routerLink="/registration" (click)="onSidenavClose('')" *ngIf="currentUser == null">

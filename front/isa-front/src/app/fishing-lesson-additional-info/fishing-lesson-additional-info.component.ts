@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FishingLessonService } from '../services/fishing-lesson.service';
+import { QuickFishingReservationService } from '../services/quick-fishing-reservation.service';
 
 @Component({
   selector: 'app-fishing-lesson-additional-info',
@@ -15,7 +16,9 @@ export class FishingLessonAdditionalInfoComponent implements OnInit {
   dates: any[]
   quickReservationList: any[]
   quickReservations: any[]
-  constructor(public activatedRoute: ActivatedRoute, public service: FishingLessonService) { }
+  user: any
+  role: any
+  constructor(public quickFishingReservationService: QuickFishingReservationService, public activatedRoute: ActivatedRoute, public service: FishingLessonService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -28,6 +31,11 @@ export class FishingLessonAdditionalInfoComponent implements OnInit {
         this.convertToDate();
         this.corectDate();
         console.log(this.lesson)
+        let userStrng = localStorage.getItem('user');
+        if (userStrng) {
+          this.user = JSON.parse(userStrng);
+          this.role = this.user.userType;
+        }
       })
 
     });
@@ -42,9 +50,12 @@ export class FishingLessonAdditionalInfoComponent implements OnInit {
       let price = r.price;
       let maxNumberOfPerson = r.maxNumberOfPerson;
       let additionalServices = r.additionalServices;
+      let id = r.id;
+      let reserved = r.reserved;
 
       let data = {
-        startDate: startDate,
+        id: id,
+        reserved: reserved,
         endDate: endDate,
         price: price,
         maxNumberOfPerson: maxNumberOfPerson,
@@ -80,6 +91,19 @@ export class FishingLessonAdditionalInfoComponent implements OnInit {
     }else {
       return false;
     }
+  }
+
+  reserve(id: string) {
+    console.log(this.user.id)
+    console.log(id)
+    let data = {
+      clientId: this.user.id,
+      reservationId: id
+    }
+    this.quickFishingReservationService.reserve(data).subscribe((response: any) => {
+      console.log(response)
+      location.reload();
+    })
   }
 
 

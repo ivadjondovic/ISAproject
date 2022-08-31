@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.isa.project.dto.AdditionalServiceDTO;
 import com.isa.project.dto.AvailablePeriodDTO;
 import com.isa.project.dto.CottageDTO;
+import com.isa.project.dto.DateSearchDTO;
 import com.isa.project.dto.ImageDTO;
 import com.isa.project.dto.QuickReservationDTO;
 import com.isa.project.dto.ReservationSearchDTO;
@@ -35,11 +36,9 @@ import com.isa.project.repository.AvailableCottagePeriodRepository;
 import com.isa.project.repository.CottageRepository;
 import com.isa.project.repository.QuickCottageReservationRepository;
 import com.isa.project.repository.RoomRepository;
-import com.isa.project.repository.RuleRepository;
 import com.isa.project.repository.UserRepository;
 import com.isa.project.service.CottageService;
 
-import ch.qos.logback.classic.util.LevelToSyslogSeverity;
 
 @Service
 public class CottageServiceImplementation implements CottageService{
@@ -72,6 +71,7 @@ public class CottageServiceImplementation implements CottageService{
 		cottage.setDescription(dto.getDescription());
 		cottage.setNumberOfRooms(dto.getNumberOfRooms());
 		cottage.setPrice(dto.getPrice());
+		cottage.setRating(0.0);
 		Cottage savedCottage = cottageRepository.save(cottage);
 		Set<Room> rooms = new HashSet<>();
 		Set<Rule> rules = new HashSet<>();
@@ -119,6 +119,9 @@ public class CottageServiceImplementation implements CottageService{
 			quickReservation.setMaxNumberOfPerson(quickReservationDto.getMaxNumberOfPerson());
 			quickReservation.setPrice(quickReservationDto.getPrice());
 			quickReservation.setCottage(savedCottage);
+			quickReservation.setReserved(false);
+			quickReservation.setAccepted(false);
+			quickReservation.setCanceled(false);
 			QuickCottageReservation savedReservation = quickReservationRepository.save(quickReservation);
 			quickReservations.add(savedReservation);
 			
@@ -153,7 +156,19 @@ public class CottageServiceImplementation implements CottageService{
 
 	@Override
 	public Cottage getById(Long id) {
-		return cottageRepository.findById(id).get();
+		Cottage cottage = cottageRepository.findById(id).get();
+		Set<QuickCottageReservation> reservations = cottage.getQuickReservations();
+		Set<AvailableCottagePeriod> periods = cottage.getAvailablePeriods();
+		Set<QuickCottageReservation> filteredSet = reservations.stream()
+				.filter(r -> (r.getReserved() == false && r.getAccepted() == false && r.getStartDate().compareTo(LocalDateTime.now()) >= 0))
+                .collect(Collectors.toSet());
+		
+		Set<AvailableCottagePeriod> filteredPeriods = periods.stream()
+				.filter(p -> p.getStartDate().compareTo(LocalDateTime.now()) >= 0)
+                .collect(Collectors.toSet());
+		cottage.setQuickReservations(filteredSet);
+		cottage.setAvailablePeriods(filteredPeriods);
+		return cottage;
 	}
 
 
@@ -229,6 +244,9 @@ public class CottageServiceImplementation implements CottageService{
 
 	@Override
 	public List<Cottage> getAvailableCottages(ReservationSearchDTO dto) {
+		if(dto.getStartDate().compareTo(LocalDateTime.now()) < 0) {
+			return null;
+		}
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
 		List<Cottage> cottages = cottageRepository.findAll();
 		List<Cottage> result = new ArrayList<>();
@@ -244,6 +262,23 @@ public class CottageServiceImplementation implements CottageService{
 					result.add(cottage);
 				}
 			}
+		}
+		return result;
+	}
+
+
+	@Override
+	public List<Cottage> cottagesAvailableForCertainDate(DateSearchDTO dto) {
+		List<Cottage> cottages = cottageRepository.findAll();
+		List<Cottage> result = new ArrayList<>();
+		for(Cottage c: cottages) {
+			Set<AvailableCottagePeriod> periods = c.getAvailablePeriods();
+			for(AvailableCottagePeriod period: periods) {
+				if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) > 0) {
+					result.add(c);
+				}
+			}
+			
 		}
 		return result;
 	}

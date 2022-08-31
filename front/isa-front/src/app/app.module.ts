@@ -48,6 +48,19 @@ import { EditFishingLessonComponent } from './edit-fishing-lesson/edit-fishing-l
 import { ClientFishingLessonsComponent } from './client-fishing-lessons/client-fishing-lessons.component';
 import { FishingLessonAdditionalInfoComponent } from './fishing-lesson-additional-info/fishing-lesson-additional-info.component';
 import { ReservationComponent } from './reservation/reservation.component';
+import { CottageReservationsHistoryComponent } from './cottage-reservations-history/cottage-reservations-history.component';
+import { BoatReservationsHistoryComponent } from './boat-reservations-history/boat-reservations-history.component';
+import { FishingLessonReservationsHistoryComponent } from './fishing-lesson-reservations-history/fishing-lesson-reservations-history.component';
+import { NotPassedReservationsComponent } from './not-passed-reservations/not-passed-reservations.component';
+import { RatingCottageDialogComponent } from './rating-cottage-dialog/rating-cottage-dialog.component';
+import { RatingBoatDialogComponent } from './rating-boat-dialog/rating-boat-dialog.component';
+import { RatingLessonDialogComponent } from './rating-lesson-dialog/rating-lesson-dialog.component';
+import { AdminRevisionsComponent } from './admin-revisions/admin-revisions.component';
+import { BoatComplaintDialogComponent } from './boat-complaint-dialog/boat-complaint-dialog.component';
+import { CottageComplaintDialogComponent } from './cottage-complaint-dialog/cottage-complaint-dialog.component';
+import { FishingLessonComplaintDialogComponent } from './fishing-lesson-complaint-dialog/fishing-lesson-complaint-dialog.component';
+import { AdminComplaintsComponent } from './admin-complaints/admin-complaints.component';
+import { AnswerComplaintDialogComponent } from './answer-complaint-dialog/answer-complaint-dialog.component';
 
 
 
@@ -82,6 +95,19 @@ import { ReservationComponent } from './reservation/reservation.component';
     ClientFishingLessonsComponent,
     FishingLessonAdditionalInfoComponent,
     ReservationComponent,
+    CottageReservationsHistoryComponent,
+    BoatReservationsHistoryComponent,
+    FishingLessonReservationsHistoryComponent,
+    NotPassedReservationsComponent,
+    RatingCottageDialogComponent,
+    RatingBoatDialogComponent,
+    RatingLessonDialogComponent,
+    AdminRevisionsComponent,
+    BoatComplaintDialogComponent,
+    CottageComplaintDialogComponent,
+    FishingLessonComplaintDialogComponent,
+    AdminComplaintsComponent,
+    AnswerComplaintDialogComponent,
     
   ],
   imports: [

@@ -26,6 +26,7 @@
         <div class="col-sm">
             <button class="searchButton" (click)="sort()"><mat-icon>search</mat-icon></button>
         </div>
+        <div *ngIf="role == 'ROLE_CLIENT'" class="col-sm"><button (click)="additionalSearch()">Additional search<span style="margin-left: 10px;"><mat-icon matPrefix>search</mat-icon></span></button></div>
         <div class="col-sm"></div>
         <div class="col-sm"></div>
 
@@ -36,6 +37,18 @@
                 <input (input)="search()" matInput [(ngModel)]="searchTerm" />
                 <mat-icon matPrefix>search</mat-icon>
             </mat-form-field>
+        </div>
+    </div>
+
+    <div *ngIf="addSearch" class="rounded1">
+        <div  class="row mt-3">
+            <div class="col-sm">
+                <mat-form-field appearance="fill">
+                    <mat-label>Enter date</mat-label>
+                    <input  (input)="searchByDate()" matInput [(ngModel)]="dateForSearch" type="datetime-local"  matInput />
+                    <mat-icon matPrefix>search</mat-icon>
+                </mat-form-field>
+            </div>
         </div>
     </div>
     <mat-grid-list [cols]="3" [rowHeight]="360">
