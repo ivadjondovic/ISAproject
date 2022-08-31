@@ -56,6 +56,7 @@ import { RatingCottageDialogComponent } from './rating-cottage-dialog/rating-cot
 import { RatingBoatDialogComponent } from './rating-boat-dialog/rating-boat-dialog.component';
 import { RatingLessonDialogComponent } from './rating-lesson-dialog/rating-lesson-dialog.component';
 import { AdminRevisionsComponent } from './admin-revisions/admin-revisions.component';
+import { BoatComplaintDialogComponent } from './boat-complaint-dialog/boat-complaint-dialog.component';
 
 
 
@@ -98,6 +99,7 @@ import { AdminRevisionsComponent } from './admin-revisions/admin-revisions.compo
     RatingBoatDialogComponent,
     RatingLessonDialogComponent,
     AdminRevisionsComponent,
+    BoatComplaintDialogComponent,
     
   ],
   imports: [

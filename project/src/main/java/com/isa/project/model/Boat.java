@@ -48,6 +48,10 @@ public class Boat {
 	private Set<BoatRevision> revisions;
 	
 	@JsonManagedReference
+	@OneToMany(mappedBy = "boat", fetch = FetchType.LAZY)
+	private Set<BoatComplaint> complaints;
+	
+	@JsonManagedReference
 	@OneToMany(mappedBy = "boat", fetch = FetchType.EAGER)
 	private Set<QuickBoatReservation> quickReservations;
 	
@@ -316,6 +320,18 @@ public class Boat {
 	public void setRevisions(Set<BoatRevision> revisions) {
 		this.revisions = revisions;
 	}
+
+
+	public Set<BoatComplaint> getComplaints() {
+		return complaints;
+	}
+
+
+	public void setComplaints(Set<BoatComplaint> complaints) {
+		this.complaints = complaints;
+	}
+	
+	
 	
 	
 	
