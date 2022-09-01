@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.isa.project.dto.RuleDTO;
 import com.isa.project.model.FishingLesson;
 import com.isa.project.model.Rule;
 import com.isa.project.repository.FishingLessonRepository;
@@ -33,6 +34,39 @@ public class RuleServiceImplementation implements RuleService {
 		fishingLessonRepository.save(lesson);
 		
 
+	}
+
+	@Override
+	public Rule saveRule(RuleDTO dto) {
+
+		Rule rule = ruleRepository.findById(dto.getId()).get();
+		
+		rule.setDescription(dto.getDescription());
+		
+		return ruleRepository.save(rule);
+	}
+
+	@Override
+	public Rule createRule(RuleDTO dto) {
+
+		Rule rule = new Rule();
+		
+		rule.setDescription(dto.getDescription());
+		
+		Rule saveRule = ruleRepository.save(rule);
+		
+		FishingLesson lesson = fishingLessonRepository.findById(dto.getId()).get();
+		
+		Set<Rule> rules = lesson.getRules();
+		
+		rules.add(rule);
+		
+		lesson.setRules(rules);
+		
+		fishingLessonRepository.save(lesson);
+		
+		
+		return saveRule;
 	}
 
 	

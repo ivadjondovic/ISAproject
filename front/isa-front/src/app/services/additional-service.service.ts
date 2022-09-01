@@ -23,4 +23,12 @@ export class AdditionalServiceService {
   delete(id: any){
     return this.http.delete(this.baseURL + "api/additionalServices/delete/" + id, this.getAuthoHeader());
   }
+
+  save(data: any) {
+    return this.http.put(this.baseURL + "api/additionalServices/save", data, this.getAuthoHeader())
+  }
+
+  add(data: any) {
+    return this.http.post(this.baseURL + "api/additionalServices/add", data, this.getAuthoHeader())
+  }
 }

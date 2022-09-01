@@ -27,4 +27,12 @@ export class QuickFishingReservationService {
   delete(id: any){
     return this.http.delete(this.baseURL + "api/quickFishingLessonReservations/delete/" + id, this.getAuthoHeader());
   }
+
+  save(data: any) {
+    return this.http.put(this.baseURL + "api/quickFishingLessonReservations/save", data, this.getAuthoHeader())
+  }
+
+  add(data: any) {
+    return this.http.post(this.baseURL + "api/quickFishingLessonReservations/add", data, this.getAuthoHeader())
+  }
 }

@@ -23,4 +23,12 @@ export class FishingEquipmentService {
   delete(id: any){
     return this.http.delete(this.baseURL + "api/fishingEquipment/delete/" + id, this.getAuthoHeader());
   }
+
+  save(data: any) {
+    return this.http.put(this.baseURL + "api/fishingEquipment/save", data, this.getAuthoHeader())
+  }
+
+  add(data: any) {
+    return this.http.post(this.baseURL + "api/fishingEquipment/add", data, this.getAuthoHeader())
+  }
 }

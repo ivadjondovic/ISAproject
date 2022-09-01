@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class AvailablePeriodService {
+export class ImageService {
 
   baseURL = "http://localhost:8080/";
 
@@ -20,16 +20,11 @@ export class AvailablePeriodService {
     };
   } 
 
-  delete(id: any){
-    return this.http.delete(this.baseURL + "api/availablePeriods/delete/" + id, this.getAuthoHeader());
-  }
-
-  save(data: any) {
-    return this.http.put(this.baseURL + "api/availablePeriods/save", data, this.getAuthoHeader())
+  delete(imageId: any, lessonId: any){
+    return this.http.delete(this.baseURL + "api/images/delete/" + imageId + "/" + lessonId, this.getAuthoHeader());
   }
 
   add(data: any) {
-    return this.http.post(this.baseURL + "api/availablePeriods/add", data, this.getAuthoHeader())
+    return this.http.post(this.baseURL + "api/images/add", data, this.getAuthoHeader())
   }
-
 }
