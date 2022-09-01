@@ -32,6 +32,10 @@ export class FishingLessonService {
     return this.http.get(this.baseURL + "api/fishing/fishingLesson/" + id, this.getAuthoHeader());
   }
 
+  getByIdForInstructor(id: any){
+    return this.http.get(this.baseURL + "api/fishing/instructorFishingLesson/" + id, this.getAuthoHeader());
+  }
+
   editFishingLesson(data: any){
     return this.http.put(this.baseURL + "api/fishing/editFishingLesson", data, this.getAuthoHeader());
   }
@@ -50,6 +54,10 @@ export class FishingLessonService {
 
   search(searchTerm: any){
     return this.http.get(this.baseURL + "api/fishing/search/" + searchTerm);
+  }
+
+  searchForInstructor(searchTerm: any, id: any){
+    return this.http.get(this.baseURL + "api/fishing/searchForInstructor/" + searchTerm + "/" + id, this.getAuthoHeader());
   }
 
   getAvailableLessons(data: any){

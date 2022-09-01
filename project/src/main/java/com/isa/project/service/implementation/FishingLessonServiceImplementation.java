@@ -3,7 +3,6 @@ package com.isa.project.service.implementation;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -23,9 +22,7 @@ import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.RuleDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalFishingLessonService;
-import com.isa.project.model.AvailableBoatPeriod;
 import com.isa.project.model.AvailableFishingLessonPeriod;
-import com.isa.project.model.Boat;
 import com.isa.project.model.FishingEquipment;
 import com.isa.project.model.FishingLesson;
 import com.isa.project.model.Image;
@@ -77,80 +74,12 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		fishingLesson.setDescription(dto.getDescription());;
 		fishingLesson.setPercentageForKeep(dto.getPercentageForKeep());
 		fishingLesson.setPrice(dto.getPrice());
-		FishingLesson savedFishingLesson = fishingLessonRepository.save(fishingLesson);
-		
-		Set<FishingEquipment> fishingEquipments = new HashSet<>();
-		Set<Rule> rules = new HashSet<>();
-		Set<AvailableFishingLessonPeriod> availablePeriods = new HashSet<>();
-		Set<QuickFishingLessonReservation> quickReservations = new HashSet<>();
-		Set<AdditionalFishingLessonService> additionalServices = new HashSet<>();
-		Set<Image> images = new HashSet<>();
-		
-		for(RuleDTO ruleDto: dto.getRules()) {
-			Rule rule = new Rule();
-			rule.setDescription(ruleDto.getDescription());
-			rules.add(rule);
-		}
-		
-		for(AdditionalServiceDTO serviceDto: dto.getAdditionalServices()) {		
-			AdditionalFishingLessonService service = new AdditionalFishingLessonService();
-			service.setDescription(serviceDto.getDescription());
-			service.setPrice(serviceDto.getPrice());
-			service.setFishingLesson(savedFishingLesson);
-			AdditionalFishingLessonService savedService = additionalServiceRepository.save(service);
-			additionalServices.add(savedService);
-		}
-		
-		for(AvailablePeriodDTO periodDto: dto.getAvailablePeriods()) {
-			AvailableFishingLessonPeriod period = new AvailableFishingLessonPeriod();
-			period.setStartDate(periodDto.getStartDate());
-			period.setEndDate(periodDto.getEndDate());
-			period.setFishingLesson(savedFishingLesson);
-			AvailableFishingLessonPeriod savedPeriod = availablePeriodRepository.save(period);
-			availablePeriods.add(savedPeriod);
-		}
-		
-		for(QuickReservationDTO quickReservationDto: dto.getQuickReservations()) {
-			QuickFishingLessonReservation quickReservation = new QuickFishingLessonReservation();
-			quickReservation.setStartDate(quickReservationDto.getStartDate());
-			quickReservation.setEndDate(quickReservationDto.getEndDate());
-			quickReservation.setAdditionalServices(quickReservationDto.getAdditionalServices());
-			quickReservation.setMaxNumberOfPerson(quickReservationDto.getMaxNumberOfPerson());
-			quickReservation.setPrice(quickReservationDto.getPrice());
-			quickReservation.setFishingLesson(savedFishingLesson);
-			quickReservation.setReserved(false);
-			quickReservation.setAccepted(false);
-			quickReservation.setCanceled(false);
-			QuickFishingLessonReservation savedReservation = quickReservationRepository.save(quickReservation);
-			quickReservations.add(savedReservation);
-			
-		}
-		
-		for(FishingEquipmentDTO fishingEquipmentDTO: dto.getEquipment()) {
-			FishingEquipment fishingEquipment = new FishingEquipment();
-			fishingEquipment.setDescription(fishingEquipmentDTO.getDescription());
-			fishingEquipment.setFishingLesson(savedFishingLesson);
-			FishingEquipment savedFishingEquipment = fishingEquipmentRepository.save(fishingEquipment);
-			fishingEquipments.add(savedFishingEquipment);
-		}
-		
-		for(ImageDTO imageDto: dto.getImages()) {
-			Image image = new Image();
-			image.setPath(imageDto.getPath());
-			images.add(image);
-		}
-				
-		savedFishingLesson.setRules(rules);
-		savedFishingLesson.setFishingEquipment(fishingEquipments);
-		savedFishingLesson.setAdditionalServices(additionalServices);
-		savedFishingLesson.setAvailablePeriods(availablePeriods);
-		savedFishingLesson.setQuickReservations(quickReservations);
-		savedFishingLesson.setImages(images);
+		fishingLesson.setRating(0.0);
 		
 		Optional<User> instructor = userRepository.findById(dto.getInstructorId());
-		savedFishingLesson.setInstructor((Instructor) instructor.get());
+		fishingLesson.setInstructor((Instructor) instructor.get());
 			
-		return fishingLessonRepository.save(savedFishingLesson);
+		return fishingLessonRepository.save(fishingLesson);
 	}
 
 	@Override
@@ -454,6 +383,31 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 			
 		}
 		return result;
+	}
+
+	@Override
+	public FishingLesson getByIdForInstructor(Long id) {
+		return fishingLessonRepository.findById(id).get();
+	}
+
+	@Override
+	public List<FishingLesson> searchForInstructor(String searchTerm, Long id) {
+		Instructor instructor = (Instructor) userRepository.findById(id).get();
+		List<FishingLesson> lessons = fishingLessonRepository.findByInstructor(instructor);
+		List<FishingLesson> result = new ArrayList<>();
+		List<FishingLesson> filtered = new ArrayList<>();
+		for(FishingLesson lesson: lessons) {
+			if(lesson.getAddress().toLowerCase().contains(searchTerm.toLowerCase())) {
+				result.add(lesson);
+			}
+			if(lesson.getName().toLowerCase().contains(searchTerm.toLowerCase())) {
+				result.add(lesson);
+			}
+			
+		}
+		
+		filtered = result.stream().distinct().collect( Collectors.toList() );
+		return filtered;
 	}
 
 }

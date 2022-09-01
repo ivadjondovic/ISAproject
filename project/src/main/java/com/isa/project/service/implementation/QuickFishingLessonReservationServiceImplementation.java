@@ -9,8 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isa.project.dto.QuickClientReservationDTO;
+import com.isa.project.dto.QuickReservationDTO;
 import com.isa.project.model.Client;
+import com.isa.project.model.FishingLesson;
 import com.isa.project.model.QuickFishingLessonReservation;
+import com.isa.project.repository.FishingLessonRepository;
 import com.isa.project.repository.QuickFishingLessonReservationRepository;
 import com.isa.project.repository.UserRepository;
 import com.isa.project.service.EmailService;
@@ -27,6 +30,9 @@ public class QuickFishingLessonReservationServiceImplementation implements Quick
 	
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private FishingLessonRepository fishingLessonRepository;
 	
 	@Override
 	public Client clientReservation(QuickClientReservationDTO dto) {
@@ -69,6 +75,51 @@ public class QuickFishingLessonReservationServiceImplementation implements Quick
 			return null;
 		}
 		reservation.setAccepted(true);
+		return quickFishingLessonReservationRepository.save(reservation);
+	}
+
+	@Override
+	public void deleteReservation(Long id) {
+		
+		quickFishingLessonReservationRepository.deleteById(id);
+		
+	}
+
+	@Override
+	public QuickFishingLessonReservation saveReservation(QuickReservationDTO dto) {
+		
+		QuickFishingLessonReservation reservation = quickFishingLessonReservationRepository.findById(dto.getId()).get();
+		
+		reservation.setStartDate(dto.getStartDate());
+		reservation.setEndDate(dto.getEndDate());
+		reservation.setPrice(dto.getPrice());
+		reservation.setLocation(dto.getLocation());
+		reservation.setMaxNumberOfPerson(dto.getMaxNumberOfPerson());
+		reservation.setAdditionalServices(dto.getAdditionalServices());
+		
+		return quickFishingLessonReservationRepository.save(reservation);
+	}
+
+	@Override
+	public QuickFishingLessonReservation createReservation(QuickReservationDTO dto) {
+		
+		QuickFishingLessonReservation reservation = new QuickFishingLessonReservation();
+		
+		reservation.setStartDate(dto.getStartDate());
+		reservation.setEndDate(dto.getEndDate());
+		reservation.setPrice(dto.getPrice());
+		reservation.setMaxNumberOfPerson(dto.getMaxNumberOfPerson());
+		reservation.setLocation(dto.getLocation());
+		reservation.setAdditionalServices(dto.getAdditionalServices());
+		reservation.setAccepted(false);
+		reservation.setCanceled(false);
+		reservation.setReserved(false);
+		
+		FishingLesson lesson = fishingLessonRepository.findById(dto.getId()).get();
+		
+		reservation.setFishingLesson(lesson);
+		
+		
 		return quickFishingLessonReservationRepository.save(reservation);
 	}
 

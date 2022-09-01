@@ -53,6 +53,12 @@ public class FishingLessonController {
         return new ResponseEntity<>(fishingLessonService.getById(id), HttpStatus.OK);
     }
 	
+	@GetMapping(path = "/instructorFishingLesson/{id}")
+	@PreAuthorize("hasRole('INSTRUCTOR')")
+    public ResponseEntity<?> getByIdForInstructor(@PathVariable Long id) {
+        return new ResponseEntity<>(fishingLessonService.getByIdForInstructor(id), HttpStatus.OK);
+    }
+	
 	@PutMapping(path = "/editFishingLesson")
 	@PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<?> editFishingLesson(@RequestBody FishingLessonDTO fishingLessonDTO){
@@ -82,6 +88,11 @@ public class FishingLessonController {
 	@GetMapping(path = "/search/{searchTerm}")
     public ResponseEntity<?> search(@PathVariable String searchTerm) {
         return new ResponseEntity<>(fishingLessonService.search(searchTerm), HttpStatus.OK);
+    }
+	
+	@GetMapping(path = "/searchForInstructor/{searchTerm}/{id}")
+    public ResponseEntity<?> searchForInstructor(@PathVariable String searchTerm, @PathVariable Long id) {
+        return new ResponseEntity<>(fishingLessonService.searchForInstructor(searchTerm, id), HttpStatus.OK);
     }
 	
 	@PreAuthorize("hasRole('CLIENT')")

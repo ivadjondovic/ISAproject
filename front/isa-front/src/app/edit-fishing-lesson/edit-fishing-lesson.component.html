@@ -10,8 +10,8 @@
             </div>
 
             <div class="form-group">
-                <label for="lname">Adress</label>
-                <input type="text" id="lname" name="lasttname" [(ngModel)]="lesson.adress">
+                <label for="lname">Address</label>
+                <input type="text" id="lname" name="lasttname" [(ngModel)]="lesson.address">
             </div>
 
             <div class="form-group">
@@ -45,7 +45,7 @@
 
     <mat-grid-tile [rowspan]="2" [colspan]="2">
         <div class="rounded">
-            <div class="row mb-4 mt-3">
+            <div class="row mb-2 mt-2">
                 <div class="col-7">
                     <mat-card style="margin-top: 15px;">
                         <mat-card-title style="text-align: center; font-size: 18px; color:white">Available periods
@@ -68,7 +68,7 @@
                 </div>
 
             </div>
-            <div class="row mb-4">
+            <div class="row mb-2">
                 <div class="col-7">
                     <mat-card style="margin-top: 15px;">
                         <mat-card-title style="text-align: center; font-size: 18px; color:white">Additional services
@@ -91,7 +91,7 @@
                 </div>
             </div>
 
-            <div class="row mb-4">
+            <div class="row mb-2">
                 <div class="col-7">
                     <mat-card style="margin-top: 15px;">
                         <mat-card-title style="text-align: center; font-size: 18px; color:white">Quick reservations
@@ -114,7 +114,7 @@
                 </div>
             </div>
 
-            <div class="row mb-4">
+            <div class="row mb-2">
                 <div class="col-7">
                     <mat-card style="margin-top: 15px;">
                         <mat-card-title style="text-align: center; font-size: 18px; color:white">Fishing equipment
@@ -137,7 +137,7 @@
                 </div>
             </div>
 
-            <div class="row mb-4">
+            <div class="row mb-2">
                 <div class="col-7">
                     <mat-card style="margin-top: 15px;">
                         <mat-card-title style="text-align: center; font-size: 18px; color:white">Rules</mat-card-title>
@@ -154,6 +154,28 @@
 
                 <div class="col-2">
                     <button class="button1" (click)="editRules()">
+                        <mat-icon>edit_note</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-7">
+                    <mat-card style="margin-top: 15px;">
+                        <mat-card-title style="text-align: center; font-size: 18px; color:white">Images</mat-card-title>
+                    </mat-card>
+                </div>
+
+                <div class="col-1"></div>
+
+                <div class="col-2">
+                    <button class="button1" (click)="addNewImages()">
+                        <mat-icon>playlist_add</mat-icon>
+                    </button>
+                </div>
+
+                <div class="col-2">
+                    <button class="button1" (click)="editImages()">
                         <mat-icon>edit_note</mat-icon>
                     </button>
                 </div>
@@ -189,7 +211,7 @@
                     <div class="col-sm"></div>
                     <div class="col-sm"></div>
                     <div class="col-sm">
-                        <button class="button2">Add</button>
+                        <button class="button2" (click)="addRule()">Add</button>
                     </div>
                     <div class="col-sm"></div>
                     <div class="col-sm"></div>
@@ -215,14 +237,14 @@
 
                 <div class="form-group">
                     <label for="email">Description</label>
-                    <textarea name="email" rows="4" [(ngModel)]="newRuleDescription"></textarea>
+                    <textarea name="email" rows="4" [(ngModel)]="newEquipmentDescription"></textarea>
                 </div>
 
                 <div class="row">
                     <div class="col-sm"></div>
                     <div class="col-sm"></div>
                     <div class="col-sm">
-                        <button class="button2">Add</button>
+                        <button class="button2" (click)="addEquipment()">Add</button>
                     </div>
                     <div class="col-sm"></div>
                     <div class="col-sm"></div>
@@ -267,8 +289,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="price">Price</label>
-                    <input id="price" [(ngModel)]="price" type="text">
+                    <label for="price">Location</label>
+                    <input id="price" [(ngModel)]="location" type="text">
                 </div>
 
                 <div class="form-group">
@@ -276,16 +298,11 @@
                     <textarea name="quickAdditionalServices" rows="4" [(ngModel)]="quickAdditionalServices"></textarea>
                 </div>
 
-                <div class="form-group">
-                    <label for="location">Location</label>
-                    <input id="location" [(ngModel)]="location" type="text">
-                </div>
-
                 <div class="row">
                     <div class="col-sm"></div>
                     <div class="col-sm"></div>
                     <div class="col-sm">
-                        <button class="button2">Add</button>
+                        <button class="button2" (click)="addReservation()">Add</button>
                     </div>
                     <div class="col-sm"></div>
                     <div class="col-sm"></div>
@@ -322,7 +339,40 @@
                     <div class="col-sm"></div>
                     <div class="col-sm"></div>
                     <div class="col-sm">
-                        <button class="button2">Add</button>
+                        <button class="button2" (click)="addService()">Add</button>
+                    </div>
+                    <div class="col-sm"></div>
+                    <div class="col-sm"></div>
+                </div>
+
+            </div>
+
+        </mat-grid-tile>
+
+        <mat-grid-tile [rowspan]="2" [colspan]="1"> </mat-grid-tile>
+    </div>
+
+
+    <div *ngIf="images">
+        <mat-grid-tile [rowspan]="2" [colspan]="1"> </mat-grid-tile>
+
+        <mat-grid-tile [rowspan]="2" [colspan]="2">
+            <div class="rounded">
+                <h1 style="text-align: center;">Add new image</h1>
+                <hr>
+
+                <div class="form-group">
+                    <label style="color: #287271;" for="fileInput">Add image</label>
+                    <input class="form-control mt-2" id="fileInput" type="file" (change)="selectFile($event)">
+                </div>
+                
+                <img class="card-img-top p-2" [src]="url" *ngIf="url" width="370" height="370">
+
+                <div class="row">
+                    <div class="col-sm"></div>
+                    <div class="col-sm"></div>
+                    <div class="col-sm">
+                        <button class="button2" (click)="addImage()">Add</button>
                     </div>
                     <div class="col-sm"></div>
                     <div class="col-sm"></div>
@@ -359,7 +409,7 @@
                     <div class="col-sm"></div>
                     <div class="col-sm"></div>
                     <div class="col-sm">
-                        <button class="button2">Add</button>
+                        <button class="button2" (click)="addPeriod()">Add</button>
                     </div>
                     <div class="col-sm"></div>
                     <div class="col-sm"></div>
@@ -372,23 +422,32 @@
         <mat-grid-tile [rowspan]="2" [colspan]="1"> </mat-grid-tile>
     </div>
 
+
+
+
     <div *ngIf="deleteRule">
 
-        <mat-grid-tile [rowspan]="2" [colspan]="4">
+        <mat-grid-tile [rowspan]="5" [colspan]="4">
             <div class="rounded">
-                <mat-grid-list [cols]="3" [rowHeight]="160">
+                <mat-grid-list [cols]="3" [rowHeight]="230">
                     <div *ngFor="let r of existingRules">
                         <mat-grid-tile [rowspan]="1" [colspan]="1">
                             <div class="rounded">
-                                <p style="font-size: 17px; color: #4c7d85;">{{r.description}}</p>
+                                <div class="form-group">
+                                    <label for="email">Rule description</label>
+                                    <input style="width: 100%;" type="text" id="email" name="email"
+                                        [(ngModel)]="r.description">
+                                </div>
 
                                 <div class="row">
                                     <div class="col-sm"></div>
-                                    <div class="col-sm"></div>
                                     <div class="col-sm">
-                                        <button class="buttonDelete">Delete</button>
+                                        <button class="buttonDelete" (click)="saveRule(r.id, r.description)">Save</button>
                                     </div>
                                     <div class="col-sm"></div>
+                                    <div class="col-sm">
+                                        <button class="buttonDelete" (click)="deleterule(r.id)">Delete</button>
+                                    </div>
                                     <div class="col-sm"></div>
                                 </div>
 
@@ -401,24 +460,60 @@
         </mat-grid-tile>
     </div>
 
-    
+
+    <div *ngIf="deleteImage">
+
+        <mat-grid-tile [rowspan]="5" [colspan]="4">
+            <div class="rounded">
+                <mat-grid-list [cols]="3" [rowHeight]="400">
+                    <div *ngFor="let image of existingImages">
+                        <mat-grid-tile [rowspan]="1" [colspan]="1">
+                            <div>
+                                <div class="row">
+                                <img class="roundedImage" src="{{image.path}}" style="width:438px; height: 260px;">
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm"></div>
+                                    <div class="col-sm">
+                                    <button class="buttonDelete" (click)="deleteimage(image.id)">Delete</button>
+                                    </div>
+                                    <div class="col-sm"></div>
+                                </div>
+                            </div>
+                        </mat-grid-tile>
+                    </div>
+
+                </mat-grid-list>
+            </div>
+
+        </mat-grid-tile>
+    </div>
+
+
     <div *ngIf="deleteEquipment">
 
-        <mat-grid-tile [rowspan]="2" [colspan]="4">
+        <mat-grid-tile [rowspan]="5" [colspan]="4">
             <div class="rounded">
-                <mat-grid-list [cols]="3" [rowHeight]="160">
+                <mat-grid-list [cols]="3" [rowHeight]="250">
                     <div *ngFor="let e of existingFishingEquipment">
                         <mat-grid-tile [rowspan]="1" [colspan]="1">
                             <div class="rounded">
-                                <p style="font-size: 17px; color: #4c7d85;">{{e.description}}</p>
+                                <div class="form-group">
+                                    <label for="email">Equipment description</label>
+                                    <input style="width: 100%;" type="text" id="email" name="email"
+                                        [(ngModel)]="e.description">
+                                </div>
 
                                 <div class="row">
                                     <div class="col-sm"></div>
-                                    <div class="col-sm"></div>
                                     <div class="col-sm">
-                                        <button class="buttonDelete">Delete</button>
+                                        <button class="buttonDelete" (click)="saveEquipment(e.id, e.description)">Save</button>
                                     </div>
                                     <div class="col-sm"></div>
+                                    <div class="col-sm">
+                                        <button class="buttonDelete" (click)="deleteequipment(e.id)">Delete</button>
+                                    </div>
                                     <div class="col-sm"></div>
                                 </div>
 
@@ -434,29 +529,60 @@
 
     <div *ngIf="deleteQuickReservations">
 
-        <mat-grid-tile [rowspan]="2" [colspan]="4">
+        <mat-grid-tile [rowspan]="5" [colspan]="4">
             <div class="rounded">
-                <mat-grid-list [cols]="3" [rowHeight]="300">
+                <mat-grid-list [cols]="3" [rowHeight]="600">
                     <div *ngFor="let reservation of quickReservationList">
                         <mat-grid-tile [rowspan]="1" [colspan]="1">
                             <div class="rounded">
-                                <p style="font-size: 17px;"><span style="color: #4c7d85;">From-To:&nbsp;</span> {{reservation.startDate | date:'medium'}} - {{reservation.endDate | date:'medium'}}</p>
-                                <p style="font-size: 17px;"><span style="color: #4c7d85;">Price:&nbsp;</span> {{reservation.price}}</p>
-                                <p style="font-size: 17px;"><span style="color: #4c7d85;">Location:&nbsp;</span> {{reservation.location}}</p>
-                                <p style="font-size: 17px;"><span style="color: #4c7d85;">Number of person:&nbsp;</span> {{reservation.maxNumberOfPerson}}</p>
-                                <p style="font-size: 17px;"><span style="color: #4c7d85;">Additional services:&nbsp;</span> {{reservation.additionalServices}}</p>
-                            
+                                <div class="form-group">
+                                    <label for="startDate">Start date</label>
+                                    <input style="width: 100%;" id="startDate" [(ngModel)]="reservation.startDate" type="datetime-local">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="endDate">End date</label>
+                                    <input style="width: 100%;" id="endDate" [(ngModel)]="reservation.endDate" type="datetime-local">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Reservation price</label>
+                                    <input type="text" id="email" name="email"
+                                        [(ngModel)]="reservation.price">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Location</label>
+                                    <input type="text" id="email" name="email"
+                                        [(ngModel)]="reservation.location">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">People:</label>
+                                    <input type="text" id="email" name="email"
+                                        [(ngModel)]="reservation.maxNumberOfPerson">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Services</label>
+                                    <input type="text" id="email" name="email"
+                                        [(ngModel)]="reservation.additionalServices">
+                                </div>
+
                                 <div class="row">
                                     <div class="col-sm"></div>
-                                    <div class="col-sm"></div>
                                     <div class="col-sm">
-                                        <button style="bottom: 0" class="buttonDelete">Delete</button>
+                                        <button class="buttonDelete" (click)="saveReservation(reservation.id, reservation.startDate, reservation.endDate
+                                        , reservation.price, reservation.location, reservation.maxNumberOfPerson, reservation.additionalServices)">Save</button>
                                     </div>
                                     <div class="col-sm"></div>
+                                    <div class="col-sm">
+                                        <button class="buttonDelete" (click)="deleteReservation(reservation.id)">Delete</button>
+                                    </div>
                                     <div class="col-sm"></div>
                                 </div>
-                            
-                            </div>
+
+                            </div> 
                         </mat-grid-tile>
                     </div>
                 </mat-grid-list>
@@ -469,22 +595,36 @@
 
     <div *ngIf="deleteAdditionalServices">
 
-        <mat-grid-tile [rowspan]="2" [colspan]="4">
+        <mat-grid-tile [rowspan]="5" [colspan]="4">
             <div class="rounded">
-                <mat-grid-list [cols]="3" [rowHeight]="200">
+                <mat-grid-list [cols]="3" [rowHeight]="350">
                     <div *ngFor="let a of existingAdditionalServices">
                         <mat-grid-tile [rowspan]="1" [colspan]="1">
                             <div class="rounded">
-                                <p style="font-size: 17px;"><span style="color: #4c7d85;">Service:&nbsp;</span> {{a.description}}</p>
-                                <p style="font-size: 17px;"><span style="color: #4c7d85;">Price:&nbsp;</span> {{a.price}}</p>
+
+
+                                <div class="form-group">
+                                    <label for="email">Service</label>
+                                    <input style="width: 100%;" type="text" id="email" name="email"
+                                        [(ngModel)]="a.description">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Price</label>
+                                    <input style="width: 100%;" type="text" id="email" name="email"
+                                        [(ngModel)]="a.price">
+                                </div>
+
 
                                 <div class="row">
                                     <div class="col-sm"></div>
-                                    <div class="col-sm"></div>
                                     <div class="col-sm">
-                                        <button class="buttonDelete">Delete</button>
+                                        <button class="buttonDelete" (click)="saveService(a.id, a.description, a.price)">Save</button>
                                     </div>
                                     <div class="col-sm"></div>
+                                    <div class="col-sm">
+                                        <button class="buttonDelete" (click)="deleteService(a.id)">Delete</button>
+                                    </div>
                                     <div class="col-sm"></div>
                                 </div>
 
@@ -500,23 +640,33 @@
 
     <div *ngIf="deleteAvailablePeriods">
 
-        <mat-grid-tile [rowspan]="2" [colspan]="4">
+        <mat-grid-tile [rowspan]="5" [colspan]="4">
             <div class="rounded">
-                <mat-grid-list [cols]="3" [rowHeight]="180">
+                <mat-grid-list [cols]="3" [rowHeight]="350">
                     <div *ngFor="let period of dateList">
                         <mat-grid-tile [rowspan]="1" [colspan]="1">
                             <div class="rounded">
-                                <p style="font-size: 17px;"><span style="color: #4c7d85;">From-To:&nbsp;</span>  {{period.startDate| date:'medium'}}-{{period.endDate | date:'medium'}}</p>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm"></div>
-                                <div class="col-sm"></div>
-                                <div class="col-sm">
-                                    <button class="buttonDelete">Delete</button>
+                                <div class="form-group">
+                                    <label for="startDate">Start date</label>
+                                    <input style="width: 100%;" id="startDate" [(ngModel)]="period.startDate" type="datetime-local">
                                 </div>
-                                <div class="col-sm"></div>
-                                <div class="col-sm"></div>
+
+                                <div class="form-group">
+                                    <label for="endDate">End date</label>
+                                    <input style="width: 100%;" id="endDate" [(ngModel)]="period.endDate" type="datetime-local">
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm"></div>
+                                    <div class="col-sm">
+                                        <button class="buttonDelete" (click)="savePeriod(period.id, period.startDate, period.endDate)">Save</button>
+                                    </div>
+                                    <div class="col-sm"></div>
+                                    <div class="col-sm">
+                                        <button class="buttonDelete" (click)="deletePeriod(period.id)">Delete</button>
+                                    </div>
+                                    <div class="col-sm"></div>
+                                </div>
                             </div>
                         </mat-grid-tile>
                     </div>

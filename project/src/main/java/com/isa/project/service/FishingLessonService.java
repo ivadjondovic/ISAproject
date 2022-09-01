@@ -13,10 +13,12 @@ public interface FishingLessonService {
 	public FishingLesson createFishingLesson(FishingLessonDTO dto);
 	public List<FishingLesson> getByInstructorId(Long instructorId);
 	public FishingLesson getById(Long id);
+	public FishingLesson getByIdForInstructor(Long id);
 	public FishingLesson editFishingLesson(FishingLessonDTO dto);
 	public List<FishingLesson> getAll();
 	public List<FishingLesson> sort(SortDTO dto);
 	public List<FishingLesson> search(String searchTerm);
 	public List<FishingLesson> getAvailableLessons(ReservationSearchDTO dto);
 	public List<FishingLesson> lessonsAvailableForCertainDate(DateSearchDTO dto);
+	public List<FishingLesson> searchForInstructor(String searchTerm, Long id);
 }

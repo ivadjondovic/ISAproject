@@ -1,0 +1,39 @@
+<div>
+    <mat-card>
+        <mat-card-title style="text-align: center;">Add new lesson</mat-card-title>
+    </mat-card>
+    <div class="registration">
+
+        <label for="fname">Name</label>
+        <input type="text" id="fname" name="firstname" [(ngModel)]="name" placeholder="Lesson name..">
+
+        <label for="lname">Address</label>
+        <input type="text" id="lname" name="lastname" [(ngModel)]="address" placeholder="Lesson address..">
+
+        <label for="email">Description</label>
+        <input type="text" id="email" name="email" [(ngModel)]="description" placeholder="Description...">
+
+        <label for="phone">Number of people</label>
+        <input type="text" id="phone" name="phone" [(ngModel)]="numberOfPeople" placeholder="Number of people..">
+
+        <label for="address">Instructor biography</label>
+        <input type="text" id="address" name="address" [(ngModel)]="instructorBio" placeholder="Your biography...">
+
+        <label for="city">Price</label>
+        <input type="text" id="city" name="city" [(ngModel)]="price" placeholder="Lesson price...">
+
+        <label for="country">Percentage for keep</label>
+        <input type="text" id="country" name="country" [(ngModel)]="percentageForKeep" placeholder="Percentage for keep...">
+
+
+        <div class="row">
+            <div class="col-sm"></div>
+            <div class="col-sm">
+                <button (click)="save()">Save</button>
+            </div>
+            <div class="col-sm"></div>
+        </div>
+
+    </div>
+
+</div>
