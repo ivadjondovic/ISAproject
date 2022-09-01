@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AdditionalServiceService } from '../services/additional-service.service';
+import { AvailablePeriodService } from '../services/available-period.service';
+import { FishingEquipmentService } from '../services/fishing-equipment.service';
 import { FishingLessonService } from '../services/fishing-lesson.service';
+import { QuickFishingReservationService } from '../services/quick-fishing-reservation.service';
+import { RuleService } from '../services/rule.service';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -45,7 +50,15 @@ export class EditFishingLessonComponent implements OnInit {
   quickReservation: any[]
 
 
-  constructor(public service: FishingLessonService, public userService: UserService, public activatedRoute: ActivatedRoute,) { }
+  constructor(public ruleService: RuleService, 
+              public service: FishingLessonService, 
+              public userService: UserService, 
+              public activatedRoute: ActivatedRoute,
+              public periodService: AvailablePeriodService,
+              public additionalServiceService: AdditionalServiceService,
+              public quickReservationService: QuickFishingReservationService,
+              public equipmentService: FishingEquipmentService
+              ) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -53,7 +66,7 @@ export class EditFishingLessonComponent implements OnInit {
       console.log(this.id);
       this.userService.current().subscribe((response: any) => {
         this.user = response;
-        this.service.getById(this.id).subscribe((response: any) => {
+        this.service.getByIdForInstructor(this.id).subscribe((response: any) => {
           this.lesson = response;
           this.existingRules = this.lesson.rules;
           this.existingAdditionalServices = this.lesson.additionalServices;
@@ -203,9 +216,10 @@ export class EditFishingLessonComponent implements OnInit {
 
     this.quickReservationList = [];
     for (let r of this.existingQuickReservations) {
-      let startDate = new Date(r.startDate[0], r.startDate[1] - 1, r.startDate[2], r.startDate[3], r.startDate[4]);
-      let endDate = new Date(r.endDate[0], r.endDate[1] - 1, r.endDate[2], r.endDate[3], r.endDate[4]);
+      let startDate = new Date(r.startDate[0], r.startDate[1] - 1, r.startDate[2], r.startDate[3], r.startDate[4]).toISOString().slice(0, 16);
+      let endDate = new Date(r.endDate[0], r.endDate[1] - 1, r.endDate[2], r.endDate[3], r.endDate[4]).toISOString().slice(0, 16);
       let price = r.price;
+      let id = r.id;
       let maxNumberOfPerson = r.maxNumberOfPerson;
       let additionalServices = r.additionalServices;
 
@@ -214,7 +228,8 @@ export class EditFishingLessonComponent implements OnInit {
         endDate: endDate,
         price: price,
         maxNumberOfPerson: maxNumberOfPerson,
-        additionalServices: additionalServices
+        additionalServices: additionalServices,
+        id: id
       }
       this.quickReservationList.push(data);
       console.log(startDate)
@@ -226,12 +241,14 @@ export class EditFishingLessonComponent implements OnInit {
 
     this.dateList = [];
     for (let d of this.existingAvailablePeriods) {
-      let startDate = new Date(d.startDate[0], d.startDate[1] - 1, d.startDate[2], d.startDate[3], d.startDate[4]);
-      let endDate = new Date(d.endDate[0], d.endDate[1] - 1, d.endDate[2], d.endDate[3], d.endDate[4]);
+      let startDate = new Date(d.startDate[0], d.startDate[1] - 1, d.startDate[2], d.startDate[3], d.startDate[4]).toISOString().slice(0, 16);
+      let endDate = new Date(d.endDate[0], d.endDate[1] - 1, d.endDate[2], d.endDate[3], d.endDate[4]).toISOString().slice(0, 16);
+      let id = d.id;
       console.log(startDate)
       let newDate = {
         startDate: startDate,
-        endDate: endDate
+        endDate: endDate,
+        id: id
       }
       console.log(newDate)
       this.dateList.push(newDate)
@@ -239,5 +256,37 @@ export class EditFishingLessonComponent implements OnInit {
     }
     console.log(this.dateList)
   }
+
+  deletePeriod(id: any) {
+    this.periodService.delete(id).subscribe((response: any) => {
+      location.reload();
+    })
+  }
+
+  deleterule(id: any) {
+    this.ruleService.delete(id , this.id).subscribe((response: any) => {
+      location.reload();
+    })
+  }
+
+  deleteequipment(id: any) {
+    this.equipmentService.delete(id).subscribe((response: any) => {
+      location.reload();
+    })
+  }
+
+  deleteReservation(id: any) {
+    this.quickReservationService.delete(id).subscribe((response: any) => {
+      location.reload();
+    })
+  }
+
+  deleteService(id: any) {
+    this.additionalServiceService.delete(id).subscribe((response: any) => {
+      location.reload();
+    })
+  }
+
+
 
 }

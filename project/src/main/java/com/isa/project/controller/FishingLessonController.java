@@ -53,6 +53,12 @@ public class FishingLessonController {
         return new ResponseEntity<>(fishingLessonService.getById(id), HttpStatus.OK);
     }
 	
+	@GetMapping(path = "/instructorFishingLesson/{id}")
+	@PreAuthorize("hasRole('INSTRUCTOR')")
+    public ResponseEntity<?> getByIdForInstructor(@PathVariable Long id) {
+        return new ResponseEntity<>(fishingLessonService.getByIdForInstructor(id), HttpStatus.OK);
+    }
+	
 	@PutMapping(path = "/editFishingLesson")
 	@PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<?> editFishingLesson(@RequestBody FishingLessonDTO fishingLessonDTO){

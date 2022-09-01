@@ -72,4 +72,11 @@ public class QuickFishingLessonReservationServiceImplementation implements Quick
 		return quickFishingLessonReservationRepository.save(reservation);
 	}
 
+	@Override
+	public void deleteReservation(Long id) {
+		
+		quickFishingLessonReservationRepository.deleteById(id);
+		
+	}
+
 }

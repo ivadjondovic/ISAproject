@@ -8,4 +8,5 @@ public interface QuickFishingLessonReservationService {
 
 	public Client clientReservation(QuickClientReservationDTO dto);
 	public QuickFishingLessonReservation accept(Long id);
+	public void deleteReservation(Long id); 
 }

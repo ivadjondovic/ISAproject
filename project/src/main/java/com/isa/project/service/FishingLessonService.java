@@ -7,12 +7,14 @@ import com.isa.project.dto.FishingLessonDTO;
 import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.FishingLesson;
+import com.isa.project.model.Rule;
 
 public interface FishingLessonService {
 
 	public FishingLesson createFishingLesson(FishingLessonDTO dto);
 	public List<FishingLesson> getByInstructorId(Long instructorId);
 	public FishingLesson getById(Long id);
+	public FishingLesson getByIdForInstructor(Long id);
 	public FishingLesson editFishingLesson(FishingLessonDTO dto);
 	public List<FishingLesson> getAll();
 	public List<FishingLesson> sort(SortDTO dto);

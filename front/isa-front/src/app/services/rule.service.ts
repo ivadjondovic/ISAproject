@@ -4,8 +4,8 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class QuickFishingReservationService {
-
+export class RuleService {
+  
   baseURL = "http://localhost:8080/";
 
   constructor(private http: HttpClient) { }
@@ -20,11 +20,8 @@ export class QuickFishingReservationService {
     };
   } 
 
-  reserve(data: any){
-    return this.http.post(this.baseURL + "api/quickFishingLessonReservations/reserve", data, this.getAuthoHeader());
+  delete(ruleId: any, lessonId: any){
+    return this.http.delete(this.baseURL + "api/rules/delete/" + ruleId + "/" + lessonId, this.getAuthoHeader());
   }
 
-  delete(id: any){
-    return this.http.delete(this.baseURL + "api/quickFishingLessonReservations/delete/" + id, this.getAuthoHeader());
-  }
 }
