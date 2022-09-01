@@ -90,6 +90,11 @@ public class FishingLessonController {
         return new ResponseEntity<>(fishingLessonService.search(searchTerm), HttpStatus.OK);
     }
 	
+	@GetMapping(path = "/searchForInstructor/{searchTerm}/{id}")
+    public ResponseEntity<?> searchForInstructor(@PathVariable String searchTerm, @PathVariable Long id) {
+        return new ResponseEntity<>(fishingLessonService.searchForInstructor(searchTerm, id), HttpStatus.OK);
+    }
+	
 	@PreAuthorize("hasRole('CLIENT')")
 	@PostMapping(path = "/availableLessons")
     public ResponseEntity<?> availableLessons(@RequestBody ReservationSearchDTO dto) {

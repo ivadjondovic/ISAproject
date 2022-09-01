@@ -7,7 +7,6 @@ import com.isa.project.dto.FishingLessonDTO;
 import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.FishingLesson;
-import com.isa.project.model.Rule;
 
 public interface FishingLessonService {
 
@@ -21,4 +20,5 @@ public interface FishingLessonService {
 	public List<FishingLesson> search(String searchTerm);
 	public List<FishingLesson> getAvailableLessons(ReservationSearchDTO dto);
 	public List<FishingLesson> lessonsAvailableForCertainDate(DateSearchDTO dto);
+	public List<FishingLesson> searchForInstructor(String searchTerm, Long id);
 }
