@@ -28,6 +28,7 @@ import { NotPassedReservationsComponent } from './not-passed-reservations/not-pa
 import { FishingLessonReservationsHistoryComponent } from './fishing-lesson-reservations-history/fishing-lesson-reservations-history.component';
 import { AdminRevisionsComponent } from './admin-revisions/admin-revisions.component';
 import { AdminComplaintsComponent } from './admin-complaints/admin-complaints.component';
+import { CreateFishingLessonComponent } from './create-fishing-lesson/create-fishing-lesson.component';
 
 const routes: Routes = [
 
@@ -49,6 +50,7 @@ const routes: Routes = [
   {path: 'deleteRequests', component: DeleteRequestsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
   {path: 'fishingLessons', component: FishingLessonsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_INSTRUCTOR'}},
   {path: 'editFishingLesson/:id', component: EditFishingLessonComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_INSTRUCTOR'}},
+  {path: 'createFishingLesson', component: CreateFishingLessonComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_INSTRUCTOR'}},
   {path: 'lessons', component: ClientFishingLessonsComponent},
   {path: 'lessonInfo/:id', component: FishingLessonAdditionalInfoComponent},
   {path: 'reservation', component: ReservationComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},

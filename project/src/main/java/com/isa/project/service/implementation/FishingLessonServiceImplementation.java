@@ -75,8 +75,10 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		fishingLesson.setDescription(dto.getDescription());;
 		fishingLesson.setPercentageForKeep(dto.getPercentageForKeep());
 		fishingLesson.setPrice(dto.getPrice());
-		FishingLesson savedFishingLesson = fishingLessonRepository.save(fishingLesson);
+		fishingLesson.setRating(0.0);
+		//FishingLesson savedFishingLesson = fishingLessonRepository.save(fishingLesson);
 		
+		/*
 		Set<FishingEquipment> fishingEquipments = new HashSet<>();
 		Set<Rule> rules = new HashSet<>();
 		Set<AvailableFishingLessonPeriod> availablePeriods = new HashSet<>();
@@ -84,11 +86,7 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		Set<AdditionalFishingLessonService> additionalServices = new HashSet<>();
 		Set<Image> images = new HashSet<>();
 		
-		for(RuleDTO ruleDto: dto.getRules()) {
-			Rule rule = new Rule();
-			rule.setDescription(ruleDto.getDescription());
-			rules.add(rule);
-		}
+		/*
 		
 		for(AdditionalServiceDTO serviceDto: dto.getAdditionalServices()) {		
 			AdditionalFishingLessonService service = new AdditionalFishingLessonService();
@@ -144,11 +142,12 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		savedFishingLesson.setAvailablePeriods(availablePeriods);
 		savedFishingLesson.setQuickReservations(quickReservations);
 		savedFishingLesson.setImages(images);
+		*/
 		
 		Optional<User> instructor = userRepository.findById(dto.getInstructorId());
-		savedFishingLesson.setInstructor((Instructor) instructor.get());
+		fishingLesson.setInstructor((Instructor) instructor.get());
 			
-		return fishingLessonRepository.save(savedFishingLesson);
+		return fishingLessonRepository.save(fishingLesson);
 	}
 
 	@Override
