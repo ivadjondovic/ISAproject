@@ -9,6 +9,7 @@
                     <mat-option value="Name">Name</mat-option>
                     <mat-option value="Type">Type</mat-option>
                     <mat-option value="Price">Price</mat-option>
+                    <mat-option value="Rating">Rating</mat-option>
                     <mat-option value="Length">Length</mat-option>
                     <mat-option value="Number of engines">Number of engines</mat-option>
                     <mat-option value="Engine power">Engine power</mat-option>
@@ -56,7 +57,7 @@
         </div>
     </div>
     
-    <mat-grid-list [cols]="3" [rowHeight]="460">
+    <mat-grid-list [cols]="3" [rowHeight]="510">
         <div *ngFor="let b of boats">
             <mat-grid-tile [rowspan]="1" [colspan]="1">
                 <div class="rounded">
@@ -70,6 +71,7 @@
                     </div>
                     <!-- <img class="roundedImage" src="{{b.images[0].path}}" style="width:438px; height: 260px; margin-bottom: 15px;"> -->
                     <p style="font-size: 17px; color: #4c7d85;">{{b.description}}</p>
+                    <p style="font-size: 17px; color: #4c7d85;"><mat-icon>star_rate</mat-icon><span style="margin-left: 10px;"></span>{{b.rating}}</p>
                     <p style="font-size: 17px;"><span style="color: #4c7d85;">Type:&nbsp;</span> {{b.boatType}}</p>
                     <p style="font-size: 17px;"><span style="color: #4c7d85;">Length:&nbsp;</span> {{b.boatLength}} m
                     </p>

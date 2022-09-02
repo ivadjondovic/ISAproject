@@ -87,6 +87,7 @@ public class BoatServiceImplementation implements BoatService{
 		boat.setCapacity(dto.getCapacity());
 		boat.setPercentageForKeep(dto.getPercentageForKeep());
 		boat.setPrice(dto.getPrice());
+		boat.setRating(0.0);
 		Boat savedBoat = boatRepository.save(boat);
 		
 		Set<NavigationEquipment> navigationEquipments = new HashSet<>();
@@ -316,6 +317,17 @@ public class BoatServiceImplementation implements BoatService{
 			if(dto.getSortType().equals("Descending")) {
 				Collections.sort(boats, (b1, b2) ->
 				 Double.compare(b2.getPercentageForKeep(), b1.getPercentageForKeep()));
+			}
+		}
+		
+		if(dto.getSortBy().equals("Rating")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(boats, (b1, b2) ->
+			    Double.compare(b1.getRating(), b2.getRating()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(boats, (b1, b2) ->
+				 Double.compare(b2.getRating(), b1.getRating()));
 			}
 		}
 		return boats;

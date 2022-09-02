@@ -8,6 +8,7 @@
                     <mat-option value="Name">Name</mat-option>
                     <mat-option value="Address">Address</mat-option>
                     <mat-option value="Price">Price</mat-option>
+                    <mat-option value="Rating">Rating</mat-option>
                     <mat-option value="Number of rooms">Number of rooms</mat-option>
                 </mat-select>
             </mat-form-field>
@@ -57,7 +58,7 @@
             </div>
         </div>
     </div>
-    <mat-grid-list [cols]="3" [rowHeight]="300">
+    <mat-grid-list [cols]="3" [rowHeight]="330">
         <div *ngFor="let c of cottages">
             <mat-grid-tile [rowspan]="1" [colspan]="1">
                 <div class="rounded">
@@ -71,6 +72,7 @@
                     </div>
                     <!-- <img class="roundedImage" src="{{b.images[0].path}}" style="width:438px; height: 260px; margin-bottom: 15px;"> -->
                     <p style="font-size: 17px; color: #4c7d85;">{{c.description}}</p>
+                    <p style="font-size: 17px; color: #4c7d85;"><mat-icon>star_rate</mat-icon><span style="margin-left: 10px;"></span>{{c.rating}}</p>
                     <p style="font-size: 17px;"><span style="color: #4c7d85;">Address:&nbsp;</span> {{c.address}}</p>
                     <p style="font-size: 17px;"><span style="color: #4c7d85;">Number of rooms:&nbsp;</span>
                         {{c.numberOfRooms}}</p>

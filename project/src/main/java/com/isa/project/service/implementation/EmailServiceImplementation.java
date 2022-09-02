@@ -47,6 +47,7 @@ public class EmailServiceImplementation implements EmailService{
 		
 	}
 
+	@Async
 	@Override
 	public void acceptEmail(User user) throws MessagingException {
 		
@@ -60,7 +61,8 @@ public class EmailServiceImplementation implements EmailService{
 	    javaMailSender.send(message);
 		
 	}
-
+	
+	@Async
 	@Override
 	public void declineEmail(User user, String reason) throws MessagingException {
 		// TODO Auto-generated method stub
@@ -74,6 +76,7 @@ public class EmailServiceImplementation implements EmailService{
 	    javaMailSender.send(message);
 	}
 
+	@Async
 	@Override
 	public void acceptDeletingAccountEmail(User user, String reason) throws MessagingException {
 		MimeMessage message=javaMailSender.createMimeMessage();
@@ -87,6 +90,7 @@ public class EmailServiceImplementation implements EmailService{
 		
 	}
 
+	@Async
 	@Override
 	public void declineDeletingAccountEmail(User user, String reason) throws MessagingException {
 		MimeMessage message=javaMailSender.createMimeMessage();

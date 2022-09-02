@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { FishingLessonSubscriptionService } from '../services/fishing-lesson-subscription.service';
 import { FishingLessonService } from '../services/fishing-lesson.service';
@@ -10,7 +11,7 @@ import { FishingLessonService } from '../services/fishing-lesson.service';
 })
 export class ClientFishingLessonsComponent implements OnInit {
 
-  lessons: any = {} as any;
+  lessons: any[];
   searchTerm = '';
   sortBy = '';
   sortType = '';
@@ -20,7 +21,7 @@ export class ClientFishingLessonsComponent implements OnInit {
   dateForSearch: any
   subscribedLessons: any[]
   isLoged = false;
-  constructor(public subscriptionService: FishingLessonSubscriptionService, public service: FishingLessonService, public router: Router) { }
+  constructor(private _snackBar: MatSnackBar, public subscriptionService: FishingLessonSubscriptionService, public service: FishingLessonService, public router: Router) { }
 
   ngOnInit(): void {
     this.subscribedLessons = []
@@ -98,10 +99,10 @@ export class ClientFishingLessonsComponent implements OnInit {
     let sortingBy = this.sortBy
     let sortingType = this.sortType
     console.log(this.sortType)
-    if(this.sortBy = ''){
-      alert('Choose sort by');
-    }else if (this.sortType = ''){
-      alert('Choose sort type');
+    if(this.sortBy == ''){
+      this._snackBar.open('Enter sort by.', 'Close', {duration: 2500});
+    }else if (this.sortType == ''){
+      this._snackBar.open('Enter sort type.', 'Close', {duration: 2500})
     }else{
       console.log('OK')
       let data = {

@@ -334,6 +334,17 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 				 Double.compare(l2.getPercentageForKeep(), l1.getPercentageForKeep()));
 			}
 		}
+		
+		if(dto.getSortBy().equals("Rating")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(lessons, (l1, l2) ->
+			    Double.compare(l1.getRating(), l2.getRating()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(lessons, (l1, l2) ->
+				 Double.compare(l2.getRating(), l1.getRating()));
+			}
+		}
 		return lessons;
 	}
 

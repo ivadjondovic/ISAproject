@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { BoatComplaintDialogComponent } from '../boat-complaint-dialog/boat-complaint-dialog.component';
 import { RatingBoatDialogComponent } from '../rating-boat-dialog/rating-boat-dialog.component';
 import { BoatReservationService } from '../services/boat-reservation.service';
@@ -15,10 +16,10 @@ export class BoatReservationsHistoryComponent implements OnInit {
   reservations: any[]
   reservationList: any[]
   user: any
-  sortBy: string
-  sortType: string
+  sortBy = ''
+  sortType = ''
   id: any
-  constructor(public dialog: MatDialog, public service: BoatReservationService, public userService: UserService) { }
+  constructor(private _snackBar: MatSnackBar, public dialog: MatDialog, public service: BoatReservationService, public userService: UserService) { }
 
   ngOnInit(): void {
     this.userService.current().subscribe((response: any) => {
@@ -70,12 +71,11 @@ export class BoatReservationsHistoryComponent implements OnInit {
     let sortingBy = this.sortBy
     let sortingType = this.sortType
     console.log(this.sortType)
-    if(this.sortBy = ''){
-      alert('Choose sort by');
-    }else if (this.sortType = ''){
-      alert('Choose sort type');
+    if(this.sortBy == ''){
+      this._snackBar.open('Enter sort by.', 'Close', {duration: 2500})
+    }else if (this.sortType == ''){
+      this._snackBar.open('Enter sort type.', 'Close', {duration: 2500})
     }else{
-      console.log('OK')
       let data = {
 
         clientId: this.user.id,

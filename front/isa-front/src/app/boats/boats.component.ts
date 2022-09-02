@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { BoatSubscriptionService } from '../services/boat-subscription.service';
 import { BoatService } from '../services/boat.service';
@@ -10,7 +11,7 @@ import { BoatService } from '../services/boat.service';
 })
 export class BoatsComponent implements OnInit {
 
-  boats: any = {} as any;
+  boats: any[];
   searchTerm = '';
   sortBy = '';
   sortType = '';
@@ -20,7 +21,7 @@ export class BoatsComponent implements OnInit {
   dateForSearch: any
   subscribedBoats: any[]
   isLoged = false;
-  constructor(public subscriptionService: BoatSubscriptionService, public service: BoatService, public router: Router) { }
+  constructor(private _snackBar: MatSnackBar, public subscriptionService: BoatSubscriptionService, public service: BoatService, public router: Router) { }
 
 
   ngOnInit(): void {
@@ -100,12 +101,11 @@ export class BoatsComponent implements OnInit {
     let sortingBy = this.sortBy
     let sortingType = this.sortType
     console.log(this.sortType)
-    if(this.sortBy = ''){
-      alert('Choose sort by');
-    }else if (this.sortType = ''){
-      alert('Choose sort type');
+    if(this.sortBy == ''){
+      this._snackBar.open('Enter sort by.', 'Close', {duration: 2500});
+    }else if (this.sortType == ''){
+      this._snackBar.open('Enter sort type.', 'Close', {duration: 2500})
     }else{
-      console.log('OK')
       let data = {
         sortBy: sortingBy,
         sortType: sortingType

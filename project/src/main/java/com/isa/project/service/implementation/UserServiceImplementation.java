@@ -49,6 +49,12 @@ public class UserServiceImplementation implements UserService{
 	
 	@Override
 	public User registerClient(UserDTO userDTO) {
+		
+		if(userDTO.getAddress().equals("") || userDTO.getCity().equals("") || userDTO.getCountry().equals("")
+				|| userDTO.getName().equals("") || userDTO.getPassword().equals("") || userDTO.getPhoneNumber().equals("") 
+				|| userDTO.getSurname().equals("") || userDTO.getUsername().equals("")) {
+			return null;
+		}
 		 User user = userRepository.findByUsername(userDTO.getUsername());
 
 	        if(user != null) {

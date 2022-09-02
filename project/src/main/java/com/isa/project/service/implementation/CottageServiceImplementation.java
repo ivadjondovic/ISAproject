@@ -244,6 +244,16 @@ public class CottageServiceImplementation implements CottageService{
 				Integer.compare(c2.getNumberOfRooms(), c1.getNumberOfRooms()));
 			}
 		}
+		if(dto.getSortBy().equals("Rating")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(cottages, (c1, c2) ->
+			    Double.compare(c1.getRating(), c2.getRating()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(cottages, (c1, c2) ->
+				 Double.compare(c2.getRating(), c1.getRating()));
+			}
+		}
 		return cottages;
 	}
 

@@ -63,6 +63,7 @@ import { AdminComplaintsComponent } from './admin-complaints/admin-complaints.co
 import { AnswerComplaintDialogComponent } from './answer-complaint-dialog/answer-complaint-dialog.component';
 import { CreateFishingLessonComponent } from './create-fishing-lesson/create-fishing-lesson.component';
 import { ClientSubscriptionsComponent } from './client-subscriptions/client-subscriptions.component';
+import { MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 
@@ -132,7 +133,8 @@ import { ClientSubscriptionsComponent } from './client-subscriptions/client-subs
     HttpClientModule,
     MatDialogModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSnackBarModule
     
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
