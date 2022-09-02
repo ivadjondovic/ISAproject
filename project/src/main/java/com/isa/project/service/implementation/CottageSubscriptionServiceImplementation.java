@@ -33,7 +33,6 @@ public class CottageSubscriptionServiceImplementation implements CottageSubscrip
 		Cottage cottage =  cottageRepository.findById(dto.getEntityId()).get();
 		
 		CottageSubscription subscription = new CottageSubscription();
-		subscription.setCanceled(false);
 		subscription.setClient(client);
 		subscription.setCottage(cottage);
 		

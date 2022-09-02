@@ -32,7 +32,6 @@ public class FishingLessonSubscriptionServiceImplementation implements FishingLe
 		FishingLesson lesson =  fishingLessonRepository.findById(dto.getEntityId()).get();
 		
 		FishingLessonSubscription subscription = new FishingLessonSubscription();
-		subscription.setCanceled(false);
 		subscription.setClient(client);
 		subscription.setFishingLesson(lesson);
 		

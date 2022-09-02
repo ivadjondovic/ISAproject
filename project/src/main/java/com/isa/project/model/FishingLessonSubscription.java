@@ -16,7 +16,6 @@ public class FishingLessonSubscription {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
-	private Boolean canceled;
 	
 	@JsonBackReference
 	@ManyToOne
@@ -32,14 +31,6 @@ public class FishingLessonSubscription {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Boolean getCanceled() {
-		return canceled;
-	}
-
-	public void setCanceled(Boolean canceled) {
-		this.canceled = canceled;
 	}
 
 	public FishingLesson getFishingLesson() {

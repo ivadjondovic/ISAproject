@@ -62,6 +62,7 @@ import { FishingLessonComplaintDialogComponent } from './fishing-lesson-complain
 import { AdminComplaintsComponent } from './admin-complaints/admin-complaints.component';
 import { AnswerComplaintDialogComponent } from './answer-complaint-dialog/answer-complaint-dialog.component';
 import { CreateFishingLessonComponent } from './create-fishing-lesson/create-fishing-lesson.component';
+import { ClientSubscriptionsComponent } from './client-subscriptions/client-subscriptions.component';
 
 
 
@@ -110,6 +111,7 @@ import { CreateFishingLessonComponent } from './create-fishing-lesson/create-fis
     AdminComplaintsComponent,
     AnswerComplaintDialogComponent,
     CreateFishingLessonComponent,
+    ClientSubscriptionsComponent,
     
   ],
   imports: [

@@ -31,7 +31,6 @@ public class BoatSubscriptionServiceImplementation implements BoatSubscriptionSe
 		Boat boat =  boatRepository.findById(dto.getEntityId()).get();
 		
 		BoatSubscription subscription = new BoatSubscription();
-		subscription.setCanceled(false);
 		subscription.setClient(client);
 		subscription.setBoat(boat);
 		
