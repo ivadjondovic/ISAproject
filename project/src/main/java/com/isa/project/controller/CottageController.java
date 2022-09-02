@@ -57,7 +57,22 @@ public class CottageController {
 	
 	@PostMapping(path = "/sort")
     public ResponseEntity<?> sort(@RequestBody SortDTO dto) {
-        return new ResponseEntity<>(cottageService.sort(dto), HttpStatus.OK);
+		List<Cottage> response = cottageService.sort(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+	
+	@PreAuthorize("hasRole('CLIENT')")
+	@PostMapping(path = "/sortAvailable")
+    public ResponseEntity<?> sortAvailable(@RequestBody ReservationSearchDTO dto) {
+		
+		List<Cottage> response = cottageService.sortAvailableCottages(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 	
 	@PreAuthorize("hasRole('CLIENT')")

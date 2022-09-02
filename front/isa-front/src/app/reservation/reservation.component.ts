@@ -1,5 +1,6 @@
 import { NullVisitor } from '@angular/compiler/src/render3/r3_ast';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { idText } from 'typescript';
 import { BoatReservationService } from '../services/boat-reservation.service';
 import { BoatService } from '../services/boat.service';
@@ -16,10 +17,10 @@ import { UserService } from '../services/user.service';
 })
 export class ReservationComponent implements OnInit {
 
-  numberOfGuests: string
-  numberOfDays: string
-  startDate: string;
-  entity: string
+  numberOfGuests = ''
+  numberOfDays = ''
+  startDate = ''
+  entity = ''
   cottages: any[]
   boats: any[]
   lessons: any[]
@@ -36,7 +37,7 @@ export class ReservationComponent implements OnInit {
   additionalCottageServices = new Set<number>();
   additionalBoatServices = new Set<number>();
   additionalLessonServices = new Set<number>();
-  constructor(public lessonReservationService: FishingLessonReservationService, public boatReservationService: BoatReservationService, public cottageReservationService: CottageReservationService, public userService: UserService, public cottageService: CottageService, public boatService: BoatService, public lessonService: FishingLessonService) { }
+  constructor(private _snackBar: MatSnackBar, public lessonReservationService: FishingLessonReservationService, public boatReservationService: BoatReservationService, public cottageReservationService: CottageReservationService, public userService: UserService, public cottageService: CottageService, public boatService: BoatService, public lessonService: FishingLessonService) { }
 
   ngOnInit(): void {
     this.cottage = null
@@ -51,8 +52,21 @@ export class ReservationComponent implements OnInit {
   find() {
     let date = new Date(this.startDate)
     if (date.getTime() < Date.now()) {
-      alert("You have selected a date that has passed!")
-    } else {
+      this._snackBar.open('You have selected a date that has passed!', 'Close', { duration: 2500 })
+    }
+    else if (this.entity == '') {
+      this._snackBar.open('Select entity for reservation!', 'Close', { duration: 2500 })
+    }
+    else if (this.startDate == '') {
+      this._snackBar.open('Enter start date!', 'Close', { duration: 2500 })
+    }
+    else if (this.numberOfDays == '') {
+      this._snackBar.open('Enter number of days!', 'Close', { duration: 2500 })
+    }
+    else if (this.numberOfGuests == '') {
+      this._snackBar.open('Enter number of guests!', 'Close', { duration: 2500 })
+    }
+    else {
 
       if (this.entity == 'Cottage') {
         let data = {
@@ -142,19 +156,22 @@ export class ReservationComponent implements OnInit {
     let sortingBy = this.sortCottageBy
     let sortingType = this.sortCottageType
     console.log(this.sortCottageType)
-    if (this.sortCottageBy = '') {
-      alert('Choose sort by');
-    } else if (this.sortCottageType = '') {
-      alert('Choose sort type');
+    if (this.sortCottageBy == '') {
+      this._snackBar.open('Enter sort by.', 'Close', {duration: 2500})
+    } else if (this.sortCottageType == '') {
+      this._snackBar.open('Enter sort type.', 'Close', {duration: 2500})
     } else {
       console.log('OK')
       let data = {
+        startDate: this.startDate,
+        numberOfDays: this.numberOfDays,
+        numberOfGuests: this.numberOfGuests,
         sortBy: sortingBy,
         sortType: sortingType
       }
       console.log(data)
 
-      this.cottageService.sort(data).subscribe((response: any) => {
+      this.cottageService.sortAvailable(data).subscribe((response: any) => {
         this.cottages = response;
         console.log(this.cottages)
       })
@@ -166,19 +183,22 @@ export class ReservationComponent implements OnInit {
     let sortingBy = this.sortBoatBy
     let sortingType = this.sortBoatType
     console.log(this.sortBoatType)
-    if (this.sortBoatBy = '') {
-      alert('Choose sort by');
-    } else if (this.sortBoatType = '') {
-      alert('Choose sort type');
+    if (this.sortBoatBy == '') {
+      this._snackBar.open('Enter sort by.', 'Close', {duration: 2500})
+    } else if (this.sortBoatType == '') {
+      this._snackBar.open('Enter sort type.', 'Close', {duration: 2500})
     } else {
       console.log('OK')
       let data = {
+        startDate: this.startDate,
+        numberOfDays: this.numberOfDays,
+        numberOfGuests: this.numberOfGuests,
         sortBy: sortingBy,
         sortType: sortingType
       }
       console.log(data)
 
-      this.boatService.sort(data).subscribe((response: any) => {
+      this.boatService.sortAvailable(data).subscribe((response: any) => {
         this.boats = response;
         console.log(this.boats)
       })
@@ -190,19 +210,22 @@ export class ReservationComponent implements OnInit {
     let sortingBy = this.sortLessonBy
     let sortingType = this.sortLessonType
     console.log(this.sortLessonType)
-    if (this.sortLessonBy = '') {
-      alert('Choose sort by');
-    } else if (this.sortLessonType = '') {
-      alert('Choose sort type');
+    if (this.sortLessonBy == '') {
+      this._snackBar.open('Enter sort by.', 'Close', {duration: 2500})
+    } else if (this.sortLessonType == '') {
+      this._snackBar.open('Enter sort type.', 'Close', {duration: 2500})
     } else {
       console.log('OK')
       let data = {
+        startDate: this.startDate,
+        numberOfDays: this.numberOfDays,
+        numberOfGuests: this.numberOfGuests,
         sortBy: sortingBy,
         sortType: sortingType
       }
       console.log(data)
 
-      this.lessonService.sort(data).subscribe((response: any) => {
+      this.lessonService.sortAvailable(data).subscribe((response: any) => {
         this.lessons = response;
         console.log(this.lessons)
       })

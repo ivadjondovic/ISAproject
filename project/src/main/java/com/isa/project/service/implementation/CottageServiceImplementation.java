@@ -201,6 +201,9 @@ public class CottageServiceImplementation implements CottageService{
 	@Override
 	public List<Cottage> sort(SortDTO dto) {
 		
+		if(dto.getSortBy().equals("") || dto.getSortType().equals("")) {
+			return null;
+		}
 		List<Cottage> cottages = cottageRepository.findAll();
 		if(dto.getSortBy().equals("Name")) {
 			if(dto.getSortType().equals("Ascending")) {
@@ -263,6 +266,9 @@ public class CottageServiceImplementation implements CottageService{
 		if(dto.getStartDate().compareTo(LocalDateTime.now()) < 0) {
 			return null;
 		}
+		if(dto.getNumberOfDays() == 0 || dto.getNumberOfGuests() == 0 || dto.getStartDate().equals("")) {
+			return null;
+		}
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
 		List<Cottage> cottages = cottageRepository.findAll();
 		List<Cottage> result = new ArrayList<>();
@@ -309,6 +315,26 @@ public class CottageServiceImplementation implements CottageService{
 		
 		for(CottageSubscription subscription: clientSubscriptions) {
 			cottages.add(subscription.getCottage());
+		}
+		return cottages;
+	}
+
+
+	@Override
+	public List<Cottage> sortAvailableCottages(ReservationSearchDTO dto) {
+		if(dto.getNumberOfDays() == 0 || dto.getNumberOfGuests() == 0 || dto.getStartDate().equals("") || dto.getSortBy().equals("") || dto.getSortType().equals("")) {
+			return null;
+		}
+		List<Cottage> cottages = getAvailableCottages(dto);
+		if(dto.getSortBy().equals("Price")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(cottages, (c1, c2) ->
+			    Double.compare(c1.getPrice(), c2.getPrice()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(cottages, (c1, c2) ->
+				 Double.compare(c2.getPrice(), c1.getPrice()));
+			}
 		}
 		return cottages;
 	}

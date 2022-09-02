@@ -280,6 +280,10 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 
 	@Override
 	public List<FishingLesson> sort(SortDTO dto) {
+		
+		if(dto.getSortBy().equals("") || dto.getSortType().equals("")) {
+			return null;
+		}
 		List<FishingLesson> lessons = fishingLessonRepository.findAll();
 		if(dto.getSortBy().equals("Name")) {
 			if(dto.getSortType().equals("Ascending")) {
@@ -372,6 +376,9 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		if(dto.getStartDate().compareTo(LocalDateTime.now()) < 0) {
 			return null;
 		}
+		if(dto.getNumberOfDays() == 0 || dto.getNumberOfGuests() == 0 || dto.getStartDate().equals("")) {
+			return null;
+		}
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
 		List<FishingLesson> lessons = fishingLessonRepository.findAll();
 		List<FishingLesson> result = new ArrayList<>();
@@ -436,6 +443,26 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		for(FishingLessonSubscription subscription: clientSubscriptions) {
 			lessons.add(subscription.getFishingLesson());
 		}
+		return lessons;
+	}
+
+	@Override
+	public List<FishingLesson> sortAvailableLessons(ReservationSearchDTO dto) {
+		if(dto.getNumberOfDays() == 0 || dto.getNumberOfGuests() == 0 || dto.getStartDate().equals("") || dto.getSortBy().equals("") || dto.getSortType().equals("")) {
+			return null;
+		}
+		List<FishingLesson> lessons = getAvailableLessons(dto);
+		if(dto.getSortBy().equals("Price")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(lessons, (l1, l2) ->
+			    Double.compare(l1.getPrice(), l2.getPrice()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(lessons, (l1, l2) ->
+				 Double.compare(l2.getPrice(), l1.getPrice()));
+			}
+		}
+		
 		return lessons;
 	}
 

@@ -221,6 +221,10 @@ public class BoatServiceImplementation implements BoatService{
 
 	@Override
 	public List<Boat> sort(SortDTO dto) {
+		
+		if(dto.getSortBy().equals("") || dto.getSortType().equals("")) {
+			return null;
+		}
 		List<Boat> boats = boatRepository.findAll();
 		if(dto.getSortBy().equals("Name")) {
 			if(dto.getSortType().equals("Ascending")) {
@@ -338,6 +342,10 @@ public class BoatServiceImplementation implements BoatService{
 		if(dto.getStartDate().compareTo(LocalDateTime.now()) < 0) {
 			return null;
 		}
+		
+		if(dto.getNumberOfDays() == 0 || dto.getNumberOfGuests() == 0 || dto.getStartDate().equals("")) {
+			return null;
+		}
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
 		List<Boat> boats = boatRepository.findAll();
 		List<Boat> result = new ArrayList<>();
@@ -377,6 +385,26 @@ public class BoatServiceImplementation implements BoatService{
 		for(BoatSubscription subscription: clientSubscriptions) {
 			boats.add(subscription.getBoat());
 		}
+		return boats;
+	}
+
+	@Override
+	public List<Boat> sortAvailableBoats(ReservationSearchDTO dto) {
+		if(dto.getNumberOfDays() == 0 || dto.getNumberOfGuests() == 0 || dto.getStartDate().equals("") || dto.getSortBy().equals("") || dto.getSortType().equals("")) {
+			return null;
+		}
+		List<Boat> boats = getAvailableBoats(dto);
+		if(dto.getSortBy().equals("Price")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(boats, (b1, b2) ->
+			    Double.compare(b1.getPrice(), b2.getPrice()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(boats, (b1, b2) ->
+				 Double.compare(b2.getPrice(), b1.getPrice()));
+			}
+		}
+		
 		return boats;
 	}
 

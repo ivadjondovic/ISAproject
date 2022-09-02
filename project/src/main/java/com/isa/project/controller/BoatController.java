@@ -61,7 +61,23 @@ public class BoatController {
 	
 	@PostMapping(path = "/sort")
     public ResponseEntity<?> sort(@RequestBody SortDTO dto) {
-        return new ResponseEntity<>(boatService.sort(dto), HttpStatus.OK);
+		List<Boat> response = boatService.sort(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
+       
+    }
+	
+	@PreAuthorize("hasRole('CLIENT')")
+	@PostMapping(path = "/sortAvailable")
+    public ResponseEntity<?> sortAvailable(@RequestBody ReservationSearchDTO dto) {
+		List<Boat> response = boatService.sortAvailableBoats(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
+        
     }
 	
 	@PreAuthorize("hasRole('CLIENT')")

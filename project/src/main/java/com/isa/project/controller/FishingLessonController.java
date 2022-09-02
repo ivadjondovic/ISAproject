@@ -82,7 +82,21 @@ public class FishingLessonController {
 	
 	@PostMapping(path = "/sort")
     public ResponseEntity<?> sort(@RequestBody SortDTO dto) {
-        return new ResponseEntity<>(fishingLessonService.sort(dto), HttpStatus.OK);
+		List<FishingLesson> response = fishingLessonService.sort(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+	
+	@PreAuthorize("hasRole('CLIENT')")
+	@PostMapping(path = "/sortAvailable")
+    public ResponseEntity<?> sortAvailable(@RequestBody ReservationSearchDTO dto) {
+		List<FishingLesson> response = fishingLessonService.sortAvailableLessons(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 	
 	@GetMapping(path = "/search/{searchTerm}")

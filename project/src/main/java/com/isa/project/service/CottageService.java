@@ -18,5 +18,6 @@ public interface CottageService {
 	public List<Cottage> getAvailableCottages(ReservationSearchDTO dto);
 	public List<Cottage> cottagesAvailableForCertainDate(DateSearchDTO dto);
 	public List<Cottage> getCottagesByClientSubscription(Long clientId);
+	public List<Cottage> sortAvailableCottages(ReservationSearchDTO dto);
 
 }

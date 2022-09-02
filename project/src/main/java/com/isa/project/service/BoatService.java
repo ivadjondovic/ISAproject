@@ -18,4 +18,5 @@ public interface BoatService {
 	public List<Boat> getAvailableBoats(ReservationSearchDTO dto);
 	public List<Boat> boatsAvailableForCertainDate(DateSearchDTO dto);
 	public List<Boat> getBoatsByClientSubscription(Long clientId);
+	public List<Boat> sortAvailableBoats(ReservationSearchDTO dto);
 }
