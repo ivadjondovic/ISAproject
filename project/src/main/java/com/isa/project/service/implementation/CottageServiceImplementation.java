@@ -1,6 +1,7 @@
 package com.isa.project.service.implementation;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -21,6 +22,7 @@ import com.isa.project.dto.QuickReservationDTO;
 import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.RoomDTO;
 import com.isa.project.dto.RuleDTO;
+import com.isa.project.dto.SearchParamsDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalCottageService;
 import com.isa.project.model.AvailableCottagePeriod;
@@ -338,6 +340,92 @@ public class CottageServiceImplementation implements CottageService{
 			}
 		}
 		return cottages;
+	}
+
+
+	@Override
+	public List<Cottage> searchByMoreParams(SearchParamsDTO dto) {
+		DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+
+
+		String formattedDateTime = dto.getDate().format(formatter);
+		if(formattedDateTime.equals("")) {
+			return null;
+		}
+		List<Cottage> filteredByDate = new ArrayList<>();
+		List<Cottage> cottages = cottageRepository.findAll();
+		for(Cottage c: cottages) {
+			Set<AvailableCottagePeriod> periods = c.getAvailablePeriods();
+			for(AvailableCottagePeriod period: periods) {
+				if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) > 0) {
+					filteredByDate.add(c);
+				}
+			}
+			
+		}
+		List<Cottage> filteredByLocation = new ArrayList<>();
+		for(Cottage c: filteredByDate) {
+			filteredByLocation.add(c);
+		}
+		
+		if(!dto.getLocation().equals("")) {
+			filteredByLocation = filteredByDate.stream()
+					.filter(c -> c.getAddress().contains(dto.getLocation()))
+	                .collect(Collectors.toList());
+		}
+		
+		
+		List<Cottage> filteredByRating = new ArrayList<>();
+		for(Cottage c: filteredByLocation) {
+			filteredByRating.add(c);
+		}
+		if(dto.getRating() != 0) {
+			Double rating = (double) dto.getRating();
+			filteredByRating = filteredByLocation.stream()
+					.filter(c -> c.getRating() <= rating && c.getRating() > rating-1)
+					.collect(Collectors.toList());
+			
+		}
+		
+		List<Cottage> filteredByPrice = new ArrayList<>();
+		for(Cottage c: filteredByRating) {
+			filteredByPrice.add(c);
+		}
+		if(dto.getPriceFrom() != null && dto.getPriceTo() != null) {
+			filteredByPrice = filteredByRating.stream()
+					.filter(c -> c.getPrice() >= dto.getPriceFrom() && c.getPrice() <= dto.getPriceTo())
+					.collect(Collectors.toList());
+		}
+		
+		List<Cottage> filteredByPeople = new ArrayList<>();
+		for(Cottage c: filteredByPrice) {
+			filteredByPeople.add(c);
+		}
+		
+		List<Cottage> result = new ArrayList<>();
+		
+		
+		if(dto.getPeopleFrom() != 0 && dto.getPeopleTo() != 0) {
+			for(Cottage c: filteredByPeople) {
+				int people = 0;
+				Set<Room> rooms = c.getRooms();
+				for(Room r: rooms) {
+					people += r.getNumberOfBeds();
+				}
+				
+				if(people <= dto.getPeopleTo() && people >= dto.getPeopleFrom()) {
+					result.add(c);
+				}
+				
+			}
+			
+			return result;
+		
+		}
+		
+		
+		return filteredByPeople;
+	
 	}
 
 	

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.isa.project.dto.CottageDTO;
 import com.isa.project.dto.DateSearchDTO;
 import com.isa.project.dto.ReservationSearchDTO;
+import com.isa.project.dto.SearchParamsDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.Cottage;
 import com.isa.project.service.CottageService;
@@ -38,6 +39,17 @@ public class CottageController {
         }
         
         return new ResponseEntity<>(cottage, HttpStatus.OK);
+    }
+	
+	@PreAuthorize("hasRole('CLIENT')")
+	@PostMapping(path = "/searchByManyParams")
+    public ResponseEntity<?> searchByManyParams(@RequestBody SearchParamsDTO dto) {
+		List<Cottage> response = cottageService.searchByMoreParams(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
+        
     }
 	
 	@GetMapping(path = "/cottages")
