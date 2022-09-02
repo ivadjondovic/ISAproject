@@ -12,13 +12,18 @@ import { BoatService } from '../services/boat.service';
 export class BoatsComponent implements OnInit {
 
   boats: any[];
+  rating = ""
+  place = ""
+  priceFrom = ""
+  priceTo = ""
+  peopleFrom = ""
+  peopleTo = ""
   searchTerm = '';
   sortBy = '';
   sortType = '';
   user: any
   role: any
-  addSearch = false
-  dateForSearch: any
+  dateForSearch = ""
   subscribedBoats: any[]
   isLoged = false;
   constructor(private _snackBar: MatSnackBar, public subscriptionService: BoatSubscriptionService, public service: BoatService, public router: Router) { }
@@ -119,9 +124,6 @@ export class BoatsComponent implements OnInit {
     }
   }
 
-  additionalSearch(){
-    this.addSearch = true
-  }
 
   searchByDate(){
     let data = {
@@ -130,6 +132,28 @@ export class BoatsComponent implements OnInit {
     this.service.getAvailableBoatsForCertainDate(data).subscribe((response: any) => {
       this.boats = response;
      })
+  }
+
+  searchBoats(){
+    if(this.dateForSearch == ''){
+      this._snackBar.open('Enter date.', 'Close', {duration: 2500});
+    }else{
+
+      let data = {
+        date: this.dateForSearch,
+        location: this.place,
+        rating: this.rating,
+        priceFrom: this.priceFrom,
+        priceTo: this.priceTo,
+        peopleFrom: this.peopleFrom,
+        peopleTo: this.peopleTo
+      }
+
+      this.service.searchByManyParams(data).subscribe((response: any) => {
+        this.boats = response;
+      })
+    }
+
   }
 
  

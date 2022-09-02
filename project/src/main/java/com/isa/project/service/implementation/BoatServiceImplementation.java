@@ -1,6 +1,7 @@
 package com.isa.project.service.implementation;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -22,6 +23,7 @@ import com.isa.project.dto.NavigationEquipmentDTO;
 import com.isa.project.dto.QuickReservationDTO;
 import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.RuleDTO;
+import com.isa.project.dto.SearchParamsDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalBoatService;
 import com.isa.project.model.AvailableBoatPeriod;
@@ -407,6 +409,77 @@ public class BoatServiceImplementation implements BoatService{
 		}
 		
 		return boats;
+	}
+
+	@Override
+	public List<Boat> searchByMoreParams(SearchParamsDTO dto) {
+		
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+
+
+		String formattedDateTime = dto.getDate().format(formatter);
+		if(formattedDateTime.equals("")) {
+			return null;
+		}
+		List<Boat> filteredByDate = new ArrayList<>();
+		List<Boat> boats = boatRepository.findAll();
+		for(Boat b: boats) {
+			Set<AvailableBoatPeriod> periods = b.getAvailablePeriods();
+			for(AvailableBoatPeriod period: periods) {
+				if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) > 0) {
+					filteredByDate.add(b);
+				}
+			}
+			
+		}
+		List<Boat> filteredByLocation = new ArrayList<>();
+		for(Boat b: filteredByDate) {
+			filteredByLocation.add(b);
+		}
+		
+		if(!dto.getLocation().equals("")) {
+			filteredByLocation = filteredByDate.stream()
+					.filter(b -> b.getAddress().contains(dto.getLocation()))
+	                .collect(Collectors.toList());
+		}
+		
+		
+		List<Boat> filteredByRating = new ArrayList<>();
+		for(Boat b: filteredByLocation) {
+			filteredByRating.add(b);
+		}
+		if(dto.getRating() != 0) {
+			Double rating = (double) dto.getRating();
+			filteredByRating = filteredByLocation.stream()
+					.filter(b -> b.getRating() <= rating && b.getRating() > rating-1)
+					.collect(Collectors.toList());
+			
+		}
+		
+		List<Boat> filteredByPrice = new ArrayList<>();
+		for(Boat b: filteredByRating) {
+			filteredByPrice.add(b);
+		}
+		if(dto.getPriceFrom() != null && dto.getPriceTo() != null) {
+			filteredByPrice = filteredByRating.stream()
+					.filter(b -> b.getPrice() >= dto.getPriceFrom() && b.getPrice() <= dto.getPriceTo())
+					.collect(Collectors.toList());
+		}
+		
+		List<Boat> filteredByPeople = new ArrayList<>();
+		for(Boat b: filteredByPrice) {
+			filteredByPeople.add(b);
+		}
+		if(dto.getPeopleFrom() != 0 && dto.getPeopleTo() != 0) {
+			filteredByPeople = filteredByPrice.stream()
+					.filter(b -> b.getCapacity() >= dto.getPeopleFrom() && b.getCapacity() <= dto.getPeopleTo())
+					.collect(Collectors.toList());
+					
+		}
+		
+		return filteredByPeople;
+	
 	}
 
 }

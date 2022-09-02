@@ -51,5 +51,9 @@ export class BoatService {
   subscribedBoats(id: any){
     return this.http.get(this.baseURL + "api/boat/subscribedBoats/" + id, this.getAuthoHeader());
   }
+
+  searchByManyParams(data: any){
+    return this.http.post(this.baseURL + "api/boat/searchByManyParams" ,  data, this.getAuthoHeader());
+  }
   
 }
