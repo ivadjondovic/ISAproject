@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DeleteAccountService } from '../services/delete-account.service';
 import { UserService } from '../services/user.service';
 
@@ -9,9 +10,9 @@ import { UserService } from '../services/user.service';
 })
 export class DeleteAccountComponent implements OnInit {
 
-  reason: string
+  reason = ""
   user: any = {} as any
-  constructor(public service: DeleteAccountService, public userService: UserService) { }
+  constructor(private _snackBar: MatSnackBar, public service: DeleteAccountService, public userService: UserService) { }
 
   ngOnInit(): void {
     this.userService.current().subscribe((response: any) => {
@@ -20,15 +21,21 @@ export class DeleteAccountComponent implements OnInit {
 
   }
 
-  deleteAccount(){
-    let data = {
-      "reason": this.reason,
-      "userId": this.user.id
+  deleteAccount() {
+
+    if (this.reason == "") {
+      this._snackBar.open('Enter deletion request.', 'Close', { duration: 2500 })
+    } else {
+      let data = {
+        "reason": this.reason,
+        "userId": this.user.id
+      }
+      this.service.addRequest(data).subscribe((response: any) => {
+        console.log(response);
+        location.reload();
+      })
+
     }
-    this.service.addRequest(data).subscribe((response: any) => {
-      console.log(response);
-      location.reload();
-    })
   }
 
 }

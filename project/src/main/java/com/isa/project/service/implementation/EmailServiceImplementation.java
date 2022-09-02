@@ -84,7 +84,7 @@ public class EmailServiceImplementation implements EmailService{
 	    helper=new MimeMessageHelper(message,true);
 	    helper.setTo(new InternetAddress(user.getUsername()));
 	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
-	    helper.setSubject("Account activation");
+	    helper.setSubject("Account delation accepted");
 	    helper.setText("Hello " + user.getName() + " " + user.getSurname() +  ",\n\nYour account has been deleted successfully because " + reason + "." + "\n\n");
 	    javaMailSender.send(message);
 		
@@ -98,7 +98,7 @@ public class EmailServiceImplementation implements EmailService{
 	    helper=new MimeMessageHelper(message,true);
 	    helper.setTo(new InternetAddress(user.getUsername()));
 	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
-	    helper.setSubject("Account activation");
+	    helper.setSubject("Account delation refused");
 	    helper.setText("Hello " + user.getName() + " " + user.getSurname() +  ",\n\nYour request for deleting account is declined because " + reason + "." + "\n\n");
 	    javaMailSender.send(message);
 		

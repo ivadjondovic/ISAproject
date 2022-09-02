@@ -304,6 +304,10 @@ public class UserServiceImplementation implements UserService{
 
 	@Override
 	public User declineDeletingAccount(DeleteAccountRequestDTO dto) {
+		
+		if(dto.getReason().equals("")) {
+			return null;
+		}
 		User user = userRepository.findById(dto.getUserId()).get();
 		user.setDeleted(false);	
 		try {
@@ -322,6 +326,10 @@ public class UserServiceImplementation implements UserService{
 
 	@Override
 	public User acceptDeletingAccount(DeleteAccountRequestDTO dto) {
+		
+		if(dto.getReason().equals("")) {
+			return null;
+		}
 		User user = userRepository.findById(dto.getUserId()).get();
 		user.setDeleted(true);
 		try {

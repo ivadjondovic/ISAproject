@@ -1,12 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { BoatRevisionService } from '../services/boat-revision.service';
 import { UserService } from '../services/user.service';
 
 export interface DialogData {
   id: string;
   type: string
- }
+}
 
 @Component({
   selector: 'app-rating-boat-dialog',
@@ -15,12 +16,12 @@ export interface DialogData {
 })
 export class RatingBoatDialogComponent implements OnInit {
 
-  description: string
+  description = ""
   user: any
-  entityRate: any
-  ownerRate: any
+  entityRate = ""
+  ownerRate = ""
 
-  constructor(public dialogRef: MatDialogRef<RatingBoatDialogComponent>,
+  constructor(private _snackBar: MatSnackBar, public dialogRef: MatDialogRef<RatingBoatDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData, public userService: UserService, public revisionService: BoatRevisionService) { }
 
   ngOnInit(): void {
@@ -28,30 +29,41 @@ export class RatingBoatDialogComponent implements OnInit {
     console.log(this.data.type)
     this.userService.current().subscribe((response: any) => {
       this.user = response;
-     
+
     })
   }
 
   onNoClick(): void {
     this.dialogRef.close();
-    
+
   }
 
   submit() {
-    let data = {
-      reservationId: this.data.id,
-      reservationType: this.data.type,
-      description: this.description,
-      entityRate: this.entityRate,
-      ownerRate: this.ownerRate,
-      clientId: this.user.id
+
+    if (this.description == "") {
+      this._snackBar.open('Enter description.', 'Close', { duration: 2500 })
+    } else if (this.entityRate == "") {
+      this._snackBar.open('Enter boat rate.', 'Close', { duration: 2500 })
+    } else if (this.ownerRate == "") {
+      this._snackBar.open('Enter boat owner rate.', 'Close', { duration: 2500 })
+    } else {
+
+      let data = {
+        reservationId: this.data.id,
+        reservationType: this.data.type,
+        description: this.description,
+        entityRate: this.entityRate,
+        ownerRate: this.ownerRate,
+        clientId: this.user.id
+
+      }
+
+      this.revisionService.addRevision(data).subscribe((response: any) => {
+        console.log(response)
+        this.dialogRef.close();
+      })
 
     }
-
-    this.revisionService.addRevision(data).subscribe((response: any) => {
-      console.log(response)
-      this.dialogRef.close();
-    })
   }
 
 }
