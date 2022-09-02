@@ -24,8 +24,10 @@ import com.isa.project.dto.RuleDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalCottageService;
 import com.isa.project.model.AvailableCottagePeriod;
+import com.isa.project.model.Client;
 import com.isa.project.model.Cottage;
 import com.isa.project.model.CottageOwner;
+import com.isa.project.model.CottageSubscription;
 import com.isa.project.model.Image;
 import com.isa.project.model.QuickCottageReservation;
 import com.isa.project.model.Room;
@@ -34,6 +36,7 @@ import com.isa.project.model.User;
 import com.isa.project.repository.AdditionalCottageServiceRepository;
 import com.isa.project.repository.AvailableCottagePeriodRepository;
 import com.isa.project.repository.CottageRepository;
+import com.isa.project.repository.CottageSubscriptionRepository;
 import com.isa.project.repository.QuickCottageReservationRepository;
 import com.isa.project.repository.RoomRepository;
 import com.isa.project.repository.UserRepository;
@@ -60,6 +63,9 @@ public class CottageServiceImplementation implements CottageService{
 	
 	@Autowired
 	private QuickCottageReservationRepository quickReservationRepository;
+	
+	@Autowired
+	private CottageSubscriptionRepository cottageSubscriptionRepository;
 	
 	
 	@Override
@@ -281,6 +287,20 @@ public class CottageServiceImplementation implements CottageService{
 			
 		}
 		return result;
+	}
+
+
+	@Override
+	public List<Cottage> getCottagesByClientSubscription(Long clientId) {
+		
+		List<Cottage> cottages = new ArrayList<>();
+		Client client = (Client) userRepository.findById(clientId).get();
+		List<CottageSubscription> clientSubscriptions = cottageSubscriptionRepository.findByClient(client);
+		
+		for(CottageSubscription subscription: clientSubscriptions) {
+			cottages.add(subscription.getCottage());
+		}
+		return cottages;
 	}
 
 	

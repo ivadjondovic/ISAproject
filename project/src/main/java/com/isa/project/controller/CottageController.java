@@ -80,5 +80,11 @@ public class CottageController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 	
+	@GetMapping(path = "/subscribedCottages/{clientId}")
+	@PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<?> subscribedCottages(@PathVariable Long clientId) {
+        return new ResponseEntity<>(cottageService.getCottagesByClientSubscription(clientId), HttpStatus.OK);
+    }
+	
 	
 }

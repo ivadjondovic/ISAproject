@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CottageSubscriptionService } from '../services/cottage-subscription.service';
 import { CottageService } from '../services/cottage.service';
 
 @Component({
@@ -17,10 +18,12 @@ export class CottagesComponent implements OnInit {
   role: any
   addSearch = false
   dateForSearch: any
-  constructor(public service: CottageService, public router: Router) { }
+  subscribedCottages: any[]
+  constructor(public subscriptionService: CottageSubscriptionService, public service: CottageService, public router: Router) { }
 
 
   ngOnInit(): void {
+    this.subscribedCottages = [];
     this.service.getAll().subscribe((response: any) => {
       this.cottages = response;
       console.log(this.cottages)
@@ -28,8 +31,42 @@ export class CottagesComponent implements OnInit {
       if (userStrng) {
         this.user = JSON.parse(userStrng);
         this.role = this.user.userType;
+        this.service.subscribedCottages(this.user.id).subscribe((response: any) => {
+          this.subscribedCottages = response;
+        })
       }
+
     })
+  }
+
+  isSubscribed(id: any){
+
+   if(this.subscribedCottages.length == 0){
+    return true;
+   }
+
+   for(let i =0; i<this.subscribedCottages.length; i++){
+    if(this.subscribedCottages[i].id == id){
+      return true;
+    }
+   }
+   return false;
+
+   
+  }
+
+  subscribe(id: any){
+    let data = {
+      clientId: this.user.id,
+      entityId: id
+    }
+    this.subscriptionService.subscribeEntity(data).subscribe((response: any) => {
+      console.log(response)
+      this.service.subscribedCottages(this.user.id).subscribe((response: any) => {
+        this.subscribedCottages = response;
+      })
+    })
+    
   }
 
   showMore(id: string) {
