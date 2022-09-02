@@ -16,7 +16,7 @@
                 <td>{{subscription.type}}</td>
                 <td>{{subscription.entityName}}</td>
                 <td>{{subscription.entityOwner}}</td>
-                <td><button class="button1">
+                <td><button (click)="unsubscribe(subscription.id, subscription.type)" class="button1">
                         <mat-icon>unsubscribe</mat-icon>
                     </button></td>
             </tr>

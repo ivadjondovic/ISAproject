@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isa.project.dto.SubscriptionResponseDTO;
+import com.isa.project.dto.UnsubscribeDTO;
 import com.isa.project.model.BoatSubscription;
 import com.isa.project.model.Client;
 import com.isa.project.model.CottageSubscription;
@@ -75,6 +76,46 @@ public class SubscriptionsServiceImplementation implements SubscriptionsService{
 		}
 		
 		return subscriptions;
+	}
+
+	@Override
+	public SubscriptionResponseDTO unsubscribe(UnsubscribeDTO dto) {
+		
+		SubscriptionResponseDTO response = new SubscriptionResponseDTO();
+		
+		if(dto.getType().equals("Boat")) {
+			BoatSubscription subscription = boatSubscriptionRepository.findById(dto.getId()).get();
+			response.setEntityName(subscription.getBoat().getName());
+			response.setEntityOwner(subscription.getBoat().getBoatOwner().getName() + " " + subscription.getBoat().getBoatOwner().getSurname());
+			response.setType("Boat");
+			response.setId(subscription.getId());
+			
+			boatSubscriptionRepository.delete(subscription);
+			
+		}
+		
+		if(dto.getType().equals("Cottage")) {
+			CottageSubscription subscription = cottageSubscriptionRepository.findById(dto.getId()).get();
+			response.setEntityName(subscription.getCottage().getName());
+			response.setEntityOwner(subscription.getCottage().getCottageOwner().getName() + " " + subscription.getCottage().getCottageOwner().getSurname());
+			response.setType("Cottage");
+			response.setId(subscription.getId());
+			
+			cottageSubscriptionRepository.delete(subscription);
+			
+		}
+		
+		if(dto.getType().equals("Fishing lesson")) {
+			FishingLessonSubscription subscription = fishingLessonSubscriptionRepository.findById(dto.getId()).get();
+			response.setEntityName(subscription.getFishingLesson().getName());
+			response.setEntityOwner(subscription.getFishingLesson().getInstructor().getName() + " " + subscription.getFishingLesson().getInstructor().getSurname());
+			response.setType("Fishing lesson");
+			response.setId(subscription.getId());
+			
+			fishingLessonSubscriptionRepository.delete(subscription);
+			
+		}
+		return response;
 	}
 
 }

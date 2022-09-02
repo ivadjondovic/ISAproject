@@ -23,4 +23,19 @@ export class ClientSubscriptionsComponent implements OnInit {
     
   }
 
+  unsubscribe(id: any, type: any){
+
+    let data = {
+      id: id,
+      type: type
+    }
+
+    this.service.unsubscribeEntity(data).subscribe((response: any) => {
+      console.log(response)
+      this.service.getClientSubscriptions(this.user.id).subscribe((response: any) => {
+        this.subscriptions = response;
+      })
+    })
+  }
+
 }

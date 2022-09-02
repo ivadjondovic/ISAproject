@@ -24,4 +24,8 @@ export class SubscriptionsService {
     return this.http.get(this.baseURL + "api/subscriptions/clientSubscriptions/" + id, this.getAuthoHeader());
   }
 
+  unsubscribeEntity(data: any){
+    return this.http.put(this.baseURL + "api/subscriptions/unsubscribe", data, this.getAuthoHeader());
+  }
+
 }
