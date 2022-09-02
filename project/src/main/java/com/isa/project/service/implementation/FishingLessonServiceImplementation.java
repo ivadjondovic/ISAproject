@@ -23,8 +23,10 @@ import com.isa.project.dto.RuleDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalFishingLessonService;
 import com.isa.project.model.AvailableFishingLessonPeriod;
+import com.isa.project.model.Client;
 import com.isa.project.model.FishingEquipment;
 import com.isa.project.model.FishingLesson;
+import com.isa.project.model.FishingLessonSubscription;
 import com.isa.project.model.Image;
 import com.isa.project.model.Instructor;
 import com.isa.project.model.QuickFishingLessonReservation;
@@ -34,6 +36,7 @@ import com.isa.project.repository.AdditionalFishingLessonServiceRepository;
 import com.isa.project.repository.AvailableFishingLessonPeriodRepository;
 import com.isa.project.repository.FishingEquipmentRepository;
 import com.isa.project.repository.FishingLessonRepository;
+import com.isa.project.repository.FishingLessonSubscriptionRepository;
 import com.isa.project.repository.QuickFishingLessonReservationRepository;
 import com.isa.project.repository.RuleRepository;
 import com.isa.project.repository.UserRepository;
@@ -62,6 +65,9 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 	
 	@Autowired
 	private FishingEquipmentRepository fishingEquipmentRepository;
+	
+	@Autowired
+	private FishingLessonSubscriptionRepository fishingLessonSubscriptionRepository;
 	
 	@Override
 	public FishingLesson createFishingLesson(FishingLessonDTO dto) {
@@ -408,6 +414,18 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		
 		filtered = result.stream().distinct().collect( Collectors.toList() );
 		return filtered;
+	}
+
+	@Override
+	public List<FishingLesson> getLessonsByClientSubscription(Long clientId) {
+		List<FishingLesson> lessons = new ArrayList<>();
+		Client client = (Client) userRepository.findById(clientId).get();
+		List<FishingLessonSubscription> clientSubscriptions = fishingLessonSubscriptionRepository.findByClient(client);
+		
+		for(FishingLessonSubscription subscription: clientSubscriptions) {
+			lessons.add(subscription.getFishingLesson());
+		}
+		return lessons;
 	}
 
 }

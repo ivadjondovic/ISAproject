@@ -36,6 +36,10 @@ public class FishingLesson {
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "fishingLesson", fetch = FetchType.LAZY)
+	private Set<FishingLessonSubscription> subscriptions;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "fishingLesson", fetch = FetchType.LAZY)
 	private Set<FishingLessonRevision> revisions;
 	
 	@JsonManagedReference
@@ -232,6 +236,16 @@ public class FishingLesson {
 	public void setComplaints(Set<FishingLessonComplaint> complaints) {
 		this.complaints = complaints;
 	}
+
+	public Set<FishingLessonSubscription> getSubscriptions() {
+		return subscriptions;
+	}
+
+	public void setSubscriptions(Set<FishingLessonSubscription> subscriptions) {
+		this.subscriptions = subscriptions;
+	}
+	
+	
 	
 	
 	

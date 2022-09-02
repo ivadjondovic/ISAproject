@@ -115,4 +115,10 @@ public class FishingLessonController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 	
+	@GetMapping(path = "/subscribedLessons/{clientId}")
+	@PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<?> subscribedLessons(@PathVariable Long clientId) {
+        return new ResponseEntity<>(fishingLessonService.getLessonsByClientSubscription(clientId), HttpStatus.OK);
+    }
+	
 }

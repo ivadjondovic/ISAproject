@@ -68,4 +68,8 @@ export class FishingLessonService {
     return this.http.post(this.baseURL + "api/fishing/availableLessonsForCertainDate" ,  data, this.getAuthoHeader());
   }
 
+  subscribedLessons(id: any){
+    return this.http.get(this.baseURL + "api/fishing/subscribedLessons/" + id, this.getAuthoHeader());
+  }
+
 }

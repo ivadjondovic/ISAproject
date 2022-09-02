@@ -52,6 +52,10 @@ public class Client extends User{
 	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
 	private Set<BoatSubscription> boatSubscriptions;
 	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+	private Set<FishingLessonSubscription> fishingLessonSubscriptions;
+	
 	@Override
     public String getUserType() {
         return userType;
@@ -120,6 +124,15 @@ public class Client extends User{
 	public void setBoatSubscriptions(Set<BoatSubscription> boatSubscriptions) {
 		this.boatSubscriptions = boatSubscriptions;
 	}
+
+	public Set<FishingLessonSubscription> getFishingLessonSubscriptions() {
+		return fishingLessonSubscriptions;
+	}
+
+	public void setFishingLessonSubscriptions(Set<FishingLessonSubscription> fishingLessonSubscriptions) {
+		this.fishingLessonSubscriptions = fishingLessonSubscriptions;
+	}
+	
 	
 	
 	
