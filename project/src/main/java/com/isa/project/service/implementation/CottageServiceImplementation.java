@@ -128,6 +128,7 @@ public class CottageServiceImplementation implements CottageService{
 			quickReservation.setReserved(false);
 			quickReservation.setAccepted(false);
 			quickReservation.setCanceled(false);
+			quickReservation.setDiscount(quickReservationDto.getDiscount());
 			QuickCottageReservation savedReservation = quickReservationRepository.save(quickReservation);
 			quickReservations.add(savedReservation);
 			

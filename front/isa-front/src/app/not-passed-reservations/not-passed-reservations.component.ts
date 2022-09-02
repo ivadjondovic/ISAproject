@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ReservationsService } from '../services/reservations.service';
 import { UserService } from '../services/user.service';
 
@@ -12,7 +13,7 @@ export class NotPassedReservationsComponent implements OnInit {
   reservations: any[]
   reservationList: any[]
   user: any
-  constructor(public service: ReservationsService, public userService: UserService) { }
+  constructor(private _snackBar: MatSnackBar, public service: ReservationsService, public userService: UserService) { }
 
   ngOnInit(): void {
     this.userService.current().subscribe((response: any) => {
@@ -69,7 +70,8 @@ export class NotPassedReservationsComponent implements OnInit {
 
         this.corectDate();
       })
-    })
+    }, error => {
+      this._snackBar.open('Cancellation failed!', 'Close', {duration: 3000})});
 
   }
 

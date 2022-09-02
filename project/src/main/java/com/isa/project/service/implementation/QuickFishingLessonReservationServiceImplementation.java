@@ -114,6 +114,7 @@ public class QuickFishingLessonReservationServiceImplementation implements Quick
 		reservation.setAccepted(false);
 		reservation.setCanceled(false);
 		reservation.setReserved(false);
+		reservation.setDiscount(dto.getDiscount());
 		
 		FishingLesson lesson = fishingLessonRepository.findById(dto.getId()).get();
 		

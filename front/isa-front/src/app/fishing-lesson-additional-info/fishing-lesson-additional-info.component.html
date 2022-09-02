@@ -41,12 +41,13 @@
         <mat-card-title style="text-align: center; font-size: 18px;">Quick reservations</mat-card-title>
     </mat-card>
 
-    <mat-grid-list *ngIf="!isEmpty(quickReservationList)" [cols]="3" [rowHeight]="260">
+    <mat-grid-list *ngIf="!isEmpty(quickReservationList)" [cols]="3" [rowHeight]="290">
         <div *ngFor="let reservation of quickReservationList">
             <mat-grid-tile  [rowspan]="1" [colspan]="1">
                 <div class="rounded">
                     <p style="font-size: 17px;"><span style="color: #4c7d85;">From-To:&nbsp;</span> {{reservation.startDate | date:'medium'}} - {{reservation.endDate | date:'medium'}}</p>
                     <p style="font-size: 17px;"><span style="color: #4c7d85;">Price:&nbsp;</span> {{reservation.price}}</p>
+                    <p style="font-size: 17px;"><span style="color: #4c7d85;">Discount:&nbsp;</span> {{reservation.discount}}%</p>
                     <p style="font-size: 17px;"><span style="color: #4c7d85;">Number of person:&nbsp;</span> {{reservation.maxNumberOfPerson}}</p>
                     <p style="font-size: 17px;"><span style="color: #4c7d85;">Additional services:&nbsp;</span> {{reservation.additionalServices}}</p>
 

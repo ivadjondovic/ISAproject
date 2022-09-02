@@ -11,7 +11,17 @@ public class QuickReservationDTO {
 	private int maxNumberOfPerson;
 	private String additionalServices;
 	private String location; 
+	private Double discount;
 	
+	
+	
+	
+	public Double getDiscount() {
+		return discount;
+	}
+	public void setDiscount(Double discount) {
+		this.discount = discount;
+	}
 	public LocalDateTime getStartDate() {
 		return startDate;
 	}

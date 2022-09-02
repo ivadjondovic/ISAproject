@@ -157,10 +157,20 @@ export class ReservationComponent implements OnInit {
     let sortingType = this.sortCottageType
     console.log(this.sortCottageType)
     if (this.sortCottageBy == '') {
-      this._snackBar.open('Enter sort by.', 'Close', {duration: 2500})
+      this._snackBar.open('Enter sort by.', 'Close', { duration: 2500 })
     } else if (this.sortCottageType == '') {
-      this._snackBar.open('Enter sort type.', 'Close', {duration: 2500})
-    } else {
+      this._snackBar.open('Enter sort type.', 'Close', { duration: 2500 })
+    }
+    else if (this.startDate == '') {
+      this._snackBar.open('Enter start date!', 'Close', { duration: 2500 })
+    }
+    else if (this.numberOfDays == '') {
+      this._snackBar.open('Enter number of days!', 'Close', { duration: 2500 })
+    }
+    else if (this.numberOfGuests == '') {
+      this._snackBar.open('Enter number of guests!', 'Close', { duration: 2500 })
+    }
+    else {
       console.log('OK')
       let data = {
         startDate: this.startDate,
@@ -184,10 +194,20 @@ export class ReservationComponent implements OnInit {
     let sortingType = this.sortBoatType
     console.log(this.sortBoatType)
     if (this.sortBoatBy == '') {
-      this._snackBar.open('Enter sort by.', 'Close', {duration: 2500})
+      this._snackBar.open('Enter sort by.', 'Close', { duration: 2500 })
     } else if (this.sortBoatType == '') {
-      this._snackBar.open('Enter sort type.', 'Close', {duration: 2500})
-    } else {
+      this._snackBar.open('Enter sort type.', 'Close', { duration: 2500 })
+    }
+    else if (this.startDate == '') {
+      this._snackBar.open('Enter start date!', 'Close', { duration: 2500 })
+    }
+    else if (this.numberOfDays == '') {
+      this._snackBar.open('Enter number of days!', 'Close', { duration: 2500 })
+    }
+    else if (this.numberOfGuests == '') {
+      this._snackBar.open('Enter number of guests!', 'Close', { duration: 2500 })
+    }
+    else {
       console.log('OK')
       let data = {
         startDate: this.startDate,
@@ -211,10 +231,20 @@ export class ReservationComponent implements OnInit {
     let sortingType = this.sortLessonType
     console.log(this.sortLessonType)
     if (this.sortLessonBy == '') {
-      this._snackBar.open('Enter sort by.', 'Close', {duration: 2500})
+      this._snackBar.open('Enter sort by.', 'Close', { duration: 2500 })
     } else if (this.sortLessonType == '') {
-      this._snackBar.open('Enter sort type.', 'Close', {duration: 2500})
-    } else {
+      this._snackBar.open('Enter sort type.', 'Close', { duration: 2500 })
+    }
+    else if (this.startDate == '') {
+      this._snackBar.open('Enter start date!', 'Close', { duration: 2500 })
+    }
+    else if (this.numberOfDays == '') {
+      this._snackBar.open('Enter number of days!', 'Close', { duration: 2500 })
+    }
+    else if (this.numberOfGuests == '') {
+      this._snackBar.open('Enter number of guests!', 'Close', { duration: 2500 })
+    }
+    else {
       console.log('OK')
       let data = {
         startDate: this.startDate,
@@ -307,52 +337,61 @@ export class ReservationComponent implements OnInit {
 
     let additionalServicesForCottage = Array.from(this.additionalCottageServices);
 
-    if (this.entity == 'Cottage') {
-      let data = {
-        startDate: this.startDate,
-        numberOfDays: this.numberOfDays,
-        clientId: this.user.id,
-        entityId: this.cottage.id,
-        additionalServices: additionalServicesForCottage
-
-      }
-      this.cottageReservationService.createReservation(data).subscribe((response: any) => {
-        console.log(response)
-        location.reload();
-      })
-
+    if (this.startDate == '') {
+      this._snackBar.open('Enter start date!', 'Close', { duration: 2500 })
     }
+    else if (this.numberOfDays == '') {
+      this._snackBar.open('Enter number of days!', 'Close', { duration: 2500 })
+    } else {
 
-    let additionalServicesForBoat = Array.from(this.additionalBoatServices);
-    if (this.entity == 'Boat') {
-      let data = {
-        startDate: this.startDate,
-        numberOfDays: this.numberOfDays,
-        clientId: this.user.id,
-        entityId: this.boat.id,
-        additionalServices: additionalServicesForBoat
+      if (this.entity == 'Cottage') {
+        let data = {
+          startDate: this.startDate,
+          numberOfDays: this.numberOfDays,
+          clientId: this.user.id,
+          entityId: this.cottage.id,
+          additionalServices: additionalServicesForCottage
 
-      }
-      this.boatReservationService.createReservation(data).subscribe((response: any) => {
-        console.log(response)
-        location.reload();
-      })
-
-    }
-    let additionalServicesForLesson = Array.from(this.additionalLessonServices);
-    if (this.entity == 'Fishing lesson') {
-      let data = {
-        startDate: this.startDate,
-        numberOfDays: this.numberOfDays,
-        clientId: this.user.id,
-        entityId: this.lesson.id,
-        additionalServices: additionalServicesForLesson
+        }
+        this.cottageReservationService.createReservation(data).subscribe((response: any) => {
+          console.log(response)
+          location.reload();
+        })
 
       }
-      this.lessonReservationService.createReservation(data).subscribe((response: any) => {
-        console.log(response)
-        location.reload();
-      })
+
+      let additionalServicesForBoat = Array.from(this.additionalBoatServices);
+      if (this.entity == 'Boat') {
+        let data = {
+          startDate: this.startDate,
+          numberOfDays: this.numberOfDays,
+          clientId: this.user.id,
+          entityId: this.boat.id,
+          additionalServices: additionalServicesForBoat
+
+        }
+        this.boatReservationService.createReservation(data).subscribe((response: any) => {
+          console.log(response)
+          location.reload();
+        })
+
+      }
+      let additionalServicesForLesson = Array.from(this.additionalLessonServices);
+      if (this.entity == 'Fishing lesson') {
+        let data = {
+          startDate: this.startDate,
+          numberOfDays: this.numberOfDays,
+          clientId: this.user.id,
+          entityId: this.lesson.id,
+          additionalServices: additionalServicesForLesson
+
+        }
+        this.lessonReservationService.createReservation(data).subscribe((response: any) => {
+          console.log(response)
+          location.reload();
+        })
+
+      }
 
     }
   }
