@@ -36,6 +36,21 @@ button {
     background: #ffd480;
 }
 
+.rounded2 {
+    border-radius: 5px;
+    width: 70%;
+    height: 65%;
+    border-color: #ffe6e6;
+    border-style: solid;
+    padding: 10px;
+    border-width: 0.2px;
+    right: 10px;
+    left: 10px;
+   
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
 button:hover {
     background: #fbcc6e;
 }

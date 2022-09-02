@@ -40,6 +40,10 @@ public class FishingLessonRevisionServiceImplementation implements FishingLesson
 	@Override
 	public FishingLessonRevision addRevision(RevisionDTO dto) {
 		
+		if(dto.getDescription().equals("") || dto.getEntityRate() ==0 || dto.getOwnerRate() == 0 || dto.getReservationType().equals("")) {
+			return null;
+		}
+		
 		FishingLessonRevision lessonRevision = new FishingLessonRevision();
 		lessonRevision.setStatus("Waiting");
 		Client client = (Client) userRepository.findById(dto.getClientId()).get();

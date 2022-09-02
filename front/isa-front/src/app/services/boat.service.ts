@@ -36,12 +36,24 @@ export class BoatService {
     return this.http.post(this.baseURL + "api/boat/sort" ,  data);
   }
 
+  sortAvailable(data: any){
+    return this.http.post(this.baseURL + "api/boat/sortAvailable" ,  data, this.getAuthoHeader());
+  }
+
   getAvailableBoats(data: any){
     return this.http.post(this.baseURL + "api/boat/availableBoats" ,  data, this.getAuthoHeader());
   }
 
   getAvailableBoatsForCertainDate(data: any){
     return this.http.post(this.baseURL + "api/boat/availableBoatsForCertainDate" ,  data, this.getAuthoHeader());
+  }
+
+  subscribedBoats(id: any){
+    return this.http.get(this.baseURL + "api/boat/subscribedBoats/" + id, this.getAuthoHeader());
+  }
+
+  searchByManyParams(data: any){
+    return this.http.post(this.baseURL + "api/boat/searchByManyParams" ,  data, this.getAuthoHeader());
   }
   
 }

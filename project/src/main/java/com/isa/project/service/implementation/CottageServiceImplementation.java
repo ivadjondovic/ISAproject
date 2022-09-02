@@ -1,6 +1,7 @@
 package com.isa.project.service.implementation;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -21,11 +22,14 @@ import com.isa.project.dto.QuickReservationDTO;
 import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.RoomDTO;
 import com.isa.project.dto.RuleDTO;
+import com.isa.project.dto.SearchParamsDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalCottageService;
 import com.isa.project.model.AvailableCottagePeriod;
+import com.isa.project.model.Client;
 import com.isa.project.model.Cottage;
 import com.isa.project.model.CottageOwner;
+import com.isa.project.model.CottageSubscription;
 import com.isa.project.model.Image;
 import com.isa.project.model.QuickCottageReservation;
 import com.isa.project.model.Room;
@@ -34,6 +38,7 @@ import com.isa.project.model.User;
 import com.isa.project.repository.AdditionalCottageServiceRepository;
 import com.isa.project.repository.AvailableCottagePeriodRepository;
 import com.isa.project.repository.CottageRepository;
+import com.isa.project.repository.CottageSubscriptionRepository;
 import com.isa.project.repository.QuickCottageReservationRepository;
 import com.isa.project.repository.RoomRepository;
 import com.isa.project.repository.UserRepository;
@@ -60,6 +65,9 @@ public class CottageServiceImplementation implements CottageService{
 	
 	@Autowired
 	private QuickCottageReservationRepository quickReservationRepository;
+	
+	@Autowired
+	private CottageSubscriptionRepository cottageSubscriptionRepository;
 	
 	
 	@Override
@@ -122,6 +130,7 @@ public class CottageServiceImplementation implements CottageService{
 			quickReservation.setReserved(false);
 			quickReservation.setAccepted(false);
 			quickReservation.setCanceled(false);
+			quickReservation.setDiscount(quickReservationDto.getDiscount());
 			QuickCottageReservation savedReservation = quickReservationRepository.save(quickReservation);
 			quickReservations.add(savedReservation);
 			
@@ -195,6 +204,9 @@ public class CottageServiceImplementation implements CottageService{
 	@Override
 	public List<Cottage> sort(SortDTO dto) {
 		
+		if(dto.getSortBy().equals("") || dto.getSortType().equals("")) {
+			return null;
+		}
 		List<Cottage> cottages = cottageRepository.findAll();
 		if(dto.getSortBy().equals("Name")) {
 			if(dto.getSortType().equals("Ascending")) {
@@ -238,6 +250,16 @@ public class CottageServiceImplementation implements CottageService{
 				Integer.compare(c2.getNumberOfRooms(), c1.getNumberOfRooms()));
 			}
 		}
+		if(dto.getSortBy().equals("Rating")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(cottages, (c1, c2) ->
+			    Double.compare(c1.getRating(), c2.getRating()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(cottages, (c1, c2) ->
+				 Double.compare(c2.getRating(), c1.getRating()));
+			}
+		}
 		return cottages;
 	}
 
@@ -245,6 +267,9 @@ public class CottageServiceImplementation implements CottageService{
 	@Override
 	public List<Cottage> getAvailableCottages(ReservationSearchDTO dto) {
 		if(dto.getStartDate().compareTo(LocalDateTime.now()) < 0) {
+			return null;
+		}
+		if(dto.getNumberOfDays() == 0 || dto.getNumberOfGuests() == 0 || dto.getStartDate().equals("")) {
 			return null;
 		}
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
@@ -281,6 +306,126 @@ public class CottageServiceImplementation implements CottageService{
 			
 		}
 		return result;
+	}
+
+
+	@Override
+	public List<Cottage> getCottagesByClientSubscription(Long clientId) {
+		
+		List<Cottage> cottages = new ArrayList<>();
+		Client client = (Client) userRepository.findById(clientId).get();
+		List<CottageSubscription> clientSubscriptions = cottageSubscriptionRepository.findByClient(client);
+		
+		for(CottageSubscription subscription: clientSubscriptions) {
+			cottages.add(subscription.getCottage());
+		}
+		return cottages;
+	}
+
+
+	@Override
+	public List<Cottage> sortAvailableCottages(ReservationSearchDTO dto) {
+		if(dto.getNumberOfDays() == 0 || dto.getNumberOfGuests() == 0 || dto.getStartDate().equals("") || dto.getSortBy().equals("") || dto.getSortType().equals("")) {
+			return null;
+		}
+		List<Cottage> cottages = getAvailableCottages(dto);
+		if(dto.getSortBy().equals("Price")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(cottages, (c1, c2) ->
+			    Double.compare(c1.getPrice(), c2.getPrice()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(cottages, (c1, c2) ->
+				 Double.compare(c2.getPrice(), c1.getPrice()));
+			}
+		}
+		return cottages;
+	}
+
+
+	@Override
+	public List<Cottage> searchByMoreParams(SearchParamsDTO dto) {
+		DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+
+
+		String formattedDateTime = dto.getDate().format(formatter);
+		if(formattedDateTime.equals("")) {
+			return null;
+		}
+		List<Cottage> filteredByDate = new ArrayList<>();
+		List<Cottage> cottages = cottageRepository.findAll();
+		for(Cottage c: cottages) {
+			Set<AvailableCottagePeriod> periods = c.getAvailablePeriods();
+			for(AvailableCottagePeriod period: periods) {
+				if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) > 0) {
+					filteredByDate.add(c);
+				}
+			}
+			
+		}
+		List<Cottage> filteredByLocation = new ArrayList<>();
+		for(Cottage c: filteredByDate) {
+			filteredByLocation.add(c);
+		}
+		
+		if(!dto.getLocation().equals("")) {
+			filteredByLocation = filteredByDate.stream()
+					.filter(c -> c.getAddress().contains(dto.getLocation()))
+	                .collect(Collectors.toList());
+		}
+		
+		
+		List<Cottage> filteredByRating = new ArrayList<>();
+		for(Cottage c: filteredByLocation) {
+			filteredByRating.add(c);
+		}
+		if(dto.getRating() != 0) {
+			Double rating = (double) dto.getRating();
+			filteredByRating = filteredByLocation.stream()
+					.filter(c -> c.getRating() <= rating && c.getRating() > rating-1)
+					.collect(Collectors.toList());
+			
+		}
+		
+		List<Cottage> filteredByPrice = new ArrayList<>();
+		for(Cottage c: filteredByRating) {
+			filteredByPrice.add(c);
+		}
+		if(dto.getPriceFrom() != null && dto.getPriceTo() != null) {
+			filteredByPrice = filteredByRating.stream()
+					.filter(c -> c.getPrice() >= dto.getPriceFrom() && c.getPrice() <= dto.getPriceTo())
+					.collect(Collectors.toList());
+		}
+		
+		List<Cottage> filteredByPeople = new ArrayList<>();
+		for(Cottage c: filteredByPrice) {
+			filteredByPeople.add(c);
+		}
+		
+		List<Cottage> result = new ArrayList<>();
+		
+		
+		if(dto.getPeopleFrom() != 0 && dto.getPeopleTo() != 0) {
+			for(Cottage c: filteredByPeople) {
+				int people = 0;
+				Set<Room> rooms = c.getRooms();
+				for(Room r: rooms) {
+					people += r.getNumberOfBeds();
+				}
+				
+				if(people <= dto.getPeopleTo() && people >= dto.getPeopleFrom()) {
+					result.add(c);
+				}
+				
+			}
+			
+			return result;
+		
+		}
+		
+		
+		return filteredByPeople;
+	
 	}
 
 	

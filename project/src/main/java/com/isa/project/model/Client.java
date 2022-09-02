@@ -44,6 +44,18 @@ public class Client extends User{
 	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
 	private Set<QuickFishingLessonReservation> quickFishingLessonReservations;
 	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+	private Set<CottageSubscription> cottageSubscriptions;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+	private Set<BoatSubscription> boatSubscriptions;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+	private Set<FishingLessonSubscription> fishingLessonSubscriptions;
+	
 	@Override
     public String getUserType() {
         return userType;
@@ -96,6 +108,35 @@ public class Client extends User{
 	public void setQuickFishingLessonReservations(Set<QuickFishingLessonReservation> quickFishingLessonReservations) {
 		this.quickFishingLessonReservations = quickFishingLessonReservations;
 	}
+
+	public Set<CottageSubscription> getCottageSubscriptions() {
+		return cottageSubscriptions;
+	}
+
+	public void setCottageSubscriptions(Set<CottageSubscription> subscriptions) {
+		this.cottageSubscriptions = subscriptions;
+	}
+
+	public Set<BoatSubscription> getBoatSubscriptions() {
+		return boatSubscriptions;
+	}
+
+	public void setBoatSubscriptions(Set<BoatSubscription> boatSubscriptions) {
+		this.boatSubscriptions = boatSubscriptions;
+	}
+
+	public Set<FishingLessonSubscription> getFishingLessonSubscriptions() {
+		return fishingLessonSubscriptions;
+	}
+
+	public void setFishingLessonSubscriptions(Set<FishingLessonSubscription> fishingLessonSubscriptions) {
+		this.fishingLessonSubscriptions = fishingLessonSubscriptions;
+	}
+	
+	
+	
+	
+	
 	
 	
 	

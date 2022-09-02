@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.isa.project.dto.CottageDTO;
 import com.isa.project.dto.DateSearchDTO;
 import com.isa.project.dto.ReservationSearchDTO;
+import com.isa.project.dto.SearchParamsDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.Cottage;
 import com.isa.project.service.CottageService;
@@ -40,6 +41,17 @@ public class CottageController {
         return new ResponseEntity<>(cottage, HttpStatus.OK);
     }
 	
+	@PreAuthorize("hasRole('CLIENT')")
+	@PostMapping(path = "/searchByManyParams")
+    public ResponseEntity<?> searchByManyParams(@RequestBody SearchParamsDTO dto) {
+		List<Cottage> response = cottageService.searchByMoreParams(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
+        
+    }
+	
 	@GetMapping(path = "/cottages")
     public ResponseEntity<?> getAll() {
         return new ResponseEntity<>(cottageService.getAll(), HttpStatus.OK);
@@ -57,7 +69,22 @@ public class CottageController {
 	
 	@PostMapping(path = "/sort")
     public ResponseEntity<?> sort(@RequestBody SortDTO dto) {
-        return new ResponseEntity<>(cottageService.sort(dto), HttpStatus.OK);
+		List<Cottage> response = cottageService.sort(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+	
+	@PreAuthorize("hasRole('CLIENT')")
+	@PostMapping(path = "/sortAvailable")
+    public ResponseEntity<?> sortAvailable(@RequestBody ReservationSearchDTO dto) {
+		
+		List<Cottage> response = cottageService.sortAvailableCottages(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 	
 	@PreAuthorize("hasRole('CLIENT')")
@@ -78,6 +105,12 @@ public class CottageController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+	
+	@GetMapping(path = "/subscribedCottages/{clientId}")
+	@PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<?> subscribedCottages(@PathVariable Long clientId) {
+        return new ResponseEntity<>(cottageService.getCottagesByClientSubscription(clientId), HttpStatus.OK);
     }
 	
 	

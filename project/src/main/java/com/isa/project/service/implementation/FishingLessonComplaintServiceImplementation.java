@@ -40,6 +40,10 @@ public class FishingLessonComplaintServiceImplementation implements FishingLesso
 	@Override
 	public FishingLessonComplaint addComplaint(ComplaintDTO dto) {
 		
+		if(dto.getDescription().equals("") || dto.getReservationType().equals("")) {
+			return null;
+		}
+		
 		FishingLessonComplaint complaint = new FishingLessonComplaint();
 		FishingLessonComplaint savedComplaint = new FishingLessonComplaint();
 		complaint.setDate(LocalDateTime.now());

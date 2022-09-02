@@ -40,6 +40,11 @@ public class CottageComplaintServiceImplementation implements CottageComplaintSe
 	
 	@Override
 	public CottageComplaint addComplaint(ComplaintDTO dto) {
+		
+		if(dto.getDescription().equals("") || dto.getReservationType().equals("")) {
+			return null;
+		}
+		
 		CottageComplaint complaint = new CottageComplaint();
 		CottageComplaint savedComplaint = new CottageComplaint();
 		complaint.setDate(LocalDateTime.now());

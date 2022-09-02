@@ -47,6 +47,7 @@ public class EmailServiceImplementation implements EmailService{
 		
 	}
 
+	@Async
 	@Override
 	public void acceptEmail(User user) throws MessagingException {
 		
@@ -60,7 +61,8 @@ public class EmailServiceImplementation implements EmailService{
 	    javaMailSender.send(message);
 		
 	}
-
+	
+	@Async
 	@Override
 	public void declineEmail(User user, String reason) throws MessagingException {
 		// TODO Auto-generated method stub
@@ -74,6 +76,7 @@ public class EmailServiceImplementation implements EmailService{
 	    javaMailSender.send(message);
 	}
 
+	@Async
 	@Override
 	public void acceptDeletingAccountEmail(User user, String reason) throws MessagingException {
 		MimeMessage message=javaMailSender.createMimeMessage();
@@ -81,12 +84,13 @@ public class EmailServiceImplementation implements EmailService{
 	    helper=new MimeMessageHelper(message,true);
 	    helper.setTo(new InternetAddress(user.getUsername()));
 	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
-	    helper.setSubject("Account activation");
+	    helper.setSubject("Account delation accepted");
 	    helper.setText("Hello " + user.getName() + " " + user.getSurname() +  ",\n\nYour account has been deleted successfully because " + reason + "." + "\n\n");
 	    javaMailSender.send(message);
 		
 	}
 
+	@Async
 	@Override
 	public void declineDeletingAccountEmail(User user, String reason) throws MessagingException {
 		MimeMessage message=javaMailSender.createMimeMessage();
@@ -94,7 +98,7 @@ public class EmailServiceImplementation implements EmailService{
 	    helper=new MimeMessageHelper(message,true);
 	    helper.setTo(new InternetAddress(user.getUsername()));
 	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
-	    helper.setSubject("Account activation");
+	    helper.setSubject("Account delation refused");
 	    helper.setText("Hello " + user.getName() + " " + user.getSurname() +  ",\n\nYour request for deleting account is declined because " + reason + "." + "\n\n");
 	    javaMailSender.send(message);
 		

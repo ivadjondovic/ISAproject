@@ -40,6 +40,10 @@ public class BoatRevisionServiceImplementation implements BoatRevisionService{
 	@Override
 	public BoatRevision addRevision(RevisionDTO dto) {
 		
+		if(dto.getDescription().equals("") || dto.getEntityRate() ==0 || dto.getOwnerRate() == 0 || dto.getReservationType().equals("")) {
+			return null;
+		}
+		
 		BoatRevision boatRevision = new BoatRevision();
 		boatRevision.setStatus("Waiting");
 		Client client = (Client) userRepository.findById(dto.getClientId()).get();

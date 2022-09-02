@@ -1,6 +1,7 @@
 package com.isa.project.service.implementation;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,11 +21,14 @@ import com.isa.project.dto.ImageDTO;
 import com.isa.project.dto.QuickReservationDTO;
 import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.RuleDTO;
+import com.isa.project.dto.SearchParamsDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalFishingLessonService;
 import com.isa.project.model.AvailableFishingLessonPeriod;
+import com.isa.project.model.Client;
 import com.isa.project.model.FishingEquipment;
 import com.isa.project.model.FishingLesson;
+import com.isa.project.model.FishingLessonSubscription;
 import com.isa.project.model.Image;
 import com.isa.project.model.Instructor;
 import com.isa.project.model.QuickFishingLessonReservation;
@@ -34,6 +38,7 @@ import com.isa.project.repository.AdditionalFishingLessonServiceRepository;
 import com.isa.project.repository.AvailableFishingLessonPeriodRepository;
 import com.isa.project.repository.FishingEquipmentRepository;
 import com.isa.project.repository.FishingLessonRepository;
+import com.isa.project.repository.FishingLessonSubscriptionRepository;
 import com.isa.project.repository.QuickFishingLessonReservationRepository;
 import com.isa.project.repository.RuleRepository;
 import com.isa.project.repository.UserRepository;
@@ -62,6 +67,9 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 	
 	@Autowired
 	private FishingEquipmentRepository fishingEquipmentRepository;
+	
+	@Autowired
+	private FishingLessonSubscriptionRepository fishingLessonSubscriptionRepository;
 	
 	@Override
 	public FishingLesson createFishingLesson(FishingLessonDTO dto) {
@@ -274,6 +282,10 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 
 	@Override
 	public List<FishingLesson> sort(SortDTO dto) {
+		
+		if(dto.getSortBy().equals("") || dto.getSortType().equals("")) {
+			return null;
+		}
 		List<FishingLesson> lessons = fishingLessonRepository.findAll();
 		if(dto.getSortBy().equals("Name")) {
 			if(dto.getSortType().equals("Ascending")) {
@@ -328,6 +340,17 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 				 Double.compare(l2.getPercentageForKeep(), l1.getPercentageForKeep()));
 			}
 		}
+		
+		if(dto.getSortBy().equals("Rating")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(lessons, (l1, l2) ->
+			    Double.compare(l1.getRating(), l2.getRating()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(lessons, (l1, l2) ->
+				 Double.compare(l2.getRating(), l1.getRating()));
+			}
+		}
 		return lessons;
 	}
 
@@ -353,6 +376,9 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 	@Override
 	public List<FishingLesson> getAvailableLessons(ReservationSearchDTO dto) {
 		if(dto.getStartDate().compareTo(LocalDateTime.now()) < 0) {
+			return null;
+		}
+		if(dto.getNumberOfDays() == 0 || dto.getNumberOfGuests() == 0 || dto.getStartDate().equals("")) {
 			return null;
 		}
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
@@ -408,6 +434,108 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		
 		filtered = result.stream().distinct().collect( Collectors.toList() );
 		return filtered;
+	}
+
+	@Override
+	public List<FishingLesson> getLessonsByClientSubscription(Long clientId) {
+		List<FishingLesson> lessons = new ArrayList<>();
+		Client client = (Client) userRepository.findById(clientId).get();
+		List<FishingLessonSubscription> clientSubscriptions = fishingLessonSubscriptionRepository.findByClient(client);
+		
+		for(FishingLessonSubscription subscription: clientSubscriptions) {
+			lessons.add(subscription.getFishingLesson());
+		}
+		return lessons;
+	}
+
+	@Override
+	public List<FishingLesson> sortAvailableLessons(ReservationSearchDTO dto) {
+		if(dto.getNumberOfDays() == 0 || dto.getNumberOfGuests() == 0 || dto.getStartDate().equals("") || dto.getSortBy().equals("") || dto.getSortType().equals("")) {
+			return null;
+		}
+		List<FishingLesson> lessons = getAvailableLessons(dto);
+		if(dto.getSortBy().equals("Price")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(lessons, (l1, l2) ->
+			    Double.compare(l1.getPrice(), l2.getPrice()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(lessons, (l1, l2) ->
+				 Double.compare(l2.getPrice(), l1.getPrice()));
+			}
+		}
+		
+		return lessons;
+	}
+
+	@Override
+	public List<FishingLesson> searchByMoreParams(SearchParamsDTO dto) {
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+
+
+		String formattedDateTime = dto.getDate().format(formatter);
+		if(formattedDateTime.equals("")) {
+			return null;
+		}
+		List<FishingLesson> filteredByDate = new ArrayList<>();
+		List<FishingLesson> lessons = fishingLessonRepository.findAll();
+		for(FishingLesson l: lessons) {
+			Set<AvailableFishingLessonPeriod> periods = l.getAvailablePeriods();
+			for(AvailableFishingLessonPeriod period: periods) {
+				if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) > 0) {
+					filteredByDate.add(l);
+				}
+			}
+			
+		}
+		List<FishingLesson> filteredByLocation = new ArrayList<>();
+		for(FishingLesson l: filteredByDate) {
+			filteredByLocation.add(l);
+		}
+		
+		if(!dto.getLocation().equals("")) {
+			filteredByLocation = filteredByDate.stream()
+					.filter(l -> l.getAddress().contains(dto.getLocation()))
+	                .collect(Collectors.toList());
+		}
+		
+		
+		List<FishingLesson> filteredByRating = new ArrayList<>();
+		for(FishingLesson l: filteredByLocation) {
+			filteredByRating.add(l);
+		}
+		if(dto.getRating() != 0) {
+			Double rating = (double) dto.getRating();
+			filteredByRating = filteredByLocation.stream()
+					.filter(l -> l.getRating() >= rating- 0.5 && l.getRating() <= rating + 0.5)
+					.collect(Collectors.toList());
+			
+		}
+		
+		List<FishingLesson> filteredByPrice = new ArrayList<>();
+		for(FishingLesson l: filteredByRating) {
+			filteredByPrice.add(l);
+		}
+		if(dto.getPriceFrom() != null && dto.getPriceTo() != null) {
+			filteredByPrice = filteredByRating.stream()
+					.filter(l -> l.getPrice() >= dto.getPriceFrom() && l.getPrice() <= dto.getPriceTo())
+					.collect(Collectors.toList());
+		}
+		
+		List<FishingLesson> filteredByPeople = new ArrayList<>();
+		for(FishingLesson l: filteredByPrice) {
+			filteredByPeople.add(l);
+		}
+		if(dto.getPeopleFrom() != 0 && dto.getPeopleTo() != 0) {
+			filteredByPeople = filteredByPrice.stream()
+					.filter(l -> l.getNumberOfPeople() >= dto.getPeopleFrom() && l.getNumberOfPeople() <= dto.getPeopleTo())
+					.collect(Collectors.toList());
+					
+		}
+		
+		return filteredByPeople;
+	
 	}
 
 }

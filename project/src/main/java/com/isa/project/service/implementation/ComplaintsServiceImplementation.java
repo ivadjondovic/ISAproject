@@ -91,6 +91,10 @@ public class ComplaintsServiceImplementation implements ComplaintsService{
 	@Override
 	public ComplaintResponseDTO answer(ComplaintAnswerDTO dto) {
 		
+		if(dto.getAnswer().equals("") || dto.getComplaintType().equals("")) {
+			return null;
+		}
+		
 		ComplaintResponseDTO response = new ComplaintResponseDTO();
 		
 		if(dto.getComplaintType().equals("Cottage")) {

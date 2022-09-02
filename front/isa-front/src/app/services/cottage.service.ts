@@ -36,6 +36,10 @@ export class CottageService {
     return this.http.post(this.baseURL + "api/cottage/sort" ,  data);
   }
 
+  sortAvailable(data: any){
+    return this.http.post(this.baseURL + "api/cottage/sortAvailable" ,  data, this.getAuthoHeader());
+  }
+
   getAvailableCottages(data: any){
     return this.http.post(this.baseURL + "api/cottage/availableCottages" ,  data, this.getAuthoHeader());
   }
@@ -43,4 +47,13 @@ export class CottageService {
   getAvailableBoatsForCertainDate(data: any){
     return this.http.post(this.baseURL + "api/cottage/availableCottagesForCertainDate" ,  data, this.getAuthoHeader());
   }
+
+  subscribedCottages(id: any){
+    return this.http.get(this.baseURL + "api/cottage/subscribedCottages/" + id, this.getAuthoHeader());
+  }
+
+  searchByManyParams(data: any){
+    return this.http.post(this.baseURL + "api/cottage/searchByManyParams" ,  data, this.getAuthoHeader());
+  }
+  
 }

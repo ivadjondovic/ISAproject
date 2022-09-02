@@ -49,6 +49,12 @@ public class UserServiceImplementation implements UserService{
 	
 	@Override
 	public User registerClient(UserDTO userDTO) {
+		
+		if(userDTO.getAddress().equals("") || userDTO.getCity().equals("") || userDTO.getCountry().equals("")
+				|| userDTO.getName().equals("") || userDTO.getPassword().equals("") || userDTO.getPhoneNumber().equals("") 
+				|| userDTO.getSurname().equals("") || userDTO.getUsername().equals("")) {
+			return null;
+		}
 		 User user = userRepository.findByUsername(userDTO.getUsername());
 
 	        if(user != null) {
@@ -298,6 +304,10 @@ public class UserServiceImplementation implements UserService{
 
 	@Override
 	public User declineDeletingAccount(DeleteAccountRequestDTO dto) {
+		
+		if(dto.getReason().equals("")) {
+			return null;
+		}
 		User user = userRepository.findById(dto.getUserId()).get();
 		user.setDeleted(false);	
 		try {
@@ -316,6 +326,10 @@ public class UserServiceImplementation implements UserService{
 
 	@Override
 	public User acceptDeletingAccount(DeleteAccountRequestDTO dto) {
+		
+		if(dto.getReason().equals("")) {
+			return null;
+		}
 		User user = userRepository.findById(dto.getUserId()).get();
 		user.setDeleted(true);
 		try {

@@ -35,6 +35,10 @@
         <mat-icon>notes</mat-icon><span class="nav-caption">Reservations</span>
     </a>
 
+    <a mat-list-item routerLink="/subscriptions" *ngIf="role == 'ROLE_CLIENT'" (click)="onSidenavClose('')">
+        <mat-icon>subscriptions</mat-icon><span class="nav-caption">Subscriptions</span>
+    </a>
+
     <a mat-list-item routerLink="/deleteAccount" *ngIf="role == 'ROLE_CLIENT'" (click)="onSidenavClose('')">
         <mat-icon>delete</mat-icon><span class="nav-caption">Delete account</span>
     </a>

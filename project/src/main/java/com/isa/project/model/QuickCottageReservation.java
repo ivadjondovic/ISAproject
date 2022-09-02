@@ -21,11 +21,13 @@ public class QuickCottageReservation {
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
 	private Double price;
+	private Double discount;
 	private int maxNumberOfPerson;
 	private String additionalServices;
 	private Boolean reserved;
 	private Boolean accepted;
 	private Boolean canceled;
+
 	
 	
 	@JsonBackReference
@@ -42,6 +44,16 @@ public class QuickCottageReservation {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	
+
+	public Double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Double discount) {
+		this.discount = discount;
 	}
 
 	public LocalDateTime getStartDate() {

@@ -52,6 +52,10 @@ export class FishingLessonService {
     return this.http.post(this.baseURL + "api/fishing/sort" ,  data);
   }
 
+  sortAvailable(data: any){
+    return this.http.post(this.baseURL + "api/fishing/sortAvailable" ,  data, this.getAuthoHeader());
+  }
+
   search(searchTerm: any){
     return this.http.get(this.baseURL + "api/fishing/search/" + searchTerm);
   }
@@ -66,6 +70,14 @@ export class FishingLessonService {
 
   getAvailableBoatsForCertainDate(data: any){
     return this.http.post(this.baseURL + "api/fishing/availableLessonsForCertainDate" ,  data, this.getAuthoHeader());
+  }
+
+  subscribedLessons(id: any){
+    return this.http.get(this.baseURL + "api/fishing/subscribedLessons/" + id, this.getAuthoHeader());
+  }
+
+  searchByManyParams(data: any){
+    return this.http.post(this.baseURL + "api/fishing/searchByManyParams" ,  data, this.getAuthoHeader());
   }
 
 }

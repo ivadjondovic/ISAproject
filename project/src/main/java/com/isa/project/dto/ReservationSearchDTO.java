@@ -7,6 +7,8 @@ public class ReservationSearchDTO {
 	private LocalDateTime startDate;
 	private int numberOfDays;
 	private int numberOfGuests;
+	private String sortBy;
+	private String sortType;
 	public LocalDateTime getStartDate() {
 		return startDate;
 	}
@@ -25,6 +27,20 @@ public class ReservationSearchDTO {
 	public void setNumberOfGuests(int numberOfGuests) {
 		this.numberOfGuests = numberOfGuests;
 	}
+	public String getSortBy() {
+		return sortBy;
+	}
+	public void setSortBy(String sortBy) {
+		this.sortBy = sortBy;
+	}
+	public String getSortType() {
+		return sortType;
+	}
+	public void setSortType(String sortType) {
+		this.sortType = sortType;
+	}
+	
+	
 	
 	
 	

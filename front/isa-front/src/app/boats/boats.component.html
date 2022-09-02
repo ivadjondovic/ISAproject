@@ -9,6 +9,7 @@
                     <mat-option value="Name">Name</mat-option>
                     <mat-option value="Type">Type</mat-option>
                     <mat-option value="Price">Price</mat-option>
+                    <mat-option value="Rating">Rating</mat-option>
                     <mat-option value="Length">Length</mat-option>
                     <mat-option value="Number of engines">Number of engines</mat-option>
                     <mat-option value="Engine power">Engine power</mat-option>
@@ -29,9 +30,11 @@
 
         </div>
         <div class="col-sm">
-            <button class="searchButton" (click)="sort()"><mat-icon>search</mat-icon></button>
+            <button class="searchButton" (click)="sort()">
+                <mat-icon>search</mat-icon>
+            </button>
         </div>
-        <div *ngIf="role == 'ROLE_CLIENT'" class="col-sm"><button (click)="additionalSearch()">Additional search<span style="margin-left: 10px;"><mat-icon matPrefix>search</mat-icon></span></button></div>
+
         <div class="col-sm"></div>
         <div class="col-sm"></div>
 
@@ -43,26 +46,124 @@
             </mat-form-field>
         </div>
     </div>
-    <div *ngIf="addSearch" class="rounded1">
-        <div  class="row mt-3">
-            <div class="col-sm">
-                <mat-form-field appearance="fill">
-                    <mat-label>Enter date</mat-label>
-                    <input  (input)="searchByDate()" matInput [(ngModel)]="dateForSearch" type="datetime-local"  matInput />
-                    <mat-icon matPrefix>search</mat-icon>
-                </mat-form-field>
+
+    <mat-grid-list [cols]="3" [rowHeight]="510">
+        <mat-grid-tile [rowspan]="1" [colspan]="1">
+            <div class="rounded2">
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-8">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Enter date</mat-label>
+                            <input matInput [(ngModel)]="dateForSearch" type="datetime-local" matInput />
+
+                        </mat-form-field>
+                    </div>
+                    <div class="col-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-8">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Enter location</mat-label>
+                            <input matInput [(ngModel)]="place" type="text" matInput />
+
+                        </mat-form-field>
+                    </div>
+                    <div class="col-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-8">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Enter rating</mat-label>
+                            <mat-select [(ngModel)]="rating">
+                                <mat-option value="1">1</mat-option>
+                                <mat-option value="2">2</mat-option>
+                                <mat-option value="3">3</mat-option>
+                                <mat-option value="4">4</mat-option>
+                                <mat-option value="5">5</mat-option>
+                            </mat-select>
+
+                        </mat-form-field>
+                    </div>
+                    <div class="col-2"></div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-4">
+                        <mat-form-field style="width: 120px;" appearance="fill">
+                            <mat-label>Price from</mat-label>
+                            <input matInput [(ngModel)]="priceFrom" type="text" matInput />
+
+                        </mat-form-field>
+                    </div>
+                    <div class="col-3"><span>
+                            <mat-icon style="margin-left: 35px; margin-top: 15px;">remove</mat-icon>
+                        </span></div>
+
+                    <div class="col-4">
+                        <mat-form-field style="width: 120px;" appearance="fill">
+                            <mat-label>Price to</mat-label>
+                            <input matInput [(ngModel)]="priceTo" type="text" matInput />
+
+                        </mat-form-field>
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-4">
+                        <mat-form-field style="width: 120px;" appearance="fill">
+                            <mat-label>People from</mat-label>
+                            <input matInput [(ngModel)]="peopleFrom" type="text" matInput />
+
+                        </mat-form-field>
+                    </div>
+                    <div class="col-3"><span>
+                            <mat-icon style="margin-left: 35px; margin-top: 15px;">remove</mat-icon>
+                        </span></div>
+
+                    <div class="col-4">
+                        <mat-form-field style="width: 120px;" appearance="fill">
+                            <mat-label>People to</mat-label>
+                            <input matInput [(ngModel)]="peopleTo" type="text" matInput />
+
+                        </mat-form-field>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm"></div>
+                    <div class="col-sm">
+                        <button style="float: center;" (click)="searchBoats()">Search</button>
+                    </div>
+                    <div class="col-sm"></div>
+                </div>
+
+
+
+
             </div>
-            
-        </div>
-    </div>
-    
-    <mat-grid-list [cols]="3" [rowHeight]="450">
+        </mat-grid-tile>
         <div *ngFor="let b of boats">
             <mat-grid-tile [rowspan]="1" [colspan]="1">
                 <div class="rounded">
-                    <h2>{{b.name}}</h2>
+                    <div class="row">
+                        <div class="col-9">
+                            <h2>{{b.name}}</h2>
+                        </div>
+                        <div class="col-3">
+                            <button style="margin-bottom: 10px;" *ngIf="!isSubscribed(b.id)"
+                                (click)="subscribe(b.id)">Subscribe</button>
+                        </div>
+                    </div>
                     <!-- <img class="roundedImage" src="{{b.images[0].path}}" style="width:438px; height: 260px; margin-bottom: 15px;"> -->
                     <p style="font-size: 17px; color: #4c7d85;">{{b.description}}</p>
+                    <p style="font-size: 17px; color: #4c7d85;">
+                        <mat-icon>star_rate</mat-icon><span style="margin-left: 10px;"></span>{{b.rating}}
+                    </p>
                     <p style="font-size: 17px;"><span style="color: #4c7d85;">Type:&nbsp;</span> {{b.boatType}}</p>
                     <p style="font-size: 17px;"><span style="color: #4c7d85;">Length:&nbsp;</span> {{b.boatLength}} m
                     </p>

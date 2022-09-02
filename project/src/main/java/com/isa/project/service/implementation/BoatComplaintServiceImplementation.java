@@ -41,6 +41,9 @@ public class BoatComplaintServiceImplementation implements BoatComplaintService{
 	@Override
 	public BoatComplaint addComplaint(ComplaintDTO dto) {
 		
+		if(dto.getDescription().equals("") || dto.getReservationType().equals("")) {
+			return null;
+		}
 		
 		BoatComplaint complaint = new BoatComplaint();
 		BoatComplaint savedComplaint = new BoatComplaint();

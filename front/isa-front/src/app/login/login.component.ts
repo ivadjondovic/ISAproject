@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
+
 
 @Component({
   selector: 'app-login',
@@ -12,7 +14,7 @@ export class LoginComponent implements OnInit {
   username: string
   password: string;
   user: any
-  constructor(public service:UserService, public router: Router) { }
+  constructor(private _snackBar: MatSnackBar, public service:UserService, public router: Router) { }
 
   ngOnInit(): void {
   }
@@ -25,7 +27,6 @@ export class LoginComponent implements OnInit {
     }
 
     this.service.login(data).subscribe((response: any) => {
-      console.log(response);
       localStorage.setItem('token', response.accessToken);
       localStorage.setItem('expiresIn', response.expiresIn);
       this.service.current().subscribe((response: any) => {
@@ -33,9 +34,10 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('user', JSON.stringify(this.user));
         console.log(this.user);
         location.reload();
-        this.router.navigate(['/homepage'])
+        
       })
-    })
+    }, error => {
+      this._snackBar.open('Incorrect credentials! Please check if you have activated your profile and then try again', 'Close', {duration: 2500})});
     
   }
 

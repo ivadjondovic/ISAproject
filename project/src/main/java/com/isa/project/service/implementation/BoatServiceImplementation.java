@@ -1,6 +1,7 @@
 package com.isa.project.service.implementation;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -22,12 +23,15 @@ import com.isa.project.dto.NavigationEquipmentDTO;
 import com.isa.project.dto.QuickReservationDTO;
 import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.RuleDTO;
+import com.isa.project.dto.SearchParamsDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalBoatService;
 import com.isa.project.model.AvailableBoatPeriod;
 import com.isa.project.model.Boat;
 import com.isa.project.model.BoatFishingEquipment;
 import com.isa.project.model.BoatOwner;
+import com.isa.project.model.BoatSubscription;
+import com.isa.project.model.Client;
 import com.isa.project.model.Image;
 import com.isa.project.model.NavigationEquipment;
 import com.isa.project.model.QuickBoatReservation;
@@ -37,6 +41,7 @@ import com.isa.project.repository.AdditionalBoatServiceRepository;
 import com.isa.project.repository.AvailableBoatPeriodRepository;
 import com.isa.project.repository.BoatFishingEquipmentRepository;
 import com.isa.project.repository.BoatRepository;
+import com.isa.project.repository.BoatSubscriptionRepository;
 import com.isa.project.repository.NavigationEquipmentRepository;
 import com.isa.project.repository.QuickBoatReservationRepository;
 import com.isa.project.repository.UserRepository;
@@ -66,6 +71,9 @@ public class BoatServiceImplementation implements BoatService{
 	@Autowired
 	private BoatFishingEquipmentRepository fishingEquipmentRepository;
 	
+	@Autowired
+	private BoatSubscriptionRepository boatSubscriptionRepository;
+	
 	@Override
 	public Boat createBoat(BoatDTO dto) {
 		
@@ -81,6 +89,7 @@ public class BoatServiceImplementation implements BoatService{
 		boat.setCapacity(dto.getCapacity());
 		boat.setPercentageForKeep(dto.getPercentageForKeep());
 		boat.setPrice(dto.getPrice());
+		boat.setRating(0.0);
 		Boat savedBoat = boatRepository.save(boat);
 		
 		Set<NavigationEquipment> navigationEquipments = new HashSet<>();
@@ -134,6 +143,7 @@ public class BoatServiceImplementation implements BoatService{
 			quickReservation.setReserved(false);
 			quickReservation.setAccepted(false);
 			quickReservation.setCanceled(false);
+			quickReservation.setDiscount(quickReservationDto.getDiscount());
 			QuickBoatReservation savedReservation = quickReservationRepository.save(quickReservation);
 			quickReservations.add(savedReservation);
 			
@@ -214,6 +224,10 @@ public class BoatServiceImplementation implements BoatService{
 
 	@Override
 	public List<Boat> sort(SortDTO dto) {
+		
+		if(dto.getSortBy().equals("") || dto.getSortType().equals("")) {
+			return null;
+		}
 		List<Boat> boats = boatRepository.findAll();
 		if(dto.getSortBy().equals("Name")) {
 			if(dto.getSortType().equals("Ascending")) {
@@ -312,12 +326,27 @@ public class BoatServiceImplementation implements BoatService{
 				 Double.compare(b2.getPercentageForKeep(), b1.getPercentageForKeep()));
 			}
 		}
+		
+		if(dto.getSortBy().equals("Rating")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(boats, (b1, b2) ->
+			    Double.compare(b1.getRating(), b2.getRating()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(boats, (b1, b2) ->
+				 Double.compare(b2.getRating(), b1.getRating()));
+			}
+		}
 		return boats;
 	}
 
 	@Override
 	public List<Boat> getAvailableBoats(ReservationSearchDTO dto) {
 		if(dto.getStartDate().compareTo(LocalDateTime.now()) < 0) {
+			return null;
+		}
+		
+		if(dto.getNumberOfDays() == 0 || dto.getNumberOfGuests() == 0 || dto.getStartDate().equals("")) {
 			return null;
 		}
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
@@ -348,6 +377,109 @@ public class BoatServiceImplementation implements BoatService{
 			
 		}
 		return result;
+	}
+
+	@Override
+	public List<Boat> getBoatsByClientSubscription(Long clientId) {
+		List<Boat> boats = new ArrayList<>();
+		Client client = (Client) userRepository.findById(clientId).get();
+		List<BoatSubscription> clientSubscriptions = boatSubscriptionRepository.findByClient(client);
+		
+		for(BoatSubscription subscription: clientSubscriptions) {
+			boats.add(subscription.getBoat());
+		}
+		return boats;
+	}
+
+	@Override
+	public List<Boat> sortAvailableBoats(ReservationSearchDTO dto) {
+		if(dto.getNumberOfDays() == 0 || dto.getNumberOfGuests() == 0 || dto.getStartDate().equals("") || dto.getSortBy().equals("") || dto.getSortType().equals("")) {
+			return null;
+		}
+		List<Boat> boats = getAvailableBoats(dto);
+		if(dto.getSortBy().equals("Price")) {
+			if(dto.getSortType().equals("Ascending")) {
+				Collections.sort(boats, (b1, b2) ->
+			    Double.compare(b1.getPrice(), b2.getPrice()));
+			}
+			if(dto.getSortType().equals("Descending")) {
+				Collections.sort(boats, (b1, b2) ->
+				 Double.compare(b2.getPrice(), b1.getPrice()));
+			}
+		}
+		
+		return boats;
+	}
+
+	@Override
+	public List<Boat> searchByMoreParams(SearchParamsDTO dto) {
+		
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+
+
+		String formattedDateTime = dto.getDate().format(formatter);
+		if(formattedDateTime.equals("")) {
+			return null;
+		}
+		List<Boat> filteredByDate = new ArrayList<>();
+		List<Boat> boats = boatRepository.findAll();
+		for(Boat b: boats) {
+			Set<AvailableBoatPeriod> periods = b.getAvailablePeriods();
+			for(AvailableBoatPeriod period: periods) {
+				if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) > 0) {
+					filteredByDate.add(b);
+				}
+			}
+			
+		}
+		List<Boat> filteredByLocation = new ArrayList<>();
+		for(Boat b: filteredByDate) {
+			filteredByLocation.add(b);
+		}
+		
+		if(!dto.getLocation().equals("")) {
+			filteredByLocation = filteredByDate.stream()
+					.filter(b -> b.getAddress().contains(dto.getLocation()))
+	                .collect(Collectors.toList());
+		}
+		
+		
+		List<Boat> filteredByRating = new ArrayList<>();
+		for(Boat b: filteredByLocation) {
+			filteredByRating.add(b);
+		}
+		if(dto.getRating() != 0) {
+			Double rating = (double) dto.getRating();
+			filteredByRating = filteredByLocation.stream()
+					.filter(b -> b.getRating() <= rating && b.getRating() > rating-1)
+					.collect(Collectors.toList());
+			
+		}
+		
+		List<Boat> filteredByPrice = new ArrayList<>();
+		for(Boat b: filteredByRating) {
+			filteredByPrice.add(b);
+		}
+		if(dto.getPriceFrom() != null && dto.getPriceTo() != null) {
+			filteredByPrice = filteredByRating.stream()
+					.filter(b -> b.getPrice() >= dto.getPriceFrom() && b.getPrice() <= dto.getPriceTo())
+					.collect(Collectors.toList());
+		}
+		
+		List<Boat> filteredByPeople = new ArrayList<>();
+		for(Boat b: filteredByPrice) {
+			filteredByPeople.add(b);
+		}
+		if(dto.getPeopleFrom() != 0 && dto.getPeopleTo() != 0) {
+			filteredByPeople = filteredByPrice.stream()
+					.filter(b -> b.getCapacity() >= dto.getPeopleFrom() && b.getCapacity() <= dto.getPeopleTo())
+					.collect(Collectors.toList());
+					
+		}
+		
+		return filteredByPeople;
+	
 	}
 
 }

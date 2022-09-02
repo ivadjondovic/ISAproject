@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { FishingLessonSubscriptionService } from '../services/fishing-lesson-subscription.service';
 import { FishingLessonService } from '../services/fishing-lesson.service';
 
 @Component({
@@ -9,17 +11,25 @@ import { FishingLessonService } from '../services/fishing-lesson.service';
 })
 export class ClientFishingLessonsComponent implements OnInit {
 
-  lessons: any = {} as any;
+  lessons: any[];
+  rating = ""
+  place = ""
+  priceFrom = ""
+  priceTo = ""
+  peopleFrom = ""
+  peopleTo = ""
   searchTerm = '';
   sortBy = '';
   sortType = '';
   user: any
   role: any
-  addSearch = false
-  dateForSearch: any
-  constructor(public service: FishingLessonService, public router: Router) { }
+  dateForSearch = ""
+  subscribedLessons: any[]
+  isLoged = false;
+  constructor(private _snackBar: MatSnackBar, public subscriptionService: FishingLessonSubscriptionService, public service: FishingLessonService, public router: Router) { }
 
   ngOnInit(): void {
+    this.subscribedLessons = []
     this.service.getAll().subscribe((response: any) => {
       this.lessons = response;
       console.log(this.lessons)
@@ -27,8 +37,47 @@ export class ClientFishingLessonsComponent implements OnInit {
       if (userStrng) {
         this.user = JSON.parse(userStrng);
         this.role = this.user.userType;
+        this.service.subscribedLessons(this.user.id).subscribe((response: any) => {
+          this.subscribedLessons = response;
+          this.isLoged = true
+        })
       }
     })
+  }
+
+  isSubscribed(id: any) {
+
+    if (this.isLoged == false) {
+      return true
+    }
+
+    let userStrng = localStorage.getItem('user');
+    if (userStrng) {
+
+      for (let i = 0; i < this.subscribedLessons.length; i++) {
+        if (this.subscribedLessons[i].id == id) {
+          return true;
+        }
+      }
+      return false;
+    }
+    return true
+
+
+  }
+
+  subscribe(id: any) {
+    let data = {
+      clientId: this.user.id,
+      entityId: id
+    }
+    this.subscriptionService.subscribeEntity(data).subscribe((response: any) => {
+      console.log(response)
+      this.service.subscribedLessons(this.user.id).subscribe((response: any) => {
+        this.subscribedLessons = response;
+      })
+    })
+
   }
 
   showMore(id: string) {
@@ -55,10 +104,10 @@ export class ClientFishingLessonsComponent implements OnInit {
     let sortingBy = this.sortBy
     let sortingType = this.sortType
     console.log(this.sortType)
-    if(this.sortBy = ''){
-      alert('Choose sort by');
-    }else if (this.sortType = ''){
-      alert('Choose sort type');
+    if(this.sortBy == ''){
+      this._snackBar.open('Enter sort by.', 'Close', {duration: 2500});
+    }else if (this.sortType == ''){
+      this._snackBar.open('Enter sort type.', 'Close', {duration: 2500})
     }else{
       console.log('OK')
       let data = {
@@ -75,17 +124,26 @@ export class ClientFishingLessonsComponent implements OnInit {
    
   }
 
-  additionalSearch(){
-    this.addSearch = true
-  }
+  searchLessons(){
+    if(this.dateForSearch == ''){
+      this._snackBar.open('Enter date.', 'Close', {duration: 2500});
+    }else{
 
-  searchByDate(){
-    let data = {
-      date: this.dateForSearch
+      let data = {
+        date: this.dateForSearch,
+        location: this.place,
+        rating: this.rating,
+        priceFrom: this.priceFrom,
+        priceTo: this.priceTo,
+        peopleFrom: this.peopleFrom,
+        peopleTo: this.peopleTo
+      }
+
+      this.service.searchByManyParams(data).subscribe((response: any) => {
+        this.lessons= response;
+      })
     }
-    this.service.getAvailableBoatsForCertainDate(data).subscribe((response: any) => {
-      this.lessons = response;
-     })
+
   }
 
 }

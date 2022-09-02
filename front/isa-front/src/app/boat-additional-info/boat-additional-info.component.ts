@@ -52,10 +52,12 @@ export class BoatAdditionalInfoComponent implements OnInit {
       let additionalServices = r.additionalServices;
       let id = r.id;
       let reserved = r.reserved;
+      let discount = r.discount
 
       let data = {
         id: id,
         reserved: reserved,
+        discount: discount,
         startDate: startDate,
         endDate: endDate,
         price: price,

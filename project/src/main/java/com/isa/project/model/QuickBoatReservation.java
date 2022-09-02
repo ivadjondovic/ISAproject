@@ -21,6 +21,7 @@ public class QuickBoatReservation {
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
 	private Double price;
+	private Double discount;
 	private int maxNumberOfPerson;
 	private String additionalServices;
 	private Boolean reserved;
@@ -34,6 +35,16 @@ public class QuickBoatReservation {
 	@JsonBackReference
 	@ManyToOne
 	private Client client;
+
+	
+	
+	public Double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Double discount) {
+		this.discount = discount;
+	}
 
 	public Long getId() {
 		return id;

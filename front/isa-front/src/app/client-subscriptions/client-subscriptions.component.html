@@ -1,0 +1,27 @@
+<div>
+
+    <mat-card>
+        <mat-card-title style="text-align: center;">Subscriptions</mat-card-title>
+    </mat-card>
+    <div class="approval">
+
+        <table id="subscriptions">
+            <tr>
+                <th>Subscription for</th>
+                <th>Name</th>
+                <th>Owner</th>
+                <th>Unsubscribe</th>
+            </tr>
+            <tr *ngFor="let subscription of subscriptions">
+                <td>{{subscription.type}}</td>
+                <td>{{subscription.entityName}}</td>
+                <td>{{subscription.entityOwner}}</td>
+                <td><button (click)="unsubscribe(subscription.id, subscription.type)" class="button1">
+                        <mat-icon>unsubscribe</mat-icon>
+                    </button></td>
+            </tr>
+        </table>
+
+    </div>
+
+</div>

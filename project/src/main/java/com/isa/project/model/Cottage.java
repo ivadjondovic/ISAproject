@@ -65,6 +65,11 @@ public class Cottage {
 	@OneToMany(mappedBy = "cottage", fetch = FetchType.EAGER)
 	private Set<QuickCottageReservation> quickReservations;
 	
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "cottage", fetch = FetchType.LAZY)
+	private Set<CottageSubscription> subscriptions;
+	
 	@ManyToMany(cascade=CascadeType.ALL)
 	@JoinTable(
             name = "cottage_images",
@@ -216,6 +221,16 @@ public class Cottage {
 	public void setComplaints(Set<CottageComplaint> complaints) {
 		this.complaints = complaints;
 	}
+
+	public Set<CottageSubscription> getSubscriptions() {
+		return subscriptions;
+	}
+
+	public void setSubscriptions(Set<CottageSubscription> subscriptions) {
+		this.subscriptions = subscriptions;
+	}
+	
+	
 	
 	
 	

@@ -44,6 +44,10 @@ public class CottageRevisionServiceImplementation implements CottageRevisionServ
 	@Override
 	public CottageRevision addRevision(RevisionDTO dto) {
 		
+		if(dto.getDescription().equals("") || dto.getEntityRate() ==0 || dto.getOwnerRate() == 0 || dto.getReservationType().equals("")) {
+			return null;
+		}
+		
 		CottageRevision cottageRevision = new CottageRevision();
 		cottageRevision.setStatus("Waiting");
 		Client client = (Client) userRepository.findById(dto.getClientId()).get();

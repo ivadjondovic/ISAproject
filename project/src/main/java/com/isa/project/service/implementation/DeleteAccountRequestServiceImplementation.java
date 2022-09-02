@@ -24,6 +24,10 @@ public class DeleteAccountRequestServiceImplementation implements DeleteAccountR
 	@Override
 	public DeleteAccountRequest addRequest(DeleteAccountRequestDTO dto) {
 		
+		if(dto.getReason().equals("")) {
+			return null;
+		}
+		
 		DeleteAccountRequest deleteAccountRequest = new DeleteAccountRequest();
 		deleteAccountRequest.setReason(dto.getReason());
 		User user = userRepository.findById(dto.getUserId()).get();

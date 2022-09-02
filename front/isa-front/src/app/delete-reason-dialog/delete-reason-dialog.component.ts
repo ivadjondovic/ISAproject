@@ -1,11 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../services/user.service';
 
 
 export interface DialogData {
   id: string;
- }
+}
 
 @Component({
   selector: 'app-delete-reason-dialog',
@@ -14,34 +15,39 @@ export interface DialogData {
 })
 export class DeleteReasonDialogComponent implements OnInit {
 
-  reason: string
+  reason = ""
   user: any
 
-  constructor(public dialogRef: MatDialogRef<DeleteReasonDialogComponent>,
+  constructor(private _snackBar: MatSnackBar, public dialogRef: MatDialogRef<DeleteReasonDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData, public service: UserService) { }
 
-  
+
   ngOnInit(): void {
     console.log(this.data.id);
   }
 
   onNoClick(): void {
     this.dialogRef.close();
-    
+
   }
 
   accept() {
-    let data = {
-      reason: this.reason,
-      userId: this.data.id
-    }
+    if (this.reason == "") {
+      this._snackBar.open('Enter deletion request.', 'Close', { duration: 2500 })
+    } else {
+      let data = {
+        reason: this.reason,
+        userId: this.data.id
+      }
 
-    this.service.acceptDeactivation(data).subscribe((response: any) => {
-      this.user = response;
-      console.log(response);
-      this.dialogRef.close();
-      location.reload();
-    })
+      this.service.acceptDeactivation(data).subscribe((response: any) => {
+        this.user = response;
+        console.log(response);
+        this.dialogRef.close();
+        location.reload();
+      })
+
+    }
   }
 
 }

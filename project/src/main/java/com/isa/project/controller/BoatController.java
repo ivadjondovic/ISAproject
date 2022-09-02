@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.isa.project.dto.BoatDTO;
 import com.isa.project.dto.DateSearchDTO;
 import com.isa.project.dto.ReservationSearchDTO;
+import com.isa.project.dto.SearchParamsDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.Boat;
 import com.isa.project.service.BoatService;
@@ -61,7 +62,34 @@ public class BoatController {
 	
 	@PostMapping(path = "/sort")
     public ResponseEntity<?> sort(@RequestBody SortDTO dto) {
-        return new ResponseEntity<>(boatService.sort(dto), HttpStatus.OK);
+		List<Boat> response = boatService.sort(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
+       
+    }
+	
+	@PreAuthorize("hasRole('CLIENT')")
+	@PostMapping(path = "/sortAvailable")
+    public ResponseEntity<?> sortAvailable(@RequestBody ReservationSearchDTO dto) {
+		List<Boat> response = boatService.sortAvailableBoats(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
+        
+    }
+	
+	@PreAuthorize("hasRole('CLIENT')")
+	@PostMapping(path = "/searchByManyParams")
+    public ResponseEntity<?> searchByManyParams(@RequestBody SearchParamsDTO dto) {
+		List<Boat> response = boatService.searchByMoreParams(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
+        
     }
 	
 	@PreAuthorize("hasRole('CLIENT')")
@@ -82,6 +110,12 @@ public class BoatController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+	
+	@GetMapping(path = "/subscribedBoats/{clientId}")
+	@PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<?> subscribedBoats(@PathVariable Long clientId) {
+        return new ResponseEntity<>(boatService.getBoatsByClientSubscription(clientId), HttpStatus.OK);
     }
 
 }
