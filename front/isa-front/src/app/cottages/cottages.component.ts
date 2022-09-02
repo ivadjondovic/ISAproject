@@ -19,6 +19,7 @@ export class CottagesComponent implements OnInit {
   addSearch = false
   dateForSearch: any
   subscribedCottages: any[]
+  isLoged = false;
   constructor(public subscriptionService: CottageSubscriptionService, public service: CottageService, public router: Router) { }
 
 
@@ -33,29 +34,35 @@ export class CottagesComponent implements OnInit {
         this.role = this.user.userType;
         this.service.subscribedCottages(this.user.id).subscribe((response: any) => {
           this.subscribedCottages = response;
+          this.isLoged = true
         })
       }
 
     })
   }
 
-  isSubscribed(id: any){
+  isSubscribed(id: any) {
 
-   if(this.subscribedCottages.length == 0){
-    return true;
-   }
-
-   for(let i =0; i<this.subscribedCottages.length; i++){
-    if(this.subscribedCottages[i].id == id){
-      return true;
+    if (this.isLoged == false) {
+      return true
     }
-   }
-   return false;
 
-   
+    let userStrng = localStorage.getItem('user');
+    if (userStrng) {
+
+      for (let i = 0; i < this.subscribedCottages.length; i++) {
+        if (this.subscribedCottages[i].id == id) {
+          return true;
+        }
+      }
+      return false;
+    }
+    return true
+
+
   }
 
-  subscribe(id: any){
+  subscribe(id: any) {
     let data = {
       clientId: this.user.id,
       entityId: id
@@ -66,7 +73,7 @@ export class CottagesComponent implements OnInit {
         this.subscribedCottages = response;
       })
     })
-    
+
   }
 
   showMore(id: string) {
@@ -87,16 +94,16 @@ export class CottagesComponent implements OnInit {
     }
   }
 
-  sort(){
+  sort() {
     console.log(this.sortBy)
     let sortingBy = this.sortBy
     let sortingType = this.sortType
     console.log(this.sortType)
-    if(this.sortBy = ''){
+    if (this.sortBy = '') {
       alert('Choose sort by');
-    }else if (this.sortType = ''){
+    } else if (this.sortType = '') {
       alert('Choose sort type');
-    }else{
+    } else {
       console.log('OK')
       let data = {
         sortBy: sortingBy,
@@ -111,17 +118,17 @@ export class CottagesComponent implements OnInit {
     }
   }
 
-  additionalSearch(){
+  additionalSearch() {
     this.addSearch = true
   }
 
-  searchByDate(){
+  searchByDate() {
     let data = {
       date: this.dateForSearch
     }
     this.service.getAvailableBoatsForCertainDate(data).subscribe((response: any) => {
       this.cottages = response;
-     })
+    })
   }
 
 }

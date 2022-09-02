@@ -83,5 +83,11 @@ public class BoatController {
 		}
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+	
+	@GetMapping(path = "/subscribedBoats/{clientId}")
+	@PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<?> subscribedBoats(@PathVariable Long clientId) {
+        return new ResponseEntity<>(boatService.getBoatsByClientSubscription(clientId), HttpStatus.OK);
+    }
 
 }

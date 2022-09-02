@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { BoatSubscriptionService } from '../services/boat-subscription.service';
 import { BoatService } from '../services/boat.service';
 
 @Component({
@@ -17,10 +18,13 @@ export class BoatsComponent implements OnInit {
   role: any
   addSearch = false
   dateForSearch: any
-  constructor(public service: BoatService, public router: Router) { }
+  subscribedBoats: any[]
+  isLoged = false;
+  constructor(public subscriptionService: BoatSubscriptionService, public service: BoatService, public router: Router) { }
 
 
   ngOnInit(): void {
+    this.subscribedBoats = []
     this.service.getAll().subscribe((response: any) => {
       this.boats = response;
       console.log(this.boats)
@@ -28,9 +32,52 @@ export class BoatsComponent implements OnInit {
       if (userStrng) {
         this.user = JSON.parse(userStrng);
         this.role = this.user.userType;
+        this.service.subscribedBoats(this.user.id).subscribe((response: any) => {
+          this.subscribedBoats = response;
+          console.log(this.subscribedBoats)
+          this.isLoged = true
+        })
       }
+
+      
     })
   }
+
+  isSubscribed(id: any){
+
+    if(this.isLoged == false){
+      return true
+    }
+    let userStrng = localStorage.getItem('user');
+    if(userStrng){
+      for(let i =0; i<this.subscribedBoats.length; i++){
+        if(this.subscribedBoats[i].id == id){
+          return true;
+        }
+       }
+       return false;
+
+    }
+    return true;
+ 
+    
+ 
+    
+   }
+ 
+   subscribe(id: any){
+     let data = {
+       clientId: this.user.id,
+       entityId: id
+     }
+     this.subscriptionService.subscribeEntity(data).subscribe((response: any) => {
+       console.log(response)
+       this.service.subscribedBoats(this.user.id).subscribe((response: any) => {
+         this.subscribedBoats = response;
+       })
+     })
+     
+   }
 
   showMore(id: string) {
     this.router.navigate(['/boatInfo', id]);

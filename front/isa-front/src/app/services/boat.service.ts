@@ -43,5 +43,9 @@ export class BoatService {
   getAvailableBoatsForCertainDate(data: any){
     return this.http.post(this.baseURL + "api/boat/availableBoatsForCertainDate" ,  data, this.getAuthoHeader());
   }
+
+  subscribedBoats(id: any){
+    return this.http.get(this.baseURL + "api/boat/subscribedBoats/" + id, this.getAuthoHeader());
+  }
   
 }

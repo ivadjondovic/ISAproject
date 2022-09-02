@@ -46,7 +46,11 @@ public class Client extends User{
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
-	private Set<CottageSubscription> subscriptions;
+	private Set<CottageSubscription> cottageSubscriptions;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+	private Set<BoatSubscription> boatSubscriptions;
 	
 	@Override
     public String getUserType() {
@@ -101,13 +105,23 @@ public class Client extends User{
 		this.quickFishingLessonReservations = quickFishingLessonReservations;
 	}
 
-	public Set<CottageSubscription> getSubscriptions() {
-		return subscriptions;
+	public Set<CottageSubscription> getCottageSubscriptions() {
+		return cottageSubscriptions;
 	}
 
-	public void setSubscriptions(Set<CottageSubscription> subscriptions) {
-		this.subscriptions = subscriptions;
+	public void setCottageSubscriptions(Set<CottageSubscription> subscriptions) {
+		this.cottageSubscriptions = subscriptions;
 	}
+
+	public Set<BoatSubscription> getBoatSubscriptions() {
+		return boatSubscriptions;
+	}
+
+	public void setBoatSubscriptions(Set<BoatSubscription> boatSubscriptions) {
+		this.boatSubscriptions = boatSubscriptions;
+	}
+	
+	
 	
 	
 	

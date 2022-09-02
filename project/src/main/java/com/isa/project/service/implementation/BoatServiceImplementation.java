@@ -28,6 +28,8 @@ import com.isa.project.model.AvailableBoatPeriod;
 import com.isa.project.model.Boat;
 import com.isa.project.model.BoatFishingEquipment;
 import com.isa.project.model.BoatOwner;
+import com.isa.project.model.BoatSubscription;
+import com.isa.project.model.Client;
 import com.isa.project.model.Image;
 import com.isa.project.model.NavigationEquipment;
 import com.isa.project.model.QuickBoatReservation;
@@ -37,6 +39,7 @@ import com.isa.project.repository.AdditionalBoatServiceRepository;
 import com.isa.project.repository.AvailableBoatPeriodRepository;
 import com.isa.project.repository.BoatFishingEquipmentRepository;
 import com.isa.project.repository.BoatRepository;
+import com.isa.project.repository.BoatSubscriptionRepository;
 import com.isa.project.repository.NavigationEquipmentRepository;
 import com.isa.project.repository.QuickBoatReservationRepository;
 import com.isa.project.repository.UserRepository;
@@ -65,6 +68,9 @@ public class BoatServiceImplementation implements BoatService{
 	
 	@Autowired
 	private BoatFishingEquipmentRepository fishingEquipmentRepository;
+	
+	@Autowired
+	private BoatSubscriptionRepository boatSubscriptionRepository;
 	
 	@Override
 	public Boat createBoat(BoatDTO dto) {
@@ -348,6 +354,18 @@ public class BoatServiceImplementation implements BoatService{
 			
 		}
 		return result;
+	}
+
+	@Override
+	public List<Boat> getBoatsByClientSubscription(Long clientId) {
+		List<Boat> boats = new ArrayList<>();
+		Client client = (Client) userRepository.findById(clientId).get();
+		List<BoatSubscription> clientSubscriptions = boatSubscriptionRepository.findByClient(client);
+		
+		for(BoatSubscription subscription: clientSubscriptions) {
+			boats.add(subscription.getBoat());
+		}
+		return boats;
 	}
 
 }
