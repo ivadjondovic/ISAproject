@@ -5,6 +5,7 @@ import java.util.List;
 import com.isa.project.dto.DateSearchDTO;
 import com.isa.project.dto.FishingLessonDTO;
 import com.isa.project.dto.ReservationSearchDTO;
+import com.isa.project.dto.SearchParamsDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.FishingLesson;
 
@@ -23,4 +24,5 @@ public interface FishingLessonService {
 	public List<FishingLesson> searchForInstructor(String searchTerm, Long id);
 	public List<FishingLesson> getLessonsByClientSubscription(Long clientId);
 	public List<FishingLesson> sortAvailableLessons(ReservationSearchDTO dto);
+	public List<FishingLesson> searchByMoreParams(SearchParamsDTO dto);
 }

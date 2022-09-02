@@ -76,4 +76,8 @@ export class FishingLessonService {
     return this.http.get(this.baseURL + "api/fishing/subscribedLessons/" + id, this.getAuthoHeader());
   }
 
+  searchByManyParams(data: any){
+    return this.http.post(this.baseURL + "api/fishing/searchByManyParams" ,  data, this.getAuthoHeader());
+  }
+
 }

@@ -12,13 +12,18 @@ import { FishingLessonService } from '../services/fishing-lesson.service';
 export class ClientFishingLessonsComponent implements OnInit {
 
   lessons: any[];
+  rating = ""
+  place = ""
+  priceFrom = ""
+  priceTo = ""
+  peopleFrom = ""
+  peopleTo = ""
   searchTerm = '';
   sortBy = '';
   sortType = '';
   user: any
   role: any
-  addSearch = false
-  dateForSearch: any
+  dateForSearch = ""
   subscribedLessons: any[]
   isLoged = false;
   constructor(private _snackBar: MatSnackBar, public subscriptionService: FishingLessonSubscriptionService, public service: FishingLessonService, public router: Router) { }
@@ -119,17 +124,26 @@ export class ClientFishingLessonsComponent implements OnInit {
    
   }
 
-  additionalSearch(){
-    this.addSearch = true
-  }
+  searchLessons(){
+    if(this.dateForSearch == ''){
+      this._snackBar.open('Enter date.', 'Close', {duration: 2500});
+    }else{
 
-  searchByDate(){
-    let data = {
-      date: this.dateForSearch
+      let data = {
+        date: this.dateForSearch,
+        location: this.place,
+        rating: this.rating,
+        priceFrom: this.priceFrom,
+        priceTo: this.priceTo,
+        peopleFrom: this.peopleFrom,
+        peopleTo: this.peopleTo
+      }
+
+      this.service.searchByManyParams(data).subscribe((response: any) => {
+        this.lessons= response;
+      })
     }
-    this.service.getAvailableBoatsForCertainDate(data).subscribe((response: any) => {
-      this.lessons = response;
-     })
+
   }
 
 }

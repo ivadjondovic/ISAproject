@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.isa.project.dto.DateSearchDTO;
 import com.isa.project.dto.FishingLessonDTO;
 import com.isa.project.dto.ReservationSearchDTO;
+import com.isa.project.dto.SearchParamsDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.FishingLesson;
 import com.isa.project.service.FishingLessonService;
@@ -45,6 +46,17 @@ public class FishingLessonController {
 	@PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<?> getByInstructorId(@PathVariable Long instructorId) {
         return new ResponseEntity<>(fishingLessonService.getByInstructorId(instructorId), HttpStatus.OK);
+    }
+	
+	@PreAuthorize("hasRole('CLIENT')")
+	@PostMapping(path = "/searchByManyParams")
+    public ResponseEntity<?> searchByManyParams(@RequestBody SearchParamsDTO dto) {
+		List<FishingLesson> response = fishingLessonService.searchByMoreParams(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
+        
     }
 	
 	@GetMapping(path = "/fishingLesson/{id}")

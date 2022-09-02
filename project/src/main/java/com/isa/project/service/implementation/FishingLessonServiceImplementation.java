@@ -1,6 +1,7 @@
 package com.isa.project.service.implementation;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +21,7 @@ import com.isa.project.dto.ImageDTO;
 import com.isa.project.dto.QuickReservationDTO;
 import com.isa.project.dto.ReservationSearchDTO;
 import com.isa.project.dto.RuleDTO;
+import com.isa.project.dto.SearchParamsDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalFishingLessonService;
 import com.isa.project.model.AvailableFishingLessonPeriod;
@@ -464,6 +466,76 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		}
 		
 		return lessons;
+	}
+
+	@Override
+	public List<FishingLesson> searchByMoreParams(SearchParamsDTO dto) {
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+
+
+		String formattedDateTime = dto.getDate().format(formatter);
+		if(formattedDateTime.equals("")) {
+			return null;
+		}
+		List<FishingLesson> filteredByDate = new ArrayList<>();
+		List<FishingLesson> lessons = fishingLessonRepository.findAll();
+		for(FishingLesson l: lessons) {
+			Set<AvailableFishingLessonPeriod> periods = l.getAvailablePeriods();
+			for(AvailableFishingLessonPeriod period: periods) {
+				if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) > 0) {
+					filteredByDate.add(l);
+				}
+			}
+			
+		}
+		List<FishingLesson> filteredByLocation = new ArrayList<>();
+		for(FishingLesson l: filteredByDate) {
+			filteredByLocation.add(l);
+		}
+		
+		if(!dto.getLocation().equals("")) {
+			filteredByLocation = filteredByDate.stream()
+					.filter(l -> l.getAddress().contains(dto.getLocation()))
+	                .collect(Collectors.toList());
+		}
+		
+		
+		List<FishingLesson> filteredByRating = new ArrayList<>();
+		for(FishingLesson l: filteredByLocation) {
+			filteredByRating.add(l);
+		}
+		if(dto.getRating() != 0) {
+			Double rating = (double) dto.getRating();
+			filteredByRating = filteredByLocation.stream()
+					.filter(l -> l.getRating() >= rating- 0.5 && l.getRating() <= rating + 0.5)
+					.collect(Collectors.toList());
+			
+		}
+		
+		List<FishingLesson> filteredByPrice = new ArrayList<>();
+		for(FishingLesson l: filteredByRating) {
+			filteredByPrice.add(l);
+		}
+		if(dto.getPriceFrom() != null && dto.getPriceTo() != null) {
+			filteredByPrice = filteredByRating.stream()
+					.filter(l -> l.getPrice() >= dto.getPriceFrom() && l.getPrice() <= dto.getPriceTo())
+					.collect(Collectors.toList());
+		}
+		
+		List<FishingLesson> filteredByPeople = new ArrayList<>();
+		for(FishingLesson l: filteredByPrice) {
+			filteredByPeople.add(l);
+		}
+		if(dto.getPeopleFrom() != 0 && dto.getPeopleTo() != 0) {
+			filteredByPeople = filteredByPrice.stream()
+					.filter(l -> l.getNumberOfPeople() >= dto.getPeopleFrom() && l.getNumberOfPeople() <= dto.getPeopleTo())
+					.collect(Collectors.toList());
+					
+		}
+		
+		return filteredByPeople;
+	
 	}
 
 }
