@@ -192,10 +192,10 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 	
-	@PutMapping(path = "/editAdmin")
-	@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> editAdmin(@RequestBody UserDTO userDTO){
-        User user = userService.editAdmin(userDTO);
+	@PutMapping(path = "/edit")
+	@PreAuthorize("hasAnyRole('ADMIN', 'INSTRUCTOR')")
+    public ResponseEntity<?> edit(@RequestBody UserDTO userDTO){
+        User user = userService.edit(userDTO);
         if(user == null) {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

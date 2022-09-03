@@ -12,5 +12,6 @@ public interface FishingLessonReservationService {
 	public FishingLessonReservation createReservation(ReservationDTO dto);
 	public FishingLessonReservation accept(Long id);
 	public List<FishingLessonReservationResponseDTO> getByClientId(Long clientId);
+	public List<FishingLessonReservationResponseDTO> getByInstructorId(Long instructorId);
 	public List<FishingLessonReservationResponseDTO> sort(SortDTO dto);
 }

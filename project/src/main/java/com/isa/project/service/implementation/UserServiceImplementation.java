@@ -275,7 +275,7 @@ public class UserServiceImplementation implements UserService{
 	
 	
 	@Override
-	public User editAdmin(UserDTO userDTO) {
+	public User edit(UserDTO userDTO) {
 		User user = userRepository.findByUsername(userDTO.getUsername());
 		if(userDTO.getPassword() != "") {
 			user.setPassword(passwordEncoder.encode(userDTO.getPassword()));

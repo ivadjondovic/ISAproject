@@ -1,0 +1,29 @@
+<div>
+    <mat-card>
+        <mat-card-title style="text-align: center;">Fishing lesson reservations history</mat-card-title>
+    </mat-card>
+    <div class="approval">
+
+        <table id="registrations">
+            <tr>
+                <th>Fishing lesson</th>
+                <th>Price</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Client</th>
+            </tr>
+            <tr *ngFor="let reservation of reservationList">
+                <td>{{reservation.fishingLesson.name}}</td>
+                <td>{{reservation.price}}</td>
+                <td>{{reservation.startDate | date:'medium'}}</td>
+                <td>{{reservation.endDate | date:'medium'}}</td>
+                <td><button class="button1">
+                        <mat-icon>person</mat-icon>
+                    </button></td>
+            </tr>
+        </table>
+
+
+    </div>
+
+</div>

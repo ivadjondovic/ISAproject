@@ -30,6 +30,8 @@ import { AdminRevisionsComponent } from './admin-revisions/admin-revisions.compo
 import { AdminComplaintsComponent } from './admin-complaints/admin-complaints.component';
 import { CreateFishingLessonComponent } from './create-fishing-lesson/create-fishing-lesson.component';
 import { ClientSubscriptionsComponent } from './client-subscriptions/client-subscriptions.component';
+import { InstructorProfileComponent } from './instructor-profile/instructor-profile.component';
+import { InstructorReservationsHistoryComponent } from './instructor-reservations-history/instructor-reservations-history.component';
 
 const routes: Routes = [
 
@@ -42,12 +44,14 @@ const routes: Routes = [
   {path: 'registrationApproval', component: RegistrationApprovalComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
   {path: 'clientProfile', component: ClientProfileComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
   {path: 'adminProfile', component: AdminProfileComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
+  {path: 'instructorProfile', component: InstructorProfileComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_INSTRUCTOR'}},
   {path: 'changeAdminPassword', component: ChangeAdminPasswordComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
   {path: 'boats', component: BoatsComponent},
   {path: 'boatInfo/:id', component: BoatAdditionalInfoComponent},
   {path: 'cottages', component: CottagesComponent},
   {path: 'cottageInfo/:id', component: CottageAdditionalInfoComponent},
   {path: 'deleteAccount', component: DeleteAccountComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
+  {path: 'deleteInstructorAccount', component: DeleteAccountComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_INSTRUCTOR'}},
   {path: 'deleteRequests', component: DeleteRequestsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
   {path: 'fishingLessons', component: FishingLessonsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_INSTRUCTOR'}},
   {path: 'editFishingLesson/:id', component: EditFishingLessonComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_INSTRUCTOR'}},
@@ -58,6 +62,7 @@ const routes: Routes = [
   {path: 'cottageReservationsHistory', component: CottageReservationsHistoryComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
   {path: 'boatReservationsHistory', component: BoatReservationsHistoryComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
   {path: 'fishingLessonReservationsHistory', component: FishingLessonReservationsHistoryComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
+  {path: 'fishingLessonReservationsHistoryForInstructor', component: InstructorReservationsHistoryComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_INSTRUCTOR'}},
   {path: 'notPassedReservations', component: NotPassedReservationsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
   {path: 'revisions', component: AdminRevisionsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
   {path: 'complaints', component: AdminComplaintsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},

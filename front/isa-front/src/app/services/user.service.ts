@@ -52,8 +52,8 @@ export class UserService {
     return this.http.put(this.baseURL + "api/users/changePassword", data, this.getAuthoHeader());
   }
 
-  editAdmin(data: any){
-    return this.http.put(this.baseURL + "api/users/editAdmin", data, this.getAuthoHeader());
+  edit(data: any){
+    return this.http.put(this.baseURL + "api/users/edit", data, this.getAuthoHeader());
   }
 
   declineDeactivation(data: any){
