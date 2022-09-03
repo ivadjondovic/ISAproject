@@ -20,8 +20,9 @@ public interface UserService {
 	public User accept(AccountActivationDTO accountActivationDTO);
 	public User decline(AccountActivationDTO accountActivationDTO);
 	public User editClient(UserDTO userDTO);
-	public User editAdmin(UserDTO userDTO);
+	public User edit(UserDTO userDTO);
 	public User declineDeletingAccount(DeleteAccountRequestDTO dto);
 	public User acceptDeletingAccount(DeleteAccountRequestDTO dto);
+	public User getClient(Long id);
 	
 }

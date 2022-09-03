@@ -43,6 +43,10 @@
         <mat-icon>delete</mat-icon><span class="nav-caption">Delete account</span>
     </a>
 
+    <a mat-list-item routerLink="/deleteInstructorAccount" *ngIf="role == 'ROLE_INSTRUCTOR'" (click)="onSidenavClose('')">
+        <mat-icon>delete</mat-icon><span class="nav-caption">Delete account</span>
+    </a>
+
     <a mat-list-item routerLink="/deleteRequests" *ngIf="role == 'ROLE_ADMIN'" (click)="onSidenavClose('')">
         <mat-icon>delete_forever</mat-icon><span class="nav-caption">Delete requests</span>
     </a>
@@ -83,6 +87,10 @@
         <mat-icon>person</mat-icon><span class="nav-caption">Profile</span>
     </a>
 
+    <a mat-list-item routerLink="/instructorProfile" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_INSTRUCTOR'">
+        <mat-icon>person</mat-icon><span class="nav-caption">Profile</span>
+    </a>
+
     <a mat-list-item routerLink="/adminProfile" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_ADMIN' && isPasswordOk">
         <mat-icon>person</mat-icon><span class="nav-caption">Profile</span>
     </a>
@@ -97,6 +105,10 @@
 
     <a mat-list-item routerLink="/createFishingLesson" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_INSTRUCTOR'">
         <mat-icon>exposure_plus_1</mat-icon><span class="nav-caption">Add fishing lesson</span>
+    </a>
+
+    <a mat-list-item routerLink="/fishingLessonReservationsHistoryForInstructor" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_INSTRUCTOR'">
+        <mat-icon>history_edu</mat-icon><span class="nav-caption">Fishing lesson reservations history</span>
     </a>
 
   </mat-nav-list>

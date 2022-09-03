@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
 
@@ -20,6 +21,7 @@ import com.isa.project.model.AvailableFishingLessonPeriod;
 import com.isa.project.model.Client;
 import com.isa.project.model.FishingLesson;
 import com.isa.project.model.FishingLessonReservation;
+import com.isa.project.model.Instructor;
 import com.isa.project.model.QuickFishingLessonReservation;
 import com.isa.project.repository.AdditionalFishingLessonServiceRepository;
 import com.isa.project.repository.AvailableFishingLessonPeriodRepository;
@@ -260,6 +262,71 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 		}
 		
 		return reservations;
+	}
+
+	@Override
+	public List<FishingLessonReservationResponseDTO> getByInstructorId(Long instructorId) {
+		Instructor instructor = (Instructor) userRepository.findById(instructorId).get();
+		List<FishingLesson> instructorLessons = fishingLessonRepository.findByInstructor(instructor);
+		List<FishingLessonReservationResponseDTO> result = new ArrayList<>();
+		Set<FishingLessonReservation> reservationSet = new HashSet<>();
+		Set<QuickFishingLessonReservation> quickReservationSet = new HashSet<>();
+		for(FishingLesson f : instructorLessons) {
+			reservationSet.addAll(f.getReservations());
+			quickReservationSet.addAll(f.getQuickReservations());
+		}
+		
+		Set<FishingLessonReservation> filteredReservationSet = reservationSet.stream()
+				.filter(r -> (r.getAccepted() == true && r.getCanceled() == false))
+                .collect(Collectors.toSet());
+
+		for(FishingLessonReservation flr: filteredReservationSet) {
+			FishingLesson fishingLesson = fishingLessonRepository.findById(flr.getFishingLesson().getId()).get();
+			FishingLessonReservationResponseDTO lessonReservation = new FishingLessonReservationResponseDTO();
+			lessonReservation.setAccepted(flr.getAccepted());
+			lessonReservation.setAdditionalServices(flr.getAdditionalServices());
+			lessonReservation.setClient(flr.getClient());
+			lessonReservation.setFishingLesson(fishingLesson);
+			lessonReservation.setEndDate(flr.getEndDate());
+			lessonReservation.setId(flr.getId());
+			lessonReservation.setPrice(flr.getPrice());
+			lessonReservation.setStartDate(flr.getStartDate());
+			lessonReservation.setReservationType("Fishing lesson reservation");
+			if(flr.getEndDate().compareTo(LocalDateTime.now()) <= 0) {
+				lessonReservation.setPossibleToRate(true);
+			}else {
+				lessonReservation.setPossibleToRate(false);
+			}
+			
+			result.add(lessonReservation);
+		}
+		
+		Set<QuickFishingLessonReservation> filteredQuickReservationSet = quickReservationSet.stream()
+				.filter(r -> (r.getAccepted() == true && r.getCanceled() == false))
+                .collect(Collectors.toSet());
+		
+		for(QuickFishingLessonReservation quickR: filteredQuickReservationSet) {
+			
+			FishingLesson lesson = fishingLessonRepository.findById(quickR.getFishingLesson().getId()).get();
+			FishingLessonReservationResponseDTO lessonReservation = new FishingLessonReservationResponseDTO();
+			lessonReservation.setAccepted(quickR.getAccepted());
+			lessonReservation.setClient(quickR.getClient());
+			lessonReservation.setFishingLesson(lesson);
+			lessonReservation.setEndDate(quickR.getEndDate());
+			lessonReservation.setId(quickR.getId());
+			lessonReservation.setPrice(quickR.getPrice());
+			lessonReservation.setStartDate(quickR.getStartDate());
+			lessonReservation.setReservationType("Quick fishing lesson reservation");
+			if(quickR.getEndDate().compareTo(LocalDateTime.now()) <= 0) {
+				lessonReservation.setPossibleToRate(true);
+			}else {
+				lessonReservation.setPossibleToRate(false);
+			}
+			
+			result.add(lessonReservation);
+			
+		}
+		return result;
 	}
 
 }

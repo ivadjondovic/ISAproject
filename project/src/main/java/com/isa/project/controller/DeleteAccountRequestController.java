@@ -24,7 +24,7 @@ public class DeleteAccountRequestController {
 	private DeleteAccountRequestService deleteAccountRequestService;
 
 	@PostMapping(path = "/addRequest")
-	@PreAuthorize("hasRole('CLIENT')")
+	@PreAuthorize("hasAnyRole('CLIENT', 'INSTRUCTOR')")	
     public ResponseEntity<?> addRequest(@RequestBody DeleteAccountRequestDTO deleteAccountRequestDTO){
         DeleteAccountRequest deleteRequest = deleteAccountRequestService.addRequest(deleteAccountRequestDTO);
         if(deleteRequest == null) {

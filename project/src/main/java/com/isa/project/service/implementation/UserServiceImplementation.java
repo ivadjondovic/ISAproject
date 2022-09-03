@@ -275,7 +275,7 @@ public class UserServiceImplementation implements UserService{
 	
 	
 	@Override
-	public User editAdmin(UserDTO userDTO) {
+	public User edit(UserDTO userDTO) {
 		User user = userRepository.findByUsername(userDTO.getUsername());
 		if(userDTO.getPassword() != "") {
 			user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
@@ -344,6 +344,11 @@ public class UserServiceImplementation implements UserService{
 			deleteAccountRequestRepository.save(deleteRequest);
 		}
 		return userRepository.save(user);
+	}
+
+	@Override
+	public User getClient(Long id) {
+		return userRepository.findById(id).get();
 	}
 	
 	

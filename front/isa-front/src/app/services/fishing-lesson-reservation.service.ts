@@ -28,6 +28,10 @@ export class FishingLessonReservationService {
     return this.http.get(this.baseURL + "api/fishingLessonReservations/clientReservations/"+ id, this.getAuthoHeader());
   }
 
+  getByInstructorId(id: any){
+    return this.http.get(this.baseURL + "api/fishingLessonReservations/instructorReservations/"+ id, this.getAuthoHeader());
+  }
+
   sort(data: any){
     return this.http.post(this.baseURL + "api/fishingLessonReservations/sort" ,  data, this.getAuthoHeader());
   }

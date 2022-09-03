@@ -4,11 +4,11 @@ import { PasswordDialogComponent } from '../password-dialog/password-dialog.comp
 import { UserService } from '../services/user.service';
 
 @Component({
-  selector: 'app-admin-profile',
-  templateUrl: './admin-profile.component.html',
-  styleUrls: ['./admin-profile.component.css']
+  selector: 'app-instructor-profile',
+  templateUrl: './instructor-profile.component.html',
+  styleUrls: ['./instructor-profile.component.css']
 })
-export class AdminProfileComponent implements OnInit {
+export class InstructorProfileComponent implements OnInit {
 
   sChangePasswordClicked = false;
   user: any
@@ -39,7 +39,7 @@ export class AdminProfileComponent implements OnInit {
     });
   }
   
-  editAdmin(){
+  edit(){
     console.log(this.password)
     console.log(this.user.country)
     console.log(this.newPassword)
@@ -60,6 +60,7 @@ export class AdminProfileComponent implements OnInit {
     })
     
   }
+
 
 
 }

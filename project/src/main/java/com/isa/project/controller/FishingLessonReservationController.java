@@ -49,6 +49,12 @@ public class FishingLessonReservationController {
         return new ResponseEntity<>(reservationService.getByClientId(clientId), HttpStatus.OK);
     }
 	
+	@GetMapping(path = "/instructorReservations/{instructorId}")
+	@PreAuthorize("hasRole('INSTRUCTOR')")
+    public ResponseEntity<?> instructorReservations(@PathVariable Long instructorId){
+        return new ResponseEntity<>(reservationService.getByInstructorId(instructorId), HttpStatus.OK);
+    }
+	
 	@PostMapping(path = "/sort")
 	@PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<?> sort(@RequestBody SortDTO dto) {

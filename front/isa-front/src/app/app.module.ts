@@ -64,6 +64,9 @@ import { AnswerComplaintDialogComponent } from './answer-complaint-dialog/answer
 import { CreateFishingLessonComponent } from './create-fishing-lesson/create-fishing-lesson.component';
 import { ClientSubscriptionsComponent } from './client-subscriptions/client-subscriptions.component';
 import { MatSnackBarModule} from '@angular/material/snack-bar';
+import { InstructorProfileComponent } from './instructor-profile/instructor-profile.component';
+import { InstructorReservationsHistoryComponent } from './instructor-reservations-history/instructor-reservations-history.component';
+import { ClientInfoComponent } from './client-info/client-info.component';
 
 
 
@@ -113,6 +116,9 @@ import { MatSnackBarModule} from '@angular/material/snack-bar';
     AnswerComplaintDialogComponent,
     CreateFishingLessonComponent,
     ClientSubscriptionsComponent,
+    InstructorProfileComponent,
+    InstructorReservationsHistoryComponent,
+    ClientInfoComponent,
     
   ],
   imports: [
