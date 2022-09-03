@@ -84,4 +84,8 @@ export class FishingLessonService {
     return this.http.post(this.baseURL + "api/fishing/searchByManyParams" ,  data, this.getAuthoHeader());
   }
 
+  deleteLesson(id: any){
+    return this.http.get(this.baseURL + "api/fishing/delete/" + id, this.getAuthoHeader());
+  }
+
 }

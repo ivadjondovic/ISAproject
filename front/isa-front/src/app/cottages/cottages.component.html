@@ -153,7 +153,8 @@
                             <h2>{{c.name}}</h2>
                         </div>
                         <div class="col-3">
-                            <button style="margin-bottom: 10px;" *ngIf="!isSubscribed(c.id)" (click) = "subscribe(c.id)">Subscribe</button>
+                            <button style="margin-bottom: 10px;" *ngIf="!isSubscribed(c.id)" (click)="subscribe(c.id)">Subscribe</button>
+                            <button style="margin-bottom: 10px;" *ngIf="isAdmin()" (click)="deleteCottage(c.id)">Delete</button>
                         </div>
                     </div>
                     <!-- <img class="roundedImage" src="{{b.images[0].path}}" style="width:438px; height: 260px; margin-bottom: 15px;"> -->

@@ -32,6 +32,7 @@ public class Cottage {
 	private int numberOfRooms;
 	private Double price;
 	private Double rating;
+	private Boolean deleted;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "cottage", fetch = FetchType.LAZY)
@@ -108,6 +109,15 @@ public class Cottage {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public String getAddress() {

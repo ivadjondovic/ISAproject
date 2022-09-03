@@ -33,6 +33,7 @@ public class FishingLesson {
 	private Double price;
 	private Double percentageForKeep;
 	private Double rating;
+	private Boolean deleted;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "fishingLesson", fetch = FetchType.LAZY)
@@ -119,6 +120,14 @@ public class FishingLesson {
 
 	public String getFishingInstructorBio() {
 		return fishingInstructorBio;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public void setFishingInstructorBio(String fishingInstructorBio) {

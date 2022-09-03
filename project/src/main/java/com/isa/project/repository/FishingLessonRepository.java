@@ -12,4 +12,6 @@ import com.isa.project.model.User;
 public interface FishingLessonRepository extends JpaRepository<FishingLesson, Long> {
 
 	public List<FishingLesson> findByInstructor(User instructor);
+	public List<FishingLesson> findByInstructorAndDeleted(User instructor, Boolean deleted);
+	public List<FishingLesson> findByDeleted(Boolean deleted);
 }

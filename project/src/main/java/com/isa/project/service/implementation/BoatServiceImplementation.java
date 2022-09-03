@@ -90,6 +90,7 @@ public class BoatServiceImplementation implements BoatService{
 		boat.setPercentageForKeep(dto.getPercentageForKeep());
 		boat.setPrice(dto.getPrice());
 		boat.setRating(0.0);
+		boat.setDeleted(false);
 		Boat savedBoat = boatRepository.save(boat);
 		
 		Set<NavigationEquipment> navigationEquipments = new HashSet<>();
@@ -179,7 +180,7 @@ public class BoatServiceImplementation implements BoatService{
 
 	@Override
 	public List<Boat> getAll() {
-		return boatRepository.findAll();
+		return boatRepository.findByDeleted(false);
 	}
 
 	@Override
@@ -228,7 +229,7 @@ public class BoatServiceImplementation implements BoatService{
 		if(dto.getSortBy().equals("") || dto.getSortType().equals("")) {
 			return null;
 		}
-		List<Boat> boats = boatRepository.findAll();
+		List<Boat> boats = boatRepository.findByDeleted(false);
 		if(dto.getSortBy().equals("Name")) {
 			if(dto.getSortType().equals("Ascending")) {
 				Collections.sort(boats, (b1, b2) ->
@@ -350,7 +351,7 @@ public class BoatServiceImplementation implements BoatService{
 			return null;
 		}
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
-		List<Boat> boats = boatRepository.findAll();
+		List<Boat> boats = boatRepository.findByDeleted(false);
 		List<Boat> result = new ArrayList<>();
 		for(Boat boat: boats) {
 			Set<AvailableBoatPeriod> periods = boat.getAvailablePeriods();
@@ -365,7 +366,7 @@ public class BoatServiceImplementation implements BoatService{
 
 	@Override
 	public List<Boat> boatsAvailableForCertainDate(DateSearchDTO dto) {
-		List<Boat> boats = boatRepository.findAll();
+		List<Boat> boats = boatRepository.findByDeleted(false);
 		List<Boat> result = new ArrayList<>();
 		for(Boat b: boats) {
 			Set<AvailableBoatPeriod> periods = b.getAvailablePeriods();
@@ -386,7 +387,9 @@ public class BoatServiceImplementation implements BoatService{
 		List<BoatSubscription> clientSubscriptions = boatSubscriptionRepository.findByClient(client);
 		
 		for(BoatSubscription subscription: clientSubscriptions) {
-			boats.add(subscription.getBoat());
+			if(subscription.getBoat().getDeleted() == false) {
+				boats.add(subscription.getBoat());
+			}
 		}
 		return boats;
 	}
@@ -423,7 +426,7 @@ public class BoatServiceImplementation implements BoatService{
 			return null;
 		}
 		List<Boat> filteredByDate = new ArrayList<>();
-		List<Boat> boats = boatRepository.findAll();
+		List<Boat> boats = boatRepository.findByDeleted(false);
 		for(Boat b: boats) {
 			Set<AvailableBoatPeriod> periods = b.getAvailablePeriods();
 			for(AvailableBoatPeriod period: periods) {
@@ -480,6 +483,14 @@ public class BoatServiceImplementation implements BoatService{
 		
 		return filteredByPeople;
 	
+	}
+
+	@Override
+	public void delete(Long id) {
+		Boat boat = boatRepository.findById(id).get();
+		boat.setDeleted(true);
+		boatRepository.save(boat);
+		
 	}
 
 }

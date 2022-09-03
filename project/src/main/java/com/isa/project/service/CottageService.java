@@ -21,5 +21,6 @@ public interface CottageService {
 	public List<Cottage> getCottagesByClientSubscription(Long clientId);
 	public List<Cottage> sortAvailableCottages(ReservationSearchDTO dto);
 	public List<Cottage> searchByMoreParams(SearchParamsDTO dto);
+	public void delete(Long id);
 
 }

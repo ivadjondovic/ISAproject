@@ -37,10 +37,12 @@ export class ClientFishingLessonsComponent implements OnInit {
       if (userStrng) {
         this.user = JSON.parse(userStrng);
         this.role = this.user.userType;
-        this.service.subscribedLessons(this.user.id).subscribe((response: any) => {
-          this.subscribedLessons = response;
-          this.isLoged = true
-        })
+        if(this.role == 'ROLE_CLIENT') {
+          this.service.subscribedLessons(this.user.id).subscribe((response: any) => {
+            this.subscribedLessons = response;
+            this.isLoged = true
+          })
+        }
       }
     })
   }
@@ -64,6 +66,25 @@ export class ClientFishingLessonsComponent implements OnInit {
     return true
 
 
+  }
+
+  deleteLesson(id: any) {
+    console.log(id);
+    this.service.deleteLesson(id).subscribe((response: any) => {
+      this.service.getAll().subscribe((response: any) => {
+        this.lessons = response;
+      })
+    }) 
+  }
+
+  isAdmin() {
+    let userStrng = localStorage.getItem('user');
+    if(userStrng){
+      if(this.role == 'ROLE_ADMIN')
+       return true;
+
+    }
+    return false;
   }
 
   subscribe(id: any) {

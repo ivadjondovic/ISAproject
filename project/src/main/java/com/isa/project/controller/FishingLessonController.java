@@ -157,4 +157,11 @@ public class FishingLessonController {
         return new ResponseEntity<>(fishingLessonService.getLessonsByClientSubscription(clientId), HttpStatus.OK);
     }
 	
+	@GetMapping(path = "/delete/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> delete(@PathVariable Long id) {
+		fishingLessonService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+	
 }

@@ -21,4 +21,5 @@ public interface BoatService {
 	public List<Boat> getBoatsByClientSubscription(Long clientId);
 	public List<Boat> sortAvailableBoats(ReservationSearchDTO dto);
 	public List<Boat> searchByMoreParams(SearchParamsDTO dto);
+	public void delete(Long id);
 }
