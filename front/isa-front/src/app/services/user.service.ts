@@ -68,4 +68,8 @@ export class UserService {
     return this.http.get(this.baseURL + "api/users/getClient/" + id, this.getAuthoHeader());
   }
 
+  getClients(){
+    return this.http.get(this.baseURL + "api/users/getClients", this.getAuthoHeader());
+  }
+
 }

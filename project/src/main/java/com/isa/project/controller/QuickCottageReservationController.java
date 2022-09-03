@@ -13,11 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.isa.project.dto.CottageDTO;
 import com.isa.project.dto.QuickClientReservationDTO;
 import com.isa.project.model.Client;
-import com.isa.project.model.Cottage;
-import com.isa.project.service.CottageService;
 import com.isa.project.service.QuickCottageReservationService;
 
 @RestController

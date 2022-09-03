@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.project.dto.ImageDTO;
-import com.isa.project.dto.QuickReservationDTO;
 import com.isa.project.model.Image;
-import com.isa.project.model.QuickFishingLessonReservation;
 import com.isa.project.service.ImageService;
 
 @RestController

@@ -1,7 +1,6 @@
 package com.isa.project.repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +15,6 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	@Query(value = "SELECT type FROM users_table WHERE id = ?1",nativeQuery = true)
 	String findTypeById(Long id);
 	List<User> findByStatus(String status);
+	List<User> findByStatusAndDeleted(String status, Boolean deleted);
+	
 }

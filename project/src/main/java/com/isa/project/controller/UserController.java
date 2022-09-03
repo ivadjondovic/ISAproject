@@ -231,5 +231,11 @@ public class UserController {
         return new ResponseEntity<>(userService.getClient(id), HttpStatus.OK);
     } 
 	
+	@GetMapping(path = "/getClients")
+	@PreAuthorize("hasRole('INSTRUCTOR')")
+	public ResponseEntity<?> getClients() {
+        return new ResponseEntity<>(userService.getClients(), HttpStatus.OK);
+    } 
+	
 	
 }

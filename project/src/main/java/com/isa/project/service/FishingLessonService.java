@@ -25,4 +25,5 @@ public interface FishingLessonService {
 	public List<FishingLesson> getLessonsByClientSubscription(Long clientId);
 	public List<FishingLesson> sortAvailableLessons(ReservationSearchDTO dto);
 	public List<FishingLesson> searchByMoreParams(SearchParamsDTO dto);
+	public List<FishingLesson> getAvailableLessonsForInstructor(ReservationSearchDTO dto);
 }

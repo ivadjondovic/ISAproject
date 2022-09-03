@@ -2,8 +2,6 @@ package com.isa.project.dto;
 
 import java.util.Set;
 
-import com.isa.project.model.*;
-
 public class CottageDTO {
 
 	private String name;

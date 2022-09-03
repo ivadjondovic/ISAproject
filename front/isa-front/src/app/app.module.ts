@@ -67,6 +67,7 @@ import { MatSnackBarModule} from '@angular/material/snack-bar';
 import { InstructorProfileComponent } from './instructor-profile/instructor-profile.component';
 import { InstructorReservationsHistoryComponent } from './instructor-reservations-history/instructor-reservations-history.component';
 import { ClientInfoComponent } from './client-info/client-info.component';
+import { InstructorReservationComponent } from './instructor-reservation/instructor-reservation.component';
 
 
 
@@ -119,6 +120,7 @@ import { ClientInfoComponent } from './client-info/client-info.component';
     InstructorProfileComponent,
     InstructorReservationsHistoryComponent,
     ClientInfoComponent,
+    InstructorReservationComponent,
     
   ],
   imports: [

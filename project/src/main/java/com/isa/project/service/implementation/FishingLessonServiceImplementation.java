@@ -538,4 +538,28 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 	
 	}
 
+	@Override
+	public List<FishingLesson> getAvailableLessonsForInstructor(ReservationSearchDTO dto) {
+		if(dto.getStartDate().compareTo(LocalDateTime.now()) < 0) {
+			return null;
+		}
+		if(dto.getNumberOfDays() == 0 || dto.getNumberOfGuests() == 0 || dto.getStartDate().equals("")) {
+			return null;
+		}
+		Instructor instructor = (Instructor) userRepository.findById(dto.getInstructorId()).get();
+		
+		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
+		List<FishingLesson> lessons = fishingLessonRepository.findByInstructor(instructor);
+		List<FishingLesson> result = new ArrayList<>();
+		for(FishingLesson lesson: lessons) {
+			Set<AvailableFishingLessonPeriod> periods = lesson.getAvailablePeriods();
+			for(AvailableFishingLessonPeriod period: periods) {
+				if(dto.getStartDate().compareTo(period.getStartDate()) >=0 && endDate.compareTo(period.getEndDate()) <= 0 && lesson.getNumberOfPeople() >= dto.getNumberOfGuests()) {
+					result.add(lesson);
+				}
+			}
+		}
+		return result;
+	}
+
 }

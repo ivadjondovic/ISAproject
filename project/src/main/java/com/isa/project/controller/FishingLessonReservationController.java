@@ -27,7 +27,7 @@ public class FishingLessonReservationController {
 	private FishingLessonReservationService reservationService;
 	
 	@PostMapping(path = "/createReservation")
-	@PreAuthorize("hasRole('CLIENT')")
+	@PreAuthorize("hasAnyRole('CLIENT', 'INSTRUCTOR')")
     public ResponseEntity<?> createReservatio(@RequestBody ReservationDTO reservationDTO){
         FishingLessonReservation reservation = reservationService.createReservation(reservationDTO);
         if(reservation == null) {

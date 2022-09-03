@@ -33,6 +33,7 @@ import { ClientSubscriptionsComponent } from './client-subscriptions/client-subs
 import { InstructorProfileComponent } from './instructor-profile/instructor-profile.component';
 import { InstructorReservationsHistoryComponent } from './instructor-reservations-history/instructor-reservations-history.component';
 import { ClientInfoComponent } from './client-info/client-info.component';
+import { InstructorReservationComponent } from './instructor-reservation/instructor-reservation.component';
 
 const routes: Routes = [
 
@@ -60,6 +61,7 @@ const routes: Routes = [
   {path: 'lessons', component: ClientFishingLessonsComponent},
   {path: 'lessonInfo/:id', component: FishingLessonAdditionalInfoComponent},
   {path: 'reservation', component: ReservationComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
+  {path: 'instructorReservation', component: InstructorReservationComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_INSTRUCTOR'}},
   {path: 'cottageReservationsHistory', component: CottageReservationsHistoryComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
   {path: 'boatReservationsHistory', component: BoatReservationsHistoryComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
   {path: 'fishingLessonReservationsHistory', component: FishingLessonReservationsHistoryComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},

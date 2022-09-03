@@ -2,6 +2,7 @@ package com.isa.project.service.implementation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
 
@@ -349,6 +350,19 @@ public class UserServiceImplementation implements UserService{
 	@Override
 	public User getClient(Long id) {
 		return userRepository.findById(id).get();
+	}
+
+	@Override
+	public List<User> getClients() {
+		List<User> users = userRepository.findByStatusAndDeleted("Activated", false);
+		for(User u : users) {
+			System.out.println("user: " + u.getName());
+		}
+		List<User> clients = users.stream().filter(u -> u.getUserType().equals("ROLE_CLIENT")).collect(Collectors.toList());
+		for(User u : clients) {
+			System.out.println("client: " + u.getName());
+		}
+		return clients;
 	}
 	
 	
