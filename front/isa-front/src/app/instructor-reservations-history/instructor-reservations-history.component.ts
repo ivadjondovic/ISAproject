@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FishingLessonReservationService } from '../services/fishing-lesson-reservation.service';
 import { UserService } from '../services/user.service';
 
@@ -15,7 +16,8 @@ export class InstructorReservationsHistoryComponent implements OnInit {
   sortBy = ''
   sortType = ''
   id: any
-  constructor(public service: FishingLessonReservationService, public userService: UserService) { }
+  client: any
+  constructor(public service: FishingLessonReservationService, public userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
     this.userService.current().subscribe((response: any) => {
@@ -38,6 +40,7 @@ export class InstructorReservationsHistoryComponent implements OnInit {
       let endDate = new Date(r.endDate[0], r.endDate[1] - 1, r.endDate[2], r.endDate[3], r.endDate[4]);
       let price = r.price;
       let additionalServices = r.additionalServices;
+      let client = r.client;
       let id = r.id;
       let fishingLesson = r.fishingLesson;
       let possibleToRate = r.possibleToRate
@@ -51,12 +54,18 @@ export class InstructorReservationsHistoryComponent implements OnInit {
         price: price,
         additionalServices: additionalServices,
         possibleToRate: possibleToRate,
-        reservationType: reservationType
+        reservationType: reservationType,
+        client: client
       }
       this.reservationList.push(data);
       console.log(startDate)
 
     }
+
+  }
+
+  showClient(id: string) {
+    this.router.navigate(['/clientInfo', id])
 
   }
 }

@@ -66,6 +66,7 @@ import { ClientSubscriptionsComponent } from './client-subscriptions/client-subs
 import { MatSnackBarModule} from '@angular/material/snack-bar';
 import { InstructorProfileComponent } from './instructor-profile/instructor-profile.component';
 import { InstructorReservationsHistoryComponent } from './instructor-reservations-history/instructor-reservations-history.component';
+import { ClientInfoComponent } from './client-info/client-info.component';
 
 
 
@@ -117,6 +118,7 @@ import { InstructorReservationsHistoryComponent } from './instructor-reservation
     ClientSubscriptionsComponent,
     InstructorProfileComponent,
     InstructorReservationsHistoryComponent,
+    ClientInfoComponent,
     
   ],
   imports: [

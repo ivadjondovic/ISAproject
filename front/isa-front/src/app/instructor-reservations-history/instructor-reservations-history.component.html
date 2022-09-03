@@ -17,7 +17,7 @@
                 <td>{{reservation.price}}</td>
                 <td>{{reservation.startDate | date:'medium'}}</td>
                 <td>{{reservation.endDate | date:'medium'}}</td>
-                <td><button class="button1">
+                <td><button class="button1" (click)="showClient(reservation.client.id)">
                         <mat-icon>person</mat-icon>
                     </button></td>
             </tr>

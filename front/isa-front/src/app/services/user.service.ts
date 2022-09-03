@@ -64,4 +64,8 @@ export class UserService {
     return this.http.put(this.baseURL + "api/users/acceptDeactivation", data, this.getAuthoHeader());
   }
 
+  getClient(id: any){
+    return this.http.get(this.baseURL + "api/users/getClient/" + id, this.getAuthoHeader());
+  }
+
 }

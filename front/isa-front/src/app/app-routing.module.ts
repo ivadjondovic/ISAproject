@@ -32,6 +32,7 @@ import { CreateFishingLessonComponent } from './create-fishing-lesson/create-fis
 import { ClientSubscriptionsComponent } from './client-subscriptions/client-subscriptions.component';
 import { InstructorProfileComponent } from './instructor-profile/instructor-profile.component';
 import { InstructorReservationsHistoryComponent } from './instructor-reservations-history/instructor-reservations-history.component';
+import { ClientInfoComponent } from './client-info/client-info.component';
 
 const routes: Routes = [
 
@@ -67,6 +68,7 @@ const routes: Routes = [
   {path: 'revisions', component: AdminRevisionsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
   {path: 'complaints', component: AdminComplaintsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
   {path: 'subscriptions', component: ClientSubscriptionsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
+  {path: 'clientInfo/:id', component: ClientInfoComponent, canActivate: [AuthenticationGuard], data: {role: 'ROLE_INSTRUCTOR'}},
   
 ];
 
