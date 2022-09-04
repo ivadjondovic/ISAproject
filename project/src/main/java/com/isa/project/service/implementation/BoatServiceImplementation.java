@@ -144,6 +144,7 @@ public class BoatServiceImplementation implements BoatService{
 			quickReservation.setReserved(false);
 			quickReservation.setAccepted(false);
 			quickReservation.setCanceled(false);
+			quickReservation.setCalculated(false);
 			quickReservation.setDiscount(quickReservationDto.getDiscount());
 			QuickBoatReservation savedReservation = quickReservationRepository.save(quickReservation);
 			quickReservations.add(savedReservation);

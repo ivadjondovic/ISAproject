@@ -27,6 +27,7 @@ public class QuickBoatReservation {
 	private Boolean reserved;
 	private Boolean accepted;
 	private Boolean canceled;
+	private Boolean calculated;
 	
 	@JsonBackReference
 	@ManyToOne
@@ -36,8 +37,16 @@ public class QuickBoatReservation {
 	@ManyToOne
 	private Client client;
 
-	
-	
+
+
+	public Boolean getCalculated() {
+		return calculated;
+	}
+
+	public void setCalculated(Boolean calculated) {
+		this.calculated = calculated;
+	}
+
 	public Double getDiscount() {
 		return discount;
 	}

@@ -80,6 +80,7 @@ public class CottageReservationServiceImplementation implements CottageReservati
 		cottageReservation.setCottage(cottage);
 		cottageReservation.setAccepted(false);
 		cottageReservation.setCanceled(false);
+		cottageReservation.setCalculated(false);
 		
 		CottageReservation savedReservation = cottageReservationRepository.save(cottageReservation);
 		

@@ -80,6 +80,7 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 		boatReservation.setBoat(boat);
 		boatReservation.setAccepted(false);
 		boatReservation.setCanceled(false);
+		boatReservation.setCalculated(false);
 		
 		BoatReservation savedReservation = boatReservationRepository.save(boatReservation);
 		

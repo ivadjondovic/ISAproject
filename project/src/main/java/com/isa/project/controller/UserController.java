@@ -248,6 +248,6 @@ public class UserController {
 	public ResponseEntity<?> deleteUser(@PathVariable Long id) {
 		userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
-    } 
+    }
 	
 }

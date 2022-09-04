@@ -26,6 +26,7 @@ public class CottageReservation {
 	private Double price;
 	private Boolean accepted;
 	private Boolean canceled;
+	private Boolean calculated;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "cottageReservation", fetch = FetchType.LAZY)
@@ -51,6 +52,14 @@ public class CottageReservation {
 		return startDate;
 	}
 
+	public Boolean getCalculated() {
+		return calculated;
+	}
+
+	public void setCalculated(Boolean calculated) {
+		this.calculated = calculated;
+	}
+
 	public void setStartDate(LocalDateTime startDate) {
 		this.startDate = startDate;
 	}
@@ -66,6 +75,7 @@ public class CottageReservation {
 	public Cottage getCottage() {
 		return cottage;
 	}
+
 
 	public void setCottage(Cottage cottage) {
 		this.cottage = cottage;

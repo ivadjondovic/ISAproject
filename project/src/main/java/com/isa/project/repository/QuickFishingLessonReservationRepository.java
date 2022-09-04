@@ -12,5 +12,6 @@ import com.isa.project.model.QuickFishingLessonReservation;
 public interface QuickFishingLessonReservationRepository extends JpaRepository<QuickFishingLessonReservation, Long> {
 
 	public List<QuickFishingLessonReservation> findByClientAndAcceptedAndCanceled(Client client, Boolean accepted, Boolean canceled);
+	public List<QuickFishingLessonReservation> findByAcceptedAndCanceledAndCalculated(Boolean accepted, Boolean canceled, Boolean calculated);
 	public List<QuickFishingLessonReservation> findByClient(Client client);
 }

@@ -28,4 +28,12 @@ export class ReservationsService {
     return this.http.put(this.baseURL + "api/reservations/cancel", data, this.getAuthoHeader());
   }
 
+  adminIncome(id: any) {
+    return this.http.get(this.baseURL + "api/reservations/adminIncome/" + id, this.getAuthoHeader());
+  }
+
+  adminIncomePercentage(data: any) {
+    return this.http.put(this.baseURL + "api/reservations/adminIncomePercentage", data, this.getAuthoHeader());
+  }
+
 }

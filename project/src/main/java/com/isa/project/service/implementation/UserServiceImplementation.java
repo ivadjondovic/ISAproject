@@ -182,6 +182,8 @@ public class UserServiceImplementation implements UserService{
 	        admin.setStatus("Activated");
 	        admin.setFirstPasswordChanged(false);
 	        admin.setDeleted(false);
+	        admin.setIncome(0.0);
+	        admin.setIncomePercentage(0.0);
 	        return userRepository.save(admin);
 	        
 	}
@@ -379,8 +381,5 @@ public class UserServiceImplementation implements UserService{
 		user.setDeleted(true);
 		userRepository.save(user);
 	}
-	
-	
-	
 
 }

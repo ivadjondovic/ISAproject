@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isa.project.dto.AdminIncomeDTO;
 import com.isa.project.dto.CancelReservationDTO;
 import com.isa.project.dto.ReservationResponseDTO;
+import com.isa.project.model.User;
 import com.isa.project.service.ReservationsService;
 
 @RestController
@@ -39,6 +41,23 @@ public class ReservationsController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+	
+	@GetMapping(path = "/adminIncome/{adminId}") 
+	@PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> adminIncome(@PathVariable Long adminId) {	
+        return new ResponseEntity<>(reservationsService.adminIncome(adminId), HttpStatus.OK);
+    }
+	
+	@PutMapping(path = "/adminIncomePercentage")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> adminIncomePercentage(@RequestBody AdminIncomeDTO adminIncomeDTO){
+        User user = reservationsService.adminIncomePercentage(adminIncomeDTO);
+        if(user == null) {
+        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 }

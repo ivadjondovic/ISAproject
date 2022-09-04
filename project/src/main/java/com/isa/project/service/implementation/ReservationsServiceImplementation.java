@@ -9,8 +9,11 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.isa.project.dto.AdminIncomeDTO;
 import com.isa.project.dto.CancelReservationDTO;
 import com.isa.project.dto.ReservationResponseDTO;
+import com.isa.project.model.Admin;
+import com.isa.project.model.AdminIncome;
 import com.isa.project.model.AvailableBoatPeriod;
 import com.isa.project.model.AvailableCottagePeriod;
 import com.isa.project.model.AvailableFishingLessonPeriod;
@@ -24,6 +27,8 @@ import com.isa.project.model.FishingLessonReservation;
 import com.isa.project.model.QuickBoatReservation;
 import com.isa.project.model.QuickCottageReservation;
 import com.isa.project.model.QuickFishingLessonReservation;
+import com.isa.project.model.User;
+import com.isa.project.repository.AdminIncomeRepository;
 import com.isa.project.repository.AvailableBoatPeriodRepository;
 import com.isa.project.repository.AvailableCottagePeriodRepository;
 import com.isa.project.repository.AvailableFishingLessonPeriodRepository;
@@ -80,6 +85,9 @@ public class ReservationsServiceImplementation implements ReservationsService{
 	
 	@Autowired
 	private AvailableFishingLessonPeriodRepository availableFishingLessonPeriodRepository;
+	
+	@Autowired
+	private AdminIncomeRepository adminIncomeRepository;
 	
 	
 	@Override
@@ -411,6 +419,190 @@ public class ReservationsServiceImplementation implements ReservationsService{
 			response.setStartDate(quickReservation.getStartDate());
 		}
 		return response;
+	}
+
+
+	@Override
+	public AdminIncomeDTO adminIncome(Long adminId) {
+		AdminIncomeDTO income = new AdminIncomeDTO();
+		
+		/*Admin admin = (Admin) userRepository.findById(adminId).get();
+		Double percentage = admin.getIncomePercentage();
+		income.setPercentage(percentage);
+		income.setId(adminId);
+		Double adminIncome = admin.getIncome();
+		
+		List<CottageReservation> cottageReservations = cottageReservationRepository.findByAcceptedAndCanceled(true, false, false);
+		List<BoatReservation> boatReservations = boatReservationRepository.findByAcceptedAndCanceledAndCalculated(true, false, false);
+		List<FishingLessonReservation> fishingLessonReservations = fishingLessonReservationRepository.findByAcceptedAndCanceledAndCalculated(true, false, false);
+		List<QuickCottageReservation> quickCottageReservations = quickCottageReservationRepository.findByAcceptedAndCanceledAndCalculated(true, false, false);
+		List<QuickBoatReservation> quickBoatReservations = quickBoatReservationRepository.findByAcceptedAndCanceledAndCalculated(true, false, false);
+		List<QuickFishingLessonReservation> quickFishingLessonReservations = quickFishingLessonReservationRepository.findByAcceptedAndCanceledAndCalculated(true, false, false);
+		
+		List<CottageReservation> passedCottageReservations = cottageReservations.stream()
+			    .filter(r -> r.getEndDate().compareTo(LocalDateTime.now()) < 0).collect(Collectors.toList());
+		
+		List<BoatReservation> passedBoatReservations = boatReservations.stream()
+			    .filter(r -> r.getEndDate().compareTo(LocalDateTime.now()) < 0).collect(Collectors.toList());
+		
+		List<FishingLessonReservation> passedFishingLessonReservations = fishingLessonReservations.stream()
+			    .filter(r -> r.getEndDate().compareTo(LocalDateTime.now()) < 0).collect(Collectors.toList());
+		
+		List<QuickFishingLessonReservation> passedQuickFishingLessonReservations = quickFishingLessonReservations.stream()
+			    .filter(r -> r.getEndDate().compareTo(LocalDateTime.now()) < 0).collect(Collectors.toList());
+		
+		List<QuickBoatReservation> passedQuickBoatReservations = quickBoatReservations.stream()
+			    .filter(r -> r.getEndDate().compareTo(LocalDateTime.now()) < 0).collect(Collectors.toList());
+		
+		List<QuickCottageReservation> passedQuickCottageReservations = quickCottageReservations.stream()
+			    .filter(r -> r.getEndDate().compareTo(LocalDateTime.now()) < 0).collect(Collectors.toList());
+		
+		
+		for(CottageReservation cr: passedCottageReservations) {
+			adminIncome += cr.getPrice() * percentage;
+			cr.setCalculated(true);
+			cottageReservationRepository.save(cr);
+		}
+		
+		for(BoatReservation br: passedBoatReservations) {
+			adminIncome += br.getPrice() * percentage;
+			br.setCalculated(true);
+			boatReservationRepository.save(br);
+		}
+		
+		for(FishingLessonReservation fr: passedFishingLessonReservations) {
+			adminIncome += fr.getPrice() * percentage;
+			fr.setCalculated(true);
+			fishingLessonReservationRepository.save(fr);
+		}
+		
+		for(QuickCottageReservation qr: passedQuickCottageReservations) {
+			adminIncome += qr.getPrice() * percentage;
+			qr.setCalculated(true);
+			quickCottageReservationRepository.save(qr);
+		}
+		
+		for(QuickBoatReservation qr: passedQuickBoatReservations) {
+			adminIncome += qr.getPrice() * percentage;
+			qr.setCalculated(true);
+			quickBoatReservationRepository.save(qr);
+		}
+		
+		for(QuickFishingLessonReservation qr: passedQuickFishingLessonReservations) {
+			adminIncome += qr.getPrice() * percentage;
+			qr.setCalculated(true);
+			quickFishingLessonReservationRepository.save(qr);
+		}
+		
+		income.setIncome(adminIncome);
+		
+		admin.setIncome(adminIncome);
+		userRepository.save(admin); */
+		
+		return income;
+	}
+
+
+	@Override
+	public User adminIncomePercentage(AdminIncomeDTO adminIncomeDTO) {
+		Admin admin = (Admin) userRepository.findById(adminIncomeDTO.getId()).get();
+		Double percentage = adminIncomeDTO.getPercentage();
+		
+		Double income = admin.getIncome();
+		
+		admin.setIncomePercentage(adminIncomeDTO.getPercentage());
+		
+		List<CottageReservation> cottageReservations = cottageReservationRepository.findByAcceptedAndCanceledAndCalculated(true, false, false);
+		List<BoatReservation> boatReservations = boatReservationRepository.findByAcceptedAndCanceledAndCalculated(true, false, false);
+		List<FishingLessonReservation> fishingLessonReservations = fishingLessonReservationRepository.findByAcceptedAndCanceledAndCalculated(true, false, false);
+		List<QuickCottageReservation> quickCottageReservations = quickCottageReservationRepository.findByAcceptedAndCanceledAndCalculated(true, false, false);
+		List<QuickBoatReservation> quickBoatReservations = quickBoatReservationRepository.findByAcceptedAndCanceledAndCalculated(true, false, false);
+		List<QuickFishingLessonReservation> quickFishingLessonReservations = quickFishingLessonReservationRepository.findByAcceptedAndCanceledAndCalculated(true, false, false);
+		
+		
+		List<CottageReservation> passedCottageReservations = cottageReservations.stream()
+			    .filter(r -> r.getEndDate().compareTo(LocalDateTime.now()) < 0).collect(Collectors.toList());
+		
+		List<BoatReservation> passedBoatReservations = boatReservations.stream()
+			    .filter(r -> r.getEndDate().compareTo(LocalDateTime.now()) < 0).collect(Collectors.toList());
+		
+		List<FishingLessonReservation> passedFishingLessonReservations = fishingLessonReservations.stream()
+			    .filter(r -> r.getEndDate().compareTo(LocalDateTime.now()) < 0).collect(Collectors.toList());
+		
+		List<QuickFishingLessonReservation> passedQuickFishingLessonReservations = quickFishingLessonReservations.stream()
+			    .filter(r -> r.getEndDate().compareTo(LocalDateTime.now()) < 0).collect(Collectors.toList());
+		
+		List<QuickBoatReservation> passedQuickBoatReservations = quickBoatReservations.stream()
+			    .filter(r -> r.getEndDate().compareTo(LocalDateTime.now()) < 0).collect(Collectors.toList());
+		
+		List<QuickCottageReservation> passedQuickCottageReservations = quickCottageReservations.stream()
+			    .filter(r -> r.getEndDate().compareTo(LocalDateTime.now()) < 0).collect(Collectors.toList());
+		
+		
+		for(CottageReservation cr: passedCottageReservations) {
+			AdminIncome ai = new AdminIncome();
+			ai.setAdmin(admin);
+			ai.setReservationId(cr.getId());
+			ai.setReservationType("Cottage");
+			ai.setIncome(cr.getPrice() * percentage);
+			income += ai.getIncome();
+			adminIncomeRepository.save(ai);
+			
+		}
+		
+		for(BoatReservation br: passedBoatReservations) {
+			AdminIncome ai = new AdminIncome();
+			ai.setAdmin(admin);
+			ai.setReservationId(br.getId());
+			ai.setReservationType("Boat");
+			ai.setIncome(br.getPrice() * percentage);
+			income += ai.getIncome();
+			adminIncomeRepository.save(ai);
+		}
+		
+		for(FishingLessonReservation fr: passedFishingLessonReservations) {
+			AdminIncome ai = new AdminIncome();
+			ai.setAdmin(admin);
+			ai.setReservationId(fr.getId());
+			ai.setReservationType("Fishing");
+			ai.setIncome(fr.getPrice() * percentage);
+			income += ai.getIncome();
+			adminIncomeRepository.save(ai);
+		}
+		
+		for(QuickCottageReservation qr: passedQuickCottageReservations) {
+			AdminIncome ai = new AdminIncome();
+			ai.setAdmin(admin);
+			ai.setReservationId(qr.getId());
+			ai.setReservationType("QuickCottage");
+			ai.setIncome(qr.getPrice() * percentage);
+			income += ai.getIncome();
+			adminIncomeRepository.save(ai);
+		}
+		
+		for(QuickBoatReservation qr: passedQuickBoatReservations) {
+			AdminIncome ai = new AdminIncome();
+			ai.setAdmin(admin);
+			ai.setReservationId(qr.getId());
+			ai.setReservationType("QuickBoat");
+			ai.setIncome(qr.getPrice() * percentage);
+			income += ai.getIncome();
+			adminIncomeRepository.save(ai);
+		}
+		
+		for(QuickFishingLessonReservation qr: passedQuickFishingLessonReservations) {
+			AdminIncome ai = new AdminIncome();
+			ai.setAdmin(admin);
+			ai.setReservationId(qr.getId());
+			ai.setReservationType("QuickFishing");
+			ai.setIncome(qr.getPrice() * percentage);
+			income += ai.getIncome();
+			adminIncomeRepository.save(ai);
+		}
+		
+		admin.setIncome(income);
+		
+		return userRepository.save(admin);
 	}
 
 }

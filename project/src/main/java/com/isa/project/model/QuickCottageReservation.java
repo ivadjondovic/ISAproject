@@ -27,7 +27,7 @@ public class QuickCottageReservation {
 	private Boolean reserved;
 	private Boolean accepted;
 	private Boolean canceled;
-
+	private Boolean calculated;
 	
 	
 	@JsonBackReference
@@ -46,7 +46,14 @@ public class QuickCottageReservation {
 		this.id = id;
 	}
 	
-	
+
+	public Boolean getCalculated() {
+		return calculated;
+	}
+
+	public void setCalculated(Boolean calculated) {
+		this.calculated = calculated;
+	}
 
 	public Double getDiscount() {
 		return discount;

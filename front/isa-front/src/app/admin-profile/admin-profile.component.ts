@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PasswordDialogComponent } from '../password-dialog/password-dialog.component';
+import { IncomeService } from '../services/income.service';
+import { ReservationsService } from '../services/reservations.service';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -17,13 +19,21 @@ export class AdminProfileComponent implements OnInit {
   password: string
   newPassword = ""
   username: string
-  constructor(public service: UserService, public dialog: MatDialog) { }
+  percentage = ""
+  income: any
+  incomeShow = false;
+  reservationIncome: any[]
+  reservationIncomeList: any[]
+
+  constructor(public service: UserService, public dialog: MatDialog, public reservationService: ReservationsService,
+              public incomeService: IncomeService) { }
 
   ngOnInit(): void {
     this.service.current().subscribe((response: any) => {
       this.user = response;
       console.log(this.user.firstPasswordChanged)
       this.password = this.user.password;
+      this.percentage = this.user.incomePercentage;
     })
   }
 
@@ -61,5 +71,58 @@ export class AdminProfileComponent implements OnInit {
     
   }
 
+  savePercentage() {
+
+    let data = {
+      id: this.user.id,
+      percentage: this.percentage
+    }
+
+    this.reservationService.adminIncomePercentage(data).subscribe((response: any) => {
+      console.log(response);
+      this.service.current().subscribe((response: any) => {
+        this.user = response;
+        console.log(this.user.firstPasswordChanged)
+        this.password = this.user.password;
+        this.percentage = this.user.incomePercentage;
+      })
+    })
+  }
+
+  showIncome() {
+    this.income = this.user.income;
+    this.incomeShow = true;
+    this.incomeService.getReservationIncome(this.user.id).subscribe((response: any) => {
+      this.reservationIncomeList = response;
+      this.corectDate();
+    })
+  }
+
+  corectDate() {
+
+    this.reservationIncome = [];
+    for (let r of this.reservationIncomeList) {
+      let startDate = new Date(r.startDate[0], r.startDate[1] - 1, r.startDate[2], r.startDate[3], r.startDate[4]);
+      let endDate = new Date(r.endDate[0], r.endDate[1] - 1, r.endDate[2], r.endDate[3], r.endDate[4]);
+      let price = r.price;
+      let entityName = r.entityName
+      let id = r.id;
+      let type = r.type;
+      let income = r.income;
+
+      let data = {
+        id: id,
+        startDate: startDate,
+        endDate: endDate,
+        price: price,
+        entityName: entityName,
+        type: type,
+        income: income
+      }
+      this.reservationIncome.push(data);
+      console.log(startDate)
+
+    }
+  }
 
 }
