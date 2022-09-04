@@ -1,0 +1,45 @@
+
+<div>
+    <mat-card>
+        <mat-card-title style="text-align: center;">Penalties</mat-card-title>
+    </mat-card>
+    <div class = "approval">
+        
+        <ul style="list-style-type: none">
+            <div class="row mb-4">
+                <div class="col-3">
+                    <b>approve</b>
+                </div>
+                <div class="col-3">
+                    <b>disapprove</b>
+                </div>
+                <div class="col-6">
+                    <b>explanation</b>
+                </div>
+            </div>
+            
+            <li *ngFor="let review of reviews">
+                <div class="row mt-2" >
+                    <div class="col-3">
+                        <button (click)="acceptPenalty(review.id, review.client.id, review.instructor.id)" class="button1">
+                        <mat-icon>done</mat-icon>
+                        </button>
+                    </div>
+                    <div class="col-3">
+                        <button class="button2" (click)="declinePenalty(review.id, review.client.id, review.instructor.id)">
+                        <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                    <div class="col-6">
+                        {{review.reason}}
+                    </div>
+                    
+                </div>
+            </li>
+        </ul>
+        
+
+    </div>
+
+</div>
+

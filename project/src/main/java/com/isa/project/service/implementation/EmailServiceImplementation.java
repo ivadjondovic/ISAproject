@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.isa.project.dto.ComplaintResponseDTO;
 import com.isa.project.dto.RevisionResponseDTO;
 import com.isa.project.model.BoatReservation;
+import com.isa.project.model.ClientReview;
 import com.isa.project.model.CottageReservation;
 import com.isa.project.model.FishingLessonReservation;
 import com.isa.project.model.QuickBoatReservation;
@@ -230,6 +231,56 @@ public class EmailServiceImplementation implements EmailService{
 	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
 	    helper.setSubject("Complaint");
 	    helper.setText("Hello " + user.getName() + " " + user.getSurname() +  ",\n\nWe are sending admin answer for your complaint about "  + dto.getComplaintType() + ": " + dto.getEntityName()  + "\nYour complaint: " + dto.getDescription() + "\n\nAdmin answer: " + answer);
+	    javaMailSender.send(message);
+		
+	}
+
+	@Override
+	public void acceptPenaltyClientEmail(User user, ClientReview review) throws MessagingException {
+		MimeMessage message=javaMailSender.createMimeMessage();
+	    MimeMessageHelper helper;
+	    helper=new MimeMessageHelper(message,true);
+	    helper.setTo(new InternetAddress(user.getUsername()));
+	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
+	    helper.setSubject("Pentalty accepted");
+	    helper.setText("Hello " + user.getName() + " " + user.getSurname() +  ",\n\nYou have received a penalty!" + "\n\nReason: " + review.getPenaltySuggestionReason());
+	    javaMailSender.send(message);	
+	}
+
+	@Override
+	public void declinePenaltyClientEmail(User user, ClientReview review) throws MessagingException {
+		MimeMessage message=javaMailSender.createMimeMessage();
+	    MimeMessageHelper helper;
+	    helper=new MimeMessageHelper(message,true);
+	    helper.setTo(new InternetAddress(user.getUsername()));
+	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
+	    helper.setSubject("Pentalty declined");
+	    helper.setText("Hello " + user.getName() + " " + user.getSurname() +  ",\n\nYou have received a negative review!" + "\n\nReason: " + review.getPenaltySuggestionReason());
+	    javaMailSender.send(message);	
+	}
+
+	@Override
+	public void acceptPenaltyInstructorEmail(User user, ClientReview review) throws MessagingException {
+		MimeMessage message=javaMailSender.createMimeMessage();
+	    MimeMessageHelper helper;
+	    helper=new MimeMessageHelper(message,true);
+	    helper.setTo(new InternetAddress(user.getUsername()));
+	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
+	    helper.setSubject("Pentalty accepted");
+	    helper.setText("Hello " + user.getName() + " " + user.getSurname() +  ",\n\nYour penalty for " + review.getClient().getName() + " " + review.getClient().getSurname() +  " has been accepted!");
+	    javaMailSender.send(message);	
+		
+	}
+
+	@Override
+	public void declinePenaltyInstructorEmail(User user, ClientReview review) throws MessagingException {
+		MimeMessage message=javaMailSender.createMimeMessage();
+	    MimeMessageHelper helper;
+	    helper=new MimeMessageHelper(message,true);
+	    helper.setTo(new InternetAddress(user.getUsername()));
+	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
+	    helper.setSubject("Pentalty declined");
+	    helper.setText("Hello " + user.getName() + " " + user.getSurname() +  ",\n\nYour penalty for " + review.getClient().getName() + " " + review.getClient().getSurname() +  " has been declined!");
 	    javaMailSender.send(message);
 		
 	}

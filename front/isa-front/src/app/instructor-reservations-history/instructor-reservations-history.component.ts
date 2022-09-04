@@ -68,4 +68,15 @@ export class InstructorReservationsHistoryComponent implements OnInit {
     this.router.navigate(['/clientInfo', id])
 
   }
+
+  hasPassed(endDate: any) {
+    if(endDate < Date.now()) {
+      return true;
+    }
+    return false;
+  }
+
+  reviewClient(id: any) {
+    this.router.navigate(['/reviewClient', id]);
+  }
 }

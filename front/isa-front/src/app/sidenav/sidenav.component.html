@@ -79,6 +79,10 @@
         <mat-icon>person_add</mat-icon><span class="nav-caption">Admin Registration</span>
     </a>
 
+    <a mat-list-item routerLink="/adminPenalties" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_ADMIN'">
+        <mat-icon>reviews</mat-icon><span class="nav-caption">Client reviews</span>
+    </a>
+
     <a *ngIf="currentUser == null" style="position: absolute; bottom: 0;" mat-list-item routerLink="/login" (click)="onSidenavClose('')">
         <mat-icon>login</mat-icon><span class="nav-caption">Sign in</span>
     </a>

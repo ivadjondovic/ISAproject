@@ -19,6 +19,7 @@ public class Client extends User{
 	private static final long serialVersionUID = 1L;
 
 	private static String userType = "ROLE_CLIENT";
+	private int penalties;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
@@ -132,21 +133,14 @@ public class Client extends User{
 	public void setFishingLessonSubscriptions(Set<FishingLessonSubscription> fishingLessonSubscriptions) {
 		this.fishingLessonSubscriptions = fishingLessonSubscriptions;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	public int getPenalties() {
+		return penalties;
+	}
+
+	public void setPenalties(int penalties) {
+		this.penalties = penalties;
+	}
 	
 	
 }

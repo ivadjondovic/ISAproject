@@ -35,6 +35,8 @@ import { InstructorReservationsHistoryComponent } from './instructor-reservation
 import { ClientInfoComponent } from './client-info/client-info.component';
 import { InstructorReservationComponent } from './instructor-reservation/instructor-reservation.component';
 import { AdminUsersComponent } from './admin-users/admin-users.component';
+import { ReviewClientComponent } from './review-client/review-client.component';
+import { AdminPenaltiesComponent } from './admin-penalties/admin-penalties.component';
 
 const routes: Routes = [
 
@@ -73,7 +75,8 @@ const routes: Routes = [
   {path: 'subscriptions', component: ClientSubscriptionsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
   {path: 'clientInfo/:id', component: ClientInfoComponent, canActivate: [AuthenticationGuard], data: {role: 'ROLE_INSTRUCTOR'}},
   {path: 'users', component: AdminUsersComponent, canActivate: [AuthenticationGuard], data: {role: 'ROLE_ADMIN'}},
-  
+  {path: 'reviewClient/:id', component: ReviewClientComponent, canActivate: [AuthenticationGuard], data: {role: 'ROLE_INSTRUCTOR'}},
+  {path: 'adminPenalties', component: AdminPenaltiesComponent, canActivate: [AuthenticationGuard], data: {role: 'ROLE_ADMIN'}},
 ];
 
 @NgModule({

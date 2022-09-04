@@ -75,6 +75,7 @@ public class UserServiceImplementation implements UserService{
 	        client.setCountry(userDTO.getCountry());
 	        client.setStatus("Not Activated");
 	        client.setDeleted(false);
+	        client.setPenalties(0);
 	        try {
 				emailService.sendEmail(client);
 			} catch (MessagingException e) {
