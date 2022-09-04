@@ -71,6 +71,10 @@
         <mat-icon>people</mat-icon><span class="nav-caption">Service Provider Registration</span>
     </a>
 
+    <a mat-list-item routerLink="/users" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_ADMIN'">
+        <mat-icon>people</mat-icon><span class="nav-caption">Users</span>
+    </a>
+
     <a mat-list-item routerLink="/adminRegistration" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_ADMIN' && username == 'admin'">
         <mat-icon>person_add</mat-icon><span class="nav-caption">Admin Registration</span>
     </a>

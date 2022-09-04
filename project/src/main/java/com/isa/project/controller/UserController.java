@@ -237,5 +237,17 @@ public class UserController {
         return new ResponseEntity<>(userService.getClients(), HttpStatus.OK);
     } 
 	
+	@GetMapping(path = "/users")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> getUsers() {
+        return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
+    } 
+	
+	@GetMapping(path = "/deleteUser/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+		userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    } 
 	
 }

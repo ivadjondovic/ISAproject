@@ -68,6 +68,7 @@ import { InstructorProfileComponent } from './instructor-profile/instructor-prof
 import { InstructorReservationsHistoryComponent } from './instructor-reservations-history/instructor-reservations-history.component';
 import { ClientInfoComponent } from './client-info/client-info.component';
 import { InstructorReservationComponent } from './instructor-reservation/instructor-reservation.component';
+import { AdminUsersComponent } from './admin-users/admin-users.component';
 
 
 
@@ -121,6 +122,7 @@ import { InstructorReservationComponent } from './instructor-reservation/instruc
     InstructorReservationsHistoryComponent,
     ClientInfoComponent,
     InstructorReservationComponent,
+    AdminUsersComponent,
     
   ],
   imports: [

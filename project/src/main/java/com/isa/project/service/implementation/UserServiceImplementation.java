@@ -355,16 +355,30 @@ public class UserServiceImplementation implements UserService{
 	@Override
 	public List<User> getClients() {
 		List<User> users = userRepository.findByStatusAndDeleted("Activated", false);
-		for(User u : users) {
-			System.out.println("user: " + u.getName());
-		}
+
 		List<User> clients = users.stream().filter(u -> u.getUserType().equals("ROLE_CLIENT")).collect(Collectors.toList());
-		for(User u : clients) {
-			System.out.println("client: " + u.getName());
-		}
+		
 		return clients;
 	}
+
+	@Override
+	public List<User> getUsers() {
+		
+		List<User> users = userRepository.findByStatusAndDeleted("Activated", false);
+		
+		List<User> result = users.stream().filter(u -> u.getUserType().equals("ROLE_CLIENT") ||
+				u.getUserType().equals("ROLE_COTTAGEOWNER") || u.getUserType().equals("ROLE_BOATOWNER") 
+				|| u.getUserType().equals("ROLE_INSTRUCTOR")).collect(Collectors.toList());
+		
+		return result;
+	}
 	
+	@Override
+	public void deleteUser(Long id) {
+		User user = userRepository.findById(id).get();
+		user.setDeleted(true);
+		userRepository.save(user);
+	}
 	
 	
 	
