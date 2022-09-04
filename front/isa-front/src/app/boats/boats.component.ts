@@ -38,11 +38,13 @@ export class BoatsComponent implements OnInit {
       if (userStrng) {
         this.user = JSON.parse(userStrng);
         this.role = this.user.userType;
-        this.service.subscribedBoats(this.user.id).subscribe((response: any) => {
-          this.subscribedBoats = response;
-          console.log(this.subscribedBoats)
-          this.isLoged = true
-        })
+        if(this.role == 'ROLE_CLIENT') {
+          this.service.subscribedBoats(this.user.id).subscribe((response: any) => {
+            this.subscribedBoats = response;
+            console.log(this.subscribedBoats)
+            this.isLoged = true
+          })
+        }
       }
 
       
@@ -66,10 +68,27 @@ export class BoatsComponent implements OnInit {
     }
     return true;
  
-    
- 
-    
    }
+
+   deleteBoat(id: any) {
+    console.log(id);
+    this.service.deleteBoat(id).subscribe((response: any) => {
+      this.service.getAll().subscribe((response: any) => {
+        this.boats = response;
+      })
+    }) 
+  }
+
+  isAdmin() {
+    let userStrng = localStorage.getItem('user');
+    if(userStrng){
+      if(this.role == 'ROLE_ADMIN')
+       return true;
+
+    }
+    return false;
+  }
+
  
    subscribe(id: any){
      let data = {

@@ -157,8 +157,11 @@
                         <div class="col-3">
                             <button style="margin-bottom: 10px;" *ngIf="!isSubscribed(b.id)"
                                 (click)="subscribe(b.id)">Subscribe</button>
+                            <button style="margin-bottom: 10px;" *ngIf="isAdmin()"
+                                (click)="deleteBoat(b.id)">Delete</button>
                         </div>
                     </div>
+
                     <!-- <img class="roundedImage" src="{{b.images[0].path}}" style="width:438px; height: 260px; margin-bottom: 15px;"> -->
                     <p style="font-size: 17px; color: #4c7d85;">{{b.description}}</p>
                     <p style="font-size: 17px; color: #4c7d85;">

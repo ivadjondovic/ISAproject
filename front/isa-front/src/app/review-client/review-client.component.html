@@ -1,0 +1,31 @@
+<div>
+    <mat-card>
+        <mat-card-title style="text-align: center;">Review client</mat-card-title>
+    </mat-card>
+    <div class="registration">
+
+        <label id="example-radio-group-label">Choose pentalty reason</label>
+        <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+            [(ngModel)]="penaltyType">
+            <mat-radio-button class="example-radio-button" value="pentaltySuggestion">
+                Suggest penalty
+            </mat-radio-button>
+            <mat-radio-button class="example-radio-button" value="automaticPenalty">
+                Client didn't show up
+            </mat-radio-button>
+        </mat-radio-group>
+
+        <label for="fname">Client review:</label>
+        <textarea type="text" id="fname" name="firstname" rows="4" [(ngModel)]="clientReview"> </textarea>
+
+        <div class="row">
+            <div class="col-sm"></div>
+            <div class="col-sm">
+                <button (click)="submitReview()">Submit</button>
+            </div>
+            <div class="col-sm"></div>
+        </div>
+
+    </div>
+
+</div>

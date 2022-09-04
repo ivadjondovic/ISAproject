@@ -37,6 +37,7 @@ public class Boat {
 	private Double percentageForKeep;
 	private Double price;
 	private Double rating;
+	private Boolean deleted;
 	
 	
 	@JsonManagedReference
@@ -344,6 +345,17 @@ public class Boat {
 	public void setSubscriptions(Set<BoatSubscription> subscriptions) {
 		this.subscriptions = subscriptions;
 	}
+
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+	
 	
 	
 	

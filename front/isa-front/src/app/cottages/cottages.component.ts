@@ -38,12 +38,23 @@ export class CottagesComponent implements OnInit {
       if (userStrng) {
         this.user = JSON.parse(userStrng);
         this.role = this.user.userType;
+        if(this.role == 'ROLE_CLIENT') {
         this.service.subscribedCottages(this.user.id).subscribe((response: any) => {
           this.subscribedCottages = response;
           this.isLoged = true
         })
       }
+      }
 
+    })
+  }
+
+  deleteCottage(id: string) {
+    this.service.deleteCottage(id).subscribe((response: any) => {
+      console.log(response);
+      this.service.getAll().subscribe((response: any) => {
+        this.cottages = response;
+      })
     })
   }
 
@@ -66,6 +77,16 @@ export class CottagesComponent implements OnInit {
     return true
 
 
+  }
+
+  isAdmin() {
+    let userStrng = localStorage.getItem('user');
+    if(userStrng){
+      if(this.role == 'ROLE_ADMIN')
+       return true;
+
+    }
+    return false;
   }
 
   subscribe(id: any) {

@@ -2,6 +2,7 @@ package com.isa.project.service.implementation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
 
@@ -74,6 +75,7 @@ public class UserServiceImplementation implements UserService{
 	        client.setCountry(userDTO.getCountry());
 	        client.setStatus("Not Activated");
 	        client.setDeleted(false);
+	        client.setPenalties(0);
 	        try {
 				emailService.sendEmail(client);
 			} catch (MessagingException e) {
@@ -181,6 +183,8 @@ public class UserServiceImplementation implements UserService{
 	        admin.setStatus("Activated");
 	        admin.setFirstPasswordChanged(false);
 	        admin.setDeleted(false);
+	        admin.setIncome(0.0);
+	        admin.setIncomePercentage(0.0);
 	        return userRepository.save(admin);
 	        
 	}
@@ -350,9 +354,33 @@ public class UserServiceImplementation implements UserService{
 	public User getClient(Long id) {
 		return userRepository.findById(id).get();
 	}
+
+	@Override
+	public List<User> getClients() {
+		List<User> users = userRepository.findByStatusAndDeleted("Activated", false);
+
+		List<User> clients = users.stream().filter(u -> u.getUserType().equals("ROLE_CLIENT")).collect(Collectors.toList());
+		
+		return clients;
+	}
+
+	@Override
+	public List<User> getUsers() {
+		
+		List<User> users = userRepository.findByStatusAndDeleted("Activated", false);
+		
+		List<User> result = users.stream().filter(u -> u.getUserType().equals("ROLE_CLIENT") ||
+				u.getUserType().equals("ROLE_COTTAGEOWNER") || u.getUserType().equals("ROLE_BOATOWNER") 
+				|| u.getUserType().equals("ROLE_INSTRUCTOR")).collect(Collectors.toList());
+		
+		return result;
+	}
 	
-	
-	
-	
+	@Override
+	public void deleteUser(Long id) {
+		User user = userRepository.findById(id).get();
+		user.setDeleted(true);
+		userRepository.save(user);
+	}
 
 }

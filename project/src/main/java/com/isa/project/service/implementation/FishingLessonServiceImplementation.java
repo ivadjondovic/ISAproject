@@ -83,6 +83,7 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		fishingLesson.setPercentageForKeep(dto.getPercentageForKeep());
 		fishingLesson.setPrice(dto.getPrice());
 		fishingLesson.setRating(0.0);
+		fishingLesson.setDeleted(false);
 		
 		Optional<User> instructor = userRepository.findById(dto.getInstructorId());
 		fishingLesson.setInstructor((Instructor) instructor.get());
@@ -93,7 +94,7 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 	@Override
 	public List<FishingLesson> getByInstructorId(Long instructorId) {
 		User instructor = userRepository.findById(instructorId).get();
-		List<FishingLesson> fishingLessons = fishingLessonRepository.findByInstructor(instructor);
+		List<FishingLesson> fishingLessons = fishingLessonRepository.findByInstructorAndDeleted(instructor, false);
 		return fishingLessons;
 	}
 
@@ -277,7 +278,7 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 	@Override
 	public List<FishingLesson> getAll() {
 
-		return fishingLessonRepository.findAll();
+		return fishingLessonRepository.findByDeleted(false);
 	}
 
 	@Override
@@ -286,7 +287,7 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		if(dto.getSortBy().equals("") || dto.getSortType().equals("")) {
 			return null;
 		}
-		List<FishingLesson> lessons = fishingLessonRepository.findAll();
+		List<FishingLesson> lessons = fishingLessonRepository.findByDeleted(false);
 		if(dto.getSortBy().equals("Name")) {
 			if(dto.getSortType().equals("Ascending")) {
 				Collections.sort(lessons, (l1, l2) ->
@@ -356,7 +357,7 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 
 	@Override
 	public List<FishingLesson> search(String searchTerm) {
-		List<FishingLesson> lessons = fishingLessonRepository.findAll();
+		List<FishingLesson> lessons = fishingLessonRepository.findByDeleted(false);
 		List<FishingLesson> result = new ArrayList<>();
 		List<FishingLesson> filtered = new ArrayList<>();
 		for(FishingLesson lesson: lessons) {
@@ -382,7 +383,7 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 			return null;
 		}
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
-		List<FishingLesson> lessons = fishingLessonRepository.findAll();
+		List<FishingLesson> lessons = fishingLessonRepository.findByDeleted(false);
 		List<FishingLesson> result = new ArrayList<>();
 		for(FishingLesson lesson: lessons) {
 			Set<AvailableFishingLessonPeriod> periods = lesson.getAvailablePeriods();
@@ -397,7 +398,7 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 
 	@Override
 	public List<FishingLesson> lessonsAvailableForCertainDate(DateSearchDTO dto) {
-		List<FishingLesson> lessons = fishingLessonRepository.findAll();
+		List<FishingLesson> lessons = fishingLessonRepository.findByDeleted(false);
 		List<FishingLesson> result = new ArrayList<>();
 		for(FishingLesson l: lessons) {
 			Set<AvailableFishingLessonPeriod> periods = l.getAvailablePeriods();
@@ -419,7 +420,7 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 	@Override
 	public List<FishingLesson> searchForInstructor(String searchTerm, Long id) {
 		Instructor instructor = (Instructor) userRepository.findById(id).get();
-		List<FishingLesson> lessons = fishingLessonRepository.findByInstructor(instructor);
+		List<FishingLesson> lessons = fishingLessonRepository.findByInstructorAndDeleted(instructor, false);
 		List<FishingLesson> result = new ArrayList<>();
 		List<FishingLesson> filtered = new ArrayList<>();
 		for(FishingLesson lesson: lessons) {
@@ -443,7 +444,9 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		List<FishingLessonSubscription> clientSubscriptions = fishingLessonSubscriptionRepository.findByClient(client);
 		
 		for(FishingLessonSubscription subscription: clientSubscriptions) {
-			lessons.add(subscription.getFishingLesson());
+			if(subscription.getFishingLesson().getDeleted() == false) {
+				lessons.add(subscription.getFishingLesson());
+			}
 		}
 		return lessons;
 	}
@@ -479,7 +482,7 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 			return null;
 		}
 		List<FishingLesson> filteredByDate = new ArrayList<>();
-		List<FishingLesson> lessons = fishingLessonRepository.findAll();
+		List<FishingLesson> lessons = fishingLessonRepository.findByDeleted(false);
 		for(FishingLesson l: lessons) {
 			Set<AvailableFishingLessonPeriod> periods = l.getAvailablePeriods();
 			for(AvailableFishingLessonPeriod period: periods) {
@@ -537,5 +540,38 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		return filteredByPeople;
 	
 	}
+
+	@Override
+	public List<FishingLesson> getAvailableLessonsForInstructor(ReservationSearchDTO dto) {
+		if(dto.getStartDate().compareTo(LocalDateTime.now()) < 0) {
+			return null;
+		}
+		if(dto.getNumberOfDays() == 0 || dto.getNumberOfGuests() == 0 || dto.getStartDate().equals("")) {
+			return null;
+		}
+		Instructor instructor = (Instructor) userRepository.findById(dto.getInstructorId()).get();
+		
+		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
+		List<FishingLesson> lessons = fishingLessonRepository.findByInstructorAndDeleted(instructor, false);
+		List<FishingLesson> result = new ArrayList<>();
+		for(FishingLesson lesson: lessons) {
+			Set<AvailableFishingLessonPeriod> periods = lesson.getAvailablePeriods();
+			for(AvailableFishingLessonPeriod period: periods) {
+				if(dto.getStartDate().compareTo(period.getStartDate()) >=0 && endDate.compareTo(period.getEndDate()) <= 0 && lesson.getNumberOfPeople() >= dto.getNumberOfGuests()) {
+					result.add(lesson);
+				}
+			}
+		}
+		return result;
+	}
+	
+	@Override
+	public void delete(Long id) {
+		FishingLesson lesson = fishingLessonRepository.findById(id).get();
+		lesson.setDeleted(true);
+		fishingLessonRepository.save(lesson);
+		
+	}
+
 
 }

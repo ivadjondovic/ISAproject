@@ -1,0 +1,93 @@
+input[type=text],
+[type=password],
+[type=datetime-local],
+select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  width: 100%;
+  margin-top: 10px;
+  color: white;
+  padding: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background: #ffd480;
+}
+
+.book {
+  width: 60%;
+  height: 80%;
+  margin-top: 10px;
+  color: black;
+  padding: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background: #ffd480;
+}
+
+.book:hover {
+  background: #fbcc6e;
+}
+
+button:hover {
+  background: #fbcc6e;
+}
+
+.reservation {
+  border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background: #f2f2f2;
+  padding: 20px;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15px;
+}
+
+hr {
+  border: 0;
+  clear: both;
+  display: block;
+  width: 96%;
+  background-color: #4c7d85;
+  height: 1px;
+}
+
+.searchButton{
+  width: 28%;
+  height: 61%;  
+  bottom: 0;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background: #ffd480;
+}
+
+
+
+mat-card {
+  background: #ffd480;
+  width: 20%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
+
+.booking-list {
+  padding: 0px 12px 5px 12px;
+}
+
+.booking-list:hover {
+  background-color: #e6e6e6;
+}

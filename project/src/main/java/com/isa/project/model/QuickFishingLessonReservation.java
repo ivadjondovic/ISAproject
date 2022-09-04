@@ -28,6 +28,7 @@ public class QuickFishingLessonReservation {
 	private Boolean reserved;
 	private Boolean accepted;
 	private Boolean canceled;
+	private Boolean calculated;
 	
 	@JsonBackReference
 	@ManyToOne
@@ -37,8 +38,7 @@ public class QuickFishingLessonReservation {
 	@ManyToOne
 	private Client client;
 
-	
-	
+
 	public Double getDiscount() {
 		return discount;
 	}
@@ -49,6 +49,14 @@ public class QuickFishingLessonReservation {
 
 	public Long getId() {
 		return id;
+	}
+
+	public Boolean getCalculated() {
+		return calculated;
+	}
+
+	public void setCalculated(Boolean calculated) {
+		this.calculated = calculated;
 	}
 
 	public void setId(Long id) {

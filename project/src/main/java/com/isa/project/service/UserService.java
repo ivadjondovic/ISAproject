@@ -24,5 +24,8 @@ public interface UserService {
 	public User declineDeletingAccount(DeleteAccountRequestDTO dto);
 	public User acceptDeletingAccount(DeleteAccountRequestDTO dto);
 	public User getClient(Long id);
+	public List<User> getClients();
+	public List<User> getUsers();
+	public void deleteUser(Long id);
 	
 }

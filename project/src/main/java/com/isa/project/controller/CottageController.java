@@ -113,5 +113,11 @@ public class CottageController {
         return new ResponseEntity<>(cottageService.getCottagesByClientSubscription(clientId), HttpStatus.OK);
     }
 	
+	@GetMapping(path = "/delete/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> delete(@PathVariable Long id) {
+		cottageService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 	
 }

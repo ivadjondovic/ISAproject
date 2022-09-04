@@ -117,5 +117,12 @@ public class BoatController {
     public ResponseEntity<?> subscribedBoats(@PathVariable Long clientId) {
         return new ResponseEntity<>(boatService.getBoatsByClientSubscription(clientId), HttpStatus.OK);
     }
+	
+	@GetMapping(path = "/delete/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> delete(@PathVariable Long id) {
+		boatService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK); 
+    }
 
 }

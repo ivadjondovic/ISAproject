@@ -33,6 +33,10 @@ import { ClientSubscriptionsComponent } from './client-subscriptions/client-subs
 import { InstructorProfileComponent } from './instructor-profile/instructor-profile.component';
 import { InstructorReservationsHistoryComponent } from './instructor-reservations-history/instructor-reservations-history.component';
 import { ClientInfoComponent } from './client-info/client-info.component';
+import { InstructorReservationComponent } from './instructor-reservation/instructor-reservation.component';
+import { AdminUsersComponent } from './admin-users/admin-users.component';
+import { ReviewClientComponent } from './review-client/review-client.component';
+import { AdminPenaltiesComponent } from './admin-penalties/admin-penalties.component';
 
 const routes: Routes = [
 
@@ -60,6 +64,7 @@ const routes: Routes = [
   {path: 'lessons', component: ClientFishingLessonsComponent},
   {path: 'lessonInfo/:id', component: FishingLessonAdditionalInfoComponent},
   {path: 'reservation', component: ReservationComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
+  {path: 'instructorReservation', component: InstructorReservationComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_INSTRUCTOR'}},
   {path: 'cottageReservationsHistory', component: CottageReservationsHistoryComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
   {path: 'boatReservationsHistory', component: BoatReservationsHistoryComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
   {path: 'fishingLessonReservationsHistory', component: FishingLessonReservationsHistoryComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
@@ -69,7 +74,9 @@ const routes: Routes = [
   {path: 'complaints', component: AdminComplaintsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_ADMIN'}},
   {path: 'subscriptions', component: ClientSubscriptionsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
   {path: 'clientInfo/:id', component: ClientInfoComponent, canActivate: [AuthenticationGuard], data: {role: 'ROLE_INSTRUCTOR'}},
-  
+  {path: 'users', component: AdminUsersComponent, canActivate: [AuthenticationGuard], data: {role: 'ROLE_ADMIN'}},
+  {path: 'reviewClient/:id', component: ReviewClientComponent, canActivate: [AuthenticationGuard], data: {role: 'ROLE_INSTRUCTOR'}},
+  {path: 'adminPenalties', component: AdminPenaltiesComponent, canActivate: [AuthenticationGuard], data: {role: 'ROLE_ADMIN'}},
 ];
 
 @NgModule({

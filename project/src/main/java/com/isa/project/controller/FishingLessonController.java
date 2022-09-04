@@ -121,6 +121,16 @@ public class FishingLessonController {
         return new ResponseEntity<>(fishingLessonService.searchForInstructor(searchTerm, id), HttpStatus.OK);
     }
 	
+	@PreAuthorize("hasRole('INSTRUCTOR')")
+	@PostMapping(path = "/availableLessonsForInstructor")
+    public ResponseEntity<?> availableLessonsForInstructor(@RequestBody ReservationSearchDTO dto) {
+		List<FishingLesson> response = fishingLessonService.getAvailableLessonsForInstructor(dto);
+		if(response == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+	
 	@PreAuthorize("hasRole('CLIENT')")
 	@PostMapping(path = "/availableLessons")
     public ResponseEntity<?> availableLessons(@RequestBody ReservationSearchDTO dto) {
@@ -145,6 +155,13 @@ public class FishingLessonController {
 	@PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<?> subscribedLessons(@PathVariable Long clientId) {
         return new ResponseEntity<>(fishingLessonService.getLessonsByClientSubscription(clientId), HttpStatus.OK);
+    }
+	
+	@GetMapping(path = "/delete/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> delete(@PathVariable Long id) {
+		fishingLessonService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 	
 }

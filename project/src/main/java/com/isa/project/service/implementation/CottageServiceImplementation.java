@@ -80,6 +80,7 @@ public class CottageServiceImplementation implements CottageService{
 		cottage.setNumberOfRooms(dto.getNumberOfRooms());
 		cottage.setPrice(dto.getPrice());
 		cottage.setRating(0.0);
+		cottage.setDeleted(false);
 		Cottage savedCottage = cottageRepository.save(cottage);
 		Set<Room> rooms = new HashSet<>();
 		Set<Rule> rules = new HashSet<>();
@@ -130,6 +131,7 @@ public class CottageServiceImplementation implements CottageService{
 			quickReservation.setReserved(false);
 			quickReservation.setAccepted(false);
 			quickReservation.setCanceled(false);
+			quickReservation.setCalculated(false);
 			quickReservation.setDiscount(quickReservationDto.getDiscount());
 			QuickCottageReservation savedReservation = quickReservationRepository.save(quickReservation);
 			quickReservations.add(savedReservation);
@@ -159,7 +161,7 @@ public class CottageServiceImplementation implements CottageService{
 
 	@Override
 	public List<Cottage> getAll() {	
-		return cottageRepository.findAll();
+		return cottageRepository.findByDeleted(false);
 	}
 
 
@@ -183,7 +185,7 @@ public class CottageServiceImplementation implements CottageService{
 
 	@Override
 	public List<Cottage> search(String searchTerm) {
-		List<Cottage> cottages = cottageRepository.findAll();
+		List<Cottage> cottages = cottageRepository.findByDeleted(false);
 		List<Cottage> result = new ArrayList<>();
 		List<Cottage> filtered = new ArrayList<>();
 		for(Cottage cottage: cottages) {
@@ -273,7 +275,7 @@ public class CottageServiceImplementation implements CottageService{
 			return null;
 		}
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
-		List<Cottage> cottages = cottageRepository.findAll();
+		List<Cottage> cottages = cottageRepository.findByDeleted(false);
 		List<Cottage> result = new ArrayList<>();
 		for(Cottage cottage: cottages) {
 			int numberOfGuests = 0;
@@ -294,7 +296,7 @@ public class CottageServiceImplementation implements CottageService{
 
 	@Override
 	public List<Cottage> cottagesAvailableForCertainDate(DateSearchDTO dto) {
-		List<Cottage> cottages = cottageRepository.findAll();
+		List<Cottage> cottages = cottageRepository.findByDeleted(false);
 		List<Cottage> result = new ArrayList<>();
 		for(Cottage c: cottages) {
 			Set<AvailableCottagePeriod> periods = c.getAvailablePeriods();
@@ -317,7 +319,9 @@ public class CottageServiceImplementation implements CottageService{
 		List<CottageSubscription> clientSubscriptions = cottageSubscriptionRepository.findByClient(client);
 		
 		for(CottageSubscription subscription: clientSubscriptions) {
-			cottages.add(subscription.getCottage());
+			if(subscription.getCottage().getDeleted() == false) {
+				cottages.add(subscription.getCottage());
+			}
 		}
 		return cottages;
 	}
@@ -353,7 +357,7 @@ public class CottageServiceImplementation implements CottageService{
 			return null;
 		}
 		List<Cottage> filteredByDate = new ArrayList<>();
-		List<Cottage> cottages = cottageRepository.findAll();
+		List<Cottage> cottages = cottageRepository.findByDeleted(false);
 		for(Cottage c: cottages) {
 			Set<AvailableCottagePeriod> periods = c.getAvailablePeriods();
 			for(AvailableCottagePeriod period: periods) {
@@ -426,6 +430,14 @@ public class CottageServiceImplementation implements CottageService{
 		
 		return filteredByPeople;
 	
+	}
+	
+	@Override
+	public void delete(Long id) {
+		Cottage cottage = cottageRepository.findById(id).get();
+		cottage.setDeleted(true);
+		cottageRepository.save(cottage);
+		
 	}
 
 	

@@ -55,5 +55,9 @@ export class CottageService {
   searchByManyParams(data: any){
     return this.http.post(this.baseURL + "api/cottage/searchByManyParams" ,  data, this.getAuthoHeader());
   }
+
+  deleteCottage(id: string){
+    return this.http.get(this.baseURL + "api/cottage/delete/" + id, this.getAuthoHeader());
+  }
   
 }

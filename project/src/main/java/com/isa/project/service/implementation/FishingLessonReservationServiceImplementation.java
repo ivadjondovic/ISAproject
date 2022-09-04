@@ -79,6 +79,7 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 		lessonReservation.setFishingLesson(lesson);
 		lessonReservation.setAccepted(false);
 		lessonReservation.setCanceled(false);
+		lessonReservation.setCalculated(false);
 		
 		FishingLessonReservation savedReservation = fishingLessonReservationRepository.save(lessonReservation);
 		

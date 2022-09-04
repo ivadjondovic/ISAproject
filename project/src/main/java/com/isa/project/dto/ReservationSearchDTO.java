@@ -9,6 +9,8 @@ public class ReservationSearchDTO {
 	private int numberOfGuests;
 	private String sortBy;
 	private String sortType;
+	private Long instructorId;
+	
 	public LocalDateTime getStartDate() {
 		return startDate;
 	}
@@ -38,6 +40,12 @@ public class ReservationSearchDTO {
 	}
 	public void setSortType(String sortType) {
 		this.sortType = sortType;
+	}
+	public Long getInstructorId() {
+		return instructorId;
+	}
+	public void setInstructorId(Long instructorId) {
+		this.instructorId = instructorId;
 	}
 	
 	

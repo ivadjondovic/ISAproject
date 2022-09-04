@@ -1,0 +1,167 @@
+<div>
+    <mat-card>
+        <mat-card-title style="text-align: center;">Reservation</mat-card-title>
+    </mat-card>
+    <div class="reservation">
+
+        <div>
+            <div class="row">
+                <div class="col-sm">
+                    <p style="font-size: 18px;"><b>Step 1</b></p>
+                </div>
+                <div class="col-8">
+                    <label for="entity">Select client for reservation</label>
+                    <select [(ngModel)]="selectedClient">
+                        <option *ngFor="let c of clients" [ngValue]="c">{{c.name}} {{c.surname}}</option>
+                      </select>
+                </div>
+                <div class="col-sm"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                </div>
+                <div class="col-8">
+                    <label for="startDate">Start date</label>
+                    <input id="startDate" [(ngModel)]="startDate" type="datetime-local">
+                </div>
+                <div class="col-sm"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm"></div>
+                <div class="col-8">
+                    <label for="days">Number of days</label>
+                    <input id="days" [(ngModel)]="numberOfDays" type="text">
+                </div>
+                <div class="col-sm"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm"></div>
+                <div class="col-8">
+                    <label for="guests">Number of guests</label>
+                    <input id="guests" type="text" [(ngModel)]="numberOfGuests">
+                </div>
+                <div class="col-sm"></div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm"></div>
+                <div class="col-sm"></div>
+                <div class="col-sm">
+                    <button (click)="find()">Find</button>
+                </div>
+                <div class="col-sm"></div>
+                <div class="col-sm"></div>
+            </div>
+            <hr>
+
+        </div>
+
+        <div *ngIf="lessons != null && !isLessonListEmpty()">
+            <div class="row">
+                <div class="col-sm">
+                    <p style="font-size: 18px;"><b>Step 2</b></p>
+                </div>
+                <div class="col-8"></div>
+                <div class="col-sm"></div>
+            </div>
+            
+            <div class="booking-list" *ngFor="let lesson of lessons">
+                <div class="row">
+                    <div class="col-sm"></div>
+                    <div class="col-10">
+                        <div class="row">
+                            <div class="col-8">
+                                <h2 style="color: #4c7d85;" class="classes">{{lesson.name}} - {{lesson.address}}</h2>
+                            </div>
+                            <div class="col-sm"></div>
+                            <div class="col-3"><button (click)="bookLesson(lesson.id)" class="book">
+                                    <mat-icon>book</mat-icon>
+                                </button></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <p style="font-size: 17px;">{{lesson.description}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-8">
+                                <p style="font-size: 17px;"><span
+                                        style="color: #4c7d85;">Biography:&nbsp;</span>{{lesson.fishingInstructorBio}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+
+                            <div class="col-3">
+                                <p>
+                                    <mat-icon matPrefix>attach_money</mat-icon>
+                                    <span style="margin-left: 10px;">{{lesson.price}} din</span>
+                                </p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-sm"></div>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+        <div *ngIf="lesson != null">
+            <div class="row">
+                <div class="col-sm">
+                    <p style="font-size: 18px;"><b>Step 3</b></p>
+                </div>
+                <div class="col-8"></div>
+                <div class="col-sm"></div>
+            </div>
+            <div class="booking-list" *ngFor="let service of lesson.additionalServices">
+                <div class="row">
+                    <div class="col-sm"></div>
+                    <div class="col-10">
+                        <div class="row">
+                            <div class="col-6">
+                                <h2 style="color: #4c7d85;" class="classes">{{service.description}}</h2>
+                            </div>
+                            <div class="col-3"><button *ngIf="!isLessonServiceAdded(service.id)"
+                                    (click)="addLessonService(service.id)" class="book">
+                                    <mat-icon>add</mat-icon>
+                                </button></div>
+                            <div class="col-3"><button *ngIf="isLessonServiceAdded(service.id)"
+                                    (click)="deleteLessonService(service.id)" class="book">
+                                    <mat-icon>close</mat-icon>
+                                </button></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-3">
+                                <p>
+                                    <mat-icon matPrefix>attach_money</mat-icon>
+                                    <span style="margin-left: 10px;">{{service.price}} din</span>
+                                </p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-sm"></div>
+                </div>
+            </div>
+            <hr>
+        </div>
+    <div *ngIf="lesson != null" class="row">
+            <div class="col-sm"></div>
+            <div class="col-sm"></div>
+            <div class="col-sm"><button (click)="reservation()">Book</button></div>
+            <div class="col-sm"></div>
+            <div class="col-sm"></div>
+        </div>
+
+    </div>
+
+</div>

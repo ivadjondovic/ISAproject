@@ -18,7 +18,8 @@ public class AuthorityServiceImplementation implements AuthorityService {
 
   @Override
   public List<Authority> findById(Long id) {
-	  Authority auth = this.authorityRepository.getOne(id);
+	  @SuppressWarnings("deprecation")
+	Authority auth = this.authorityRepository.getOne(id);
 	  List<Authority> auths = new ArrayList<>();
 	  auths.add(auth);
 	  return auths;

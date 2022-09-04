@@ -19,6 +19,10 @@
         <mat-icon>book</mat-icon><span class="nav-caption">Reservation</span>
     </a>
 
+    <a mat-list-item routerLink="/instructorReservation" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_INSTRUCTOR'">
+        <mat-icon>book</mat-icon><span class="nav-caption">Reservation</span>
+    </a>
+
     <a mat-list-item routerLink="/cottageReservationsHistory" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_CLIENT'">
         <mat-icon>holiday_village</mat-icon><span class="nav-caption">Cottage reservations history</span>
     </a>
@@ -67,8 +71,16 @@
         <mat-icon>people</mat-icon><span class="nav-caption">Service Provider Registration</span>
     </a>
 
+    <a mat-list-item routerLink="/users" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_ADMIN'">
+        <mat-icon>people</mat-icon><span class="nav-caption">Users</span>
+    </a>
+
     <a mat-list-item routerLink="/adminRegistration" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_ADMIN' && username == 'admin'">
         <mat-icon>person_add</mat-icon><span class="nav-caption">Admin Registration</span>
+    </a>
+
+    <a mat-list-item routerLink="/adminPenalties" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_ADMIN'">
+        <mat-icon>reviews</mat-icon><span class="nav-caption">Client reviews</span>
     </a>
 
     <a *ngIf="currentUser == null" style="position: absolute; bottom: 0;" mat-list-item routerLink="/login" (click)="onSidenavClose('')">

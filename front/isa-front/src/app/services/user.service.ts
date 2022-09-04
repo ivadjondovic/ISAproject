@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { DeleteAccountService } from './delete-account.service';
 
 @Injectable({
   providedIn: 'root'
@@ -66,6 +67,18 @@ export class UserService {
 
   getClient(id: any){
     return this.http.get(this.baseURL + "api/users/getClient/" + id, this.getAuthoHeader());
+  }
+
+  getClients(){
+    return this.http.get(this.baseURL + "api/users/getClients", this.getAuthoHeader());
+  }
+
+  getUsers(){
+    return this.http.get(this.baseURL + "api/users/users", this.getAuthoHeader());
+  }
+
+  deleteUser(id: any) {
+    return this.http.get(this.baseURL + "api/users/deleteUser/" + id, this.getAuthoHeader());
   }
 
 }

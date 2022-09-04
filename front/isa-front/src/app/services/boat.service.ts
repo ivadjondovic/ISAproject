@@ -55,5 +55,9 @@ export class BoatService {
   searchByManyParams(data: any){
     return this.http.post(this.baseURL + "api/boat/searchByManyParams" ,  data, this.getAuthoHeader());
   }
+
+  deleteBoat(id: any){
+    return this.http.get(this.baseURL + "api/boat/delete/" + id, this.getAuthoHeader());
+  }
   
 }

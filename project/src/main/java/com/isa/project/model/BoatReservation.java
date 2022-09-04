@@ -26,6 +26,7 @@ public class BoatReservation {
 	private Double price;
 	private Boolean accepted;
 	private Boolean canceled;
+	private Boolean calculated;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "boatReservation", fetch = FetchType.LAZY)
@@ -70,6 +71,14 @@ public class BoatReservation {
 
 	public void setPrice(Double price) {
 		this.price = price;
+	}
+
+	public Boolean getCalculated() {
+		return calculated;
+	}
+
+	public void setCalculated(Boolean calculated) {
+		this.calculated = calculated;
 	}
 
 	public Set<AdditionalBoatService> getAdditionalServices() {

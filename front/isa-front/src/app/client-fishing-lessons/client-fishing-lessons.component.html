@@ -153,6 +153,8 @@
                         <div class="col-3">
                             <button style="margin-bottom: 10px;" *ngIf="!isSubscribed(l.id)"
                                 (click)="subscribe(l.id)">Subscribe</button>
+                            <button style="margin-bottom: 10px;" *ngIf="isAdmin()"
+                                (click)="deleteLesson(l.id)">Delete</button>
                         </div>
 
                     </div>

@@ -26,8 +26,9 @@ public class FishingLessonReservation {
 	private LocalDateTime endDate;
 	private Double price;
 	private Boolean accepted;
-	private Boolean canceled;
-	
+	private Boolean canceled;	
+	private Boolean calculated;
+
 	@JsonManagedReference
 	@OneToMany(mappedBy = "fishingLessonReservation", fetch = FetchType.LAZY)
 	private Set<AdditionalFishingLessonService> additionalServices;
@@ -59,6 +60,14 @@ public class FishingLessonReservation {
 
 	public LocalDateTime getEndDate() {
 		return endDate;
+	}
+
+	public Boolean getCalculated() {
+		return calculated;
+	}
+
+	public void setCalculated(Boolean calculated) {
+		this.calculated = calculated;
 	}
 
 	public void setEndDate(LocalDateTime endDate) {

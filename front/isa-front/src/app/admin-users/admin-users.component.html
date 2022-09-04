@@ -1,0 +1,29 @@
+
+<div>
+    <mat-card>
+        <mat-card-title style="text-align: center;">Users</mat-card-title>
+    </mat-card>
+    <div class = "approval">
+
+            <table id="registrations">
+                <tr>
+                  <th>Name</th>
+                  <th>Surname</th>
+                  <th>Username</th>
+                  <th>Type</th>
+                  <th>Delete</th>
+                </tr>
+                <tr *ngFor="let user of users">
+                  <td>{{user.name}}</td>
+                  <td>{{user.surname}}</td>
+                  <td>{{user.username}}</td>
+                  <td>{{user.userType}}</td>
+                  <td><button  class="button1" (click)="deleteUser(user.id)">
+                    <mat-icon>delete</mat-icon>
+                    </button></td>
+                </tr>
+              </table>
+
+    </div>
+
+</div>

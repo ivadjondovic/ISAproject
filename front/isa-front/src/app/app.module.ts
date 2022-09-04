@@ -67,6 +67,11 @@ import { MatSnackBarModule} from '@angular/material/snack-bar';
 import { InstructorProfileComponent } from './instructor-profile/instructor-profile.component';
 import { InstructorReservationsHistoryComponent } from './instructor-reservations-history/instructor-reservations-history.component';
 import { ClientInfoComponent } from './client-info/client-info.component';
+import { InstructorReservationComponent } from './instructor-reservation/instructor-reservation.component';
+import { AdminUsersComponent } from './admin-users/admin-users.component';
+import { ReviewClientComponent } from './review-client/review-client.component';
+import {MatRadioModule} from '@angular/material/radio';
+import { AdminPenaltiesComponent } from './admin-penalties/admin-penalties.component';
 
 
 
@@ -119,6 +124,10 @@ import { ClientInfoComponent } from './client-info/client-info.component';
     InstructorProfileComponent,
     InstructorReservationsHistoryComponent,
     ClientInfoComponent,
+    InstructorReservationComponent,
+    AdminUsersComponent,
+    ReviewClientComponent,
+    AdminPenaltiesComponent,
     
   ],
   imports: [
@@ -140,7 +149,8 @@ import { ClientInfoComponent } from './client-info/client-info.component';
     MatDialogModule,
     MatInputModule,
     MatSelectModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatRadioModule
     
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
