@@ -1,5 +1,6 @@
 package com.isa.project.service.implementation;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -12,7 +13,9 @@ import com.isa.project.dto.QuickClientReservationDTO;
 import com.isa.project.dto.QuickReservationDTO;
 import com.isa.project.model.Client;
 import com.isa.project.model.FishingLesson;
+import com.isa.project.model.FishingLessonSubscription;
 import com.isa.project.model.QuickFishingLessonReservation;
+import com.isa.project.model.User;
 import com.isa.project.repository.FishingLessonRepository;
 import com.isa.project.repository.QuickFishingLessonReservationRepository;
 import com.isa.project.repository.UserRepository;
@@ -121,6 +124,22 @@ public class QuickFishingLessonReservationServiceImplementation implements Quick
 		
 		reservation.setFishingLesson(lesson);
 		
+		Set<FishingLessonSubscription> subscriptions = lesson.getSubscriptions();
+		
+		List<User> users = new ArrayList<>();
+		
+		for(FishingLessonSubscription s : subscriptions) {
+			users.add(s.getClient());
+		}
+		
+		for(User u : users) {
+			try {
+				emailService.notifyClient(u, reservation);
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		return quickFishingLessonReservationRepository.save(reservation);
 	}

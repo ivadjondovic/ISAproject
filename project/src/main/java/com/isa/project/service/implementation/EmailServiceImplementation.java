@@ -285,6 +285,18 @@ public class EmailServiceImplementation implements EmailService{
 		
 	}
 
+	@Override
+	public void notifyClient(User user, QuickFishingLessonReservation reservation) throws MessagingException {
+		MimeMessage message=javaMailSender.createMimeMessage();
+	    MimeMessageHelper helper;
+	    helper=new MimeMessageHelper(message,true);
+	    helper.setTo(new InternetAddress(user.getUsername()));
+	    helper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
+	    helper.setSubject("New quick fishing reservation offers");
+	    helper.setText("Hello " + user.getName() + " " + user.getSurname() + "\n\nThere's a new quick fishing reservation available:" + "\n\nLesson: " + reservation.getFishingLesson().getName() + "\n\nFrom-To: " + reservation.getStartDate() + "-" + reservation.getEndDate() + "\n\nPrice: " + reservation.getPrice() + "\n\nThank you for your subscription!");
+	    javaMailSender.send(message);
+	}
+
 	
 
 }

@@ -33,4 +33,5 @@ public interface EmailService {
 	public void declinePenaltyClientEmail(User user, ClientReview review) throws MessagingException;
 	public void acceptPenaltyInstructorEmail(User user, ClientReview review) throws MessagingException;
 	public void declinePenaltyInstructorEmail(User user, ClientReview review) throws MessagingException;
+	public void notifyClient(User user, QuickFishingLessonReservation reservation) throws MessagingException;
 }
