@@ -11,7 +11,12 @@ import java.util.Set;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.isa.project.dto.BoatReservationResponseDTO;
 import com.isa.project.dto.ReservationDTO;
@@ -23,7 +28,6 @@ import com.isa.project.model.BoatReservation;
 import com.isa.project.model.Client;
 import com.isa.project.model.QuickBoatReservation;
 import com.isa.project.repository.AdditionalBoatServiceRepository;
-import com.isa.project.repository.AvailableBoatPeriodRepository;
 import com.isa.project.repository.BoatRepository;
 import com.isa.project.repository.BoatReservationRepository;
 import com.isa.project.repository.QuickBoatReservationRepository;
@@ -47,19 +51,21 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 	private AdditionalBoatServiceRepository additionalBoatServiceRepository;
 	
 	@Autowired
-	private AvailableBoatPeriodRepository periodRepository;
-	
-	@Autowired
 	private EmailService emailService;
 	
 	@Autowired
 	private QuickBoatReservationRepository quickBoatReservationRepository;
 	
 	@Override
-	public BoatReservation createReservation(ReservationDTO dto) {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public BoatReservation createReservation(ReservationDTO dto) throws Exception{
 		
 		
 		Client client = (Client) userRepository.findById(dto.getClientId()).get();
+		
+		if(client.getPenalties() >= 3) {
+			return null;
+		}
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
 		List<BoatReservation> clientReservations = boatReservationRepository.findByClient(client);
 		
@@ -69,13 +75,36 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 			}
 		}
 		
+		
+		
 		BoatReservation boatReservation = new BoatReservation();
 		boatReservation.setStartDate(dto.getStartDate());
 		boatReservation.setEndDate(endDate);
 		
-		Boat boat = boatRepository.findById(dto.getEntityId()).get();
+		Boat boat = boatRepository.findLockById(dto.getEntityId());
+
+		List<BoatReservation> reservations = boatReservationRepository.findByBoatAndCanceled(boat, false);
+		Set<AvailableBoatPeriod> periods = boat.getAvailablePeriods();
 		
 		
+		for(BoatReservation r: reservations) {
+			if((dto.getStartDate().compareTo(r.getStartDate()) >= 0 && endDate.compareTo(r.getEndDate()) <= 0) 
+					|| (dto.getStartDate().compareTo(r.getStartDate()) < 0 && endDate.compareTo(r.getEndDate()) <= 0 && endDate.compareTo(r.getStartDate()) > 0)
+					|| (dto.getStartDate().compareTo(r.getStartDate()) >= 0 && endDate.compareTo(r.getEndDate()) > 0 && dto.getStartDate().compareTo(r.getEndDate()) < 0)
+					|| (dto.getStartDate().compareTo(r.getStartDate()) < 0 && endDate.compareTo(r.getEndDate()) > 0)) {
+				return null;
+			}else {
+				continue;
+				
+			}
+		}
+		
+		for(AvailableBoatPeriod period: periods) {
+			if(!(dto.getStartDate().compareTo(period.getStartDate()) >= 0 && endDate.compareTo(period.getEndDate()) <=0)) {
+					return null;
+			}
+		}
+			
 		boatReservation.setClient(client);
 		boatReservation.setBoat(boat);
 		boatReservation.setAccepted(false);
@@ -98,59 +127,6 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 		savedReservation.setPrice(price);
 		savedReservation.setAdditionalServices(additionalServices);
 		
-		Set<AvailableBoatPeriod> newPeriods = new HashSet<>();
-		Set<AvailableBoatPeriod> periods = boat.getAvailablePeriods();
-		for(AvailableBoatPeriod period: periods) {
-			if(period.getStartDate().compareTo(dto.getStartDate()) < 0 && period.getEndDate().compareTo(endDate) > 0) {
-				AvailableBoatPeriod availablePeriodFirst = new AvailableBoatPeriod();
-				availablePeriodFirst.setStartDate(period.getStartDate());
-				availablePeriodFirst.setEndDate(dto.getStartDate());
-				availablePeriodFirst.setBoat(boat);
-				AvailableBoatPeriod savedFirst = periodRepository.save(availablePeriodFirst);
-				newPeriods.add(savedFirst);
-				
-				AvailableBoatPeriod availablePeriodSecond = new AvailableBoatPeriod();
-				availablePeriodSecond.setStartDate(endDate);
-				availablePeriodSecond.setEndDate(period.getEndDate());
-				availablePeriodSecond.setBoat(boat);
-				AvailableBoatPeriod savedSecond = periodRepository.save(availablePeriodSecond);
-				newPeriods.add(savedSecond);
-				
-				periodRepository.delete(period);
-				
-			}
-			if(period.getStartDate().compareTo(dto.getStartDate()) == 0 && period.getEndDate().compareTo(endDate) > 0) {
-				AvailableBoatPeriod availablePeriod = new AvailableBoatPeriod();
-				availablePeriod.setStartDate(endDate);
-				availablePeriod.setEndDate(period.getEndDate());
-				availablePeriod.setBoat(boat);
-				AvailableBoatPeriod savedFirst = periodRepository.save(availablePeriod);
-				newPeriods.add(savedFirst);
-				
-				periodRepository.delete(period);
-			}
-			if(period.getStartDate().compareTo(dto.getStartDate()) < 0 && period.getEndDate().compareTo(endDate) == 0) {
-				AvailableBoatPeriod availablePeriod = new AvailableBoatPeriod();
-				availablePeriod.setStartDate(period.getStartDate());
-				availablePeriod.setEndDate(dto.getStartDate());
-				availablePeriod.setBoat(boat);
-				AvailableBoatPeriod savedFirst = periodRepository.save(availablePeriod);
-				newPeriods.add(savedFirst);
-				
-				periodRepository.delete(period);
-				
-			}
-			if(period.getStartDate().compareTo(dto.getStartDate()) == 0 && period.getEndDate().compareTo(endDate) == 0) {
-				periodRepository.delete(period);
-			}
-			
-			if((period.getStartDate().compareTo(dto.getStartDate()) > 0 && period.getEndDate().compareTo(endDate) < 0) || (period.getStartDate().compareTo(dto.getStartDate()) == 0 && period.getEndDate().compareTo(endDate) < 0) || (period.getStartDate().compareTo(dto.getStartDate()) > 0 && period.getEndDate().compareTo(endDate) == 0) || (period.getStartDate().compareTo(dto.getStartDate()) < 0 && endDate.compareTo(period.getEndDate()) > 0) || (dto.getStartDate().compareTo(period.getStartDate()) < 0 && endDate.compareTo(period.getEndDate()) < 0) || (dto.getStartDate().isAfter(period.getStartDate()) && endDate.isAfter(period.getEndDate())) || (dto.getStartDate().isBefore(period.getStartDate()) && endDate.isBefore(period.getEndDate()))) {
-				
-				newPeriods.add(period);
-			}
-		}
-		
-		boat.setAvailablePeriods(newPeriods);
 		Boat savedBoat = boatRepository.save(boat);
 		savedReservation.setBoat(savedBoat);
 		
@@ -161,7 +137,14 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 			e.printStackTrace();
 		}
 		
-		return boatReservationRepository.save(savedReservation);
+		try{
+			return boatReservationRepository.save(savedReservation);
+		}catch(PessimisticLockingFailureException ex){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+		}
+		
+		
+		
 	}
 
 	@Override

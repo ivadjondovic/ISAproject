@@ -11,19 +11,25 @@ import java.util.Set;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.isa.project.dto.CottageReservationResponseDTO;
 import com.isa.project.dto.ReservationDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalCottageService;
+
 import com.isa.project.model.AvailableCottagePeriod;
+
 import com.isa.project.model.Client;
 import com.isa.project.model.Cottage;
 import com.isa.project.model.CottageReservation;
 import com.isa.project.model.QuickCottageReservation;
 import com.isa.project.repository.AdditionalCottageServiceRepository;
-import com.isa.project.repository.AvailableCottagePeriodRepository;
 import com.isa.project.repository.CottageRepository;
 import com.isa.project.repository.CottageReservationRepository;
 import com.isa.project.repository.QuickCottageReservationRepository;
@@ -47,18 +53,21 @@ public class CottageReservationServiceImplementation implements CottageReservati
 	private AdditionalCottageServiceRepository additionalCottageServiceRepository;
 	
 	@Autowired
-	private AvailableCottagePeriodRepository periodRepository;
-	
-	@Autowired
 	private EmailService emailService;
 	
 	@Autowired
 	private QuickCottageReservationRepository quickCottageReservationRepository;
 	
 	@Override
-	public CottageReservation createReservation(ReservationDTO dto) {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public CottageReservation createReservation(ReservationDTO dto) throws Exception{
 		
 		Client client = (Client) userRepository.findById(dto.getClientId()).get();
+		
+		if(client.getPenalties() >= 3) {
+			return null;
+		}
+		
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
 		List<CottageReservation> clientReservations = cottageReservationRepository.findByClient(client);
 		
@@ -73,7 +82,30 @@ public class CottageReservationServiceImplementation implements CottageReservati
 		
 		cottageReservation.setEndDate(endDate);
 		
-		Cottage cottage = cottageRepository.findById(dto.getEntityId()).get();
+		Cottage cottage = cottageRepository.findLockById(dto.getEntityId());
+		
+		
+		List<CottageReservation> reservations = cottageReservationRepository.findByCottageAndCanceled(cottage, false);
+		Set<AvailableCottagePeriod> periods = cottage.getAvailablePeriods();
+		
+		
+		for(CottageReservation r: reservations) {
+			if((dto.getStartDate().compareTo(r.getStartDate()) >= 0 && endDate.compareTo(r.getEndDate()) <= 0) 
+					|| (dto.getStartDate().compareTo(r.getStartDate()) < 0 && endDate.compareTo(r.getEndDate()) <= 0 && endDate.compareTo(r.getStartDate()) > 0)
+					|| (dto.getStartDate().compareTo(r.getStartDate()) >= 0 && endDate.compareTo(r.getEndDate()) > 0 && dto.getStartDate().compareTo(r.getEndDate()) < 0)
+					|| (dto.getStartDate().compareTo(r.getStartDate()) < 0 && endDate.compareTo(r.getEndDate()) > 0)) {
+				return null;
+			}else {
+				continue;
+				
+			}
+		}
+		
+		for(AvailableCottagePeriod period: periods) {
+			if(!(dto.getStartDate().compareTo(period.getStartDate()) >= 0 && endDate.compareTo(period.getEndDate()) <=0)) {
+					return null;
+			}
+		}
 		
 		
 		cottageReservation.setClient(client);
@@ -98,59 +130,6 @@ public class CottageReservationServiceImplementation implements CottageReservati
 		savedReservation.setPrice(price);
 		savedReservation.setAdditionalServices(additionalServices);
 		
-		Set<AvailableCottagePeriod> newPeriods = new HashSet<>();
-		Set<AvailableCottagePeriod> periods = cottage.getAvailablePeriods();
-		for(AvailableCottagePeriod period: periods) {
-			if(period.getStartDate().compareTo(dto.getStartDate()) < 0 && period.getEndDate().compareTo(endDate) > 0) {
-				AvailableCottagePeriod availablePeriodFirst = new AvailableCottagePeriod();
-				availablePeriodFirst.setStartDate(period.getStartDate());
-				availablePeriodFirst.setEndDate(dto.getStartDate());
-				availablePeriodFirst.setCottage(cottage);
-				AvailableCottagePeriod savedFirst = periodRepository.save(availablePeriodFirst);
-				newPeriods.add(savedFirst);
-				
-				AvailableCottagePeriod availablePeriodSecond = new AvailableCottagePeriod();
-				availablePeriodSecond.setStartDate(endDate);
-				availablePeriodSecond.setEndDate(period.getEndDate());
-				availablePeriodSecond.setCottage(cottage);
-				AvailableCottagePeriod savedSecond = periodRepository.save(availablePeriodSecond);
-				newPeriods.add(savedSecond);
-				
-				periodRepository.delete(period);
-				
-			}
-			if(period.getStartDate().compareTo(dto.getStartDate()) == 0 && period.getEndDate().compareTo(endDate) > 0) {
-				AvailableCottagePeriod availablePeriod = new AvailableCottagePeriod();
-				availablePeriod.setStartDate(endDate);
-				availablePeriod.setEndDate(period.getEndDate());
-				availablePeriod.setCottage(cottage);
-				AvailableCottagePeriod savedFirst = periodRepository.save(availablePeriod);
-				newPeriods.add(savedFirst);
-				
-				periodRepository.delete(period);
-			}
-			if(period.getStartDate().compareTo(dto.getStartDate()) < 0 && period.getEndDate().compareTo(endDate) == 0) {
-				AvailableCottagePeriod availablePeriod = new AvailableCottagePeriod();
-				availablePeriod.setStartDate(period.getStartDate());
-				availablePeriod.setEndDate(dto.getStartDate());
-				availablePeriod.setCottage(cottage);
-				AvailableCottagePeriod savedFirst = periodRepository.save(availablePeriod);
-				newPeriods.add(savedFirst);
-				
-				periodRepository.delete(period);
-				
-			}
-			if(period.getStartDate().compareTo(dto.getStartDate()) == 0 && period.getEndDate().compareTo(endDate) == 0) {
-				periodRepository.delete(period);
-			}
-			
-			if((period.getStartDate().compareTo(dto.getStartDate()) > 0 && period.getEndDate().compareTo(endDate) < 0) || (period.getStartDate().compareTo(dto.getStartDate()) == 0 && period.getEndDate().compareTo(endDate) < 0) || (period.getStartDate().compareTo(dto.getStartDate()) > 0 && period.getEndDate().compareTo(endDate) == 0) || (period.getStartDate().compareTo(dto.getStartDate()) < 0 && endDate.compareTo(period.getEndDate()) > 0) || (dto.getStartDate().compareTo(period.getStartDate()) < 0 && endDate.compareTo(period.getEndDate()) < 0) || (dto.getStartDate().isAfter(period.getStartDate()) && endDate.isAfter(period.getEndDate())) || (dto.getStartDate().isBefore(period.getStartDate()) && endDate.isBefore(period.getEndDate()))) {
-				
-				newPeriods.add(period);
-			}
-		}
-		
-		cottage.setAvailablePeriods(newPeriods);
 		Cottage savedCottage = cottageRepository.save(cottage);
 		savedReservation.setCottage(savedCottage);
 		try {
@@ -160,7 +139,14 @@ public class CottageReservationServiceImplementation implements CottageReservati
 			e.printStackTrace();
 		}
 		
-		return cottageReservationRepository.save(savedReservation);
+		try{
+			return cottageReservationRepository.save(savedReservation);
+		}catch(PessimisticLockingFailureException ex){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+		}
+		
+		
+		
 	}
 
 	@Override

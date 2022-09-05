@@ -6,6 +6,6 @@ import com.isa.project.model.QuickBoatReservation;
 
 public interface QuickBoatReservationService {
 
-	public Client clientReservation(QuickClientReservationDTO dto);
+	public Client clientReservation(QuickClientReservationDTO dto) throws Exception;
 	public QuickBoatReservation accept(Long id);
 }

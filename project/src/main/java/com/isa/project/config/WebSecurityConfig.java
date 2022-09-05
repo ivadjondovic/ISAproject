@@ -90,7 +90,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		// TokenAuthenticationFilter ce ignorisati sve ispod navedene putanje
-		web.ignoring().antMatchers(HttpMethod.POST, "/api/users/register", "/api/users/login", "/api/cottage/sort", "/api/boat/sort", "/api/fishing/sort");
+		web.ignoring().antMatchers(HttpMethod.POST, "/api/users/register", "/api/users/login", "/api/cottage/sort", "/api/boat/sort", "/api/fishing/sort", "/api/boat/searchByManyParams", "/api/cottage/searchByManyParams", "/api/fishing/searchByManyParams");
 		web.ignoring().antMatchers(HttpMethod.GET,  "/api/users/activate/{username}", "/api/cottage/cottages", "/api/boat/boats", "/api/boat/boat/{id}", "/api/cottage/cottage/{id}", "/api/cottage/search/{searchTerm}", "/api/boat/search/{searchTerm}", "/api/fishing/fishingLessons", "/api/fishing/lessonById/{id}",  "/api/fishing/search/{searchTerm}"
 				, "/api/cottageReservations/accept/{id}" , "/api/boatReservations/accept/{id}", "/api/fishingLessonReservations/accept/{id}", "/api/quickCottageReservations/accept/{id}" , "/api/quickBoatReservations/accept/{id}" , "/api/quickFishingLessonReservations/accept/{id}");
 				

@@ -81,7 +81,6 @@ public class BoatController {
         
     }
 	
-	@PreAuthorize("hasRole('CLIENT')")
 	@PostMapping(path = "/searchByManyParams")
     public ResponseEntity<?> searchByManyParams(@RequestBody SearchParamsDTO dto) {
 		List<Boat> response = boatService.searchByMoreParams(dto);

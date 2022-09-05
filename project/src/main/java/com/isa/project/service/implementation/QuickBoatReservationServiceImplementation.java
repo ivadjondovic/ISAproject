@@ -1,12 +1,16 @@
 package com.isa.project.service.implementation;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.isa.project.dto.QuickClientReservationDTO;
 import com.isa.project.model.Client;
@@ -29,10 +33,17 @@ public class QuickBoatReservationServiceImplementation implements QuickBoatReser
 	private EmailService emailService;
 	
 	@Override
-	public Client clientReservation(QuickClientReservationDTO dto) {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public Client clientReservation(QuickClientReservationDTO dto)  throws Exception{
 		
 		Client client = (Client) userRepository.findById(dto.getClientId()).get();
-		QuickBoatReservation quickReservation = quickBoatReservationRepository.findById(dto.getReservationId()).get();
+		
+		QuickBoatReservation quickReservation = quickBoatReservationRepository.findLockById(dto.getReservationId());
+		
+		
+		if(quickReservation.getReserved()) {
+			return  null;
+		}
 		
 		List<QuickBoatReservation> quickReservations = quickBoatReservationRepository.findByClient(client);
 		
@@ -41,24 +52,27 @@ public class QuickBoatReservationServiceImplementation implements QuickBoatReser
 			if(r.getStartDate().compareTo(quickReservation.getStartDate()) == 0 && r.getEndDate().compareTo(quickReservation.getEndDate()) == 0 && r.getBoat().getId() == quickReservation.getBoat().getId()) {
 				return null;
 			}
+			
 		}
 		
 		quickReservation.setClient(client);
 		quickReservation.setReserved(true);
 		QuickBoatReservation savedReservation =  quickBoatReservationRepository.save(quickReservation);
-		Set<QuickBoatReservation> reservations = client.getQuickBoatReservations();
-		reservations.add(savedReservation);
-		client.setQuickBoatReservations(reservations);
-		Client savedClient = userRepository.save(client);
-		
 		try {
-			emailService.sendQuickBoatReservationMail(savedClient, savedReservation);
+			emailService.sendQuickBoatReservationMail(client, savedReservation);
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return savedClient;
+		try{
+			return client;
+		}catch(PessimisticLockingFailureException ex){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+		}
+		
+		
+		
 	}
 
 	@Override

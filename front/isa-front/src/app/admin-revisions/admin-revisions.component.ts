@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { RevisionsService } from '../services/revisions.service';
 
 @Component({
@@ -10,7 +11,7 @@ export class AdminRevisionsComponent implements OnInit {
 
   revisions: any[]
   revisionList: any[]
-  constructor(public service: RevisionsService) { }
+  constructor(private _snackBar: MatSnackBar, public service: RevisionsService) { }
 
   ngOnInit(): void {
 
@@ -60,7 +61,8 @@ export class AdminRevisionsComponent implements OnInit {
         this.revisions = response;
         this.corectDate();
       })
-    })
+    }, error => {
+      this._snackBar.open('Revision approval failed!', 'Close', {duration: 2500})});
   }
   disapprove(id: any, type: any){
     let data = {
@@ -73,7 +75,8 @@ export class AdminRevisionsComponent implements OnInit {
         this.revisions = response;
         this.corectDate();
       })
-    })
+    }, error => {
+      this._snackBar.open('Revision disapproval failed!', 'Close', {duration: 2500})});
   }
 
 }

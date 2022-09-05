@@ -8,6 +8,7 @@ import javax.mail.MessagingException;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -382,5 +383,24 @@ public class UserServiceImplementation implements UserService{
 		user.setDeleted(true);
 		userRepository.save(user);
 	}
+
+	@Scheduled(cron = " 0 0 0 1 * ?")
+	//@Scheduled(cron = "* 0/5 * * * *")
+	public void deletePenatlties() {
+		System.out.println("Radim");
+		List<User> users = userRepository.findByStatusAndDeleted("Activated", false);
+		
+		List<User> clients = users.stream().filter(u -> u.getUserType().equals("ROLE_CLIENT")).collect(Collectors.toList());
+		
+		for(User u: clients) {
+			Client client = (Client) userRepository.findById(u.getId()).get();
+			client.setPenalties(0);
+			userRepository.save(client);
+			
+		}
+		
+	}
+	
+	
 
 }

@@ -2,6 +2,8 @@ package com.isa.project.service;
 
 import java.util.List;
 
+import org.springframework.scheduling.annotation.Scheduled;
+
 import com.isa.project.dto.AccountActivationDTO;
 import com.isa.project.dto.DeleteAccountRequestDTO;
 import com.isa.project.dto.UserDTO;

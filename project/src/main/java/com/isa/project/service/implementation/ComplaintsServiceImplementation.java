@@ -6,7 +6,12 @@ import java.util.List;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.isa.project.dto.ComplaintAnswerDTO;
 import com.isa.project.dto.ComplaintResponseDTO;
@@ -89,7 +94,8 @@ public class ComplaintsServiceImplementation implements ComplaintsService{
 	}
 
 	@Override
-	public ComplaintResponseDTO answer(ComplaintAnswerDTO dto) {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public ComplaintResponseDTO answer(ComplaintAnswerDTO dto)  throws Exception{
 		
 		if(dto.getAnswer().equals("") || dto.getComplaintType().equals("")) {
 			return null;
@@ -98,7 +104,12 @@ public class ComplaintsServiceImplementation implements ComplaintsService{
 		ComplaintResponseDTO response = new ComplaintResponseDTO();
 		
 		if(dto.getComplaintType().equals("Cottage")) {
-			CottageComplaint complaint = cottageComplaintRepository.findById(dto.getComplaintId()).get();
+			CottageComplaint complaint = cottageComplaintRepository.findLockById(dto.getComplaintId());
+			
+			if(complaint.getAnswered()) {
+				return null;
+			}
+				
 			complaint.setAnswered(true);
 			CottageComplaint savedComplaint = cottageComplaintRepository.save(complaint);
 			
@@ -129,7 +140,11 @@ public class ComplaintsServiceImplementation implements ComplaintsService{
 		}
 		
 		if(dto.getComplaintType().equals("Boat")) {
-			BoatComplaint complaint = boatComplaintRepository.findById(dto.getComplaintId()).get();
+			BoatComplaint complaint = boatComplaintRepository.findLockById(dto.getComplaintId());
+			
+			if(complaint.getAnswered()) {
+				return null;
+			}
 			complaint.setAnswered(true);
 			BoatComplaint savedComplaint = boatComplaintRepository.save(complaint);
 			
@@ -160,7 +175,11 @@ public class ComplaintsServiceImplementation implements ComplaintsService{
 		}
 		
 		if(dto.getComplaintType().equals("Fishing lesson")) {
-			FishingLessonComplaint complaint = fishingLessonComplaintRepository.findById(dto.getComplaintId()).get();
+			FishingLessonComplaint complaint = fishingLessonComplaintRepository.findLockById(dto.getComplaintId());
+			
+			if(complaint.getAnswered()) {
+				return null;
+			}
 			complaint.setAnswered(true);
 			FishingLessonComplaint savedComplaint = fishingLessonComplaintRepository.save(complaint);
 			
@@ -190,7 +209,11 @@ public class ComplaintsServiceImplementation implements ComplaintsService{
 					
 		}
 		
-		return response;
+		try{
+			return response;
+		}catch(PessimisticLockingFailureException ex){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+		}
 		
 	}
 

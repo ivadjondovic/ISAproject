@@ -31,7 +31,7 @@ public class ComplaintsController {
 	
 	@PutMapping(path = "/answer")
 	@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> answer(@RequestBody ComplaintAnswerDTO dto){
+    public ResponseEntity<?> answer(@RequestBody ComplaintAnswerDTO dto) throws Exception{
         ComplaintResponseDTO complaint = complaintsService.answer(dto);
         if(complaint == null) {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

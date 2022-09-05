@@ -25,9 +25,11 @@ import com.isa.project.dto.SearchParamsDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalFishingLessonService;
 import com.isa.project.model.AvailableFishingLessonPeriod;
+
 import com.isa.project.model.Client;
 import com.isa.project.model.FishingEquipment;
 import com.isa.project.model.FishingLesson;
+import com.isa.project.model.FishingLessonReservation;
 import com.isa.project.model.FishingLessonSubscription;
 import com.isa.project.model.Image;
 import com.isa.project.model.Instructor;
@@ -38,6 +40,7 @@ import com.isa.project.repository.AdditionalFishingLessonServiceRepository;
 import com.isa.project.repository.AvailableFishingLessonPeriodRepository;
 import com.isa.project.repository.FishingEquipmentRepository;
 import com.isa.project.repository.FishingLessonRepository;
+import com.isa.project.repository.FishingLessonReservationRepository;
 import com.isa.project.repository.FishingLessonSubscriptionRepository;
 import com.isa.project.repository.QuickFishingLessonReservationRepository;
 import com.isa.project.repository.RuleRepository;
@@ -70,6 +73,9 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 	
 	@Autowired
 	private FishingLessonSubscriptionRepository fishingLessonSubscriptionRepository;
+	
+	@Autowired
+	private FishingLessonReservationRepository fishingLessonReservationRepository;
 	
 	@Override
 	public FishingLesson createFishingLesson(FishingLessonDTO dto) {
@@ -268,7 +274,7 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
                 .collect(Collectors.toSet());
 		
 		Set<AvailableFishingLessonPeriod> filteredPeriods = periods.stream()
-                .filter(p -> p.getStartDate().compareTo(LocalDateTime.now()) >= 0)
+                .filter(p -> p.getEndDate().compareTo(LocalDateTime.now()) >= 0)
                 .collect(Collectors.toSet());
 		fishingLesson.setQuickReservations(filteredSet);
 		fishingLesson.setAvailablePeriods(filteredPeriods);
@@ -386,12 +392,40 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		List<FishingLesson> lessons = fishingLessonRepository.findByDeleted(false);
 		List<FishingLesson> result = new ArrayList<>();
 		for(FishingLesson lesson: lessons) {
+			
+			List<FishingLessonReservation> reservations = fishingLessonReservationRepository.findByFishingLessonAndCanceled(lesson, false);
 			Set<AvailableFishingLessonPeriod> periods = lesson.getAvailablePeriods();
-			for(AvailableFishingLessonPeriod period: periods) {
-				if(dto.getStartDate().compareTo(period.getStartDate()) >=0 && endDate.compareTo(period.getEndDate()) <= 0 && lesson.getNumberOfPeople() >= dto.getNumberOfGuests()) {
-					result.add(lesson);
+			
+			if(reservations.isEmpty()) {
+				for(AvailableFishingLessonPeriod period: periods) {
+					if(dto.getStartDate().compareTo(period.getStartDate()) >= 0 && endDate.compareTo(period.getEndDate()) <=0 && lesson.getNumberOfPeople() >= dto.getNumberOfGuests()) {
+						result.add(lesson);
+					}
+				}
+	
+			}
+			boolean isAvailable = false;
+			for(FishingLessonReservation r: reservations) {
+				if(!(dto.getStartDate().compareTo(r.getStartDate()) >= 0 && endDate.compareTo(r.getEndDate()) <= 0) 
+						&& !(dto.getStartDate().compareTo(r.getStartDate()) < 0 && endDate.compareTo(r.getEndDate()) <= 0 && endDate.compareTo(r.getStartDate()) > 0)
+						&& !(dto.getStartDate().compareTo(r.getStartDate()) >= 0 && endDate.compareTo(r.getEndDate()) > 0 && dto.getStartDate().compareTo(r.getEndDate()) < 0)
+						&& !(dto.getStartDate().compareTo(r.getStartDate()) < 0 && endDate.compareTo(r.getEndDate()) > 0)) {
+					isAvailable = true;
+					continue;
+				}else {
+					isAvailable = false;
+					break;
+					
 				}
 			}
+			if(isAvailable) {
+				for(AvailableFishingLessonPeriod period: periods) {
+					if(dto.getStartDate().compareTo(period.getStartDate()) >= 0 && endDate.compareTo(period.getEndDate()) <=0 && lesson.getNumberOfPeople() >= dto.getNumberOfGuests()) {
+						result.add(lesson);
+					}
+				}
+			}
+			
 		}
 		return result;
 	}
@@ -484,12 +518,36 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		List<FishingLesson> filteredByDate = new ArrayList<>();
 		List<FishingLesson> lessons = fishingLessonRepository.findByDeleted(false);
 		for(FishingLesson l: lessons) {
+			
+			List<FishingLessonReservation> reservations = fishingLessonReservationRepository.findByFishingLessonAndCanceled(l, false);
 			Set<AvailableFishingLessonPeriod> periods = l.getAvailablePeriods();
-			for(AvailableFishingLessonPeriod period: periods) {
-				if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) > 0) {
-					filteredByDate.add(l);
+			
+			if(reservations.isEmpty()) {
+				for(AvailableFishingLessonPeriod period: periods) {
+					if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) >= 0) {
+						filteredByDate.add(l);
+					}
 				}
 			}
+			boolean isAvailable = false;
+			for(FishingLessonReservation r: reservations) {
+				if(!(dto.getDate().compareTo(r.getStartDate()) >= 0 && dto.getDate().compareTo(r.getEndDate()) <= 0)) {
+					isAvailable = true;
+					continue;
+				}else {
+					isAvailable = false;
+					break;
+					
+				}
+			}
+			if(isAvailable) {
+				for(AvailableFishingLessonPeriod period: periods) {
+					if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) >= 0) {
+						filteredByDate.add(l);
+					}
+				}
+			}
+			
 			
 		}
 		List<FishingLesson> filteredByLocation = new ArrayList<>();
@@ -499,7 +557,7 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		
 		if(!dto.getLocation().equals("")) {
 			filteredByLocation = filteredByDate.stream()
-					.filter(l -> l.getAddress().contains(dto.getLocation()))
+					.filter(l -> l.getAddress().toLowerCase().contains(dto.getLocation().toLowerCase()))
 	                .collect(Collectors.toList());
 		}
 		

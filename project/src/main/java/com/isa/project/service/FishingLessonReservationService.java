@@ -9,7 +9,7 @@ import com.isa.project.model.FishingLessonReservation;
 
 public interface FishingLessonReservationService {
 
-	public FishingLessonReservation createReservation(ReservationDTO dto);
+	public FishingLessonReservation createReservation(ReservationDTO dto)throws Exception;
 	public FishingLessonReservation accept(Long id);
 	public List<FishingLessonReservationResponseDTO> getByClientId(Long clientId);
 	public List<FishingLessonReservationResponseDTO> getByInstructorId(Long instructorId);

@@ -41,7 +41,6 @@ public class CottageController {
         return new ResponseEntity<>(cottage, HttpStatus.OK);
     }
 	
-	@PreAuthorize("hasRole('CLIENT')")
 	@PostMapping(path = "/searchByManyParams")
     public ResponseEntity<?> searchByManyParams(@RequestBody SearchParamsDTO dto) {
 		List<Cottage> response = cottageService.searchByMoreParams(dto);

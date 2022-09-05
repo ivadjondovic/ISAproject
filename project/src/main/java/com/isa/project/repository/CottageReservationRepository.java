@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.isa.project.model.Client;
+import com.isa.project.model.Cottage;
 import com.isa.project.model.CottageReservation;
 
 @Repository
@@ -14,4 +15,5 @@ public interface CottageReservationRepository extends JpaRepository<CottageReser
 	public List<CottageReservation> findByClientAndAcceptedAndCanceled(Client client, Boolean accepted, Boolean canceled);
 	public List<CottageReservation> findByAcceptedAndCanceledAndCalculated(Boolean accepted, Boolean canceled, Boolean calculated);
 	public List<CottageReservation> findByClient(Client client);
+	public List<CottageReservation> findByCottageAndCanceled(Cottage cottage, Boolean canceled);
 }

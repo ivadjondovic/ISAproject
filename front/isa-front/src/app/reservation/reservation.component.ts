@@ -356,7 +356,8 @@ export class ReservationComponent implements OnInit {
         this.cottageReservationService.createReservation(data).subscribe((response: any) => {
           console.log(response)
           location.reload();
-        })
+        }, error => {
+          this._snackBar.open('Reservation failed! Chose another date and try again or check your penalties!', 'Close', {duration: 4000})});
 
       }
 
@@ -373,7 +374,9 @@ export class ReservationComponent implements OnInit {
         this.boatReservationService.createReservation(data).subscribe((response: any) => {
           console.log(response)
           location.reload();
-        })
+        }, error => {
+          this._snackBar.open('Reservation failed! Chose another date and try again or check your penalties!', 'Close', {duration: 4000})});
+        
 
       }
       let additionalServicesForLesson = Array.from(this.additionalLessonServices);
@@ -389,7 +392,9 @@ export class ReservationComponent implements OnInit {
         this.lessonReservationService.createReservation(data).subscribe((response: any) => {
           console.log(response)
           location.reload();
-        })
+        }
+        , error => {
+          this._snackBar.open('Reservation failed! Choose another date and try again or check your penalties!', 'Close', {duration: 4000})});
 
       }
 

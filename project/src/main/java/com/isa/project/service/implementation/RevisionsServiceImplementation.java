@@ -7,7 +7,12 @@ import java.util.stream.Collectors;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.isa.project.dto.RevisionResponseDTO;
 import com.isa.project.dto.RevisionStatusDTO;
@@ -108,13 +113,18 @@ public class RevisionsServiceImplementation implements RevisionsService{
 	}
 
 	@Override
-	public RevisionResponseDTO approve(RevisionStatusDTO dto) {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public RevisionResponseDTO approve(RevisionStatusDTO dto)  throws Exception{
 		
 		RevisionResponseDTO response = new RevisionResponseDTO();
 		
 		if(dto.getType().equals("Cottage")) {
 		
-			CottageRevision revision = cottageRevisionRepository.findById(dto.getId()).get();
+			CottageRevision revision = cottageRevisionRepository.findLockById(dto.getId());
+			
+			if(revision.getStatus().equals("Approved")) {
+				return null;
+			}
 			revision.setStatus("Approved");
 			CottageRevision savedRevision = cottageRevisionRepository.save(revision);
 			
@@ -171,9 +181,14 @@ public class RevisionsServiceImplementation implements RevisionsService{
 		
 		if(dto.getType().equals("Boat")) {
 			
-			BoatRevision revision = boatRevisionRepository.findById(dto.getId()).get();
+			BoatRevision revision = boatRevisionRepository.findLockById(dto.getId());
+			
+			if(revision.getStatus().equals("Approved")) {
+				return null;
+			}
 			revision.setStatus("Approved");
 			BoatRevision savedRevision = boatRevisionRepository.save(revision);
+			
 			
 			Boat b = boatRepository.findById(savedRevision.getBoat().getId()).get();
 			
@@ -229,7 +244,11 @@ public class RevisionsServiceImplementation implements RevisionsService{
 		
 		if(dto.getType().equals("Fishing lesson")) {
 			
-			FishingLessonRevision revision = fishingLessonRevisionRepository.findById(dto.getId()).get();
+			FishingLessonRevision revision = fishingLessonRevisionRepository.findLockById(dto.getId());
+			
+			if(revision.getStatus().equals("Approved")) {
+				return null;
+			}
 			revision.setStatus("Approved");
 			FishingLessonRevision savedRevision = fishingLessonRevisionRepository.save(revision);
 			
@@ -284,17 +303,25 @@ public class RevisionsServiceImplementation implements RevisionsService{
 			}
 			
 		}
-		
+		try{
+			return response;
+		}catch(PessimisticLockingFailureException ex){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+		}
 			
-		return response;
+		
 	}
 
 	@Override
-	public RevisionResponseDTO disapprove(RevisionStatusDTO dto) {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public RevisionResponseDTO disapprove(RevisionStatusDTO dto)  throws Exception{
 		RevisionResponseDTO response = new RevisionResponseDTO();
 		
 		if(dto.getType().equals("Cottage")) {
-			CottageRevision revision = cottageRevisionRepository.findById(dto.getId()).get();
+			CottageRevision revision = cottageRevisionRepository.findLockById(dto.getId());
+			if(revision.getStatus().equals("Disapproved")) {
+				return null;
+			}
 			revision.setStatus("Disapproved");
 			CottageRevision savedRevision = cottageRevisionRepository.save(revision);
 			
@@ -309,7 +336,11 @@ public class RevisionsServiceImplementation implements RevisionsService{
 		}
 		
 		if(dto.getType().equals("Boat")) {
-			BoatRevision revision = boatRevisionRepository.findById(dto.getId()).get();
+			BoatRevision revision = boatRevisionRepository.findLockById(dto.getId());
+			
+			if(revision.getStatus().equals("Disapproved")) {
+				return null;
+			}
 			revision.setStatus("Disapproved");
 			BoatRevision savedRevision = boatRevisionRepository.save(revision);
 			
@@ -324,7 +355,11 @@ public class RevisionsServiceImplementation implements RevisionsService{
 		}
 		
 		if(dto.getType().equals("Fishing lesson")) {
-			FishingLessonRevision revision = fishingLessonRevisionRepository.findById(dto.getId()).get();
+			FishingLessonRevision revision = fishingLessonRevisionRepository.findLockById(dto.getId());
+			
+			if(revision.getStatus().equals("Disapproved")) {
+				return null;
+			}
 			revision.setStatus("Disapproved");
 			FishingLessonRevision savedRevision = fishingLessonRevisionRepository.save(revision);
 			
@@ -338,7 +373,11 @@ public class RevisionsServiceImplementation implements RevisionsService{
 		
 		}
 		
-		return response;
+		try{
+			return response;
+		}catch(PessimisticLockingFailureException ex){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+		}
 	}
 
 }

@@ -26,9 +26,11 @@ import com.isa.project.dto.SearchParamsDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalCottageService;
 import com.isa.project.model.AvailableCottagePeriod;
+
 import com.isa.project.model.Client;
 import com.isa.project.model.Cottage;
 import com.isa.project.model.CottageOwner;
+import com.isa.project.model.CottageReservation;
 import com.isa.project.model.CottageSubscription;
 import com.isa.project.model.Image;
 import com.isa.project.model.QuickCottageReservation;
@@ -38,6 +40,7 @@ import com.isa.project.model.User;
 import com.isa.project.repository.AdditionalCottageServiceRepository;
 import com.isa.project.repository.AvailableCottagePeriodRepository;
 import com.isa.project.repository.CottageRepository;
+import com.isa.project.repository.CottageReservationRepository;
 import com.isa.project.repository.CottageSubscriptionRepository;
 import com.isa.project.repository.QuickCottageReservationRepository;
 import com.isa.project.repository.RoomRepository;
@@ -68,6 +71,9 @@ public class CottageServiceImplementation implements CottageService{
 	
 	@Autowired
 	private CottageSubscriptionRepository cottageSubscriptionRepository;
+	
+	@Autowired
+	private CottageReservationRepository cottageReservationRepository;
 	
 	
 	@Override
@@ -175,7 +181,7 @@ public class CottageServiceImplementation implements CottageService{
                 .collect(Collectors.toSet());
 		
 		Set<AvailableCottagePeriod> filteredPeriods = periods.stream()
-				.filter(p -> p.getStartDate().compareTo(LocalDateTime.now()) >= 0)
+				.filter(p -> p.getEndDate().compareTo(LocalDateTime.now()) >= 0)
                 .collect(Collectors.toSet());
 		cottage.setQuickReservations(filteredSet);
 		cottage.setAvailablePeriods(filteredPeriods);
@@ -283,12 +289,40 @@ public class CottageServiceImplementation implements CottageService{
 			for(Room room: rooms) {
 				numberOfGuests += room.getNumberOfBeds();
 			}
+			System.out.println("Broj gostiju: !!!!!!!!!!!!!!! " + numberOfGuests);
+			
+			List<CottageReservation> reservations = cottageReservationRepository.findByCottageAndCanceled(cottage, false);
 			Set<AvailableCottagePeriod> periods = cottage.getAvailablePeriods();
-			for(AvailableCottagePeriod period: periods) {
-				if(dto.getStartDate().compareTo(period.getStartDate()) >=0 && endDate.compareTo(period.getEndDate()) <= 0 && numberOfGuests >= dto.getNumberOfGuests()) {
-					result.add(cottage);
+			
+			if(reservations.isEmpty()) {
+				for(AvailableCottagePeriod period: periods) {
+					if(dto.getStartDate().compareTo(period.getStartDate()) >= 0 && endDate.compareTo(period.getEndDate()) <=0 && numberOfGuests >= dto.getNumberOfGuests()) {
+						result.add(cottage);
+					}
 				}
 			}
+			boolean isAvailable = false;
+			for(CottageReservation r: reservations) {
+				if(!(dto.getStartDate().compareTo(r.getStartDate()) >= 0 && endDate.compareTo(r.getEndDate()) <= 0) 
+						&& !(dto.getStartDate().compareTo(r.getStartDate()) < 0 && endDate.compareTo(r.getEndDate()) <= 0 && endDate.compareTo(r.getStartDate()) > 0)
+						&& !(dto.getStartDate().compareTo(r.getStartDate()) >= 0 && endDate.compareTo(r.getEndDate()) > 0 && dto.getStartDate().compareTo(r.getEndDate()) < 0)
+						&& !(dto.getStartDate().compareTo(r.getStartDate()) < 0 && endDate.compareTo(r.getEndDate()) > 0)) {
+					isAvailable = true;
+					continue;
+				}else {
+					isAvailable = false;
+					break;
+					
+				}
+			}
+			if(isAvailable) {
+				for(AvailableCottagePeriod period: periods) {
+					if(dto.getStartDate().compareTo(period.getStartDate()) >= 0 && endDate.compareTo(period.getEndDate()) <=0 && numberOfGuests >= dto.getNumberOfGuests()) {
+						result.add(cottage);
+					}
+				}
+			}
+			
 		}
 		return result;
 	}
@@ -359,12 +393,37 @@ public class CottageServiceImplementation implements CottageService{
 		List<Cottage> filteredByDate = new ArrayList<>();
 		List<Cottage> cottages = cottageRepository.findByDeleted(false);
 		for(Cottage c: cottages) {
+			
+			
+			List<CottageReservation> reservations = cottageReservationRepository.findByCottageAndCanceled(c, false);
 			Set<AvailableCottagePeriod> periods = c.getAvailablePeriods();
-			for(AvailableCottagePeriod period: periods) {
-				if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) > 0) {
-					filteredByDate.add(c);
+			
+			if(reservations.isEmpty()) {
+				for(AvailableCottagePeriod period: periods) {
+					if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) >= 0) {
+						filteredByDate.add(c);
+					}
 				}
 			}
+			boolean isAvailable = false;
+			for(CottageReservation r: reservations) {
+				if(!(dto.getDate().compareTo(r.getStartDate()) >= 0 && dto.getDate().compareTo(r.getEndDate()) <= 0)) {
+					isAvailable = true;
+					continue;
+				}else {
+					isAvailable = false;
+					break;
+					
+				}
+			}
+			if(isAvailable) {
+				for(AvailableCottagePeriod period: periods) {
+					if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) >= 0) {
+						filteredByDate.add(c);
+					}
+				}
+			}
+			
 			
 		}
 		List<Cottage> filteredByLocation = new ArrayList<>();
@@ -374,7 +433,7 @@ public class CottageServiceImplementation implements CottageService{
 		
 		if(!dto.getLocation().equals("")) {
 			filteredByLocation = filteredByDate.stream()
-					.filter(c -> c.getAddress().contains(dto.getLocation()))
+					.filter(c -> c.getAddress().toLowerCase().contains(dto.getLocation().toLowerCase()))
 	                .collect(Collectors.toList());
 		}
 		

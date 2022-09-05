@@ -8,6 +8,6 @@ import com.isa.project.dto.ComplaintResponseDTO;
 public interface ComplaintsService {
 	
 	public List<ComplaintResponseDTO> notAnsweredComplaints();
-	public ComplaintResponseDTO answer(ComplaintAnswerDTO dto);
+	public ComplaintResponseDTO answer(ComplaintAnswerDTO dto) throws Exception;
 
 }
