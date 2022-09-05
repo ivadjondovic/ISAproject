@@ -49,7 +49,8 @@ export class AnswerComplaintDialogComponent implements OnInit {
       this.complaintsService.answer(data).subscribe((response: any) => {
         console.log(response)
         this.dialogRef.close();
-      })
+      }, error => {
+        this._snackBar.open('Complaint answer failed!', 'Close', {duration: 2500})});
 
     }
   }

@@ -7,9 +7,12 @@ import java.util.Set;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.isa.project.dto.QuickClientReservationDTO;
 import com.isa.project.dto.QuickReservationDTO;
@@ -63,19 +66,19 @@ public class QuickFishingLessonReservationServiceImplementation implements Quick
 		quickReservation.setClient(client);
 		quickReservation.setReserved(true);
 		QuickFishingLessonReservation savedReservation =  quickFishingLessonReservationRepository.save(quickReservation);
-		Set<QuickFishingLessonReservation> reservations = client.getQuickFishingLessonReservations();
-		reservations.add(savedReservation);
-		client.setQuickFishingLessonReservations(reservations);
-		Client savedClient = userRepository.save(client);
 		
 		try {
-			emailService.sendQuickFishingLessonReservationMail(savedClient, savedReservation);
+			emailService.sendQuickFishingLessonReservationMail(client, savedReservation);
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return savedClient;
+		try{
+			return client;
+		}catch(PessimisticLockingFailureException ex){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+		}
 	}
 
 	@Override

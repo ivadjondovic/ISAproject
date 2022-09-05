@@ -5,9 +5,12 @@ import java.util.List;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.isa.project.dto.QuickClientReservationDTO;
 import com.isa.project.model.Client;
@@ -62,7 +65,14 @@ public class QuickBoatReservationServiceImplementation implements QuickBoatReser
 			e.printStackTrace();
 		}
 		
-		return client;
+		try{
+			return client;
+		}catch(PessimisticLockingFailureException ex){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+		}
+		
+		
+		
 	}
 
 	@Override
