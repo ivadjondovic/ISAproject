@@ -64,6 +64,10 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 	public FishingLessonReservation createReservation(ReservationDTO dto)  throws Exception{
 		
 		Client client = (Client) userRepository.findById(dto.getClientId()).get();
+		
+		if(client.getPenalties() >= 3) {
+			return null;
+		}
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
 		List<FishingLessonReservation> clientReservations = fishingLessonReservationRepository.findByClient(client);
 		

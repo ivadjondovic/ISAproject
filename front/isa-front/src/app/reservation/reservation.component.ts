@@ -357,7 +357,7 @@ export class ReservationComponent implements OnInit {
           console.log(response)
           location.reload();
         }, error => {
-          this._snackBar.open('Reservation failed! Chose another date and try again!', 'Close', {duration: 4000})});
+          this._snackBar.open('Reservation failed! Chose another date and try again or check your penalties!', 'Close', {duration: 4000})});
 
       }
 
@@ -375,7 +375,7 @@ export class ReservationComponent implements OnInit {
           console.log(response)
           location.reload();
         }, error => {
-          this._snackBar.open('Reservation failed! Chose another date and try again!', 'Close', {duration: 4000})});
+          this._snackBar.open('Reservation failed! Chose another date and try again or check your penalties!', 'Close', {duration: 4000})});
         
 
       }
@@ -394,7 +394,7 @@ export class ReservationComponent implements OnInit {
           location.reload();
         }
         , error => {
-          this._snackBar.open('Reservation failed! Choose another date and try again!', 'Close', {duration: 4000})});
+          this._snackBar.open('Reservation failed! Choose another date and try again or check your penalties!', 'Close', {duration: 4000})});
 
       }
 

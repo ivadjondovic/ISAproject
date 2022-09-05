@@ -62,6 +62,10 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 		
 		
 		Client client = (Client) userRepository.findById(dto.getClientId()).get();
+		
+		if(client.getPenalties() >= 3) {
+			return null;
+		}
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
 		List<BoatReservation> clientReservations = boatReservationRepository.findByClient(client);
 		
