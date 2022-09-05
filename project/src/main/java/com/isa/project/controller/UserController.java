@@ -245,9 +245,14 @@ public class UserController {
 	
 	@GetMapping(path = "/deleteUser/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-		userService.deleteUser(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+	public ResponseEntity<?> deleteUser(@PathVariable Long id) throws Exception {
+		User user = userService.deleteUser(id);
+		
+		if(user == null) {
+        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 	
 }

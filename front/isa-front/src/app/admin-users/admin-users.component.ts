@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DeleteAccountService } from '../services/delete-account.service';
 import { UserService } from '../services/user.service';
 
@@ -11,7 +12,7 @@ export class AdminUsersComponent implements OnInit {
 
   users: any[]
 
-  constructor(public service: UserService) {}
+  constructor(public service: UserService, private _snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.service.getUsers().subscribe((response: any) => {
@@ -25,7 +26,8 @@ export class AdminUsersComponent implements OnInit {
       this.service.getUsers().subscribe((response: any) => {
         this.users = response;
       })
-    })
+    }, error => {
+      this._snackBar.open('Unable to delete! User has already been deleted!', 'Close', {duration: 2500})});
   }
 
 }

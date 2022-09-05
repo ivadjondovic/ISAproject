@@ -26,6 +26,6 @@ public interface UserService {
 	public User getClient(Long id);
 	public List<User> getClients();
 	public List<User> getUsers();
-	public void deleteUser(Long id);
+	public User deleteUser(Long id) throws Exception;
 	
 }

@@ -406,10 +406,20 @@ public class UserServiceImplementation implements UserService{
 	}
 	
 	@Override
-	public void deleteUser(Long id) {
-		User user = userRepository.findById(id).get();
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public User deleteUser(Long id) throws Exception {
+		User user = userRepository.findLockById(id);
+		if(user.getDeleted().equals("true")) {
+			return null;
+		}
 		user.setDeleted("true");
-		userRepository.save(user);
+		
+		try{
+			return userRepository.save(user);
+		}catch(PessimisticLockingFailureException ex){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+		}
+		
 	}
 
 	@Scheduled(cron = " 0 0 0 1 * ?")
