@@ -48,7 +48,6 @@ public class FishingLessonController {
         return new ResponseEntity<>(fishingLessonService.getByInstructorId(instructorId), HttpStatus.OK);
     }
 	
-	@PreAuthorize("hasRole('CLIENT')")
 	@PostMapping(path = "/searchByManyParams")
     public ResponseEntity<?> searchByManyParams(@RequestBody SearchParamsDTO dto) {
 		List<FishingLesson> response = fishingLessonService.searchByMoreParams(dto);

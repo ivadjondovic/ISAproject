@@ -461,10 +461,33 @@ public class BoatServiceImplementation implements BoatService{
 		List<Boat> filteredByDate = new ArrayList<>();
 		List<Boat> boats = boatRepository.findByDeleted(false);
 		for(Boat b: boats) {
+			
+			List<BoatReservation> reservations = boatReservationRepository.findByBoatAndCanceled(b, false);
 			Set<AvailableBoatPeriod> periods = b.getAvailablePeriods();
-			for(AvailableBoatPeriod period: periods) {
-				if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) > 0) {
-					filteredByDate.add(b);
+			
+			if(reservations.isEmpty()) {
+				for(AvailableBoatPeriod period: periods) {
+					if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) >= 0) {
+						filteredByDate.add(b);
+					}
+				}
+			}
+			boolean isAvailable = false;
+			for(BoatReservation r: reservations) {
+				if(!(dto.getDate().compareTo(r.getStartDate()) >= 0 && dto.getDate().compareTo(r.getEndDate()) <= 0)) {
+					isAvailable = true;
+					continue;
+				}else {
+					isAvailable = false;
+					break;
+					
+				}
+			}
+			if(isAvailable) {
+				for(AvailableBoatPeriod period: periods) {
+					if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) >= 0) {
+						filteredByDate.add(b);
+					}
 				}
 			}
 			
@@ -476,7 +499,7 @@ public class BoatServiceImplementation implements BoatService{
 		
 		if(!dto.getLocation().equals("")) {
 			filteredByLocation = filteredByDate.stream()
-					.filter(b -> b.getAddress().contains(dto.getLocation()))
+					.filter(b -> b.getAddress().toLowerCase().contains(dto.getLocation().toLowerCase()))
 	                .collect(Collectors.toList());
 		}
 		

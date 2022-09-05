@@ -25,6 +25,7 @@ import com.isa.project.dto.SearchParamsDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalFishingLessonService;
 import com.isa.project.model.AvailableFishingLessonPeriod;
+
 import com.isa.project.model.Client;
 import com.isa.project.model.FishingEquipment;
 import com.isa.project.model.FishingLesson;
@@ -517,12 +518,36 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		List<FishingLesson> filteredByDate = new ArrayList<>();
 		List<FishingLesson> lessons = fishingLessonRepository.findByDeleted(false);
 		for(FishingLesson l: lessons) {
+			
+			List<FishingLessonReservation> reservations = fishingLessonReservationRepository.findByFishingLessonAndCanceled(l, false);
 			Set<AvailableFishingLessonPeriod> periods = l.getAvailablePeriods();
-			for(AvailableFishingLessonPeriod period: periods) {
-				if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) > 0) {
-					filteredByDate.add(l);
+			
+			if(reservations.isEmpty()) {
+				for(AvailableFishingLessonPeriod period: periods) {
+					if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) >= 0) {
+						filteredByDate.add(l);
+					}
 				}
 			}
+			boolean isAvailable = false;
+			for(FishingLessonReservation r: reservations) {
+				if(!(dto.getDate().compareTo(r.getStartDate()) >= 0 && dto.getDate().compareTo(r.getEndDate()) <= 0)) {
+					isAvailable = true;
+					continue;
+				}else {
+					isAvailable = false;
+					break;
+					
+				}
+			}
+			if(isAvailable) {
+				for(AvailableFishingLessonPeriod period: periods) {
+					if(period.getStartDate().compareTo(dto.getDate()) <= 0 && period.getEndDate().compareTo(dto.getDate()) >= 0) {
+						filteredByDate.add(l);
+					}
+				}
+			}
+			
 			
 		}
 		List<FishingLesson> filteredByLocation = new ArrayList<>();
@@ -532,7 +557,7 @@ public class FishingLessonServiceImplementation implements FishingLessonService 
 		
 		if(!dto.getLocation().equals("")) {
 			filteredByLocation = filteredByDate.stream()
-					.filter(l -> l.getAddress().contains(dto.getLocation()))
+					.filter(l -> l.getAddress().toLowerCase().contains(dto.getLocation().toLowerCase()))
 	                .collect(Collectors.toList());
 		}
 		
