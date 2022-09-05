@@ -99,11 +99,19 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 			}
 		}
 		
+		Boolean available = false;
+		
 		for(AvailableBoatPeriod period: periods) {
-			if(!(dto.getStartDate().compareTo(period.getStartDate()) >= 0 && endDate.compareTo(period.getEndDate()) <=0)) {
-					return null;
+			if(dto.getStartDate().compareTo(period.getStartDate()) >= 0 && endDate.compareTo(period.getEndDate()) <=0) {
+				available = true;
+				break;
 			}
 		}
+		
+		if(!available) {
+			return null;
+		}
+		
 			
 		boatReservation.setClient(client);
 		boatReservation.setBoat(boat);

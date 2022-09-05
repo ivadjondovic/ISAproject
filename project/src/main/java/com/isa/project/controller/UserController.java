@@ -120,7 +120,7 @@ public class UserController {
 
 		// Kreiraj token za tog korisnika
 		User user = (User) authentication.getPrincipal();
-		if(!user.getStatus().equals("Activated") || user.getStatus().equals("Declined") || user.getDeleted()) {
+		if(!user.getStatus().equals("Activated") || user.getStatus().equals("Declined") || user.getDeleted().equals("true")) {
 			System.out.println("Ne");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
@@ -205,7 +205,7 @@ public class UserController {
 	
 	@PutMapping(path = "/declineDeactivation")
 	@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> declineDeactivation(@RequestBody DeleteAccountRequestDTO deleteAccountRequestDTO){
+    public ResponseEntity<?> declineDeactivation(@RequestBody DeleteAccountRequestDTO deleteAccountRequestDTO) throws Exception{
         User user = userService.declineDeletingAccount(deleteAccountRequestDTO);
         if(user == null) {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -216,7 +216,7 @@ public class UserController {
 	
 	@PutMapping(path = "/acceptDeactivation")
 	@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> acceptDeactivation(@RequestBody DeleteAccountRequestDTO deleteAccountRequestDTO){
+    public ResponseEntity<?> acceptDeactivation(@RequestBody DeleteAccountRequestDTO deleteAccountRequestDTO) throws Exception{
         User user = userService.acceptDeletingAccount(deleteAccountRequestDTO);
         if(user == null) {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -245,9 +245,14 @@ public class UserController {
 	
 	@GetMapping(path = "/deleteUser/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-		userService.deleteUser(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+	public ResponseEntity<?> deleteUser(@PathVariable Long id) throws Exception {
+		User user = userService.deleteUser(id);
+		
+		if(user == null) {
+        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 	
 }

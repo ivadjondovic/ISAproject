@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DeleteReasonDialogComponent } from '../delete-reason-dialog/delete-reason-dialog.component';
 import { NotDeleteReasonDialogComponent } from '../not-delete-reason-dialog/not-delete-reason-dialog.component';
 import { DeleteAccountService } from '../services/delete-account.service';
@@ -13,7 +14,7 @@ export class DeleteRequestsComponent implements OnInit {
 
   requests: any[]
   id: any
-  constructor(public dialog: MatDialog, public service: DeleteAccountService) { }
+  constructor(public dialog: MatDialog, public service: DeleteAccountService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.service.getAll().subscribe((response: any) => {

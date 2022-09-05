@@ -93,6 +93,7 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 					|| (dto.getStartDate().compareTo(r.getStartDate()) < 0 && endDate.compareTo(r.getEndDate()) <= 0 && endDate.compareTo(r.getStartDate()) > 0)
 					|| (dto.getStartDate().compareTo(r.getStartDate()) >= 0 && endDate.compareTo(r.getEndDate()) > 0 && dto.getStartDate().compareTo(r.getEndDate()) < 0)
 					|| (dto.getStartDate().compareTo(r.getStartDate()) < 0 && endDate.compareTo(r.getEndDate()) > 0)) {
+				System.out.println("RESERVATION NULL");
 				return null;
 			}else {
 				continue;
@@ -100,10 +101,18 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 			}
 		}
 		
+		Boolean available = false;
+		
 		for(AvailableFishingLessonPeriod period: periods) {
-			if(!(dto.getStartDate().compareTo(period.getStartDate()) >= 0 && endDate.compareTo(period.getEndDate()) <=0)) {
-					return null;
-			}
+			if(dto.getStartDate().compareTo(period.getStartDate()) >= 0 && endDate.compareTo(period.getEndDate()) <=0) {
+				System.out.println("available period NULL");
+					available = true;
+					break;
+			}	
+		}
+		
+		if(!available) {
+			return null;
 		}
 		
 		lessonReservation.setClient(client);

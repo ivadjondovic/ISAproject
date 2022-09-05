@@ -45,7 +45,8 @@ export class DeleteReasonDialogComponent implements OnInit {
         console.log(response);
         this.dialogRef.close();
         location.reload();
-      })
+      }, error => {
+        this._snackBar.open('Unable to accept! Deletion request has already been reviewed!', 'Close', {duration: 2500})});
 
     }
   }
