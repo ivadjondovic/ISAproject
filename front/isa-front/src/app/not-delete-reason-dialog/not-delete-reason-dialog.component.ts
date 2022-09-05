@@ -46,7 +46,9 @@ export class NotDeleteReasonDialogComponent implements OnInit {
         console.log(response);
         this.dialogRef.close();
         location.reload();
-      })
+      }, error => {
+        this._snackBar.open('Unable to decline! Deletion request has already been reviewed!', 'Close', {duration: 2500})});
+
 
     }
   }

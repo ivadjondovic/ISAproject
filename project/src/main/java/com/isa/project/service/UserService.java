@@ -2,8 +2,6 @@ package com.isa.project.service;
 
 import java.util.List;
 
-import org.springframework.scheduling.annotation.Scheduled;
-
 import com.isa.project.dto.AccountActivationDTO;
 import com.isa.project.dto.DeleteAccountRequestDTO;
 import com.isa.project.dto.UserDTO;
@@ -23,8 +21,8 @@ public interface UserService {
 	public User decline(AccountActivationDTO accountActivationDTO);
 	public User editClient(UserDTO userDTO);
 	public User edit(UserDTO userDTO);
-	public User declineDeletingAccount(DeleteAccountRequestDTO dto);
-	public User acceptDeletingAccount(DeleteAccountRequestDTO dto);
+	public User declineDeletingAccount(DeleteAccountRequestDTO dto) throws Exception;
+	public User acceptDeletingAccount(DeleteAccountRequestDTO dto) throws Exception;
 	public User getClient(Long id);
 	public List<User> getClients();
 	public List<User> getUsers();

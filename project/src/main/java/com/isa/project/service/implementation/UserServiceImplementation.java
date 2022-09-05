@@ -8,9 +8,14 @@ import javax.mail.MessagingException;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.isa.project.dto.UserDTO;
 import com.isa.project.model.Admin;
@@ -75,7 +80,7 @@ public class UserServiceImplementation implements UserService{
 	        client.setCity(userDTO.getCity());
 	        client.setCountry(userDTO.getCountry());
 	        client.setStatus("Not Activated");
-	        client.setDeleted(false);
+	        client.setDeleted("false");
 	        client.setPenalties(0);
 	        try {
 				emailService.sendEmail(client);
@@ -107,7 +112,7 @@ public class UserServiceImplementation implements UserService{
 	        boatOwner.setCountry(userDTO.getCountry());
 	        boatOwner.setStatus("Not Activated");
 	        boatOwner.setExplanation(userDTO.getExplanation());
-	        boatOwner.setDeleted(false);
+	        boatOwner.setDeleted("false");
 	        return userRepository.save(boatOwner);
 	}
 	
@@ -132,7 +137,7 @@ public class UserServiceImplementation implements UserService{
 	        cottageOwner.setCountry(userDTO.getCountry());
 	        cottageOwner.setStatus("Not Activated");
 	        cottageOwner.setExplanation(userDTO.getExplanation());
-	        cottageOwner.setDeleted(false);
+	        cottageOwner.setDeleted("false");
 	        return userRepository.save(cottageOwner);
 	}
 	
@@ -157,7 +162,7 @@ public class UserServiceImplementation implements UserService{
 	        instructor.setCountry(userDTO.getCountry());
 	        instructor.setStatus("Not Activated");
 	        instructor.setExplanation(userDTO.getExplanation());
-	        instructor.setDeleted(false);
+	        instructor.setDeleted("false");
 	        return userRepository.save(instructor);
 	        
 	}
@@ -183,7 +188,7 @@ public class UserServiceImplementation implements UserService{
 	        admin.setCountry(userDTO.getCountry());
 	        admin.setStatus("Activated");
 	        admin.setFirstPasswordChanged(false);
-	        admin.setDeleted(false);
+	        admin.setDeleted("false");
 	        admin.setIncome(0.0);
 	        admin.setIncomePercentage(0.0);
 	        return userRepository.save(admin);
@@ -308,13 +313,19 @@ public class UserServiceImplementation implements UserService{
 	}
 
 	@Override
-	public User declineDeletingAccount(DeleteAccountRequestDTO dto) {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public User declineDeletingAccount(DeleteAccountRequestDTO dto) throws Exception {
 		
 		if(dto.getReason().equals("")) {
 			return null;
 		}
-		User user = userRepository.findById(dto.getUserId()).get();
-		user.setDeleted(false);	
+		User user = userRepository.findLockById(dto.getUserId());
+		if(!user.getDeleted().equals("waiting")) {
+			System.out.println("Ne");
+			return null;
+		}
+		System.out.println("DObro");
+		user.setDeleted("false");	
 		try {
 			emailService.declineDeletingAccountEmail(user, dto.getReason());
 		} catch (MessagingException e) {
@@ -326,17 +337,27 @@ public class UserServiceImplementation implements UserService{
 			deleteRequest.setProcessed(true);
 			deleteAccountRequestRepository.save(deleteRequest);
 		}
-		return userRepository.save(user);
+		
+		try{
+			return userRepository.save(user);
+		}catch(PessimisticLockingFailureException ex){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+		}
 	}
 
 	@Override
-	public User acceptDeletingAccount(DeleteAccountRequestDTO dto) {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public User acceptDeletingAccount(DeleteAccountRequestDTO dto) throws Exception {
 		
 		if(dto.getReason().equals("")) {
 			return null;
 		}
-		User user = userRepository.findById(dto.getUserId()).get();
-		user.setDeleted(true);
+	
+		User user = userRepository.findLockById(dto.getUserId());
+		if(!user.getDeleted().equals("waiting")) {
+			return null;
+		}
+		user.setDeleted("true");
 		try {
 			emailService.acceptDeletingAccountEmail(user, dto.getReason());
 		} catch (MessagingException e) {
@@ -348,7 +369,12 @@ public class UserServiceImplementation implements UserService{
 			deleteRequest.setProcessed(true);
 			deleteAccountRequestRepository.save(deleteRequest);
 		}
-		return userRepository.save(user);
+		
+		try{
+			return userRepository.save(user);
+		}catch(PessimisticLockingFailureException ex){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+		}
 	}
 
 	@Override
@@ -358,17 +384,19 @@ public class UserServiceImplementation implements UserService{
 
 	@Override
 	public List<User> getClients() {
-		List<User> users = userRepository.findByStatusAndDeleted("Activated", false);
+		List<User> users = userRepository.findByStatusAndDeleted("Activated", "false");
+		users.addAll(userRepository.findByStatusAndDeleted("Activated", "waiting"));
 
 		List<User> clients = users.stream().filter(u -> u.getUserType().equals("ROLE_CLIENT")).collect(Collectors.toList());
 		
 		return clients;
-	}
+	} 
 
 	@Override
 	public List<User> getUsers() {
 		
-		List<User> users = userRepository.findByStatusAndDeleted("Activated", false);
+		List<User> users = userRepository.findByStatusAndDeleted("Activated", "false");
+		users.addAll(userRepository.findByStatusAndDeleted("Activated", "waiting"));
 		
 		List<User> result = users.stream().filter(u -> u.getUserType().equals("ROLE_CLIENT") ||
 				u.getUserType().equals("ROLE_COTTAGEOWNER") || u.getUserType().equals("ROLE_BOATOWNER") 
@@ -380,7 +408,7 @@ public class UserServiceImplementation implements UserService{
 	@Override
 	public void deleteUser(Long id) {
 		User user = userRepository.findById(id).get();
-		user.setDeleted(true);
+		user.setDeleted("true");
 		userRepository.save(user);
 	}
 
@@ -388,7 +416,8 @@ public class UserServiceImplementation implements UserService{
 	//@Scheduled(cron = "* 0/5 * * * *")
 	public void deletePenatlties() {
 		System.out.println("Radim");
-		List<User> users = userRepository.findByStatusAndDeleted("Activated", false);
+		List<User> users = userRepository.findByStatusAndDeleted("Activated", "false");
+		users.addAll(userRepository.findByStatusAndDeleted("Activated", "waiting"));
 		
 		List<User> clients = users.stream().filter(u -> u.getUserType().equals("ROLE_CLIENT")).collect(Collectors.toList());
 		
