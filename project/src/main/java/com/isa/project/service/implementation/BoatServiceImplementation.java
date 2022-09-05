@@ -30,6 +30,7 @@ import com.isa.project.model.AvailableBoatPeriod;
 import com.isa.project.model.Boat;
 import com.isa.project.model.BoatFishingEquipment;
 import com.isa.project.model.BoatOwner;
+import com.isa.project.model.BoatReservation;
 import com.isa.project.model.BoatSubscription;
 import com.isa.project.model.Client;
 import com.isa.project.model.Image;
@@ -41,6 +42,7 @@ import com.isa.project.repository.AdditionalBoatServiceRepository;
 import com.isa.project.repository.AvailableBoatPeriodRepository;
 import com.isa.project.repository.BoatFishingEquipmentRepository;
 import com.isa.project.repository.BoatRepository;
+import com.isa.project.repository.BoatReservationRepository;
 import com.isa.project.repository.BoatSubscriptionRepository;
 import com.isa.project.repository.NavigationEquipmentRepository;
 import com.isa.project.repository.QuickBoatReservationRepository;
@@ -73,6 +75,9 @@ public class BoatServiceImplementation implements BoatService{
 	
 	@Autowired
 	private BoatSubscriptionRepository boatSubscriptionRepository;
+	
+	@Autowired
+	private BoatReservationRepository boatReservationRepository;
 	
 	@Override
 	public Boat createBoat(BoatDTO dto) {
@@ -194,7 +199,7 @@ public class BoatServiceImplementation implements BoatService{
                 .collect(Collectors.toSet());
 		
 		Set<AvailableBoatPeriod> filteredPeriods = periods.stream()
-				.filter(p -> p.getStartDate().compareTo(LocalDateTime.now()) >= 0)
+				.filter(p -> p.getEndDate().compareTo(LocalDateTime.now()) >= 0)
                 .collect(Collectors.toSet());
 		boat.setQuickReservations(filteredSet);
 		boat.setAvailablePeriods(filteredPeriods);
@@ -354,13 +359,40 @@ public class BoatServiceImplementation implements BoatService{
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
 		List<Boat> boats = boatRepository.findByDeleted(false);
 		List<Boat> result = new ArrayList<>();
+		
 		for(Boat boat: boats) {
+			List<BoatReservation> reservations = boatReservationRepository.findByBoatAndCanceled(boat, false);
 			Set<AvailableBoatPeriod> periods = boat.getAvailablePeriods();
-			for(AvailableBoatPeriod period: periods) {
-				if(dto.getStartDate().compareTo(period.getStartDate()) >=0 && endDate.compareTo(period.getEndDate()) <= 0 && boat.getCapacity() >= dto.getNumberOfGuests()) {
-					result.add(boat);
+			
+			if(reservations.isEmpty()) {
+				for(AvailableBoatPeriod period: periods) {
+					if(dto.getStartDate().compareTo(period.getStartDate()) >= 0 && endDate.compareTo(period.getEndDate()) <=0 && boat.getCapacity() >= dto.getNumberOfGuests()) {
+						result.add(boat);
+					}
 				}
 			}
+			boolean isAvailable = false;
+			for(BoatReservation r: reservations) {
+				if(!(dto.getStartDate().compareTo(r.getStartDate()) >= 0 && endDate.compareTo(r.getEndDate()) <= 0) 
+						&& !(dto.getStartDate().compareTo(r.getStartDate()) < 0 && endDate.compareTo(r.getEndDate()) <= 0 && endDate.compareTo(r.getStartDate()) > 0)
+						&& !(dto.getStartDate().compareTo(r.getStartDate()) >= 0 && endDate.compareTo(r.getEndDate()) > 0 && dto.getStartDate().compareTo(r.getEndDate()) < 0)
+						&& !(dto.getStartDate().compareTo(r.getStartDate()) < 0 && endDate.compareTo(r.getEndDate()) > 0)) {
+					isAvailable = true;
+					continue;
+				}else {
+					isAvailable = false;
+					break;
+					
+				}
+			}
+			if(isAvailable) {
+				for(AvailableBoatPeriod period: periods) {
+					if(dto.getStartDate().compareTo(period.getStartDate()) >= 0 && endDate.compareTo(period.getEndDate()) <=0 && boat.getCapacity() >= dto.getNumberOfGuests()) {
+						result.add(boat);
+					}
+				}
+			}
+			
 		}
 		return result;
 	}

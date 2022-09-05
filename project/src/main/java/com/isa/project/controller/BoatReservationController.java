@@ -28,7 +28,7 @@ public class BoatReservationController {
 	
 	@PostMapping(path = "/createReservation")
 	@PreAuthorize("hasRole('CLIENT')")
-    public ResponseEntity<?> createReservatio(@RequestBody ReservationDTO reservationDTO){
+    public ResponseEntity<?> createReservatio(@RequestBody ReservationDTO reservationDTO) throws Exception{
         BoatReservation reservation = reservationService.createReservation(reservationDTO);
         if(reservation == null) {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

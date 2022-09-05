@@ -12,19 +12,25 @@ import java.util.stream.Collectors;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.isa.project.dto.FishingLessonReservationResponseDTO;
 import com.isa.project.dto.ReservationDTO;
 import com.isa.project.dto.SortDTO;
 import com.isa.project.model.AdditionalFishingLessonService;
 import com.isa.project.model.AvailableFishingLessonPeriod;
+
 import com.isa.project.model.Client;
 import com.isa.project.model.FishingLesson;
 import com.isa.project.model.FishingLessonReservation;
 import com.isa.project.model.Instructor;
 import com.isa.project.model.QuickFishingLessonReservation;
 import com.isa.project.repository.AdditionalFishingLessonServiceRepository;
-import com.isa.project.repository.AvailableFishingLessonPeriodRepository;
 import com.isa.project.repository.FishingLessonRepository;
 import com.isa.project.repository.FishingLessonReservationRepository;
 import com.isa.project.repository.QuickFishingLessonReservationRepository;
@@ -48,16 +54,14 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 	private AdditionalFishingLessonServiceRepository additionalFishingLessonServiceRepository;
 	
 	@Autowired
-	private AvailableFishingLessonPeriodRepository periodRepository;
-	
-	@Autowired
 	private EmailService emailService;
 	
 	@Autowired
 	private QuickFishingLessonReservationRepository quickFishingLessonReservationRepository;
 	
 	@Override
-	public FishingLessonReservation createReservation(ReservationDTO dto) {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public FishingLessonReservation createReservation(ReservationDTO dto)  throws Exception{
 		
 		Client client = (Client) userRepository.findById(dto.getClientId()).get();
 		LocalDateTime endDate = dto.getStartDate().plusDays(dto.getNumberOfDays());
@@ -73,7 +77,30 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 		lessonReservation.setStartDate(dto.getStartDate());
 		lessonReservation.setEndDate(endDate);
 		
-		FishingLesson lesson = fishingLessonRepository.findById(dto.getEntityId()).get();
+		FishingLesson lesson = fishingLessonRepository.findLockById(dto.getEntityId());
+		
+		
+		List<FishingLessonReservation> reservations = fishingLessonReservationRepository.findByFishingLessonAndCanceled(lesson, false);
+		Set<AvailableFishingLessonPeriod> periods = lesson.getAvailablePeriods();
+		
+		
+		for(FishingLessonReservation r: reservations) {
+			if((dto.getStartDate().compareTo(r.getStartDate()) >= 0 && endDate.compareTo(r.getEndDate()) <= 0) 
+					|| (dto.getStartDate().compareTo(r.getStartDate()) < 0 && endDate.compareTo(r.getEndDate()) <= 0 && endDate.compareTo(r.getStartDate()) > 0)
+					|| (dto.getStartDate().compareTo(r.getStartDate()) >= 0 && endDate.compareTo(r.getEndDate()) > 0 && dto.getStartDate().compareTo(r.getEndDate()) < 0)
+					|| (dto.getStartDate().compareTo(r.getStartDate()) < 0 && endDate.compareTo(r.getEndDate()) > 0)) {
+				return null;
+			}else {
+				continue;
+				
+			}
+		}
+		
+		for(AvailableFishingLessonPeriod period: periods) {
+			if(!(dto.getStartDate().compareTo(period.getStartDate()) >= 0 && endDate.compareTo(period.getEndDate()) <=0)) {
+					return null;
+			}
+		}
 		
 		lessonReservation.setClient(client);
 		lessonReservation.setFishingLesson(lesson);
@@ -97,59 +124,7 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 		savedReservation.setPrice(price);
 		savedReservation.setAdditionalServices(additionalServices);
 		
-		Set<AvailableFishingLessonPeriod> newPeriods = new HashSet<>();
-		Set<AvailableFishingLessonPeriod> periods = lesson.getAvailablePeriods();
-		for(AvailableFishingLessonPeriod period: periods) {
-			if(period.getStartDate().compareTo(dto.getStartDate()) < 0 && period.getEndDate().compareTo(endDate) > 0) {
-				AvailableFishingLessonPeriod availablePeriodFirst = new AvailableFishingLessonPeriod();
-				availablePeriodFirst.setStartDate(period.getStartDate());
-				availablePeriodFirst.setEndDate(dto.getStartDate());
-				availablePeriodFirst.setFishingLesson(lesson);
-				AvailableFishingLessonPeriod savedFirst = periodRepository.save(availablePeriodFirst);
-				newPeriods.add(savedFirst);
-				
-				AvailableFishingLessonPeriod availablePeriodSecond = new AvailableFishingLessonPeriod();
-				availablePeriodSecond.setStartDate(endDate);
-				availablePeriodSecond.setEndDate(period.getEndDate());
-				availablePeriodSecond.setFishingLesson(lesson);
-				AvailableFishingLessonPeriod savedSecond = periodRepository.save(availablePeriodSecond);
-				newPeriods.add(savedSecond);
-				
-				periodRepository.delete(period);
-				
-			}
-			if(period.getStartDate().compareTo(dto.getStartDate()) == 0 && period.getEndDate().compareTo(endDate) > 0) {
-				AvailableFishingLessonPeriod availablePeriod = new AvailableFishingLessonPeriod();
-				availablePeriod.setStartDate(endDate);
-				availablePeriod.setEndDate(period.getEndDate());
-				availablePeriod.setFishingLesson(lesson);
-				AvailableFishingLessonPeriod savedFirst = periodRepository.save(availablePeriod);
-				newPeriods.add(savedFirst);
-				
-				periodRepository.delete(period);
-			}
-			if(period.getStartDate().compareTo(dto.getStartDate()) < 0 && period.getEndDate().compareTo(endDate) == 0) {
-				AvailableFishingLessonPeriod availablePeriod = new AvailableFishingLessonPeriod();
-				availablePeriod.setStartDate(period.getStartDate());
-				availablePeriod.setEndDate(dto.getStartDate());
-				availablePeriod.setFishingLesson(lesson);
-				AvailableFishingLessonPeriod savedFirst = periodRepository.save(availablePeriod);
-				newPeriods.add(savedFirst);
-				
-				periodRepository.delete(period);
-				
-			}
-			if(period.getStartDate().compareTo(dto.getStartDate()) == 0 && period.getEndDate().compareTo(endDate) == 0) {
-				periodRepository.delete(period);
-			}
-			
-			if((period.getStartDate().compareTo(dto.getStartDate()) > 0 && period.getEndDate().compareTo(endDate) < 0) || (period.getStartDate().compareTo(dto.getStartDate()) == 0 && period.getEndDate().compareTo(endDate) < 0) || (period.getStartDate().compareTo(dto.getStartDate()) > 0 && period.getEndDate().compareTo(endDate) == 0) || (period.getStartDate().compareTo(dto.getStartDate()) < 0 && endDate.compareTo(period.getEndDate()) > 0) || (dto.getStartDate().compareTo(period.getStartDate()) < 0 && endDate.compareTo(period.getEndDate()) < 0) || (dto.getStartDate().isAfter(period.getStartDate()) && endDate.isAfter(period.getEndDate())) || (dto.getStartDate().isBefore(period.getStartDate()) && endDate.isBefore(period.getEndDate()))) {
-				
-				newPeriods.add(period);
-			}
-		}
 		
-		lesson.setAvailablePeriods(newPeriods);
 		FishingLesson savedLesson = fishingLessonRepository.save(lesson);
 		savedReservation.setFishingLesson(savedLesson);
 		
@@ -160,7 +135,13 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 			e.printStackTrace();
 		}
 		
-		return fishingLessonReservationRepository.save(savedReservation);
+		try{
+			return fishingLessonReservationRepository.save(savedReservation);
+		}catch(PessimisticLockingFailureException ex){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+		}
+		
+		
 	}
 
 	@Override

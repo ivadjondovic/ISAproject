@@ -4,15 +4,16 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class BoatReservation {
@@ -28,8 +29,12 @@ public class BoatReservation {
 	private Boolean canceled;
 	private Boolean calculated;
 	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "boatReservation", fetch = FetchType.LAZY)
+	
+	@ManyToMany
+    @JoinTable(
+            name = "boat_reservation_services",
+            joinColumns = @JoinColumn(name = "boat_reservation_id"),
+            inverseJoinColumns = @JoinColumn(name = "boat_service_id"))
 	private Set<AdditionalBoatService> additionalServices;
 	
 	

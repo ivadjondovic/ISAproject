@@ -9,7 +9,7 @@ import com.isa.project.model.BoatReservation;
 
 public interface BoatReservationService {
 	
-	public BoatReservation createReservation(ReservationDTO dto);
+	public BoatReservation createReservation(ReservationDTO dto) throws Exception;
 	public BoatReservation accept(Long id);
 	public List<BoatReservationResponseDTO> getByClientId(Long clientId);
 	public List<BoatReservationResponseDTO> sort(SortDTO dto);
