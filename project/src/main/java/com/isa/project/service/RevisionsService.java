@@ -8,7 +8,7 @@ import com.isa.project.dto.RevisionStatusDTO;
 public interface RevisionsService {
 	
 	public List<RevisionResponseDTO> getWaitingRevisions();
-	public RevisionResponseDTO approve(RevisionStatusDTO dto);
-	public RevisionResponseDTO disapprove(RevisionStatusDTO dto);
+	public RevisionResponseDTO approve(RevisionStatusDTO dto)  throws Exception;
+	public RevisionResponseDTO disapprove(RevisionStatusDTO dto)  throws Exception;
 
 }

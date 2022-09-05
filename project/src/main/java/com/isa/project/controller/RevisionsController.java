@@ -31,7 +31,7 @@ public class RevisionsController {
 	
 	@PutMapping(path = "/approve")
 	@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> approveRevision(@RequestBody RevisionStatusDTO dto){
+    public ResponseEntity<?> approveRevision(@RequestBody RevisionStatusDTO dto) throws Exception{
         RevisionResponseDTO revision = revisionsService.approve(dto);
         if(revision == null) {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -42,7 +42,7 @@ public class RevisionsController {
 	
 	@PutMapping(path = "/disapprove")
 	@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> disapproveRevision(@RequestBody RevisionStatusDTO dto){
+    public ResponseEntity<?> disapproveRevision(@RequestBody RevisionStatusDTO dto) throws Exception{
 		RevisionResponseDTO revision = revisionsService.disapprove(dto);
         if(revision == null) {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
