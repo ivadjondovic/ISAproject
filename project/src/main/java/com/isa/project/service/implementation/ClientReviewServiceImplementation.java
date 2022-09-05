@@ -10,10 +10,13 @@ import org.springframework.stereotype.Service;
 
 import com.isa.project.dto.ClientReviewDTO;
 import com.isa.project.dto.ClientReviewResponseDTO;
+import com.isa.project.model.Category;
 import com.isa.project.model.Client;
 import com.isa.project.model.ClientReview;
 import com.isa.project.model.Instructor;
+import com.isa.project.repository.CategoryRepository;
 import com.isa.project.repository.ClientReviewRepository;
+import com.isa.project.repository.LoyaltyProgramRepository;
 import com.isa.project.repository.UserRepository;
 import com.isa.project.service.ClientReviewService;
 import com.isa.project.service.EmailService;
@@ -30,6 +33,12 @@ public class ClientReviewServiceImplementation implements ClientReviewService {
 	
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private LoyaltyProgramRepository loyaltyProgramRepository;
+			
+	@Autowired
+	private CategoryRepository categoryRepository;
 	
 	@Override
 	public ClientReview createReview(ClientReviewDTO dto) {
@@ -48,6 +57,21 @@ public class ClientReviewServiceImplementation implements ClientReviewService {
 		if(dto.getAutomaticPenalty() == true) {
 			client.setPenalties(client.getPenalties() + 1);
 			review.setAdminChecked(true);
+			userRepository.save(client);
+		}
+		
+		if(dto.getAutomaticPenalty() == false && dto.getPenaltySuggestion() == false) {
+			int clientPoints = loyaltyProgramRepository.findAll().get(0).getClientPoints();
+			int newPoints = client.getPoints() + clientPoints;
+			client.setPoints(newPoints);
+			Category silver = categoryRepository.findByCategory("silver");
+			Category gold = categoryRepository.findByCategory("gold");
+			if(newPoints >= silver.getPointsNeeded()) {
+				client.setCategory(silver);
+			}
+			if(newPoints >= gold.getPointsNeeded()) {
+				client.setCategory(gold);
+			}
 			userRepository.save(client);
 		}
 		

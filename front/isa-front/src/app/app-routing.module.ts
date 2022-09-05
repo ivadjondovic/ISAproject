@@ -37,6 +37,7 @@ import { InstructorReservationComponent } from './instructor-reservation/instruc
 import { AdminUsersComponent } from './admin-users/admin-users.component';
 import { ReviewClientComponent } from './review-client/review-client.component';
 import { AdminPenaltiesComponent } from './admin-penalties/admin-penalties.component';
+import { LoyaltyProgramComponent } from './loyalty-program/loyalty-program.component';
 
 const routes: Routes = [
 
@@ -77,6 +78,7 @@ const routes: Routes = [
   {path: 'users', component: AdminUsersComponent, canActivate: [AuthenticationGuard], data: {role: 'ROLE_ADMIN'}},
   {path: 'reviewClient/:id', component: ReviewClientComponent, canActivate: [AuthenticationGuard], data: {role: 'ROLE_INSTRUCTOR'}},
   {path: 'adminPenalties', component: AdminPenaltiesComponent, canActivate: [AuthenticationGuard], data: {role: 'ROLE_ADMIN'}},
+  {path: 'loyaltyProgram', component: LoyaltyProgramComponent, canActivate: [AuthenticationGuard], data: {role: 'ROLE_ADMIN'}},
 ];
 
 @NgModule({

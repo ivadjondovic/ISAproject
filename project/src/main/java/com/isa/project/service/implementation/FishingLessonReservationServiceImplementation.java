@@ -133,8 +133,12 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 			additionalServices.add(savedService);
 			
 		}
+
+		if(client.getCategory() != null && (client.getCategory().getCategory().equals("silver") || client.getCategory().getCategory().equals("gold"))) {
+			savedReservation.setPrice(price - price * client.getCategory().getDiscount());
+		} else 
+			savedReservation.setPrice(price);
 		
-		savedReservation.setPrice(price);
 		savedReservation.setAdditionalServices(additionalServices);
 		
 		

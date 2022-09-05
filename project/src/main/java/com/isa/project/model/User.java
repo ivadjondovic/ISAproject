@@ -54,6 +54,7 @@ public abstract class User implements UserDetails{
 	private String phoneNumber;
 	private String status;
 	private String explanation;
+	private int points;
 	@Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
 
@@ -186,6 +187,14 @@ public abstract class User implements UserDetails{
 	public void setDeleted(String deleted) {
 		this.deleted = deleted;
 	}
+	public int getPoints() {
+		return points;
+	}
+	public void setPoints(int points) {
+		this.points = points;
+	}
+	
+	
 	
     
 	
