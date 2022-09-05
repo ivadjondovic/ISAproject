@@ -27,7 +27,7 @@ public class QuickBoatReservationController {
 	
 	@PostMapping(path = "/reserve")
 	@PreAuthorize("hasRole('CLIENT')")
-    public ResponseEntity<?> reserve(@RequestBody QuickClientReservationDTO dto){
+    public ResponseEntity<?> reserve(@RequestBody QuickClientReservationDTO dto) throws Exception{
         Client client = reservationService.clientReservation(dto);
         if(client == null) {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

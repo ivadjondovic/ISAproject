@@ -8,6 +8,8 @@ import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.isa.project.dto.QuickClientReservationDTO;
 import com.isa.project.dto.QuickReservationDTO;
@@ -38,10 +40,16 @@ public class QuickFishingLessonReservationServiceImplementation implements Quick
 	private FishingLessonRepository fishingLessonRepository;
 	
 	@Override
-	public Client clientReservation(QuickClientReservationDTO dto) {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public Client clientReservation(QuickClientReservationDTO dto) throws Exception{
 		
 		Client client = (Client) userRepository.findById(dto.getClientId()).get();
-		QuickFishingLessonReservation quickReservation = quickFishingLessonReservationRepository.findById(dto.getReservationId()).get();
+		QuickFishingLessonReservation quickReservation = quickFishingLessonReservationRepository.findLockById(dto.getReservationId());
+
+		if(quickReservation.getReserved()) {
+			return  null;
+		}
+		
 		
 		List<QuickFishingLessonReservation> quickReservations = quickFishingLessonReservationRepository.findByClient(client);
 		

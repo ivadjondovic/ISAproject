@@ -7,7 +7,7 @@ import com.isa.project.model.QuickFishingLessonReservation;
 
 public interface QuickFishingLessonReservationService {
 
-	public Client clientReservation(QuickClientReservationDTO dto);
+	public Client clientReservation(QuickClientReservationDTO dto) throws Exception;
 	public QuickFishingLessonReservation accept(Long id);
 	public void deleteReservation(Long id); 
 	public QuickFishingLessonReservation saveReservation(QuickReservationDTO dto);

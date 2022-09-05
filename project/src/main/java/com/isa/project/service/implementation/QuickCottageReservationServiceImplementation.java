@@ -7,6 +7,8 @@ import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.isa.project.dto.QuickClientReservationDTO;
 import com.isa.project.model.Client;
@@ -29,10 +31,16 @@ public class QuickCottageReservationServiceImplementation implements QuickCottag
 	private EmailService emailService;
 	
 	@Override
-	public Client clientReservation(QuickClientReservationDTO dto) {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public Client clientReservation(QuickClientReservationDTO dto) throws Exception {
 		
 		Client client = (Client) userRepository.findById(dto.getClientId()).get();
-		QuickCottageReservation quickReservation = quickCottageReservationRepository.findById(dto.getReservationId()).get();
+		QuickCottageReservation quickReservation = quickCottageReservationRepository.findLockById(dto.getReservationId());
+		
+		if(quickReservation.getReserved()) {
+			return  null;
+		}
+		
 		
 		List<QuickCottageReservation> quickReservations = quickCottageReservationRepository.findByClient(client);
 		

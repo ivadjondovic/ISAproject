@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { FishingLessonService } from '../services/fishing-lesson.service';
 import { QuickFishingReservationService } from '../services/quick-fishing-reservation.service';
@@ -18,7 +19,7 @@ export class FishingLessonAdditionalInfoComponent implements OnInit {
   quickReservations: any[]
   user: any
   role: any
-  constructor(public quickFishingReservationService: QuickFishingReservationService, public activatedRoute: ActivatedRoute, public service: FishingLessonService) { }
+  constructor(private _snackBar: MatSnackBar, public quickFishingReservationService: QuickFishingReservationService, public activatedRoute: ActivatedRoute, public service: FishingLessonService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -58,6 +59,7 @@ export class FishingLessonAdditionalInfoComponent implements OnInit {
         id: id,
         reserved: reserved,
         endDate: endDate,
+        startDate: startDate,
         price: price,
         discount: discount,
         maxNumberOfPerson: maxNumberOfPerson,
@@ -105,7 +107,8 @@ export class FishingLessonAdditionalInfoComponent implements OnInit {
     this.quickFishingReservationService.reserve(data).subscribe((response: any) => {
       console.log(response)
       location.reload();
-    })
+    }, error => {
+      this._snackBar.open('Reservation failed! Choose another date and try again!', 'Close', {duration: 4000})});
   }
 
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { BoatService } from '../services/boat.service';
 import { QuickBoatReservationService } from '../services/quick-boat-reservation.service';
@@ -18,7 +19,7 @@ export class BoatAdditionalInfoComponent implements OnInit {
   quickReservations: any[]
   user: any
   role: any
-  constructor(public quickBoatReservationService: QuickBoatReservationService, public activatedRoute: ActivatedRoute, public service: BoatService) { }
+  constructor(private _snackBar: MatSnackBar, public quickBoatReservationService: QuickBoatReservationService, public activatedRoute: ActivatedRoute, public service: BoatService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -106,7 +107,9 @@ export class BoatAdditionalInfoComponent implements OnInit {
     this.quickBoatReservationService.reserve(data).subscribe((response: any) => {
       console.log(response)
       location.reload();
-    })
+    }, error => {
+      this._snackBar.open('Reservation failed! Choose another date and try again!', 'Close', {duration: 4000})});
+    
   }
 
 
