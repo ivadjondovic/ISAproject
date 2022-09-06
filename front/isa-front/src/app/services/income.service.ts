@@ -24,4 +24,8 @@ export class IncomeService {
     return this.http.get(this.baseURL + "api/income/getReservationIncome/" + id, this.getAuthoHeader());
   }
 
+  reservationIncomeBetween(data: any){
+    return this.http.post(this.baseURL + "api/income/getReservationIncomeBetween", data, this.getAuthoHeader());
+  }
+
 }

@@ -65,6 +65,55 @@
         <div class="rounded">
             <h1 style="text-align: center;">Reports</h1>
             <hr>
+            <div class="row">
+                <div class="col-4">
+                    <mat-form-field appearance="fill">
+                        <mat-label>From date:</mat-label>
+                        <input matInput [(ngModel)]="dateFrom" type="datetime-local" matInput />
+
+
+                    </mat-form-field>
+                </div>
+                <div class="col-4">
+                    <mat-form-field appearance="fill">
+                        <mat-label>To date:</mat-label>
+                        <input matInput [(ngModel)]="dateTo" type="datetime-local" matInput />
+
+
+                    </mat-form-field>
+                </div>
+                <div class="col-4">
+                    <button style=" margin-top: -0.01px;" (click)="showIncomeBetween()">Show Income</button>
+                </div>
+
+                <div *ngIf="incomeBetweenShow">
+                    <mat-card>
+                        <mat-card-title style="text-align: center;">Reservations</mat-card-title>
+                    </mat-card>
+                    <div class="approval">
+        
+                        <table id="registrations">
+                            <tr>
+                                <th>Name</th>
+                                <th>Start date</th>
+                                <th>End date</th>
+                                <th>Price</th>
+                                <th>Admin income</th>
+                            </tr>
+                            <tr *ngFor="let reservation of reservationIncomeBetweenList">
+                                <td>{{reservation.entityName}}</td>
+                                <td>{{reservation.startDate | date:'medium'}}</td>
+                                <td>{{reservation.endDate | date:'medium'}}</td>
+                                <td>{{reservation.price}}</td>
+                                <td>{{reservation.income}}</td>
+                            </tr>
+                        </table>
+        
+                    </div>
+        
+                </div>
+            </div>
+
         </div>
 
     </mat-grid-tile>

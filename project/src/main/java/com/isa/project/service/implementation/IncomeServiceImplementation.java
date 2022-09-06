@@ -2,10 +2,12 @@ package com.isa.project.service.implementation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.isa.project.dto.IncomeBetweenDTO;
 import com.isa.project.dto.IncomeResponseDTO;
 import com.isa.project.model.Admin;
 import com.isa.project.model.AdminIncome;
@@ -116,4 +118,17 @@ public class IncomeServiceImplementation implements IncomeService{
 		return income;
 	}
 
+
+	@Override
+	public List<IncomeResponseDTO> getReservationIncomeBetween(IncomeBetweenDTO dto) {
+		List<IncomeResponseDTO> income = getReservationIncome(dto.getAdminId());
+		
+		List<IncomeResponseDTO> filtered = income.stream().filter(i -> i.getStartDate().compareTo(dto.getDateFrom()) >= 0 &&
+																	i.getEndDate().compareTo(dto.getDateTo()) <= 0).collect(Collectors.toList());
+		
+		return filtered;
+	}
+
+	
+	
 }

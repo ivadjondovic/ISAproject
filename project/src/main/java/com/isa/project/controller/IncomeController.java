@@ -7,9 +7,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isa.project.dto.IncomeBetweenDTO;
 import com.isa.project.service.IncomeService;
 
 @RestController
@@ -24,5 +27,11 @@ public class IncomeController {
 	@GetMapping(path = "/getReservationIncome/{adminId}")
     public ResponseEntity<?> getReservationIncome(@PathVariable Long adminId) {
         return new ResponseEntity<>(incomeService.getReservationIncome(adminId), HttpStatus.OK);
+    }
+	
+	@PreAuthorize("hasRole('ADMIN')")
+	@PostMapping(path = "/getReservationIncomeBetween")
+    public ResponseEntity<?> getReservationIncomeBetween(@RequestBody IncomeBetweenDTO dto) {
+        return new ResponseEntity<>(incomeService.getReservationIncomeBetween(dto), HttpStatus.OK);
     }
 }
