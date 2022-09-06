@@ -2,6 +2,7 @@ package com.isa.project.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,7 +20,11 @@ public class AvailableBoatPeriod {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
+	
+	@Column(name = "startDate", nullable = false)
 	private LocalDateTime startDate;
+	
+	@Column(name = "endDate", nullable = false)
 	private LocalDateTime endDate;
 	
 	@JsonBackReference

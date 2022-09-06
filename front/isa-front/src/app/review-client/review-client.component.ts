@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { ClientReviewService } from '../services/client-review.service';
 import { UserService } from '../services/user.service';
@@ -17,7 +18,7 @@ export class ReviewClientComponent implements OnInit {
   reservationType: any
   currentUser: any
 
-  constructor(private service: ClientReviewService, private activatedRoute: ActivatedRoute, private userService: UserService) { }
+  constructor(private _snackBar: MatSnackBar, private service: ClientReviewService, private activatedRoute: ActivatedRoute, private userService: UserService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -34,28 +35,35 @@ export class ReviewClientComponent implements OnInit {
     let penaltyS = false;
     let aPenalty = false;
 
-    if(this.penaltyType == "pentaltySuggestion") {
+    if (this.penaltyType == "pentaltySuggestion") {
       penaltyS = true;
     }
 
-    if(this.penaltyType == "automaticPenalty") {
+    if (this.penaltyType == "automaticPenalty") {
       aPenalty = true;
     }
 
-    let data = {
-      id: this.reservationId,
-      reservationType: this.reservationType,
-      clientId : this.id,
-      instructorId: this.currentUser.id,
-	    penaltySuggestion: penaltyS,
-	    penaltySuggestionReason: this.clientReview,
-	    automaticPenalty: aPenalty
-    }
+    if (this.clientReview == "") {
+      this._snackBar.open('Passwords do not matches!.', 'Close', { duration: 2500 })
+    } else {
 
-    this.service.createReview(data).subscribe((response: any) => {
-      console.log(response);
-      location.reload();
-    })
+      let data = {
+        id: this.reservationId,
+        reservationType: this.reservationType,
+        clientId: this.id,
+        instructorId: this.currentUser.id,
+        penaltySuggestion: penaltyS,
+        penaltySuggestionReason: this.clientReview,
+        automaticPenalty: aPenalty
+      }
+
+      this.service.createReview(data).subscribe((response: any) => {
+        console.log(response);
+        location.reload();
+      }, error => {
+        this._snackBar.open('Client review failed!', 'Close', {duration: 3000})});
+
+    }
 
   }
 

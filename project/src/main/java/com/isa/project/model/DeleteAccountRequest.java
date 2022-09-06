@@ -1,6 +1,7 @@
 package com.isa.project.model;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,8 +17,14 @@ public class DeleteAccountRequest {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
+	
+	@Column(name = "reason", nullable = false)
 	private String reason;
+	
+	@Column(name = "processed", nullable = false)
 	private Boolean processed;
+	
+	
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;

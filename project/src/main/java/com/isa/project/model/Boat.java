@@ -3,6 +3,7 @@ package com.isa.project.model;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,18 +26,44 @@ public class Boat {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
+	
+	@Column(name = "name", nullable = false)
 	private String name;
+	
+	@Column(name = "boatType", nullable = false)
 	private String boatType;
+	
+	@Column(name = "boatLength", nullable = false)
 	private Double boatLength;
+	
+	@Column(name = "engines", nullable = false)
 	private int engines;
+	
+	@Column(name = "enginePower", nullable = false)
 	private Double enginePower;
+	
+	@Column(name = "maxSpeed", nullable = false)
 	private Double maxSpeed;
+	
+	@Column(name = "address", nullable = false)
 	private String address;
+	
+	@Column(name = "description", nullable = false)
 	private String description;
+	
+	@Column(name = "capacity", nullable = false)
 	private int capacity;
+	
+	@Column(name = "percentageForKeep", nullable = false)
 	private Double percentageForKeep;
+	
+	@Column(name = "price", nullable = false)
 	private Double price;
+	
+	@Column(name = "rating", nullable = false)
 	private Double rating;
+	
+	@Column(name = "deleted", nullable = false)
 	private Boolean deleted;
 	
 	

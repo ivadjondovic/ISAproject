@@ -2,6 +2,7 @@ package com.isa.project.model;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -22,9 +23,17 @@ public class Category {
             strategy = GenerationType.IDENTITY
     )
 	private Long id;
+	
+	@Column(name = "category", nullable = false)
 	private String category;
+	
+	@Column(name = "pointsNeeded", nullable = false)
 	private int pointsNeeded;
+	
+	@Column(name = "discount", nullable = false)
 	private Double discount;
+	
+	@Column(name = "bonus", nullable = false)
 	private Double bonus;
 
 	@JsonBackReference

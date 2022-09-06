@@ -1,5 +1,6 @@
 package com.isa.project.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +15,8 @@ public class Image {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
+	
+	@Column(name = "path", nullable = false)
 	private String path;
 	public Long getId() {
 		return id;

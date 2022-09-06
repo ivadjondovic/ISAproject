@@ -3,6 +3,7 @@ package com.isa.project.model;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,11 +23,23 @@ public class BoatReservation {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
+	
+	@Column(name = "startDate", nullable = false)
 	private LocalDateTime startDate;
+	
+	@Column(name = "endDate", nullable = false)
 	private LocalDateTime endDate;
+	
+	@Column(name = "price")
 	private Double price;
+	
+	@Column(name = "accepted", nullable = false)
 	private Boolean accepted;
+	
+	@Column(name = "canceled", nullable = false)
 	private Boolean canceled;
+	
+	@Column(name = "calculated", nullable = false)
 	private Boolean calculated;
 	
 	

@@ -3,6 +3,7 @@ package com.isa.project.model;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,12 +27,26 @@ public class Cottage {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
+	
+	@Column(name = "name", nullable = false)
 	private String name;
+	
+	@Column(name = "address", nullable = false)
 	private String address;
+	
+	@Column(name = "description", nullable = false)
 	private String description;
+	
+	@Column(name = "numberOfRooms", nullable = false)
 	private int numberOfRooms;
+	
+	@Column(name = "price", nullable = false)
 	private Double price;
+	
+	@Column(name = "rating", nullable = false)
 	private Double rating;
+	
+	@Column(name = "deleted", nullable = false)
 	private Boolean deleted;
 	
 	@JsonManagedReference

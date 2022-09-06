@@ -2,6 +2,7 @@ package com.isa.project.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,8 +20,14 @@ public class BoatComplaint {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
+	
+	@Column(name = "description", nullable = false)
 	private String description;
+	
+	@Column(name = "date", nullable = false)
 	private LocalDateTime date;
+	
+	@Column(name = "answered", nullable = false)
 	private Boolean answered;
 	
 	

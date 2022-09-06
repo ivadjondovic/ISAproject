@@ -1,5 +1,6 @@
 package com.isa.project.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,9 +17,17 @@ public class ClientReview {
             strategy = GenerationType.IDENTITY
     )
 	private Long id;
+	
+	@Column(name = "penaltySuggestion", nullable = false)
 	private Boolean penaltySuggestion;
+	
+	@Column(name = "penaltySuggestionReason", nullable = false)
 	private String penaltySuggestionReason;
+	
+	@Column(name = "automaticPenalty", nullable = false)
 	private Boolean automaticPenalty;
+	
+	@Column(name = "adminChecked", nullable = false)
 	private Boolean adminChecked;
 	
 	@JsonBackReference

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 
@@ -9,33 +10,67 @@ import { UserService } from '../services/user.service';
 })
 export class ServiceProviderRegistrationComponent implements OnInit {
 
-  name: string
-  surname: string;
-  email: string;
-  phone: string;
-  city: string;
-  country: string;
-  password: string; 
-  confirmPassword: string;
-  type: string;
-  address: string;
-  explanation: string;
-  constructor(public service: UserService, public router: Router) { }
+  name = ""
+  surname = ""
+  email = ""
+  phone = ""
+  city = ""
+  country = ""
+  password = ""
+  confirmPassword = ""
+  type = ""
+  address = ""
+  explanation = ""
+  constructor(private _snackBar: MatSnackBar, public service: UserService, public router: Router) { }
 
   ngOnInit(): void {
   }
 
-  register(){
-      console.log(this.type)
+  register() {
+    console.log(this.type)
 
 
-    if (this.password != this.confirmPassword){
-      alert("Passwords do not matches!")
-    }else{
+    if (this.password != this.confirmPassword) {
+      this._snackBar.open('Passwords do not matches!.', 'Close', { duration: 2500 })
+    } else if (this.name == "") {
+      this._snackBar.open('Enter your name.', 'Close', { duration: 2500 })
+    }
+    else if (this.surname == "") {
+      this._snackBar.open('Enter your surname.', 'Close', { duration: 2500 })
+    }
+    else if (this.email == "") {
+      this._snackBar.open('Enter your email.', 'Close', { duration: 2500 })
+    }
+    else if (this.phone == "") {
+      this._snackBar.open('Enter your phone.', 'Close', { duration: 2500 })
+    }
+    else if (this.city == "") {
+      this._snackBar.open('Enter city.', 'Close', { duration: 2500 })
+    }
+    else if (this.country == "") {
+      this._snackBar.open('Enter country.', 'Close', { duration: 2500 })
+    }
+    else if (this.address == "") {
+      this._snackBar.open('Enter address.', 'Close', { duration: 2500 })
+    }
+    else if (this.password == "") {
+      this._snackBar.open('Enter your password.', 'Close', { duration: 2500 })
+    }
+    else if (this.confirmPassword == "") {
+      this._snackBar.open('Enter confirm password.', 'Close', { duration: 2500 })
+    }
+    else if (this.explanation == "") {
+      this._snackBar.open('Enter explanation.', 'Close', { duration: 2500 })
+    }
+    else if (this.type == "") {
+      this._snackBar.open('Select service provider type.', 'Close', { duration: 2500 })
+    }
+    else {
+
 
       let data = {
         username: this.email,
-        password: this.password, 
+        password: this.password,
         name: this.name,
         surname: this.surname,
         address: this.address,
@@ -48,13 +83,14 @@ export class ServiceProviderRegistrationComponent implements OnInit {
       }
       this.service.register(data).subscribe((response: any) => {
         console.log(response)
-      })
+      }, error => {
+        this._snackBar.open('Registration failed!', 'Close', {duration: 3000})});
       this.router.navigate(['/homepage'])
 
     }
 
   }
 
-  
+
 
 }

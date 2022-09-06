@@ -2,6 +2,7 @@ package com.isa.project.model;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -20,7 +21,13 @@ public class LoyaltyProgram {
     )
 	
 	private Long id;
+	
+
+	@Column(name = "clientPoints", nullable = false)
 	private int clientPoints;
+	
+
+	@Column(name = "ownerPoints", nullable = false)
 	private int ownerPoints;
 	
 	@JsonManagedReference

@@ -39,6 +39,10 @@ public class ImageServiceImplementation implements ImageService {
 
 	@Override
 	public Image createImage(ImageDTO dto) {
+		
+		if(dto.getPath().equals("")) {
+			return null;
+		}
 		Image image = new Image();
 		
 		image.setPath(dto.getPath());

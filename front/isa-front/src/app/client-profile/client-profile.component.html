@@ -62,7 +62,7 @@
     </mat-grid-tile>
     <mat-grid-tile [rowspan]="1" [colspan]="2">
         <div class="rounded">
-            <h1 style="text-align: center;">Points and user category</h1>
+            <h1 style="text-align: center;">Points, penalties and user category</h1>
             <hr>
             <div class="form-group">
                 <label for="points">Points</label>
@@ -70,6 +70,11 @@
             </div>
 
             <div class="form-group">
+                <label for="penalties">Penalties</label>
+                <input type="text" id="penalties" name="penalties" value = {{user.penalties}} disabled>
+            </div>
+
+            <div *ngIf="categoryExists" class="form-group">
                 <label>Category</label>
                 <input type="text"  value = {{categoryForShow.category}} disabled>
             </div>
@@ -83,7 +88,7 @@
             <h1 style="text-align: center;">Benefits</h1>
             <hr>
 
-            <div class="form-group">
+            <div *ngIf="categoryExists" class="form-group">
                 <label for="discount">Discount</label>
                 <input type="text" id="discount" name="discount" [value] = "categoryForShow.discount" disabled>
             </div>

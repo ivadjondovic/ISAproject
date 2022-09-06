@@ -31,8 +31,14 @@ public class AdditionalServiceServiceImplementation implements AdditionalService
 		
 		AdditionalFishingLessonService service = additionalFishingLessonServiceRepository.findById(dto.getId()).get();
 		
-		service.setDescription(dto.getDescription());
-		service.setPrice(dto.getPrice());
+		if(!dto.getDescription().equals("")) {
+			service.setDescription(dto.getDescription());
+		}
+		
+		if(dto.getPrice() != null) {
+			service.setPrice(dto.getPrice());
+		}
+	
 		
 		return additionalFishingLessonServiceRepository.save(service);
 		
@@ -40,6 +46,10 @@ public class AdditionalServiceServiceImplementation implements AdditionalService
 
 	@Override
 	public AdditionalFishingLessonService createService(AdditionalServiceDTO dto) {
+		
+		if(dto.getDescription().equals("") || dto.getPrice() == null) {
+			return null;
+		}
 		
 		AdditionalFishingLessonService service = new AdditionalFishingLessonService();
 		

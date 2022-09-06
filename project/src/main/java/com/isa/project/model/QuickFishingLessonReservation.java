@@ -2,6 +2,7 @@ package com.isa.project.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,17 +19,40 @@ public class QuickFishingLessonReservation {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
+	
+	@Column(name = "startDate", nullable = false)
 	private LocalDateTime startDate;
+	
+	@Column(name = "endDate", nullable = false)
 	private LocalDateTime endDate;
+	
+	@Column(name = "location", nullable = false)
 	private String location;
+	
+	@Column(name = "price", nullable = false)
 	private Double price;
+	
+	@Column(name = "discount", nullable = false)
 	private Double discount;
+	
+	@Column(name = "maxNumberOfPerson", nullable = false)
 	private int maxNumberOfPerson;
+	
 	private String additionalServices;
+	
+	@Column(name = "reserved", nullable = false)
 	private Boolean reserved;
+	
+	@Column(name = "accepted", nullable = false)
 	private Boolean accepted;
+	
+	@Column(name = "canceled", nullable = false)
 	private Boolean canceled;
+	
+	@Column(name = "calculated", nullable = false)
 	private Boolean calculated;
+	
+	@Column(name = "instructorCalculated", nullable = false)
 	private Boolean instructorCalculated;
 	
 	@JsonBackReference

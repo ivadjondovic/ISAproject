@@ -20,6 +20,7 @@ export class ClientProfileComponent implements OnInit {
   username: string
   category: any
   categoryForShow: any
+  categoryExists = false;
   constructor(public service: UserService, public dialog: MatDialog, public categoryService: CategoryService) { }
 
   ngOnInit(): void {
@@ -30,6 +31,7 @@ export class ClientProfileComponent implements OnInit {
       this.categoryService.getById(this.user.id).subscribe((response: any) => {
         this.category = response;
         if(this.category != null){
+          this.categoryExists = true;
           this.categoryForShow = this.category
           console.log(this.categoryForShow)
         }
