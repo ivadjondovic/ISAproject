@@ -36,6 +36,7 @@ export class LoyaltyProgramComponent implements OnInit {
 
     this.service.createLoyaltyProgram(data).subscribe((response: any) => {
       console.log(response)
+      location.reload();
     })
   }
 

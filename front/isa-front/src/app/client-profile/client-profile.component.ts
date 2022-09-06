@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PasswordDialogComponent } from '../password-dialog/password-dialog.component';
+import { CategoryService } from '../services/category.service';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -17,12 +18,22 @@ export class ClientProfileComponent implements OnInit {
   password: string
   newPassword = ""
   username: string
-  constructor(public service: UserService, public dialog: MatDialog) { }
+  category: any
+  categoryForShow: any
+  constructor(public service: UserService, public dialog: MatDialog, public categoryService: CategoryService) { }
 
   ngOnInit(): void {
     this.service.current().subscribe((response: any) => {
       this.user = response;
+      console.log(this.user)
       this.password = this.user.password;
+      this.categoryService.getById(this.user.id).subscribe((response: any) => {
+        this.category = response;
+        if(this.category != null){
+          this.categoryForShow = this.category
+          console.log(this.categoryForShow)
+        }
+      })
     })
   }
 
