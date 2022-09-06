@@ -14,7 +14,7 @@ export class AuthService {
   }
 
   public registerServiceProvider(body): Observable<any> {
-    return this.http.put('http://localhost:8080/auth/register-service-provider', body);
+    return this.http.post('http://localhost:8080/auth/register-service-provider', body);
   }
 
 }
