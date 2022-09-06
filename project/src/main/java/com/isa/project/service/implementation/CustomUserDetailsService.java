@@ -72,6 +72,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		
 		if(user.getUserType().equals("ROLE_ADMIN")) {
 			Admin admin = new Admin();
+			Admin notChanged = (Admin) loadUserByUsername(username);
 	        List<Authority> auth = authorityService.findByName("ROLE_ADMIN");
 	        admin.setId(user.getId());
 	        admin.setAuthorities(auth);
@@ -84,8 +85,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 	        admin.setCity(user.getCity());
 	        admin.setCountry(user.getCountry());
 	        admin.setStatus("Activated");
+	        admin.setDeleted("false");
+	        admin.setIncome(notChanged.getIncome());
+	        admin.setIncomePercentage(notChanged.getIncomePercentage());
+	        admin.setPoints(0);
 	        admin.setFirstPasswordChanged(true);
+	 
 	        userRepository.save(admin);
+	        
+	        
+	        
 		}
 
 		// pre nego sto u bazu upisemo novu lozinku, potrebno ju je hesirati

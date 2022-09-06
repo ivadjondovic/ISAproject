@@ -24,7 +24,7 @@ public class LoyaltyProgramController {
 	
 	@PostMapping(path = "/create")
 	@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> createProgram(@RequestBody LoyaltyProgramDTO dto){
+    public ResponseEntity<?> createProgram(@RequestBody LoyaltyProgramDTO dto) throws Exception{
         LoyaltyProgram program = loyaltyProgramService.createProgram(dto);
         if(program == null) {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

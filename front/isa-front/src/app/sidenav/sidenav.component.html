@@ -51,15 +51,15 @@
         <mat-icon>delete</mat-icon><span class="nav-caption">Delete account</span>
     </a>
 
-    <a mat-list-item routerLink="/deleteRequests" *ngIf="role == 'ROLE_ADMIN'" (click)="onSidenavClose('')">
+    <a mat-list-item routerLink="/deleteRequests" *ngIf="role == 'ROLE_ADMIN' && isPasswordOk" (click)="onSidenavClose('')">
         <mat-icon>delete_forever</mat-icon><span class="nav-caption">Delete requests</span>
     </a>
 
-    <a mat-list-item routerLink="/revisions" *ngIf="role == 'ROLE_ADMIN'" (click)="onSidenavClose('')">
+    <a mat-list-item routerLink="/revisions" *ngIf="role == 'ROLE_ADMIN' && isPasswordOk" (click)="onSidenavClose('')">
         <mat-icon>star_rate</mat-icon><span class="nav-caption">Revisions</span>
     </a>
 
-    <a mat-list-item routerLink="/complaints" *ngIf="role == 'ROLE_ADMIN'" (click)="onSidenavClose('')">
+    <a mat-list-item routerLink="/complaints" *ngIf="role == 'ROLE_ADMIN' && isPasswordOk" (click)="onSidenavClose('')">
         <mat-icon>receipt_long</mat-icon><span class="nav-caption">Complaints</span>
     </a>
 
@@ -71,11 +71,11 @@
         <mat-icon>people</mat-icon><span class="nav-caption">Service Provider Registration</span>
     </a>
 
-    <a mat-list-item routerLink="/users" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_ADMIN'">
+    <a mat-list-item routerLink="/users" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_ADMIN' && isPasswordOk">
         <mat-icon>people</mat-icon><span class="nav-caption">Users</span>
     </a>
 
-    <a mat-list-item routerLink="/loyaltyProgram" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_ADMIN'">
+    <a mat-list-item routerLink="/loyaltyProgram" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_ADMIN' && isPasswordOk">
         <mat-icon>add_circle_outline</mat-icon><span class="nav-caption">Create loyalty program</span>
     </a>
 
@@ -83,7 +83,7 @@
         <mat-icon>person_add</mat-icon><span class="nav-caption">Admin Registration</span>
     </a>
 
-    <a mat-list-item routerLink="/adminPenalties" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_ADMIN'">
+    <a mat-list-item routerLink="/adminPenalties" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_ADMIN' && isPasswordOk">
         <mat-icon>reviews</mat-icon><span class="nav-caption">Client reviews</span>
     </a>
 

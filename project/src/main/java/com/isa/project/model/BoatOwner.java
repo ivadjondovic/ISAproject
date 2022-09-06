@@ -2,6 +2,7 @@ package com.isa.project.model;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,6 +26,8 @@ public class BoatOwner extends User {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "boatOwner", fetch = FetchType.LAZY)
 	private Set<Boat> boats;
+	
+	@Column(name = "rating")
 	private Double rating;
 	
 	@JsonBackReference

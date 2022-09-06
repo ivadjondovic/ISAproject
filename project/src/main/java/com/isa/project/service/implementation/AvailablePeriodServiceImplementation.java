@@ -32,14 +32,27 @@ public class AvailablePeriodServiceImplementation implements AvailablePeriodServ
 		
 		AvailableFishingLessonPeriod period = availableFishingLessonPeriodRepository.findById(dto.getId()).get();
 		
-		period.setStartDate(dto.getStartDate());
-		period.setEndDate(dto.getEndDate());
+		
+		if(!dto.getEndDate().equals("")) {
+			
+			period.setEndDate(dto.getEndDate());
+		}
+		
+		if(!dto.getStartDate().equals("")) {
+			period.setStartDate(dto.getStartDate());
+		}
+		
+		
 		
 		return availableFishingLessonPeriodRepository.save(period);
 	}
 
 	@Override
 	public AvailableFishingLessonPeriod createPeriod(AvailablePeriodDTO dto) {
+		
+		if(dto.getStartDate().equals("") || dto.getEndDate().equals("")) {
+			return null;
+		}
 		
 		AvailableFishingLessonPeriod period = new AvailableFishingLessonPeriod();
 		

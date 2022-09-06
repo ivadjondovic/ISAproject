@@ -114,6 +114,12 @@ public class UserServiceImplementation implements UserService{
 	public User registerBoatOwner(UserDTO userDTO) {
 		 User user = userRepository.findByUsername(userDTO.getUsername());
 
+		 
+		 if(userDTO.getAddress().equals("") || userDTO.getCity().equals("") || userDTO.getCountry().equals("")
+					|| userDTO.getName().equals("") || userDTO.getPassword().equals("") || userDTO.getPhoneNumber().equals("") 
+					|| userDTO.getSurname().equals("") || userDTO.getUsername().equals("") || userDTO.getExplanation().equals("")) {
+				return null;
+			}
 	        if(user != null) {
 	            return null;
 	        }
@@ -133,13 +139,21 @@ public class UserServiceImplementation implements UserService{
 	        boatOwner.setExplanation(userDTO.getExplanation());
 	        boatOwner.setDeleted("false");
 	        boatOwner.setPoints(0);
+	        boatOwner.setRating(0.0);
 	        return userRepository.save(boatOwner);
 	}
 	
 	@Override
 	public User registerCottageOwner(UserDTO userDTO) {
 		 User user = userRepository.findByUsername(userDTO.getUsername());
-
+		 
+		 if(userDTO.getAddress().equals("") || userDTO.getCity().equals("") || userDTO.getCountry().equals("")
+					|| userDTO.getName().equals("") || userDTO.getPassword().equals("") || userDTO.getPhoneNumber().equals("") 
+					|| userDTO.getSurname().equals("") || userDTO.getUsername().equals("") || userDTO.getExplanation().equals("")) {
+				return null;
+			}
+		 
+		 
 	        if(user != null) {
 	            return null;
 	        }
@@ -159,6 +173,7 @@ public class UserServiceImplementation implements UserService{
 	        cottageOwner.setExplanation(userDTO.getExplanation());
 	        cottageOwner.setDeleted("false");
 	        cottageOwner.setPoints(0);
+	        cottageOwner.setRating(0.0);
 	        return userRepository.save(cottageOwner);
 	}
 	
@@ -166,6 +181,13 @@ public class UserServiceImplementation implements UserService{
 	public User registerInstructor(UserDTO userDTO) {
 		 User user = userRepository.findByUsername(userDTO.getUsername());
 
+		 
+		 if(userDTO.getAddress().equals("") || userDTO.getCity().equals("") || userDTO.getCountry().equals("")
+					|| userDTO.getName().equals("") || userDTO.getPassword().equals("") || userDTO.getPhoneNumber().equals("") 
+					|| userDTO.getSurname().equals("") || userDTO.getUsername().equals("") || userDTO.getExplanation().equals("")) {
+				return null;
+			}
+		 
 	        if(user != null) {
 	            return null;
 	        }
@@ -185,6 +207,7 @@ public class UserServiceImplementation implements UserService{
 	        instructor.setExplanation(userDTO.getExplanation());
 	        instructor.setDeleted("false");
 	        instructor.setPoints(0);
+	        instructor.setRating(0.0);
 	        return userRepository.save(instructor);
 	        
 	}
@@ -193,6 +216,12 @@ public class UserServiceImplementation implements UserService{
 	public User registerAdmin(UserDTO userDTO) {
 		 User user = userRepository.findByUsername(userDTO.getUsername());
 
+		 if(userDTO.getAddress().equals("") || userDTO.getCity().equals("") || userDTO.getCountry().equals("")
+					|| userDTO.getName().equals("") || userDTO.getPhoneNumber().equals("") 
+					|| userDTO.getSurname().equals("") || userDTO.getUsername().equals("")) {
+				return null;
+			}
+		 
 	        if(user != null) {
 	            return null;
 	        }
@@ -267,6 +296,10 @@ public class UserServiceImplementation implements UserService{
 
 	@Override
 	public User decline(AccountActivationDTO accountActivationDTO) {
+		
+		if(accountActivationDTO.getReason().equals("")) {
+			return  null;
+		}
 		User user = userRepository.findByUsername(accountActivationDTO.getUsername());	
 		user.setStatus("Declined");
 		try {
@@ -279,8 +312,9 @@ public class UserServiceImplementation implements UserService{
 	}
 
 	@Override
-	public User editClient(UserDTO userDTO) {
-		User user = userRepository.findByUsername(userDTO.getUsername());
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public User editClient(UserDTO userDTO) throws Exception {
+		User user = userRepository.findLockByUsername(userDTO.getUsername());
 		if(userDTO.getPassword() != "") {
 			user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		}
@@ -303,7 +337,13 @@ public class UserServiceImplementation implements UserService{
 			user.setPhoneNumber(userDTO.getPhoneNumber());
 		}
 		
-		return userRepository.save(user);
+		try{
+			return userRepository.save(user);
+		}catch(PessimisticLockingFailureException ex){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+		}
+		
+		
 	}
 	
 	

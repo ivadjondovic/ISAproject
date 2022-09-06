@@ -38,16 +38,23 @@ public class RuleServiceImplementation implements RuleService {
 
 	@Override
 	public Rule saveRule(RuleDTO dto) {
-
+		
+		
 		Rule rule = ruleRepository.findById(dto.getId()).get();
-		
-		rule.setDescription(dto.getDescription());
-		
+		if(!dto.getDescription().equals("")) {
+			
+			rule.setDescription(dto.getDescription());
+		}
+
 		return ruleRepository.save(rule);
 	}
 
 	@Override
 	public Rule createRule(RuleDTO dto) {
+		
+		if(dto.getDescription().equals("")) {
+			return null;
+		}
 
 		Rule rule = new Rule();
 		

@@ -104,18 +104,41 @@ public class QuickFishingLessonReservationServiceImplementation implements Quick
 		
 		QuickFishingLessonReservation reservation = quickFishingLessonReservationRepository.findById(dto.getId()).get();
 		
-		reservation.setStartDate(dto.getStartDate());
-		reservation.setEndDate(dto.getEndDate());
-		reservation.setPrice(dto.getPrice());
-		reservation.setLocation(dto.getLocation());
-		reservation.setMaxNumberOfPerson(dto.getMaxNumberOfPerson());
-		reservation.setAdditionalServices(dto.getAdditionalServices());
+		
+		if(!dto.getStartDate().equals("")) {
+			reservation.setStartDate(dto.getStartDate());
+		}
+		if(!dto.getEndDate().equals("")) {
+			reservation.setEndDate(dto.getEndDate());
+		}
+		
+		if(dto.getPrice() != null) {
+			reservation.setPrice(dto.getPrice());
+		}
+		
+		if(!dto.getLocation().equals("")) {
+			reservation.setLocation(dto.getLocation());
+		}
+		
+		if(dto.getMaxNumberOfPerson() != 0) {
+			reservation.setMaxNumberOfPerson(dto.getMaxNumberOfPerson());
+		}
+		
+		if(!dto.getAdditionalServices().equals("")) {
+			reservation.setAdditionalServices(dto.getAdditionalServices());
+		}
+		
 		
 		return quickFishingLessonReservationRepository.save(reservation);
 	}
 
 	@Override
 	public QuickFishingLessonReservation createReservation(QuickReservationDTO dto) {
+		
+		if(dto.getAdditionalServices().equals("") || dto.getEndDate().equals("") || dto.getLocation().equals("") 
+				|| dto.getMaxNumberOfPerson() == 0 || dto.getPrice() == null || dto.getStartDate().equals("")) {
+			return null;
+		}
 		
 		QuickFishingLessonReservation reservation = new QuickFishingLessonReservation();
 		
@@ -130,7 +153,7 @@ public class QuickFishingLessonReservationServiceImplementation implements Quick
 		reservation.setReserved(false);
 		reservation.setCalculated(false);
 		reservation.setInstructorCalculated(false);
-		reservation.setDiscount(dto.getDiscount());
+		reservation.setDiscount(0.15);
 		
 		FishingLesson lesson = fishingLessonRepository.findById(dto.getId()).get();
 		

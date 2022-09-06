@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdditionalServiceService } from '../services/additional-service.service';
 import { AvailablePeriodService } from '../services/available-period.service';
@@ -19,8 +20,8 @@ export class EditFishingLessonComponent implements OnInit {
   user: any
   id: string
   lesson: any
-  newRuleDescription: any
-  newEquipmentDescription: any
+  newRuleDescription = ""
+  newEquipmentDescription = ""
   rule = false
   equipment = false
   quickReservations = false
@@ -33,16 +34,16 @@ export class EditFishingLessonComponent implements OnInit {
   deleteAdditionalServices = false
   deleteAvailablePeriods = false
   deleteImage = false
-  quickStartDate: any
-  quickEndDate: any
-  price: any
-  numberOfGuests: any
-  quickAdditionalServices: any
-  location: any
-  newServiceDescription: any
-  servicePrice: any
-  periodStartDate: any 
-  periodEndDate: any
+  quickStartDate = ""
+  quickEndDate = ""
+  price = ""
+  numberOfGuests = ""
+  quickAdditionalServices = ""
+  location = ""
+  newServiceDescription = ""
+  servicePrice = ""
+  periodStartDate = ""
+  periodEndDate = ""
   existingRules: any[]
   existingFishingEquipment: any[]
   existingQuickReservations: any[]
@@ -59,16 +60,18 @@ export class EditFishingLessonComponent implements OnInit {
   public img = "";
 
 
-  constructor(public ruleService: RuleService, 
-              public service: FishingLessonService, 
-              public userService: UserService, 
-              public activatedRoute: ActivatedRoute,
-              public periodService: AvailablePeriodService,
-              public additionalServiceService: AdditionalServiceService,
-              public quickReservationService: QuickFishingReservationService,
-              public equipmentService: FishingEquipmentService,
-              public imageService: ImageService
-              ) { }
+  constructor(private _snackBar: MatSnackBar,
+    public ruleService: RuleService,
+    public service: FishingLessonService,
+    public userService: UserService,
+    public activatedRoute: ActivatedRoute,
+    public periodService: AvailablePeriodService,
+    public additionalServiceService: AdditionalServiceService,
+    public quickReservationService: QuickFishingReservationService,
+    public equipmentService: FishingEquipmentService,
+    public imageService: ImageService,
+    public lessonService: FishingLessonService
+  ) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -298,7 +301,7 @@ export class EditFishingLessonComponent implements OnInit {
   }
 
   deleterule(id: any) {
-    this.ruleService.delete(id , this.id).subscribe((response: any) => {
+    this.ruleService.delete(id, this.id).subscribe((response: any) => {
       location.reload();
     })
   }
@@ -322,130 +325,251 @@ export class EditFishingLessonComponent implements OnInit {
   }
 
   savePeriod(id: any, startDate: any, endDate: any) {
-    let data = {
-      id: id,
-      startDate: startDate,
-      endDate: endDate
+
+    if (startDate == "") {
+      this._snackBar.open('Enter start date!.', 'Close', { duration: 2500 })
+    } else if (endDate == "") {
+      this._snackBar.open('Enter end date.', 'Close', { duration: 2500 })
     }
-    this.periodService.save(data).subscribe((response: any) => {
-      console.log(response);
-      location.reload();
-    })
+
+    else {
+      let data = {
+        id: id,
+        startDate: startDate,
+        endDate: endDate
+      }
+      this.periodService.save(data).subscribe((response: any) => {
+        console.log(response);
+        location.reload();
+      }, error => {
+        this._snackBar.open('Editing available period failed!', 'Close', { duration: 3000 })
+      });
+    }
+
   }
 
   saveService(id: any, description: any, price: any) {
-    let data = {
-      id: id,
-      description: description,
-      price: price
+
+    if (description == "") {
+      this._snackBar.open('Enter service description!.', 'Close', { duration: 2500 })
+    } else if (price == "") {
+      this._snackBar.open('Enter service price.', 'Close', { duration: 2500 })
     }
-    this.additionalServiceService.save(data).subscribe((response: any) => {
-      console.log(response);
-      location.reload();
-    })
+
+    else {
+      let data = {
+        id: id,
+        description: description,
+        price: price
+      }
+      this.additionalServiceService.save(data).subscribe((response: any) => {
+        console.log(response);
+        location.reload();
+      }, error => {
+        this._snackBar.open('Editing service failed!', 'Close', { duration: 3000 })
+      });
+
+    }
   }
 
   saveReservation(id: any, startDate: any, endDate: any, price: any, rlocation: any, maxNumberOfPerson: any, additionalServices: any) {
-    let data = {
-      id: id,
-      startDate: startDate,
-      endDate: endDate,
-      price: price,
-      location: rlocation,
-      maxNumberOfPerson: maxNumberOfPerson,
-      additionalServices: additionalServices
+    if (startDate == "") {
+      this._snackBar.open('Enter start date!.', 'Close', { duration: 2500 })
+    } else if (endDate == "") {
+      this._snackBar.open('Enter end date.', 'Close', { duration: 2500 })
+    } else if (price == "") {
+      this._snackBar.open('Enter reservation price!.', 'Close', { duration: 2500 })
+    } else if (rlocation == "") {
+      this._snackBar.open('Enter reservation location.', 'Close', { duration: 2500 })
+    } else if (maxNumberOfPerson == "") {
+      this._snackBar.open('Enter number of people.', 'Close', { duration: 2500 })
+    } else if (additionalServices == "") {
+      this._snackBar.open('Enter additional services for reservation.', 'Close', { duration: 2500 })
     }
-    this.quickReservationService.save(data).subscribe((response: any) => {
-      console.log(response);
-      location.reload();
-    })
-  
+
+    else {
+
+      let data = {
+        id: id,
+        startDate: startDate,
+        endDate: endDate,
+        price: price,
+        location: rlocation,
+        maxNumberOfPerson: maxNumberOfPerson,
+        additionalServices: additionalServices
+      }
+      this.quickReservationService.save(data).subscribe((response: any) => {
+        console.log(response);
+        location.reload();
+      }, error => {
+        this._snackBar.open('Editing quick reservation failed!', 'Close', { duration: 3000 })
+      });
+
+
+    }
   }
 
   saveEquipment(id: any, description: any) {
-    let data = {
-      id: id,
-      description: description
+
+    if (description == "") {
+      this._snackBar.open('Enter equipment description!', 'Close', { duration: 2500 })
     }
-    this.equipmentService.save(data).subscribe((response: any) => {
-      console.log(response);
-      location.reload();
-    })
+    else {
+
+      let data = {
+        id: id,
+        description: description
+      }
+      this.equipmentService.save(data).subscribe((response: any) => {
+        console.log(response);
+        location.reload();
+      }, error => {
+        this._snackBar.open('Editing equipment failed!', 'Close', { duration: 3000 })
+      });
+
+    }
 
   }
 
   saveRule(id: any, description: any) {
-    let data = {
-      id: id,
-      description: description
+
+    if (description == "") {
+      this._snackBar.open('Enter rule description!.', 'Close', { duration: 2500 })
     }
-    this.ruleService.save(data).subscribe((response: any) => {
-      console.log(response);
-      location.reload();
-    })
+    else {
+      let data = {
+        id: id,
+        description: description
+      }
+      this.ruleService.save(data).subscribe((response: any) => {
+        console.log(response);
+        location.reload();
+      }, error => {
+        this._snackBar.open('Editing rule failed!', 'Close', { duration: 3000 })
+      });
+
+    }
 
   }
 
   addPeriod() {
-    let data = {
-      id: this.lesson.id,
-      startDate: this.periodStartDate,
-      endDate: this.periodEndDate
+
+    if (this.periodStartDate == "") {
+      this._snackBar.open('Enter start date!.', 'Close', { duration: 2500 })
+    } else if (this.periodEndDate == "") {
+      this._snackBar.open('Enter end date!.', 'Close', { duration: 2500 })
     }
-    this.periodService.add(data).subscribe((response: any) => {
-      console.log(response);
-      location.reload();
-    })
+    else {
+      let data = {
+        id: this.lesson.id,
+        startDate: this.periodStartDate,
+        endDate: this.periodEndDate
+      }
+      this.periodService.add(data).subscribe((response: any) => {
+        console.log(response);
+        location.reload();
+      }, error => {
+        this._snackBar.open('Adding available period failed!', 'Close', { duration: 3000 })
+      });
+
+    }
   }
 
   addRule() {
-    let data = {
-      id: this.lesson.id,
-      description: this.newRuleDescription
+
+    if (this.newRuleDescription == "") {
+      this._snackBar.open('Enter rule description!.', 'Close', { duration: 2500 })
     }
-    this.ruleService.add(data).subscribe((response: any) => {
-      console.log(response);
-      location.reload();
-    })
+    else {
+      let data = {
+        id: this.lesson.id,
+        description: this.newRuleDescription
+      }
+      this.ruleService.add(data).subscribe((response: any) => {
+        console.log(response);
+        location.reload();
+      }, error => {
+        this._snackBar.open('Adding rule failed!', 'Close', { duration: 3000 })
+      });
+
+    }
   }
 
   addEquipment() {
-    let data = {
-      id: this.lesson.id,
-      description: this.newEquipmentDescription
+
+    if (this.newEquipmentDescription == "") {
+      this._snackBar.open('Enter equipment description!.', 'Close', { duration: 2500 })
     }
-    this.equipmentService.add(data).subscribe((response: any) => {
-      console.log(response);
-      location.reload();
-    })
+    else {
+      let data = {
+        id: this.lesson.id,
+        description: this.newEquipmentDescription
+      }
+      this.equipmentService.add(data).subscribe((response: any) => {
+        console.log(response);
+        location.reload();
+      }, error => {
+        this._snackBar.open('Adding equipment failed!', 'Close', { duration: 3000 })
+      });
+
+    }
   }
 
   addReservation() {
-    let data = {
-      id: this.lesson.id,
-      startDate: this.quickStartDate,
-      endDate: this.quickEndDate,
-      price: this.price,
-      location: this.location,
-      maxNumberOfPerson: this.numberOfGuests,
-      additionalServices: this.quickAdditionalServices
+
+    if (this.quickStartDate == "") {
+      this._snackBar.open('Enter start date!.', 'Close', { duration: 2500 })
+    } else if (this.quickEndDate == "") {
+      this._snackBar.open('Enter end date!.', 'Close', { duration: 2500 })
+    } else if (this.price == "") {
+      this._snackBar.open('Enter reservation price!.', 'Close', { duration: 2500 })
+    } else if (this.location == "") {
+      this._snackBar.open('Enter reservation location!.', 'Close', { duration: 2500 })
+    } else if (this.numberOfGuests == "") {
+      this._snackBar.open('Enter number of guests!.', 'Close', { duration: 2500 })
+    } else if (this.quickAdditionalServices == "") {
+      this._snackBar.open('Enter additional services!.', 'Close', { duration: 2500 })
     }
-    this.quickReservationService.add(data).subscribe((response: any) => {
-      console.log(response);
-      location.reload();
-    })
+    else {
+      let data = {
+        id: this.lesson.id,
+        startDate: this.quickStartDate,
+        endDate: this.quickEndDate,
+        price: this.price,
+        location: this.location,
+        maxNumberOfPerson: this.numberOfGuests,
+        additionalServices: this.quickAdditionalServices
+      }
+      this.quickReservationService.add(data).subscribe((response: any) => {
+        console.log(response);
+        location.reload();
+      }, error => {
+        this._snackBar.open('Adding quick reservation failed!', 'Close', { duration: 3000 })
+      });
+
+    }
   }
 
   addService() {
-    let data = {
-      id: this.lesson.id,
-      description: this.newServiceDescription,
-      price: this.servicePrice
+
+    if (this.newServiceDescription == "") {
+      this._snackBar.open('Enter service description!.', 'Close', { duration: 2500 })
+    } else if (this.servicePrice == "") {
+      this._snackBar.open('Enter service price!.', 'Close', { duration: 2500 })
+    } else {
+      let data = {
+        id: this.lesson.id,
+        description: this.newServiceDescription,
+        price: this.servicePrice
+      }
+      this.additionalServiceService.add(data).subscribe((response: any) => {
+        console.log(response);
+        location.reload();
+      }, error => {
+        this._snackBar.open('Adding service failed!', 'Close', { duration: 3000 })
+      });
+
     }
-    this.additionalServiceService.add(data).subscribe((response: any) => {
-      console.log(response);
-      location.reload();
-    })
 
   }
 
@@ -475,14 +599,22 @@ export class EditFishingLessonComponent implements OnInit {
   }
 
   addImage() {
-    let data = {
-      id: this.lesson.id,
-      path: "assets/" + this.img
+
+    if (this.img == "") {
+      this._snackBar.open('Choose image!.', 'Close', { duration: 2500 })
+    } else {
+      let data = {
+        id: this.lesson.id,
+        path: "assets/" + this.img
+      }
+      this.imageService.add(data).subscribe((response: any) => {
+        console.log(response);
+        location.reload();
+      }, error => {
+        this._snackBar.open('Adding image failed!', 'Close', { duration: 3000 })
+      });
+
     }
-    this.imageService.add(data).subscribe((response: any) => {
-      console.log(response);
-      location.reload();
-    })
 
   }
 
@@ -520,6 +652,27 @@ export class EditFishingLessonComponent implements OnInit {
     this.imageService.delete(id, this.lesson.id).subscribe((response: any) => {
       location.reload();
     })
+  }
+
+  saveLesson() {
+    let data = {
+      name: this.lesson.name,
+      address: this.lesson.address,
+      description: this.lesson.description,
+      numberOfPeople: this.lesson.numberOfPeople,
+      fishingInstructorBio: this.lesson.fishingInstructorBio,
+      price: this.lesson.price,
+      percentageForKeep: this.lesson.percentageForKeep,
+      id: this.lesson.id,
+      instructorId: this.user.id
+    }
+
+    this.lessonService.editFishingLesson(data).subscribe((response: any) => {
+      console.log(response)
+    }, error => {
+      this._snackBar.open('Adding image failed!', 'Close', { duration: 3000 })
+    });
+
   }
 
 

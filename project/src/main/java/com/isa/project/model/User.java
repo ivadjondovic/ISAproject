@@ -43,18 +43,39 @@ public abstract class User implements UserDetails{
             strategy = GenerationType.IDENTITY
     )
     private Long id;
+	
+	@Column(name = "deleted", nullable = false)
 	private String deleted;
+	
+	@Column(name = "username", unique = true, nullable = false)
 	private String username;
+	
+	@Column(name = "password", nullable = false)
 	private String password;
+	
+	@Column(name = "name", nullable = false)
 	private String name;
+	
+	
+	@Column(name = "surname", nullable = false)
 	private String surname;
+	
+	
 	private String address;
 	private String city;
 	private String country;
 	private String phoneNumber;
+	
+	@Column(name = "status", nullable = false)
 	private String status;
+	
+	
 	private String explanation;
+	
+	@Column(name = "points", nullable = false)
 	private int points;
+	
+	
 	@Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
 

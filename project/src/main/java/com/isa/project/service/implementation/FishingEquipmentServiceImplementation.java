@@ -31,13 +31,20 @@ public class FishingEquipmentServiceImplementation implements FishingEquipmentSe
 		
 		FishingEquipment equipment = equipmentRepository.findById(dto.getId()).get();
 		
-		equipment.setDescription(dto.getDescription());
+		
+		if(!dto.getDescription().equals("")) {
+			equipment.setDescription(dto.getDescription());
+		}
 		
 		return equipmentRepository.save(equipment);
 	}
 
 	@Override
 	public FishingEquipment createEquipment(FishingEquipmentDTO dto) {
+		
+		if(dto.getDescription().equals("")) {
+			return null;
+		}
 		
 		FishingEquipment equipment = new FishingEquipment();
 		

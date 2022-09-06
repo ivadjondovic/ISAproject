@@ -176,7 +176,7 @@ public class UserController {
 	
 	@PutMapping(path = "/editClient")
 	@PreAuthorize("hasRole('CLIENT')")
-    public ResponseEntity<?> editClient(@RequestBody UserDTO userDTO){
+    public ResponseEntity<?> editClient(@RequestBody UserDTO userDTO) throws Exception{
         User user = userService.editClient(userDTO);
         if(user == null) {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

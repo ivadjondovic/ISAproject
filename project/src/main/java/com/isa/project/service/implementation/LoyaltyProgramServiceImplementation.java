@@ -1,11 +1,16 @@
-package com.isa.project.service.implementation;
+ package com.isa.project.service.implementation;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.isa.project.dto.LoyaltyProgramDTO;
 import com.isa.project.model.BoatOwner;
@@ -34,7 +39,8 @@ public class LoyaltyProgramServiceImplementation implements LoyaltyProgramServic
 	
 	
 	@Override
-	public LoyaltyProgram createProgram(LoyaltyProgramDTO dto) {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public LoyaltyProgram createProgram(LoyaltyProgramDTO dto) throws Exception {
 		LoyaltyProgram program = new LoyaltyProgram();
 
 		List<User> users = userRepository.findByStatusAndDeleted("Activated", "false");
@@ -132,9 +138,13 @@ public class LoyaltyProgramServiceImplementation implements LoyaltyProgramServic
 			
 		}
 		
+		try{
+			return loyaltyProgramRepository.save(savedProgram);
+		}catch(PessimisticLockingFailureException ex){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+		}
 	
-		
-		return loyaltyProgramRepository.save(savedProgram);
+
 	}
 
 }

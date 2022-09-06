@@ -2,6 +2,7 @@ package com.isa.project.model;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,6 +22,8 @@ public class Client extends User{
 	private static final long serialVersionUID = 1L;
 
 	private static String userType = "ROLE_CLIENT";
+	
+	@Column(name = "penalties")
 	private int penalties;
 	
 	@JsonBackReference
