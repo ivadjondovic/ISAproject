@@ -76,7 +76,7 @@ const routes: Routes = [
   {path: 'subscriptions', component: ClientSubscriptionsComponent, canActivate: [AuthenticationGuard],  data: {role: 'ROLE_CLIENT'}},
   {path: 'clientInfo/:id', component: ClientInfoComponent, canActivate: [AuthenticationGuard], data: {role: 'ROLE_INSTRUCTOR'}},
   {path: 'users', component: AdminUsersComponent, canActivate: [AuthenticationGuard], data: {role: 'ROLE_ADMIN'}},
-  {path: 'reviewClient/:id', component: ReviewClientComponent, canActivate: [AuthenticationGuard], data: {role: 'ROLE_INSTRUCTOR'}},
+  {path: 'reviewClient/:id/:reservationId/:reservationType', component: ReviewClientComponent, canActivate: [AuthenticationGuard], data: {role: 'ROLE_INSTRUCTOR'}},
   {path: 'adminPenalties', component: AdminPenaltiesComponent, canActivate: [AuthenticationGuard], data: {role: 'ROLE_ADMIN'}},
   {path: 'loyaltyProgram', component: LoyaltyProgramComponent, canActivate: [AuthenticationGuard], data: {role: 'ROLE_ADMIN'}},
 ];

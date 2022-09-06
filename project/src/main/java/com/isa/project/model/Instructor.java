@@ -32,6 +32,10 @@ public class Instructor extends User {
 	@ManyToOne
 	private Category category;
 	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "instructor", fetch = FetchType.LAZY)
+	private Set<InstructorIncome> instructorIncome;
+	
 	
 	
 
@@ -78,5 +82,17 @@ public class Instructor extends User {
     public String getUserType() {
         return userType;
     }
+
+
+
+	public Set<InstructorIncome> getInstructorIncome() {
+		return instructorIncome;
+	}
+
+
+
+	public void setInstructorIncome(Set<InstructorIncome> instructorIncome) {
+		this.instructorIncome = instructorIncome;
+	}
 
 }

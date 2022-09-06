@@ -76,7 +76,7 @@ export class InstructorReservationsHistoryComponent implements OnInit {
     return false;
   }
 
-  reviewClient(id: any) {
-    this.router.navigate(['/reviewClient', id]);
+  reviewClient(clientId: any, reservationId: any, reservationType: any) {
+    this.router.navigate(['/reviewClient', clientId, reservationId, reservationType]);
   }
 }

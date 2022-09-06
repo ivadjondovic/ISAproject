@@ -34,4 +34,16 @@ public class IncomeController {
     public ResponseEntity<?> getReservationIncomeBetween(@RequestBody IncomeBetweenDTO dto) {
         return new ResponseEntity<>(incomeService.getReservationIncomeBetween(dto), HttpStatus.OK);
     }
+	
+	@PreAuthorize("hasRole('INSTRUCTOR')")
+	@GetMapping(path = "/getInstructorIncome/{instructorId}")
+    public ResponseEntity<?> getInstructorIncome(@PathVariable Long instructorId) {
+        return new ResponseEntity<>(incomeService.getReservationIncome(instructorId), HttpStatus.OK);
+    }
+	
+	@PreAuthorize("hasRole('INSTRUCTOR')")
+	@PostMapping(path = "/getInstructorIncomeBetween")
+    public ResponseEntity<?> getInstructorIncomeBetween(@RequestBody IncomeBetweenDTO dto) {
+        return new ResponseEntity<>(incomeService.getInstructorIncomeBetween(dto), HttpStatus.OK);
+    }
 }

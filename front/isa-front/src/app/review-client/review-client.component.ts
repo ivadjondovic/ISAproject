@@ -13,6 +13,8 @@ export class ReviewClientComponent implements OnInit {
   clientReview = ""
   penaltyType = ""
   id: any
+  reservationId: any
+  reservationType: any
   currentUser: any
 
   constructor(private service: ClientReviewService, private activatedRoute: ActivatedRoute, private userService: UserService) { }
@@ -20,6 +22,8 @@ export class ReviewClientComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
       this.id = params['id'];
+      this.reservationId = params['reservationId'];
+      this.reservationType = params['reservationType']
       this.userService.current().subscribe((response: any) => {
         this.currentUser = response;
       })
@@ -39,6 +43,8 @@ export class ReviewClientComponent implements OnInit {
     }
 
     let data = {
+      id: this.reservationId,
+      reservationType: this.reservationType,
       clientId : this.id,
       instructorId: this.currentUser.id,
 	    penaltySuggestion: penaltyS,

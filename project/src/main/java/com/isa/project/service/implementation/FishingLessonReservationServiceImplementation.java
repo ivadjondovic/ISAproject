@@ -120,6 +120,7 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 		lessonReservation.setAccepted(false);
 		lessonReservation.setCanceled(false);
 		lessonReservation.setCalculated(false);
+		lessonReservation.setInstructorCalculated(false);
 		
 		FishingLessonReservation savedReservation = fishingLessonReservationRepository.save(lessonReservation);
 		
@@ -276,7 +277,7 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 		}
 		
 		Set<FishingLessonReservation> filteredReservationSet = reservationSet.stream()
-				.filter(r -> (r.getAccepted() == true && r.getCanceled() == false))
+				.filter(r -> (r.getAccepted() == true && r.getCanceled() == false && r.getInstructorCalculated() == false))
                 .collect(Collectors.toSet());
 
 		for(FishingLessonReservation flr: filteredReservationSet) {
@@ -301,7 +302,7 @@ public class FishingLessonReservationServiceImplementation implements FishingLes
 		}
 		
 		Set<QuickFishingLessonReservation> filteredQuickReservationSet = quickReservationSet.stream()
-				.filter(r -> (r.getAccepted() == true && r.getCanceled() == false))
+				.filter(r -> (r.getAccepted() == true && r.getCanceled() == false && r.getInstructorCalculated() == false))
                 .collect(Collectors.toSet());
 		
 		for(QuickFishingLessonReservation quickR: filteredQuickReservationSet) {

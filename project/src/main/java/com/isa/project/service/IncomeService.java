@@ -9,5 +9,7 @@ public interface IncomeService {
 
 	public List<IncomeResponseDTO> getReservationIncome(Long adminId);
 	public List<IncomeResponseDTO> getReservationIncomeBetween(IncomeBetweenDTO dto);
+	public List<IncomeResponseDTO> getInstructorIncome(Long instructorId);
+	public List<IncomeResponseDTO> getInstructorIncomeBetween(IncomeBetweenDTO dto);
 	
 }
