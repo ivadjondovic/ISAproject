@@ -20,13 +20,14 @@
 
 
     
-    <mat-grid-list [cols]="3" [rowHeight]="300">
+    <mat-grid-list [cols]="3" [rowHeight]="320">
         <div *ngFor="let f of fishingLessons">
             <mat-grid-tile [rowspan]="1" [colspan]="1">
                 <div class="rounded">
                     <h2>{{f.name}}</h2>
 
                     <p style="font-size: 17px; color: #4c7d85;">{{f.description}}</p>
+                    <p style="font-size: 17px; color: #4c7d85;"><mat-icon>star_rate</mat-icon><span style="margin-left: 10px;"></span>{{f.rating}}</p>
                     <p style="font-size: 17px;"><span style="color: #4c7d85;">Address:&nbsp;</span> {{f.address}}</p>
                     <p style="font-size: 17px;"><span style="color: #4c7d85;">Number of people:&nbsp;</span>
                         {{f.numberOfPeople}}</p>

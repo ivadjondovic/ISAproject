@@ -1,0 +1,42 @@
+<div>
+    <mat-card>
+        <mat-card-title style="text-align: center;">Loyalty program</mat-card-title>
+    </mat-card>
+    <div class="registration">
+
+        <label for="fname">Client points for successful reservation</label>
+        <input type="text" id="fname" name="firstname" [(ngModel)]="clientPointsPerReservation" placeholder="Enter points..">
+
+        <label for="lname">Owner points for successful reservation</label>
+        <input type="text" id="lname" name="lastname" [(ngModel)]="ownerPointsPerReservation" placeholder="Enter points..">
+
+        <label for="email">Points to reach SILVER</label>
+        <input type="text" id="email" name="email" [(ngModel)]="pointsNeededForSilver" placeholder="Enter points..">
+
+        <label for="phone">Points to reach GOLD</label>
+        <input type="text" id="phone" name="phone" [(ngModel)]="pointsNeededForGold" placeholder="Enter points..">
+
+        <label for="address">Discount for SILVER client</label>
+        <input type="text" id="address" name="address" [(ngModel)]="clientDiscountForSilver" placeholder="Enter percentage..">
+
+        <label for="city">Discount for GOLD client</label>
+        <input type="text" id="city" name="city" [(ngModel)]="clientDiscountForGold" placeholder="Enter percentage..">
+
+        <label for="country">Bonus for SILVER owner</label>
+        <input type="text" id="country" name="country" [(ngModel)]="ownerBonusForSilver" placeholder="Enter amount..">
+
+        <label for="password">Bonus for GOLD owner</label>
+        <input type="text" id="password" name="password" [(ngModel)]="ownerBonusForGold" placeholder="Enter amount..">
+
+
+        <div class="row">
+            <div class="col-sm"></div>
+            <div class="col-sm">
+                <button (click)="save()">Save</button>
+            </div>
+            <div class="col-sm"></div>
+        </div>
+
+    </div>
+
+</div>

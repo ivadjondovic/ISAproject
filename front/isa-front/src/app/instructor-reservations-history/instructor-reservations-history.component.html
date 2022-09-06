@@ -21,7 +21,7 @@
                 <td><button class="button1" (click)="showClient(reservation.client.id)">
                         <mat-icon>person</mat-icon>
                     </button></td>
-                    <td><button class="button1" (click)="reviewClient(reservation.client.id)" *ngIf="hasPassed(reservation.endDate)">
+                    <td><button class="button1" (click)="reviewClient(reservation.client.id, reservation.id, reservation.reservationType)" *ngIf="hasPassed(reservation.endDate)">
                         <mat-icon>rate_review</mat-icon>
                     </button></td>
             </tr>

@@ -28,6 +28,7 @@ public class FishingLessonReservation {
 	private Boolean accepted;
 	private Boolean canceled;	
 	private Boolean calculated;
+	private Boolean instructorCalculated;
 
 	@ManyToMany
     @JoinTable(
@@ -48,6 +49,20 @@ public class FishingLessonReservation {
 	public Long getId() {
 		return id;
 	}
+	
+	
+
+	public Boolean getInstructorCalculated() {
+		return instructorCalculated;
+	}
+
+
+
+	public void setInstructorCalculated(Boolean instructorCalculated) {
+		this.instructorCalculated = instructorCalculated;
+	}
+
+
 
 	public void setId(Long id) {
 		this.id = id;

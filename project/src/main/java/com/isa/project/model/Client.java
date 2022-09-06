@@ -5,8 +5,10 @@ import java.util.Set;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -20,6 +22,10 @@ public class Client extends User{
 
 	private static String userType = "ROLE_CLIENT";
 	private int penalties;
+	
+	@JsonBackReference
+	@ManyToOne
+	private Category category;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
@@ -141,6 +147,16 @@ public class Client extends User{
 	public void setPenalties(int penalties) {
 		this.penalties = penalties;
 	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	
 	
 	
 }

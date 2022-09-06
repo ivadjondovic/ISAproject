@@ -21,12 +21,16 @@ import com.isa.project.dto.UserDTO;
 import com.isa.project.model.Admin;
 import com.isa.project.model.Authority;
 import com.isa.project.model.BoatOwner;
+import com.isa.project.model.Category;
 import com.isa.project.model.Client;
 import com.isa.project.model.CottageOwner;
 import com.isa.project.model.DeleteAccountRequest;
 import com.isa.project.model.Instructor;
+import com.isa.project.model.LoyaltyProgram;
 import com.isa.project.model.User;
+import com.isa.project.repository.CategoryRepository;
 import com.isa.project.repository.DeleteAccountRequestRepository;
+import com.isa.project.repository.LoyaltyProgramRepository;
 import com.isa.project.repository.UserRepository;
 import com.isa.project.security.SecurityUtils;
 import com.isa.project.dto.AccountActivationDTO;
@@ -53,6 +57,12 @@ public class UserServiceImplementation implements UserService{
 	
 	@Autowired
     private DeleteAccountRequestRepository deleteAccountRequestRepository;
+	
+	@Autowired
+	private LoyaltyProgramRepository loyaltyProgramRepository;
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
 	
 	@Override
 	public User registerClient(UserDTO userDTO) {
@@ -81,7 +91,16 @@ public class UserServiceImplementation implements UserService{
 	        client.setCountry(userDTO.getCountry());
 	        client.setStatus("Not Activated");
 	        client.setDeleted("false");
+	        client.setPoints(0);
 	        client.setPenalties(0);
+	        
+	        List<LoyaltyProgram> programs = loyaltyProgramRepository.findAll();
+	        
+	        if(!programs.isEmpty()) {
+	        	Category category = categoryRepository.findByCategory("regular");
+	        	client.setCategory(category);
+	        }
+	        
 	        try {
 				emailService.sendEmail(client);
 			} catch (MessagingException e) {
@@ -113,6 +132,7 @@ public class UserServiceImplementation implements UserService{
 	        boatOwner.setStatus("Not Activated");
 	        boatOwner.setExplanation(userDTO.getExplanation());
 	        boatOwner.setDeleted("false");
+	        boatOwner.setPoints(0);
 	        return userRepository.save(boatOwner);
 	}
 	
@@ -138,6 +158,7 @@ public class UserServiceImplementation implements UserService{
 	        cottageOwner.setStatus("Not Activated");
 	        cottageOwner.setExplanation(userDTO.getExplanation());
 	        cottageOwner.setDeleted("false");
+	        cottageOwner.setPoints(0);
 	        return userRepository.save(cottageOwner);
 	}
 	
@@ -163,6 +184,7 @@ public class UserServiceImplementation implements UserService{
 	        instructor.setStatus("Not Activated");
 	        instructor.setExplanation(userDTO.getExplanation());
 	        instructor.setDeleted("false");
+	        instructor.setPoints(0);
 	        return userRepository.save(instructor);
 	        
 	}
@@ -191,6 +213,7 @@ public class UserServiceImplementation implements UserService{
 	        admin.setDeleted("false");
 	        admin.setIncome(0.0);
 	        admin.setIncomePercentage(0.0);
+	        admin.setPoints(0);
 	        return userRepository.save(admin);
 	        
 	}

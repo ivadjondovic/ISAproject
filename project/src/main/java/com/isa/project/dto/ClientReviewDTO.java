@@ -8,8 +8,15 @@ public class ClientReviewDTO {
 	private Boolean penaltySuggestion;
 	private String penaltySuggestionReason;
 	private Boolean automaticPenalty;
+	private String reservationType;
 	
 	
+	public String getReservationType() {
+		return reservationType;
+	}
+	public void setReservationType(String reservationType) {
+		this.reservationType = reservationType;
+	}
 	public Long getId() {
 		return id;
 	}

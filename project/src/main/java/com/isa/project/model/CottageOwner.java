@@ -5,8 +5,10 @@ import java.util.Set;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -25,6 +27,10 @@ public class CottageOwner extends User {
 	private Set<Cottage> cottages;
 	
 	private Double rating;
+	
+	@JsonBackReference
+	@ManyToOne
+	private Category category;
 	
 	@Override
     public String getUserType() {
@@ -46,6 +52,16 @@ public class CottageOwner extends User {
 	public void setRating(Double rating) {
 		this.rating = rating;
 	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+
 	
 	
 	

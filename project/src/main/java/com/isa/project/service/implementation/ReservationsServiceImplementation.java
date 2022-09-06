@@ -24,6 +24,7 @@ import com.isa.project.model.Cottage;
 import com.isa.project.model.CottageReservation;
 import com.isa.project.model.FishingLesson;
 import com.isa.project.model.FishingLessonReservation;
+import com.isa.project.model.InstructorIncome;
 import com.isa.project.model.QuickBoatReservation;
 import com.isa.project.model.QuickCottageReservation;
 import com.isa.project.model.QuickFishingLessonReservation;
@@ -38,6 +39,7 @@ import com.isa.project.repository.CottageRepository;
 import com.isa.project.repository.CottageReservationRepository;
 import com.isa.project.repository.FishingLessonRepository;
 import com.isa.project.repository.FishingLessonReservationRepository;
+import com.isa.project.repository.InstructorIncomeRepository;
 import com.isa.project.repository.QuickBoatReservationRepository;
 import com.isa.project.repository.QuickCottageReservationRepository;
 import com.isa.project.repository.QuickFishingLessonReservationRepository;
@@ -88,6 +90,9 @@ public class ReservationsServiceImplementation implements ReservationsService{
 	
 	@Autowired
 	private AdminIncomeRepository adminIncomeRepository;
+	
+	@Autowired
+	private InstructorIncomeRepository instructorIncomeRepository;
 	
 	
 	@Override
@@ -312,6 +317,14 @@ public class ReservationsServiceImplementation implements ReservationsService{
 			response.setReservationType("Fishing lesson reservation");
 			response.setStartDate(reservation.getStartDate());
 			
+			InstructorIncome income = new InstructorIncome();
+			income.setIncome(reservation.getPrice() * reservation.getFishingLesson().getPercentageForKeep());
+			income.setInstructor(reservation.getFishingLesson().getInstructor());
+			income.setReservationId(reservation.getId());
+			income.setReservationType("Fishing lesson reservation");
+			
+			instructorIncomeRepository.save(income);
+			
 		}
 		
 		if(dto.getReservationType().equals("Quick cottage reservation")) {
@@ -417,6 +430,14 @@ public class ReservationsServiceImplementation implements ReservationsService{
 			response.setPrice(quickReservation.getPrice());
 			response.setReservationType("Quick fishing lesson reservation");
 			response.setStartDate(quickReservation.getStartDate());
+			
+			InstructorIncome income = new InstructorIncome();
+			income.setIncome(reservation.getPrice() * reservation.getFishingLesson().getPercentageForKeep());
+			income.setInstructor(reservation.getFishingLesson().getInstructor());
+			income.setReservationId(reservation.getId());
+			income.setReservationType("Quick fishing lesson reservation");
+			
+			instructorIncomeRepository.save(income);
 		}
 		return response;
 	}

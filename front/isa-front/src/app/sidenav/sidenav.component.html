@@ -75,6 +75,10 @@
         <mat-icon>people</mat-icon><span class="nav-caption">Users</span>
     </a>
 
+    <a mat-list-item routerLink="/loyaltyProgram" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_ADMIN'">
+        <mat-icon>add_circle_outline</mat-icon><span class="nav-caption">Create loyalty program</span>
+    </a>
+
     <a mat-list-item routerLink="/adminRegistration" (click)="onSidenavClose('')" *ngIf="role == 'ROLE_ADMIN' && username == 'admin'">
         <mat-icon>person_add</mat-icon><span class="nav-caption">Admin Registration</span>
     </a>

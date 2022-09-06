@@ -72,6 +72,7 @@ import { AdminUsersComponent } from './admin-users/admin-users.component';
 import { ReviewClientComponent } from './review-client/review-client.component';
 import {MatRadioModule} from '@angular/material/radio';
 import { AdminPenaltiesComponent } from './admin-penalties/admin-penalties.component';
+import { LoyaltyProgramComponent } from './loyalty-program/loyalty-program.component';
 
 
 
@@ -128,6 +129,7 @@ import { AdminPenaltiesComponent } from './admin-penalties/admin-penalties.compo
     AdminUsersComponent,
     ReviewClientComponent,
     AdminPenaltiesComponent,
+    LoyaltyProgramComponent,
     
   ],
   imports: [

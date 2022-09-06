@@ -132,7 +132,11 @@ public class BoatReservationServiceImplementation implements BoatReservationServ
 			
 		}
 		
-		savedReservation.setPrice(price);
+		if(client.getCategory() != null && (client.getCategory().getCategory().equals("silver") || client.getCategory().getCategory().equals("gold"))) {
+			savedReservation.setPrice(price - price * client.getCategory().getDiscount());
+		} else 
+			savedReservation.setPrice(price);
+		
 		savedReservation.setAdditionalServices(additionalServices);
 		
 		Boat savedBoat = boatRepository.save(boat);
