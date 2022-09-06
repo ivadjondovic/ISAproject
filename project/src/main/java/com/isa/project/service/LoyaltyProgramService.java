@@ -5,6 +5,6 @@ import com.isa.project.model.LoyaltyProgram;
 
 public interface LoyaltyProgramService {
 
-	public LoyaltyProgram createProgram(LoyaltyProgramDTO dto);
+	public LoyaltyProgram createProgram(LoyaltyProgramDTO dto) throws Exception;
 	
 }

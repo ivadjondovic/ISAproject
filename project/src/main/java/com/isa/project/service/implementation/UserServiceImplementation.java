@@ -313,7 +313,7 @@ public class UserServiceImplementation implements UserService{
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public User editClient(UserDTO userDTO) {
+	public User editClient(UserDTO userDTO) throws Exception {
 		User user = userRepository.findLockByUsername(userDTO.getUsername());
 		if(userDTO.getPassword() != "") {
 			user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
