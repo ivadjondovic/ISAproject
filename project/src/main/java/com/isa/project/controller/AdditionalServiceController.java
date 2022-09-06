@@ -20,7 +20,7 @@ import com.isa.project.service.AdditionalServiceService;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("api/additionalServices")
-public class AdditionalService {
+public class AdditionalServiceController {
 
 	@Autowired
 	private AdditionalServiceService additionalService;

@@ -23,7 +23,7 @@ public interface UserService {
 	public User edit(UserDTO userDTO);
 	public User declineDeletingAccount(DeleteAccountRequestDTO dto) throws Exception;
 	public User acceptDeletingAccount(DeleteAccountRequestDTO dto) throws Exception;
-	public User getClient(Long id);
+	public User getClient(Long id) throws Exception;
 	public List<User> getClients();
 	public List<User> getUsers();
 	public User deleteUser(Long id) throws Exception;

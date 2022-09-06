@@ -312,8 +312,9 @@ public class UserServiceImplementation implements UserService{
 	}
 
 	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public User editClient(UserDTO userDTO) {
-		User user = userRepository.findByUsername(userDTO.getUsername());
+		User user = userRepository.findLockByUsername(userDTO.getUsername());
 		if(userDTO.getPassword() != "") {
 			user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		}
@@ -336,7 +337,13 @@ public class UserServiceImplementation implements UserService{
 			user.setPhoneNumber(userDTO.getPhoneNumber());
 		}
 		
-		return userRepository.save(user);
+		try{
+			return userRepository.save(user);
+		}catch(PessimisticLockingFailureException ex){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+		}
+		
+		
 	}
 	
 	
